@@ -45,7 +45,7 @@ export function EnhancedPricePredictionCard({
   const getDirectionColor = (direction: string) => {
     switch (direction) {
       case "UP": return "text-red-600 dark:text-red-400";
-      case "DOWN": return "text-emerald-600 dark:text-emerald-400";
+      case "DOWN": return "text-blue-600 dark:text-blue-400";
       default: return "text-slate-500 dark:text-slate-400";
     }
   };
@@ -60,19 +60,19 @@ export function EnhancedPricePredictionCard({
 
   const getActionBadgeStyle = (action: string) => {
     switch (action) {
-      case "BUY_NOW": return "bg-emerald-100 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-200 border-emerald-200 dark:border-emerald-800";
-      case "WAIT_1_WEEK": return "bg-amber-100 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200 border-amber-200 dark:border-amber-800";
-      case "WAIT_2_WEEKS": return "bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200 border-red-200 dark:border-red-800";
+      case "BUY_NOW": return "bg-gradient-to-r from-orange-100 to-blue-100 dark:from-orange-900/20 dark:to-blue-900/20 text-orange-800 dark:text-orange-200 border-orange-200 dark:border-orange-800";
+      case "WAIT_1_WEEK": return "bg-gradient-to-r from-orange-100 to-orange-50 dark:from-orange-900/20 dark:to-orange-900/10 text-orange-800 dark:text-orange-200 border-orange-200 dark:border-orange-800";
+      case "WAIT_2_WEEKS": return "bg-gradient-to-r from-blue-100 to-blue-50 dark:from-blue-900/20 dark:to-blue-900/10 text-blue-800 dark:text-blue-200 border-blue-200 dark:border-blue-800";
       default: return "bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-600";
     }
   };
 
   const getUrgencyClass = (score: number, action: string) => {
     if (action === "BUY_NOW" && score >= 8) {
-      return "ring-2 ring-emerald-500/30 border-emerald-200 dark:border-emerald-800";
+      return "ring-2 ring-orange-500/40 border-orange-200 dark:border-orange-800 glow-pulse";
     }
     if (score <= 3) {
-      return "ring-2 ring-red-500/30 border-red-200 dark:border-red-800";
+      return "ring-2 ring-blue-500/40 border-blue-200 dark:border-blue-800";
     }
     return "border-slate-200 dark:border-slate-700";
   };

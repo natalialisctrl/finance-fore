@@ -39,17 +39,17 @@ export function MonthlySavingsSummary({ predictions }: MonthlySavingsSummaryProp
   const progressPercent = Math.min((animatedSavings / savingsGoal) * 100, 100);
 
   return (
-    <Card className="glass-card border-2 border-emerald-200 dark:border-emerald-800 bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20">
+    <Card className="glass-card border-2 border-orange-200 dark:border-orange-800 bg-gradient-to-br from-orange-50 to-blue-50 dark:from-orange-900/20 dark:to-blue-900/20 glow-pulse">
       <CardContent className="p-6">
         <div className="flex items-center space-x-3 mb-6">
-          <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg">
-            <DollarSign className="w-6 h-6 text-white" />
+          <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg glow-pulse">
+            <DollarSign className="w-6 h-6 text-white drop-shadow-lg" />
           </div>
           <div>
             <h3 className="text-xl font-bold text-slate-900 dark:text-white">
               Potential Monthly Savings
             </h3>
-            <p className="text-emerald-600 dark:text-emerald-400 text-sm">
+            <p className="text-orange-600 dark:text-orange-400 text-sm">
               Based on current AI recommendations
             </p>
           </div>
@@ -57,7 +57,7 @@ export function MonthlySavingsSummary({ predictions }: MonthlySavingsSummaryProp
 
         {/* Main Savings Amount */}
         <div className="text-center mb-6">
-          <div className="text-4xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">
+          <div className="text-4xl font-bold bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent mb-2">
             ${animatedSavings.toFixed(0)}
           </div>
           <div className="text-sm text-slate-600 dark:text-slate-400">
@@ -74,7 +74,7 @@ export function MonthlySavingsSummary({ predictions }: MonthlySavingsSummaryProp
           
           <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3 overflow-hidden">
             <div 
-              className="h-full bg-gradient-to-r from-emerald-400 to-green-500 rounded-full transition-all duration-1500 ease-out shadow-sm"
+              className="h-full bg-gradient-to-r from-orange-400 to-blue-500 rounded-full transition-all duration-1500 ease-out shadow-lg"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
@@ -118,7 +118,7 @@ export function MonthlySavingsSummary({ predictions }: MonthlySavingsSummaryProp
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-slate-900 dark:text-white">Top Opportunities</span>
-            <Badge className="bg-emerald-100 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-200 border-emerald-200 dark:border-emerald-800">
+            <Badge className="bg-gradient-to-r from-orange-100 to-blue-100 dark:from-orange-900/20 dark:to-blue-900/20 text-orange-800 dark:text-orange-200 border-orange-200 dark:border-orange-800">
               {predictions.filter(p => p.recommendedAction === "BUY_NOW").length} Buy Now
             </Badge>
           </div>
@@ -127,11 +127,11 @@ export function MonthlySavingsSummary({ predictions }: MonthlySavingsSummaryProp
             .filter(p => p.recommendedAction === "BUY_NOW" && p.expectedSavings > 0)
             .slice(0, 3)
             .map((item, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-white/50 dark:bg-white/5 rounded-lg border border-emerald-200 dark:border-emerald-800">
+              <div key={index} className="flex items-center justify-between p-3 bg-gradient-to-r from-white/60 to-blue-50/50 dark:from-white/5 dark:to-blue-900/10 rounded-lg border border-orange-200 dark:border-orange-800 shadow-sm">
                 <span className="text-sm text-slate-900 dark:text-white font-medium">
                   {item.itemName}
                 </span>
-                <span className="text-sm text-emerald-600 dark:text-emerald-400 font-medium">
+                <span className="text-sm bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent font-bold">
                   +${item.expectedSavings.toFixed(2)}
                 </span>
               </div>
@@ -139,7 +139,7 @@ export function MonthlySavingsSummary({ predictions }: MonthlySavingsSummaryProp
         </div>
 
         {/* Timing Indicator */}
-        <div className="mt-6 pt-4 border-t border-emerald-200 dark:border-emerald-800">
+        <div className="mt-6 pt-4 border-t border-orange-200 dark:border-orange-800">
           <div className="flex items-center space-x-2 text-xs text-slate-600 dark:text-slate-400">
             <Calendar className="w-3 h-3" />
             <span>
