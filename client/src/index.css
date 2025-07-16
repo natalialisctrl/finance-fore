@@ -91,6 +91,49 @@
   --chart-5: hsl(340, 75%, 55%);
 }
 
+/* CRITICAL: Override ALL Tailwind shadows to prevent square shadows */
+@layer utilities {
+  .shadow-sm, .shadow, .shadow-md, .shadow-lg, .shadow-xl, .shadow-2xl, .shadow-inner, .shadow-none,
+  .hover\:shadow-xl:hover, .hover\:shadow-lg:hover, .hover\:shadow-md:hover {
+    box-shadow: none !important;
+    filter: drop-shadow(0 2px 4px rgba(255, 140, 66, 0.1)) !important;
+  }
+  
+  .shadow-lg, .hover\:shadow-lg:hover {
+    filter: drop-shadow(0 4px 8px rgba(255, 140, 66, 0.15)) !important;
+  }
+  
+  .shadow-xl, .hover\:shadow-xl:hover {
+    filter: drop-shadow(0 8px 16px rgba(255, 140, 66, 0.2)) !important;
+  }
+  
+  /* Remove all ring shadows and borders */
+  .ring-1, .ring-2, .ring-4, .ring-8, .ring, .ring-offset-2, .ring-offset-4,
+  .focus\:ring-2, .focus-visible\:ring-2, .hover\:ring-2, 
+  .ring-red-500, .ring-emerald-500, .ring-blue-500, .ring-orange-500 {
+    box-shadow: none !important;
+    outline: none !important;
+  }
+  
+  /* Override focus rings completely */
+  .focus\:ring-2:focus, .focus-visible\:ring-2:focus-visible, 
+  .focus\:outline-none:focus, .focus-visible\:outline-none:focus-visible {
+    box-shadow: none !important;
+    outline: 1px solid rgba(255, 140, 66, 0.3) !important;
+    outline-offset: 1px !important;
+  }
+  
+  /* Force all cards to use drop-shadow */
+  [class*="card"], .card, [class*="Card"] {
+    box-shadow: none !important;
+  }
+  
+  /* Force ALL UI components to use drop-shadow */
+  button, .button, input, select, textarea {
+    box-shadow: none !important;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;

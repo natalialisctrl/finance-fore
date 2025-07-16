@@ -43,7 +43,7 @@ export function BudgetTracker() {
   }
 
   return (
-    <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 mb-8">
+    <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 mb-8" style={{boxShadow: 'none', filter: 'drop-shadow(0 4px 8px rgba(255, 140, 66, 0.1))'}}>
       <CardContent className="p-6">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Budget Tracker</h3>

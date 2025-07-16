@@ -172,7 +172,7 @@ export function EnhancedSmartBuyIndicator({
           </div>
           
           {/* Direction indicator */}
-          <div className="absolute -top-1 -right-1 w-5 h-5 bg-white dark:bg-slate-800 rounded-full flex items-center justify-center border-2 border-slate-200 dark:border-slate-600">
+          <div className="absolute -top-1 -right-1 w-5 h-5 bg-white dark:bg-slate-800 rounded-full flex items-center justify-center border border-slate-200 dark:border-slate-600" style={{filter: 'drop-shadow(0 2px 4px rgba(255, 140, 66, 0.2))'}}>
             {getDirectionIcon()}
           </div>
         </div>

@@ -66,7 +66,7 @@ export function EconomicDashboard() {
   if (!economicData) {
     return (
       <div className="mb-8">
-        <Card className="p-6">
+        <Card className="p-6" style={{boxShadow: 'none', filter: 'drop-shadow(0 4px 8px rgba(255, 140, 66, 0.1))'}}>
           <CardContent>
             <p className="text-center text-slate-500 dark:text-slate-400">
               Unable to load economic data. Please try again later.
@@ -99,7 +99,7 @@ export function EconomicDashboard() {
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {/* Inflation Rate Card */}
-        <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+        <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700" style={{boxShadow: 'none', filter: 'drop-shadow(0 4px 8px rgba(255, 140, 66, 0.1))'}}>
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-medium text-slate-600 dark:text-slate-400">Inflation Rate</h3>
@@ -120,7 +120,7 @@ export function EconomicDashboard() {
         </Card>
 
         {/* GDP Growth Card */}
-        <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+        <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700" style={{boxShadow: 'none', filter: 'drop-shadow(0 4px 8px rgba(255, 140, 66, 0.1))'}}>
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-medium text-slate-600 dark:text-slate-400">GDP Growth</h3>
@@ -141,7 +141,7 @@ export function EconomicDashboard() {
         </Card>
 
         {/* Consumer Price Index Card */}
-        <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+        <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700" style={{boxShadow: 'none', filter: 'drop-shadow(0 4px 8px rgba(255, 140, 66, 0.1))'}}>
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-medium text-slate-600 dark:text-slate-400">Consumer Price Index</h3>

@@ -71,7 +71,7 @@ export function ChartsAndAnalytics() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
       {/* Price Trends Chart */}
-      <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+      <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700" style={{boxShadow: 'none', filter: 'drop-shadow(0 4px 8px rgba(255, 140, 66, 0.1))'}}>
         <CardContent className="p-6">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
@@ -141,7 +141,7 @@ export function ChartsAndAnalytics() {
       </Card>
 
       {/* Savings Calculator */}
-      <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+      <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700" style={{boxShadow: 'none', filter: 'drop-shadow(0 4px 8px rgba(255, 140, 66, 0.1))'}}>
         <CardContent className="p-6">
           <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
             Weekly Savings Summary
