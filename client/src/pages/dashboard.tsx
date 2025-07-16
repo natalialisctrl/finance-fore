@@ -111,7 +111,7 @@ export default function Dashboard() {
           <div className="text-center">
             <h2 className="text-4xl lg:text-6xl font-bold text-white mb-6 fade-in">
               Smart Financial
-              <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent pb-2 leading-tight">
                 Intelligence
               </span>
             </h2>
