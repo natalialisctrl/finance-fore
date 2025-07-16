@@ -42,7 +42,7 @@ export function MonthlySavingsSummary({ predictions }: MonthlySavingsSummaryProp
     <Card className="glass-card border border-orange-200 dark:border-orange-800 bg-gradient-to-br from-orange-50 to-blue-50 dark:from-orange-900/20 dark:to-blue-900/20 glow-pulse" style={{boxShadow: 'none'}}>
       <CardContent className="p-6">
         <div className="flex items-center space-x-3 mb-6">
-          <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-blue-600 rounded-2xl flex items-center justify-center glow-pulse icon-container cursor-pointer">
+          <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-blue-600 rounded-2xl flex items-center justify-center glow-pulse icon-container cursor-pointer pulse-orange">
             <DollarSign className="w-6 h-6 text-white" />
           </div>
           <div>

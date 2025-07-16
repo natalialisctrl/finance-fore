@@ -126,7 +126,7 @@ export function EnhancedSmartBuyIndicator({
     <TooltipProvider>
       <div className="flex items-center space-x-3">
         {/* Animated Circular Progress Ring */}
-        <div className={`relative ${config.container} ${getUrgencyClass(score)}`}>
+        <div className={`relative ${config.container} ${getUrgencyClass(score)} glow-continuous`}>
           <svg 
             className={`transform -rotate-90 ${colors.glow}`} 
             width={config.circle} 

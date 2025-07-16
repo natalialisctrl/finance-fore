@@ -105,15 +105,15 @@ export default function Dashboard() {
 
           {/* Hero Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 pl-[3px] pr-[3px]">
-            <div className="glass-card p-6 text-center scale-in">
+            <div className="glass-card p-6 text-center scale-in pulse-orange">
               <div className="text-3xl font-bold text-white number-glow">94%</div>
               <div className="text-white/70 text-sm">Prediction Accuracy</div>
             </div>
-            <div className="glass-card p-6 text-center scale-in" style={{ animationDelay: '0.2s' }}>
+            <div className="glass-card p-6 text-center scale-in pulse-orange" style={{ animationDelay: '0.2s' }}>
               <div className="text-3xl font-bold text-white number-glow">$2,340</div>
               <div className="text-white/70 text-sm">Avg Monthly Savings</div>
             </div>
-            <div className="glass-card p-6 text-center scale-in" style={{ animationDelay: '0.4s' }}>
+            <div className="glass-card p-6 text-center scale-in pulse-orange" style={{ animationDelay: '0.4s' }}>
               <div className="text-3xl font-bold text-white number-glow">8.7/10</div>
               <div className="text-white/70 text-sm">Smart Buy Score</div>
             </div>

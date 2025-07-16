@@ -115,7 +115,7 @@ export function EnhancedPricePredictionCard({
   return (
     <TooltipProvider>
       <Card 
-        className={`group cursor-pointer transition-all duration-300 hover:scale-[1.02] enhanced-card ${getUrgencyClass(prediction.smartBuyScore, prediction.recommendedAction)} ${
+        className={`group cursor-pointer transition-all duration-300 hover:scale-[1.02] enhanced-card glow-continuous ${getUrgencyClass(prediction.smartBuyScore, prediction.recommendedAction)} ${
           prediction.smartBuyScore >= 8 ? 'animate-pulse-subtle' : ''
         }`}
         onMouseEnter={() => setIsHovered(true)}

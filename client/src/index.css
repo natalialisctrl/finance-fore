@@ -209,6 +209,35 @@
   }
 }
 
+@keyframes orange-pulse {
+  0%, 100% { 
+    filter: drop-shadow(0 0 8px rgba(255, 140, 66, 0.4));
+    transform: scale(1);
+  }
+  50% { 
+    filter: drop-shadow(0 0 20px rgba(255, 140, 66, 0.8)) drop-shadow(0 0 40px rgba(255, 140, 66, 0.4));
+    transform: scale(1.02);
+  }
+}
+
+@keyframes continuous-glow {
+  0%, 100% { 
+    filter: drop-shadow(0 0 10px rgba(255, 140, 66, 0.3));
+  }
+  50% { 
+    filter: drop-shadow(0 0 25px rgba(255, 140, 66, 0.6)) drop-shadow(0 0 50px rgba(255, 140, 66, 0.3));
+  }
+}
+
+/* Utility Classes */
+.pulse-orange {
+  animation: orange-pulse 2.5s ease-in-out infinite;
+}
+
+.glow-continuous {
+  animation: continuous-glow 4s ease-in-out infinite;
+}
+
 @keyframes scale-in {
   from {
     opacity: 0;
@@ -334,6 +363,7 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    animation: continuous-glow 4s ease-in-out infinite;
   }
 
   .glass-card::before {
