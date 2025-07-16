@@ -29,12 +29,21 @@ export default function Landing() {
                 Financial Forecast
               </h1>
             </div>
-            <Button 
-              onClick={() => window.location.href = '/api/login'}
-              className="bg-gradient-to-r from-orange-500 to-blue-500 hover:from-orange-600 hover:to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
-            >
-              Sign In
-            </Button>
+            <div className="flex space-x-3">
+              <Button 
+                onClick={() => window.location.href = '/api/login'}
+                className="bg-gradient-to-r from-orange-500 to-blue-500 hover:from-orange-600 hover:to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                Sign In
+              </Button>
+              <Button 
+                variant="outline"
+                onClick={() => window.location.href = '/demo-login'}
+                className="border-orange-500 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/20"
+              >
+                Demo Login
+              </Button>
+            </div>
           </div>
         </header>
 
@@ -49,13 +58,23 @@ export default function Landing() {
                 Make informed purchasing decisions with AI-powered price predictions, real-time economic analysis, 
                 and personalized budget recommendations. Take control of your financial future today.
               </p>
-              <Button 
-                size="lg"
-                onClick={() => window.location.href = '/api/login'}
-                className="bg-gradient-to-r from-orange-500 to-blue-500 hover:from-orange-600 hover:to-blue-600 text-white px-8 py-4 text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
-              >
-                Get Started Free
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button 
+                  size="lg"
+                  onClick={() => window.location.href = '/api/login'}
+                  className="bg-gradient-to-r from-orange-500 to-blue-500 hover:from-orange-600 hover:to-blue-600 text-white px-8 py-4 text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+                >
+                  Get Started Free
+                </Button>
+                <Button 
+                  size="lg"
+                  variant="outline"
+                  onClick={() => window.location.href = '/demo-login'}
+                  className="border-2 border-orange-500 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/20 px-8 py-4 text-lg shadow-xl hover:shadow-2xl transition-all duration-300"
+                >
+                  Try Demo (natalia / 1234)
+                </Button>
+              </div>
             </div>
           </div>
         </section>

@@ -9,6 +9,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
   await setupAuth(app);
 
+  // Demo login for testing
+  app.post('/api/demo-login', async (req, res) => {
+    const { username, password } = req.body;
+    
+    if (username === 'natalia' && password === '1234') {
+      // Create or get demo user
+      const demoUser = {
+        id: 'demo-natalia',
+        email: 'natalia@demo.com',
+        firstName: 'Natalia',
+        lastName: 'Demo',
+        profileImageUrl: null,
+      };
+      
+      try {
+        await storage.upsertUser(demoUser);
+        
+        // Create demo session
+        (req as any).user = {
+          claims: { sub: 'demo-natalia' },
+          expires_at: Math.floor(Date.now() / 1000) + 3600 // 1 hour
+        };
+        
+        res.json({ success: true, user: demoUser });
+      } catch (error) {
+        console.error("Demo login error:", error);
+        res.status(500).json({ message: "Demo login failed" });
+      }
+    } else {
+      res.status(401).json({ message: "Invalid demo credentials" });
+    }
+  });
+
   // Auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
@@ -18,6 +51,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching user:", error);
       res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
+
+  // Demo auth user endpoint (bypass authentication for demo)
+  app.get('/api/demo-auth/user', async (req, res) => {
+    try {
+      const user = await storage.getUser('demo-natalia');
+      if (user) {
+        res.json(user);
+      } else {
+        res.status(401).json({ message: "Demo user not found" });
+      }
+    } catch (error) {
+      res.status(401).json({ message: "Unauthorized" });
     }
   });
 
