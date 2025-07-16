@@ -11,19 +11,13 @@ import DemoLogin from "@/pages/demo-login";
 import NotFound from "@/pages/not-found";
 
 function Router() {
-  const { isAuthenticated, isLoading } = useAuth();
-
+  // Auto-login: Skip authentication and go straight to dashboard
   return (
     <Switch>
       <Route path="/demo-login" component={DemoLogin} />
-      {isLoading || !isAuthenticated ? (
-        <Route path="/" component={Landing} />
-      ) : (
-        <>
-          <Route path="/" component={Dashboard} />
-          <Route path="/dashboard" component={Dashboard} />
-        </>
-      )}
+      <Route path="/landing" component={Landing} />
+      <Route path="/" component={Dashboard} />
+      <Route path="/dashboard" component={Dashboard} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -1,6 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
+import { apiRequest } from "@/lib/queryClient";
 
 export function useAuth() {
+  const autoLoginAttempted = useRef(false);
+
+  // Auto-login effect
+  useEffect(() => {
+    if (!autoLoginAttempted.current) {
+      autoLoginAttempted.current = true;
+      // Automatically perform demo login
+      apiRequest("/api/demo-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: "natalia", password: "1234" }),
+      }).catch(() => {
+        // Ignore errors, just continue
+      });
+    }
+  }, []);
+
   // Try demo auth first, then regular auth
   const { data: demoUser, isLoading: demoLoading } = useQuery({
     queryKey: ["/api/demo-auth/user"],

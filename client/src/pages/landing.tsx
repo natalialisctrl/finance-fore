@@ -1,8 +1,27 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, DollarSign, Calculator, ShoppingCart, Brain, Target } from "lucide-react";
+import { useEffect } from "react";
+import { apiRequest } from "@/lib/queryClient";
 
 export default function Landing() {
+  // Auto-login when landing page loads
+  useEffect(() => {
+    const autoLogin = async () => {
+      try {
+        await apiRequest("/api/demo-login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: "natalia", password: "1234" }),
+        });
+        // Reload to trigger authentication check
+        setTimeout(() => window.location.reload(), 500);
+      } catch (error) {
+        // Ignore errors, user can still manually log in
+      }
+    };
+    autoLogin();
+  }, []);
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900">
       {/* Floating Video Background */}
@@ -59,21 +78,15 @@ export default function Landing() {
                 and personalized budget recommendations. Take control of your financial future today.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  size="lg"
-                  onClick={() => window.location.href = '/api/login'}
-                  className="bg-gradient-to-r from-orange-500 to-blue-500 hover:from-orange-600 hover:to-blue-600 text-white px-8 py-4 text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
-                >
-                  Get Started Free
-                </Button>
-                <Button 
-                  size="lg"
-                  variant="outline"
-                  onClick={() => window.location.href = '/demo-login'}
-                  className="border-2 border-orange-500 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/20 px-8 py-4 text-lg shadow-xl hover:shadow-2xl transition-all duration-300"
-                >
-                  Try Demo (natalia / 1234)
-                </Button>
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500 mx-auto mb-4"></div>
+                  <p className="text-lg text-gray-600 dark:text-gray-300">
+                    Auto-logging you in as Natalia...
+                  </p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                    Please wait while we prepare your dashboard
+                  </p>
+                </div>
               </div>
             </div>
           </div>

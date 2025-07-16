@@ -7,7 +7,7 @@ import { EnhancedBudgetTracker } from "@/components/enhanced-budget-tracker";
 import { ShoppingList } from "@/components/shopping-list";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
-import { useAuth } from "@/hooks/useAuth";
+// import { useAuth } from "@/hooks/useAuth"; // Auto-login mode
 import { Moon, Sun, CreditCard, User, Plus, LogOut } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -16,7 +16,16 @@ import floatingDollarVideo from "@assets/vecteezy_3d-dollar-money-bundle-floatin
 
 export default function Dashboard() {
   const { theme, toggleTheme } = useTheme();
-  const { user, isAuthenticated, isLoading } = useAuth();
+  // Auto-login user data - skip authentication
+  const user = {
+    id: 'demo-natalia',
+    firstName: 'Natalia',
+    lastName: 'Demo',
+    email: 'natalia@demo.com',
+    profileImageUrl: null
+  };
+  const isAuthenticated = true;
+  const isLoading = false;
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('dashboard');
 
