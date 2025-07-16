@@ -18,21 +18,25 @@ export default function DemoLogin() {
     setIsLoading(true);
 
     try {
-      await apiRequest("/api/demo-login", {
+      const response = await apiRequest("/api/demo-login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
 
-      toast({
-        title: "Success",
-        description: "Demo login successful! Redirecting...",
-      });
+      if (response.success) {
+        toast({
+          title: "Success",
+          description: "Demo login successful! Redirecting...",
+        });
 
-      // Redirect to dashboard
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 1000);
+        // Redirect to dashboard
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1000);
+      } else {
+        throw new Error("Login failed");
+      }
     } catch (error: any) {
       toast({
         title: "Login Failed",

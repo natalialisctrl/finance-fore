@@ -155,6 +155,8 @@ Preferred communication style: Simple, everyday language.
 - **Protected Routes**: All user-specific data endpoints now require authentication
 - **User Profile Display**: Added user profile information and logout functionality to dashboard header
 - **Authentication Hooks**: Implemented React hooks for authentication state management with proper error handling
+- **Demo Login System**: Added simple username/password demo login (natalia/1234) for testing and demonstration purposes
+- **Dual Authentication Support**: App now supports both secure OAuth and demo login modes simultaneously
 
 ### July 16, 2025 - Database Migration to PostgreSQL
 - **PostgreSQL Integration**: Successfully migrated from in-memory storage to PostgreSQL database using Neon

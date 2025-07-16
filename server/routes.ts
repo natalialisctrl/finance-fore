@@ -24,15 +24,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
       
       try {
-        await storage.upsertUser(demoUser);
+        const user = await storage.upsertUser(demoUser);
         
-        // Create demo session
-        (req as any).user = {
+        // Store demo session in request session
+        (req.session as any).demoUser = {
           claims: { sub: 'demo-natalia' },
           expires_at: Math.floor(Date.now() / 1000) + 3600 // 1 hour
         };
         
-        res.json({ success: true, user: demoUser });
+        res.json({ success: true, user });
       } catch (error) {
         console.error("Demo login error:", error);
         res.status(500).json({ message: "Demo login failed" });
@@ -54,14 +54,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Demo auth user endpoint (bypass authentication for demo)
+  // Demo auth user endpoint (check demo session)
   app.get('/api/demo-auth/user', async (req, res) => {
     try {
-      const user = await storage.getUser('demo-natalia');
-      if (user) {
-        res.json(user);
+      const demoSession = (req.session as any)?.demoUser;
+      
+      if (demoSession && demoSession.expires_at > Math.floor(Date.now() / 1000)) {
+        const user = await storage.getUser('demo-natalia');
+        if (user) {
+          res.json(user);
+        } else {
+          res.status(401).json({ message: "Demo user not found" });
+        }
       } else {
-        res.status(401).json({ message: "Demo user not found" });
+        res.status(401).json({ message: "No demo session" });
       }
     } catch (error) {
       res.status(401).json({ message: "Unauthorized" });
