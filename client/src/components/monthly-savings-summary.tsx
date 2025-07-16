@@ -42,8 +42,8 @@ export function MonthlySavingsSummary({ predictions }: MonthlySavingsSummaryProp
     <Card className="glass-card border-2 border-orange-200 dark:border-orange-800 bg-gradient-to-br from-orange-50 to-blue-50 dark:from-orange-900/20 dark:to-blue-900/20 glow-pulse">
       <CardContent className="p-6">
         <div className="flex items-center space-x-3 mb-6">
-          <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg glow-pulse">
-            <DollarSign className="w-6 h-6 text-white drop-shadow-lg" />
+          <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-blue-600 rounded-2xl flex items-center justify-center glow-pulse">
+            <DollarSign className="w-6 h-6 text-white" />
           </div>
           <div>
             <h3 className="text-xl font-bold text-slate-900 dark:text-white">
@@ -74,7 +74,7 @@ export function MonthlySavingsSummary({ predictions }: MonthlySavingsSummaryProp
           
           <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3 overflow-hidden">
             <div 
-              className="h-full bg-gradient-to-r from-orange-400 to-blue-500 rounded-full transition-all duration-1500 ease-out shadow-lg"
+              className="h-full bg-gradient-to-r from-orange-400 to-blue-500 rounded-full transition-all duration-1500 ease-out"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
@@ -127,7 +127,7 @@ export function MonthlySavingsSummary({ predictions }: MonthlySavingsSummaryProp
             .filter(p => p.recommendedAction === "BUY_NOW" && p.expectedSavings > 0)
             .slice(0, 3)
             .map((item, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-gradient-to-r from-white/60 to-blue-50/50 dark:from-white/5 dark:to-blue-900/10 rounded-lg border border-orange-200 dark:border-orange-800 shadow-sm">
+              <div key={index} className="flex items-center justify-between p-3 bg-gradient-to-r from-white/60 to-blue-50/50 dark:from-white/5 dark:to-blue-900/10 rounded-lg border border-orange-200 dark:border-orange-800">
                 <span className="text-sm text-slate-900 dark:text-white font-medium">
                   {item.itemName}
                 </span>
