@@ -14,13 +14,9 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('dashboard');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 to-blue-950">
+    <div className="min-h-screen">
       {/* Premium Hero Section */}
-      <div className="relative overflow-hidden"
-        style={{
-          background: `linear-gradient(135deg, #1E40AF 0%, #1E3A8A 50%, #1D4ED8 100%)`
-        }}
-      >
+      <div className="hero-gradient relative overflow-hidden">
         {/* Floating particles background */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-white/20 rounded-full animate-pulse float"></div>
@@ -126,13 +122,13 @@ export default function Dashboard() {
 
         {/* Wave separator */}
         <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 120" className="w-full h-20" style={{ fill: '#0F172A' }}>
+          <svg viewBox="0 0 1440 120" className="w-full h-20 fill-background">
             <path d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,64C960,75,1056,85,1152,85.3C1248,85,1344,75,1392,69.3L1440,64L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path>
           </svg>
         </div>
       </div>
       {/* Main Content */}
-      <div className="relative z-30 -mt-16 bg-slate-900 min-h-screen">
+      <div className="relative z-30 -mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {activeTab === 'dashboard' && (
             <>
