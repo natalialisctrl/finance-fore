@@ -159,10 +159,10 @@
 /* Enhanced Animations */
 @keyframes glow-pulse {
   0%, 100% { 
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3), 0 0 40px rgba(99, 102, 241, 0.1);
+    filter: drop-shadow(0 0 20px rgba(255, 140, 66, 0.3)) drop-shadow(0 0 40px rgba(59, 130, 246, 0.1));
   }
   50% { 
-    box-shadow: 0 0 30px rgba(99, 102, 241, 0.5), 0 0 60px rgba(99, 102, 241, 0.2);
+    filter: drop-shadow(0 0 30px rgba(255, 140, 66, 0.5)) drop-shadow(0 0 60px rgba(59, 130, 246, 0.2));
   }
 }
 
@@ -286,10 +286,8 @@
       rgba(59, 130, 246, 0.25) 50%, 
       rgba(30, 58, 138, 0.2) 100%) 1;
     border-radius: 1.2rem;
-    box-shadow: 
-      0 8px 32px rgba(255, 140, 66, 0.1),
-      0 2px 12px rgba(59, 130, 246, 0.08),
-      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    filter: drop-shadow(0 8px 32px rgba(255, 140, 66, 0.1))
+            drop-shadow(0 2px 12px rgba(59, 130, 246, 0.08));
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
@@ -311,16 +309,13 @@
 
   .glass-card:hover {
     transform: translateY(-4px) scale(1.01);
-    box-shadow: 
-      0 16px 48px rgba(255, 140, 66, 0.18),
-      0 4px 20px rgba(59, 130, 246, 0.15),
-      inset 0 1px 0 rgba(255, 255, 255, 0.25);
     border-image: linear-gradient(135deg, 
       rgba(255, 140, 66, 0.4) 0%, 
       rgba(59, 130, 246, 0.35) 50%, 
       rgba(30, 58, 138, 0.3) 100%) 1;
-    filter: drop-shadow(0 0 20px rgba(255, 140, 66, 0.4)) 
-            drop-shadow(0 0 40px rgba(255, 140, 66, 0.2));
+    filter: drop-shadow(0 16px 48px rgba(255, 140, 66, 0.4)) 
+            drop-shadow(0 4px 20px rgba(59, 130, 246, 0.3))
+            drop-shadow(0 0 40px rgba(255, 140, 66, 0.6));
     animation: orange-beam-pulse 1.5s ease-in-out infinite;
   }
 
@@ -516,44 +511,31 @@
     animation: gradient-shift 8s ease infinite;
   }
 
-  /* Premium buttons */
-  .btn-premium {
-    @apply relative overflow-hidden px-6 py-3 rounded-xl font-semibold text-white;
-    background: linear-gradient(135deg, #6366F1, #3B82F6);
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .btn-premium:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
-  }
-
-  .btn-premium:active {
-    transform: translateY(0);
-  }
+  /* Remove old btn-premium styles - using new ones above */
 
   /* Floating action button */
   .fab {
-    @apply fixed bottom-6 right-6 w-14 h-14 rounded-full shadow-lg;
-    background: linear-gradient(135deg, #6366F1, #3B82F6);
-    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+    @apply fixed bottom-6 right-6 w-14 h-14 rounded-full;
+    background: linear-gradient(135deg, #FF8C42, #3B82F6);
+    filter: drop-shadow(0 8px 25px rgba(255, 140, 66, 0.4));
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .fab:hover {
     transform: scale(1.1);
-    box-shadow: 0 12px 35px rgba(99, 102, 241, 0.5);
+    filter: drop-shadow(0 12px 35px rgba(255, 140, 66, 0.6))
+            drop-shadow(0 0 40px rgba(255, 140, 66, 0.8));
+    animation: orange-beam-pulse 1s ease-in-out infinite;
   }
 
   /* Number glow effect */
   .number-glow {
-    text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+    filter: drop-shadow(0 0 20px rgba(255, 140, 66, 0.5));
   }
 
   /* Success animations */
   .success-glow {
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.3));
   }
 
   /* Warning pulse */
@@ -710,10 +692,10 @@
 
 @keyframes glow-pulse {
   from {
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+    filter: drop-shadow(0 0 20px rgba(255, 140, 66, 0.3));
   }
   to {
-    box-shadow: 0 0 30px rgba(99, 102, 241, 0.6);
+    filter: drop-shadow(0 0 30px rgba(255, 140, 66, 0.6));
   }
 }
 

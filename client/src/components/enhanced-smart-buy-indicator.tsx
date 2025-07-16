@@ -111,8 +111,8 @@ export function EnhancedSmartBuyIndicator({
   };
 
   const getUrgencyClass = (score: number) => {
-    if (score <= 3) return "animate-pulse ring-2 ring-red-500/50";
-    if (score >= 8) return "animate-pulse ring-2 ring-emerald-500/50";
+    if (score <= 3) return "animate-pulse";
+    if (score >= 8) return "animate-pulse";
     return "";
   };
 

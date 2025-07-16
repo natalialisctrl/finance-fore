@@ -69,10 +69,10 @@ export function EnhancedPricePredictionCard({
 
   const getUrgencyClass = (score: number, action: string) => {
     if (action === "BUY_NOW" && score >= 8) {
-      return "ring-2 ring-orange-500/40 border-orange-200 dark:border-orange-800 glow-pulse";
+      return "border-orange-200 dark:border-orange-800 glow-pulse";
     }
     if (score <= 3) {
-      return "ring-2 ring-blue-500/40 border-blue-200 dark:border-blue-800";
+      return "border-blue-200 dark:border-blue-800";
     }
     return "border-slate-200 dark:border-slate-700";
   };
@@ -115,7 +115,7 @@ export function EnhancedPricePredictionCard({
   return (
     <TooltipProvider>
       <Card 
-        className={`group cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02] enhanced-card ${getUrgencyClass(prediction.smartBuyScore, prediction.recommendedAction)} ${
+        className={`group cursor-pointer transition-all duration-300 hover:scale-[1.02] enhanced-card ${getUrgencyClass(prediction.smartBuyScore, prediction.recommendedAction)} ${
           prediction.smartBuyScore >= 8 ? 'animate-pulse-subtle' : ''
         }`}
         onMouseEnter={() => setIsHovered(true)}
@@ -126,7 +126,7 @@ export function EnhancedPricePredictionCard({
           {/* Header with item info and Smart Buy Score */}
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-xl flex items-center justify-center text-2xl shadow-inner">
+              <div className="w-12 h-12 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-xl flex items-center justify-center text-2xl">
                 {prediction.itemName.charAt(0)}
               </div>
               <div>
