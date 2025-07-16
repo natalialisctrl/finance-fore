@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 import { Moon, Sun, CreditCard, User, Plus } from "lucide-react";
 import { useState } from "react";
+import floatingDollarVideo from "@assets/vecteezy_3d-dollar-money-bundle-floating-animation-on-black-background_23936705_1752690826601.mp4";
 
 export default function Dashboard() {
   const { theme, toggleTheme } = useTheme();
@@ -17,8 +18,24 @@ export default function Dashboard() {
     <div className="min-h-screen">
       {/* Premium Hero Section */}
       <div className="hero-gradient relative overflow-hidden">
-        {/* Floating particles background */}
+        {/* Floating dollar video background overlay */}
         <div className="absolute inset-0 overflow-hidden">
+          <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-15 mix-blend-screen"
+            style={{ filter: 'brightness(0.7) contrast(1.2)' }}
+          >
+            <source src={floatingDollarVideo} type="video/mp4" />
+          </video>
+          {/* Overlay gradient to blend video with existing background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-blue-600/10"></div>
+        </div>
+        
+        {/* Floating particles background */}
+        <div className="absolute inset-0 overflow-hidden z-10">
           <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-white/20 rounded-full animate-pulse float"></div>
           <div className="absolute top-3/4 left-3/4 w-1 h-1 bg-white/30 rounded-full animate-pulse" style={{ animationDelay: '2s' }}></div>
           <div className="absolute top-1/2 right-1/4 w-3 h-3 bg-white/10 rounded-full float" style={{ animationDelay: '4s' }}></div>
