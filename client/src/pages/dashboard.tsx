@@ -90,7 +90,7 @@ export default function Dashboard() {
         </nav>
 
         {/* Hero Content */}
-        <div className="relative z-40 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pb-24">
+        <div className="relative z-40 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pb-24 ml-[-4px] mr-[-4px] pl-[34px] pr-[34px]">
           <div className="text-center">
             <h2 className="text-4xl lg:text-6xl font-bold text-white mb-6 fade-in">
               Smart Financial
