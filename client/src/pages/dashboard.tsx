@@ -7,9 +7,11 @@ import { ShoppingList } from "@/components/shopping-list";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 import { Moon, Sun, CreditCard, User, Plus } from "lucide-react";
+import { useState } from "react";
 
 export default function Dashboard() {
   const { theme, toggleTheme } = useTheme();
+  const [activeTab, setActiveTab] = useState('dashboard');
 
   return (
     <div className="min-h-screen">
@@ -39,18 +41,30 @@ export default function Dashboard() {
               </div>
               
               <div className="hidden md:flex items-center space-x-8">
-                <a href="#dashboard" className="text-white font-semibold">
+                <button 
+                  onClick={() => setActiveTab('dashboard')}
+                  className={`font-semibold transition-colors ${activeTab === 'dashboard' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                >
                   Dashboard
-                </a>
-                <a href="#ai-predictions" className="text-white/80 hover:text-white transition-colors">
+                </button>
+                <button 
+                  onClick={() => setActiveTab('ai-predictions')}
+                  className={`font-semibold transition-colors ${activeTab === 'ai-predictions' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                >
                   AI Predictions
-                </a>
-                <a href="#tracking" className="text-white/80 hover:text-white transition-colors">
+                </button>
+                <button 
+                  onClick={() => setActiveTab('price-tracking')}
+                  className={`font-semibold transition-colors ${activeTab === 'price-tracking' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                >
                   Price Tracking
-                </a>
-                <a href="#budget" className="text-white/80 hover:text-white transition-colors">
+                </button>
+                <button 
+                  onClick={() => setActiveTab('budget')}
+                  className={`font-semibold transition-colors ${activeTab === 'budget' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                >
                   Budget
-                </a>
+                </button>
               </div>
 
               <div className="flex items-center space-x-3">
@@ -117,29 +131,56 @@ export default function Dashboard() {
       {/* Main Content */}
       <div className="relative z-30 -mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="fade-in">
-            <EconomicDashboard />
-          </div>
-          <div className="slide-up" style={{ animationDelay: '0.2s' }}>
-            <AIPredictionsDashboard />
-          </div>
-          <div className="slide-up" style={{ animationDelay: '0.4s' }}>
-            <PriceTrackingGrid />
-          </div>
-          <div className="slide-up" style={{ animationDelay: '0.6s' }}>
-            <ChartsAndAnalytics />
-          </div>
-          <div className="slide-up" style={{ animationDelay: '0.8s' }}>
-            <BudgetTracker />
-          </div>
-          <div className="slide-up" style={{ animationDelay: '1s' }}>
-            <ShoppingList />
-          </div>
+          {activeTab === 'dashboard' && (
+            <>
+              <div className="fade-in">
+                <EconomicDashboard />
+              </div>
+              <div className="slide-up" style={{ animationDelay: '0.2s' }}>
+                <ChartsAndAnalytics />
+              </div>
+              <div className="slide-up" style={{ animationDelay: '0.4s' }}>
+                <BudgetTracker />
+              </div>
+              <div className="slide-up" style={{ animationDelay: '0.6s' }}>
+                <ShoppingList />
+              </div>
+            </>
+          )}
+          
+          {activeTab === 'ai-predictions' && (
+            <div className="fade-in">
+              <AIPredictionsDashboard />
+            </div>
+          )}
+          
+          {activeTab === 'price-tracking' && (
+            <div className="fade-in">
+              <PriceTrackingGrid />
+            </div>
+          )}
+          
+          {activeTab === 'budget' && (
+            <>
+              <div className="fade-in">
+                <BudgetTracker />
+              </div>
+              <div className="slide-up" style={{ animationDelay: '0.2s' }}>
+                <ShoppingList />
+              </div>
+            </>
+          )}
         </div>
       </div>
 
       {/* Floating Action Button */}
-      <button className="fab flex items-center justify-center ripple">
+      <button 
+        className="fab flex items-center justify-center ripple"
+        onClick={() => {
+          // Add item functionality - could open a modal or navigate to add item page
+          console.log('Add item clicked');
+        }}
+      >
         <Plus className="w-6 h-6 text-white" />
       </button>
     </div>
