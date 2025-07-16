@@ -1,5 +1,4 @@
 import { EconomicDashboard } from "@/components/economic-dashboard";
-import { EnhancedEconomicDashboard } from "@/components/enhanced-economic-dashboard";
 import { AIPredictionsDashboard } from "@/components/ai-predictions-dashboard";
 import { PriceTrackingGrid } from "@/components/price-tracking-grid";
 import { ChartsAndAnalytics } from "@/components/charts-analytics";
@@ -136,7 +135,6 @@ export default function Dashboard() {
             <>
               <div className="fade-in">
                 <EconomicDashboard />
-      <EnhancedEconomicDashboard />
               </div>
               <div className="slide-up" style={{ animationDelay: '0.2s' }}>
                 <ChartsAndAnalytics />

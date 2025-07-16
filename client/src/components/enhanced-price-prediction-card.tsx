@@ -17,7 +17,6 @@ import {
   DollarSign
 } from "lucide-react";
 import { PricePrediction } from "@/lib/ai-predictions";
-import { fetchSeasonalTrends, fetchEnhancedEconomicContext } from "@/lib/enhanced-economic-api";
 
 interface EnhancedPricePredictionCardProps {
   prediction: PricePrediction;
@@ -36,32 +35,11 @@ export function EnhancedPricePredictionCard({
 }: EnhancedPricePredictionCardProps) {
   const [daysUntilChange, setDaysUntilChange] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-  const [seasonalData, setSeasonalData] = useState<any>(null);
-  const [economicImpact, setEconomicImpact] = useState<any>(null);
 
-  // Fetch seasonal and economic data
+  // Calculate days until predicted change
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        const [seasonal, economic] = await Promise.all([
-          fetchSeasonalTrends(),
-          fetchEnhancedEconomicContext()
-        ]);
-        
-        const itemSeasonal = seasonal.find(s => s.itemName === prediction.itemName);
-        const itemEconomic = economic.economicImpactScores.find(e => e.itemName === prediction.itemName);
-        
-        setSeasonalData(itemSeasonal);
-        setEconomicImpact(itemEconomic);
-        
-        const days = Math.floor(Math.random() * 14) + 1;
-        setDaysUntilChange(days);
-      } catch (error) {
-        console.error('Error loading enhanced data:', error);
-      }
-    };
-    
-    loadData();
+    const days = Math.floor(Math.random() * 14) + 1; // Mock calculation
+    setDaysUntilChange(days);
   }, [prediction]);
 
   const getDirectionColor = (direction: string) => {
@@ -260,7 +238,7 @@ export function EnhancedPricePredictionCard({
           {/* Hover Details */}
           {isHovered && (
             <div className="space-y-3 animate-fadeIn">
-              {/* Enhanced Economic Context */}
+              {/* Regional Comparison */}
               <div className="grid grid-cols-2 gap-4 text-xs">
                 <div className="space-y-1">
                   <div className="text-slate-600 dark:text-slate-400">vs. National Avg</div>
@@ -269,58 +247,12 @@ export function EnhancedPricePredictionCard({
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <div className="text-slate-600 dark:text-slate-400">Seasonal Impact</div>
-                  <div className={`font-medium ${
-                    seasonalData?.peakSeason 
-                      ? 'text-amber-600 dark:text-amber-400' 
-                      : 'text-slate-900 dark:text-white'
-                  }`}>
-                    {seasonalData?.peakSeason ? 'Peak Season' : 'Normal'}
+                  <div className="text-slate-600 dark:text-slate-400">Seasonal Trend</div>
+                  <div className="font-medium text-slate-900 dark:text-white">
+                    {['Rising', 'Falling', 'Stable'][Math.floor(Math.random() * 3)]}
                   </div>
                 </div>
               </div>
-
-              {/* Economic Impact Score */}
-              {economicImpact && (
-                <div className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Economic Impact Score</span>
-                    <div className={`text-sm font-bold ${
-                      economicImpact.riskLevel === 'high' ? 'text-red-600 dark:text-red-400' :
-                      economicImpact.riskLevel === 'moderate' ? 'text-amber-600 dark:text-amber-400' :
-                      'text-emerald-600 dark:text-emerald-400'
-                    }`}>
-                      {economicImpact.overallScore.toFixed(1)}/10
-                    </div>
-                  </div>
-                  <div className="text-xs text-slate-600 dark:text-slate-400">
-                    {economicImpact.explanation}
-                  </div>
-                </div>
-              )}
-
-              {/* Seasonal Trend Details */}
-              {seasonalData && (
-                <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-blue-700 dark:text-blue-300">Seasonal Pattern</span>
-                    <span className={`text-xs font-medium ${
-                      seasonalData.historicalPriceMultiplier > 1 
-                        ? 'text-red-600 dark:text-red-400' 
-                        : 'text-emerald-600 dark:text-emerald-400'
-                    }`}>
-                      {seasonalData.historicalPriceMultiplier > 1 ? '+' : ''}{((seasonalData.historicalPriceMultiplier - 1) * 100).toFixed(1)}% vs avg
-                    </span>
-                  </div>
-                  <div className="space-y-1">
-                    {seasonalData.drivingFactors.map((factor: string, index: number) => (
-                      <div key={index} className="text-xs text-blue-600 dark:text-blue-400">
-                        • {factor}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               {/* Quick Actions */}
               <div className="flex space-x-2">
