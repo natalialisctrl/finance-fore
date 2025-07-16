@@ -319,6 +319,9 @@
       rgba(255, 140, 66, 0.4) 0%, 
       rgba(59, 130, 246, 0.35) 50%, 
       rgba(30, 58, 138, 0.3) 100%) 1;
+    filter: drop-shadow(0 0 20px rgba(255, 140, 66, 0.4)) 
+            drop-shadow(0 0 40px rgba(255, 140, 66, 0.2));
+    animation: orange-beam-pulse 1.5s ease-in-out infinite;
   }
 
   .glass-card:hover::before {
@@ -388,9 +391,11 @@
 
   .btn-premium:hover {
     transform: translateY(-2px);
-    filter: drop-shadow(0 8px 20px rgba(255, 140, 66, 0.35)) 
-            drop-shadow(0 4px 12px rgba(59, 130, 246, 0.25));
+    filter: drop-shadow(0 8px 20px rgba(255, 140, 66, 0.6)) 
+            drop-shadow(0 4px 12px rgba(59, 130, 246, 0.4))
+            drop-shadow(0 0 30px rgba(255, 140, 66, 0.8));
     background: linear-gradient(135deg, #FF7A28 0%, #2563EB 100%);
+    animation: orange-beam-pulse 1.2s ease-in-out infinite;
   }
 
   .btn-premium:hover::before {
@@ -415,7 +420,10 @@
   .btn-orange:hover {
     background: linear-gradient(135deg, #FF7A28 0%, #FF6814 100%);
     transform: translateY(-2px);
-    filter: drop-shadow(0 8px 20px rgba(255, 140, 66, 0.35));
+    filter: drop-shadow(0 8px 20px rgba(255, 140, 66, 0.6))
+            drop-shadow(0 0 40px rgba(255, 140, 66, 0.8))
+            drop-shadow(0 0 60px rgba(255, 140, 66, 0.4));
+    animation: orange-beam-pulse 1s ease-in-out infinite;
   }
 
   /* Blue accent button */
@@ -432,7 +440,10 @@
   .btn-blue:hover {
     background: linear-gradient(135deg, #2563EB 0%, #1E40AF 100%);
     transform: translateY(-2px);
-    filter: drop-shadow(0 8px 20px rgba(59, 130, 246, 0.35));
+    filter: drop-shadow(0 8px 20px rgba(59, 130, 246, 0.6))
+            drop-shadow(0 0 40px rgba(59, 130, 246, 0.8))
+            drop-shadow(0 0 60px rgba(255, 140, 66, 0.3));
+    animation: blue-beam-pulse 1s ease-in-out infinite;
   }
 
   /* Animated glow effects */
@@ -449,6 +460,53 @@
       filter: drop-shadow(0 0 12px rgba(255, 140, 66, 0.5)) 
               drop-shadow(0 0 24px rgba(59, 130, 246, 0.35));
     }
+  }
+
+  @keyframes orange-beam-pulse {
+    0%, 100% { 
+      filter: drop-shadow(0 8px 20px rgba(255, 140, 66, 0.6)) 
+              drop-shadow(0 4px 12px rgba(59, 130, 246, 0.4))
+              drop-shadow(0 0 30px rgba(255, 140, 66, 0.8));
+    }
+    50% { 
+      filter: drop-shadow(0 12px 30px rgba(255, 140, 66, 0.8)) 
+              drop-shadow(0 6px 20px rgba(59, 130, 246, 0.6))
+              drop-shadow(0 0 50px rgba(255, 140, 66, 1))
+              drop-shadow(0 0 80px rgba(255, 140, 66, 0.6));
+    }
+  }
+
+  @keyframes blue-beam-pulse {
+    0%, 100% { 
+      filter: drop-shadow(0 8px 20px rgba(59, 130, 246, 0.6))
+              drop-shadow(0 0 40px rgba(59, 130, 246, 0.8))
+              drop-shadow(0 0 60px rgba(255, 140, 66, 0.3));
+    }
+    50% { 
+      filter: drop-shadow(0 12px 30px rgba(59, 130, 246, 0.8))
+              drop-shadow(0 0 60px rgba(59, 130, 246, 1))
+              drop-shadow(0 0 100px rgba(59, 130, 246, 0.6))
+              drop-shadow(0 0 80px rgba(255, 140, 66, 0.5));
+    }
+  }
+
+  /* Hover glow effects for icons and circular elements */
+  .icon-container:hover {
+    filter: drop-shadow(0 0 20px rgba(255, 140, 66, 0.7))
+            drop-shadow(0 0 40px rgba(255, 140, 66, 0.5))
+            drop-shadow(0 0 60px rgba(255, 140, 66, 0.3));
+    animation: orange-beam-pulse 1.2s ease-in-out infinite;
+  }
+
+  .progress-ring:hover {
+    animation: orange-beam-pulse 1s ease-in-out infinite;
+  }
+
+  /* Enhanced card hover effects */
+  .enhanced-card:hover {
+    filter: drop-shadow(0 0 25px rgba(255, 140, 66, 0.6))
+            drop-shadow(0 0 50px rgba(255, 140, 66, 0.4));
+    animation: orange-beam-pulse 1.5s ease-in-out infinite;
   }
 
   /* Hero gradient */

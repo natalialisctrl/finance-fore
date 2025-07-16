@@ -138,7 +138,7 @@ export function AIPredictionsDashboard() {
     <div className="mb-8">
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center space-x-4 fade-in">
-          <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-blue-600 rounded-2xl flex items-center justify-center glow-pulse">
+          <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-blue-600 rounded-2xl flex items-center justify-center glow-pulse icon-container cursor-pointer">
             <Brain className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -166,7 +166,7 @@ export function AIPredictionsDashboard() {
         {/* Smart Recommendations */}
         <div className="glass-card p-8 scale-in">
           <div className="flex items-center space-x-3 mb-6">
-            <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center glow-pulse">
+            <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center glow-pulse icon-container cursor-pointer">
               <Lightbulb className="w-5 h-5 text-white" />
             </div>
             <h3 className="text-xl font-bold text-slate-900 dark:text-white">
@@ -201,7 +201,7 @@ export function AIPredictionsDashboard() {
         {/* Budget Optimization */}
         <div className="glass-card p-8 scale-in" style={{ animationDelay: '0.2s' }}>
           <div className="flex items-center space-x-3 mb-6">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center glow-pulse">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center glow-pulse icon-container cursor-pointer">
               <DollarSign className="w-5 h-5 text-white" />
             </div>
             <h3 className="text-xl font-bold text-slate-900 dark:text-white">
@@ -220,7 +220,7 @@ export function AIPredictionsDashboard() {
 
           <div className="mt-6 pt-6 border-t border-white/20 dark:border-white/10">
             <div className="flex items-center space-x-3 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-blue-500 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-blue-500 rounded-lg flex items-center justify-center icon-container cursor-pointer">
                 <Calendar className="w-4 h-4 text-white" />
               </div>
               <span className="text-lg font-semibold text-slate-900 dark:text-white">Timing Advice</span>
