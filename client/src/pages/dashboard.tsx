@@ -32,7 +32,7 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <h1 className="text-xl font-bold text-white">
-                    EconoSmart Budget
+                    Financial Forecast
                   </h1>
                   <p className="text-xs text-white/70">AI-Powered Financial Intelligence</p>
                 </div>
