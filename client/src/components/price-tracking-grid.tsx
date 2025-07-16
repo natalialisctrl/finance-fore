@@ -2,16 +2,29 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { fetchPriceData } from "@/lib/economic-api";
+import { fetchPriceData, fetchEconomicData } from "@/lib/economic-api";
+import { generatePricePredictions } from "@/lib/ai-predictions";
+import { SmartBuyIndicator } from "@/components/smart-buy-indicator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Plus } from "lucide-react";
 
 export function PriceTrackingGrid() {
-  const { data: priceData, isLoading } = useQuery({
+  const { data: priceData, isLoading: isPriceLoading } = useQuery({
     queryKey: ["/api/price-data"],
     queryFn: fetchPriceData,
     refetchInterval: 30 * 1000, // Refetch every 30 seconds
   });
+
+  const { data: economicData, isLoading: isEconomicLoading } = useQuery({
+    queryKey: ["/api/economic-data"],
+    queryFn: fetchEconomicData,
+  });
+
+  const isLoading = isPriceLoading || isEconomicLoading;
+  
+  // Generate AI predictions for Smart Buy Scores
+  const predictions = priceData && economicData ? 
+    generatePricePredictions(priceData, economicData) : [];
 
   const getRecommendationColor = (recommendation: string) => {
     switch (recommendation) {
@@ -74,23 +87,36 @@ export function PriceTrackingGrid() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {priceData?.map((item) => (
-          <Card key={item.id} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center text-2xl">
-                    {item.emoji}
+        {priceData?.map((item) => {
+          const prediction = predictions.find(p => p.itemName === item.itemName);
+          
+          return (
+            <Card key={item.id} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center text-2xl">
+                      {item.emoji}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-slate-900 dark:text-white">{item.itemName}</h3>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">{item.description}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-slate-900 dark:text-white">{item.itemName}</h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">{item.description}</p>
+                  <div className="flex flex-col items-end space-y-2">
+                    {prediction && (
+                      <SmartBuyIndicator 
+                        score={prediction.smartBuyScore}
+                        confidence={prediction.confidence}
+                        direction={prediction.priceDirection}
+                        size="sm"
+                      />
+                    )}
+                    <Badge className={`px-2 py-1 text-xs font-medium ${getRecommendationColor(item.recommendation)}`}>
+                      {item.recommendation.replace("_", " ")}
+                    </Badge>
                   </div>
                 </div>
-                <Badge className={`px-2 py-1 text-xs font-medium ${getRecommendationColor(item.recommendation)}`}>
-                  {item.recommendation.replace("_", " ")}
-                </Badge>
-              </div>
               
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -127,7 +153,8 @@ export function PriceTrackingGrid() {
               </div>
             </CardContent>
           </Card>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

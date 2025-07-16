@@ -80,7 +80,7 @@ export function EconomicDashboard() {
   return (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Economic Dashboard</h2>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Economic Dashboard</h2>
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-400">
             <Clock className="w-4 h-4" />

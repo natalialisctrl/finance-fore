@@ -2,7 +2,7 @@
 
 ## Overview
 
-EconoSmart Budget is a comprehensive economic budgeting application that combines real-time economic data tracking with smart purchase recommendations. The application helps users make informed purchasing decisions by analyzing price trends, economic indicators, and personal budget patterns. Built as a full-stack application with React frontend and Express backend, it provides an intelligent dashboard for budget-conscious users.
+EconoSmart Budget is a comprehensive economic budgeting application that combines real-time economic data tracking with AI-powered smart purchase recommendations. The application helps users make informed purchasing decisions by analyzing price trends, economic indicators, and personal budget patterns using machine learning algorithms. Built as a full-stack application with React frontend and Express backend, it provides an intelligent dashboard with predictive analytics for budget-conscious users.
 
 ## User Preferences
 
@@ -48,7 +48,9 @@ Preferred communication style: Simple, everyday language.
 ### Frontend Components
 - **Dashboard**: Main application interface with economic overview
 - **Economic Dashboard**: Real-time economic indicators display
-- **Price Tracking Grid**: Visual grid of tracked items with buy/wait recommendations
+- **AI Predictions Dashboard**: Machine learning-powered price predictions and Smart Buy Scores
+- **Price Tracking Grid**: Visual grid of tracked items with AI-enhanced recommendations
+- **Smart Buy Indicator**: AI-powered scoring system (1-10) with confidence levels
 - **Budget Tracker**: Personal budget monitoring with progress indicators
 - **Charts & Analytics**: Historical price trends and savings analytics
 - **Shopping List**: Smart shopping list with optimal purchase timing
@@ -58,7 +60,9 @@ Preferred communication style: Simple, everyday language.
 - **Storage Interface**: Abstracted data access layer for future database implementation
 - **Route Handlers**: RESTful API endpoints for all data operations
 - **Economic Data Integration**: Placeholder for FRED API integration
-- **Price Calculation Logic**: Smart recommendation algorithms
+- **AI Prediction Engine**: Machine learning algorithms for price forecasting and Smart Buy Scores
+- **Price Calculation Logic**: Enhanced recommendation algorithms with ML predictions
+- **Personalization Engine**: User preference-based recommendation system
 
 ## Data Flow
 
@@ -68,14 +72,24 @@ Preferred communication style: Simple, everyday language.
 3. **Database operations** performed through Drizzle ORM
 4. **Real-time updates** achieved through polling and optimistic updates
 
-### Smart Recommendation Algorithm
-1. **Price Analysis**: Compare current prices to 30-day averages
-2. **Economic Factors**: Factor in inflation rates and economic trends
-3. **Recommendation Generation**: 
-   - BUY_NOW: 15%+ below average price
-   - CONSIDER: 5-15% below average price
-   - WAIT: Above average price
-4. **Savings Calculation**: Track potential savings from smart timing
+### AI-Powered Prediction Engine
+1. **Machine Learning Model**: Predicts 30-day price movements using multiple factors
+2. **Smart Buy Score**: 1-10 scoring system combining:
+   - Economic trends (inflation, GDP, CPI)
+   - Seasonal patterns and historical data
+   - Supply/demand indicators
+   - User preferences and risk tolerance
+3. **Confidence Scoring**: ML confidence levels (60-95%) for all predictions
+4. **Personalized Recommendations**: 
+   - Location-based adjustments
+   - Shopping frequency optimization
+   - Budget priority matching (savings/convenience/quality)
+   - Risk tolerance alignment (conservative/moderate/aggressive)
+5. **Predictive Actions**:
+   - BUY_NOW: Score 8+ with high confidence
+   - WAIT_1_WEEK: Score 4-5.5 with declining prices
+   - WAIT_2_WEEKS: Score <4 with strong decline signals
+   - MONITOR: Stable prices with moderate scores
 
 ### State Management
 - **Server State**: Managed by TanStack Query with automatic caching
@@ -130,5 +144,16 @@ Preferred communication style: Simple, everyday language.
 - `npm run build`: Build production assets
 - `npm run start`: Start production server
 - `npm run db:push`: Push database schema changes
+
+## Recent Changes
+
+### July 16, 2025 - AI Predictions Engine Implementation
+- **Added Predictive AI Engine**: Machine learning model for 30-day price forecasting
+- **Smart Buy Scores**: 1-10 scoring system with confidence levels for each tracked item
+- **Personalized Recommendations**: User preference-based suggestions considering location, shopping patterns, and risk tolerance
+- **Enhanced Price Tracking**: Integrated AI predictions into existing price tracking grid
+- **Smart Buy Indicators**: Visual AI score indicators with directional price trends
+- **Budget Optimization**: AI-powered timing advice and savings calculations
+- **Navigation Enhancement**: Added AI Predictions section to main navigation
 
 The application is designed for deployment on platforms like Replit, with automatic database provisioning and a unified development/production workflow.

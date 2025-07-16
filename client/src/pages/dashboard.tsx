@@ -1,4 +1,5 @@
 import { EconomicDashboard } from "@/components/economic-dashboard";
+import { AIPredictionsDashboard } from "@/components/ai-predictions-dashboard";
 import { PriceTrackingGrid } from "@/components/price-tracking-grid";
 import { ChartsAndAnalytics } from "@/components/charts-analytics";
 import { BudgetTracker } from "@/components/budget-tracker";
@@ -31,14 +32,14 @@ export default function Dashboard() {
               <a href="#dashboard" className="text-primary font-medium">
                 Dashboard
               </a>
+              <a href="#ai-predictions" className="text-slate-600 dark:text-slate-300 hover:text-primary transition-colors">
+                AI Predictions
+              </a>
               <a href="#tracking" className="text-slate-600 dark:text-slate-300 hover:text-primary transition-colors">
                 Price Tracking
               </a>
               <a href="#budget" className="text-slate-600 dark:text-slate-300 hover:text-primary transition-colors">
                 Budget
-              </a>
-              <a href="#reports" className="text-slate-600 dark:text-slate-300 hover:text-primary transition-colors">
-                Reports
               </a>
             </nav>
 
@@ -68,6 +69,7 @@ export default function Dashboard() {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <EconomicDashboard />
+        <AIPredictionsDashboard />
         <PriceTrackingGrid />
         <ChartsAndAnalytics />
         <BudgetTracker />
