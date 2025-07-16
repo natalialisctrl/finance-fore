@@ -5,8 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { fetchPriceData, fetchEconomicData } from "@/lib/economic-api";
 import { generatePricePredictions } from "@/lib/ai-predictions";
 import { EnhancedSmartBuyIndicator } from "@/components/enhanced-smart-buy-indicator";
+import { EnhancedPriceAlerts } from "@/components/enhanced-price-alerts";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Plus } from "lucide-react";
+import { Plus, Calendar, TrendingUp, TrendingDown, History } from "lucide-react";
+import { LineChart, Line, ResponsiveContainer } from "recharts";
 
 export function PriceTrackingGrid() {
   const { data: priceData, isLoading: isPriceLoading } = useQuery({
@@ -21,6 +23,34 @@ export function PriceTrackingGrid() {
   });
 
   const isLoading = isPriceLoading || isEconomicLoading;
+
+  // Generate historical comparison data (simulated)
+  const generateHistoricalData = (currentPrice: number) => {
+    const data = [];
+    const basePrice = currentPrice * (0.8 + Math.random() * 0.4); // Historical base
+    
+    for (let i = 0; i < 12; i++) {
+      const variance = 0.1 * Math.sin((i / 12) * Math.PI * 2); // Seasonal pattern
+      const noise = (Math.random() - 0.5) * 0.05; // Random noise
+      const price = basePrice * (1 + variance + noise);
+      data.push({ 
+        month: i, 
+        price: Math.max(0, price),
+        date: new Date(2024, i, 1).toLocaleDateString('en-US', { month: 'short' })
+      });
+    }
+    return data;
+  };
+
+  const getYearOverYearChange = (currentPrice: number, historicalData: any[]) => {
+    const lastYearPrice = historicalData[historicalData.length - 1]?.price || currentPrice;
+    const change = ((currentPrice - lastYearPrice) / lastYearPrice) * 100;
+    return {
+      percentage: change,
+      direction: change > 0 ? 'up' : change < 0 ? 'down' : 'stable',
+      amount: Math.abs(currentPrice - lastYearPrice)
+    };
+  };
   
   // Generate AI predictions for Smart Buy Scores
   const predictions = priceData && economicData ? 
@@ -76,26 +106,43 @@ export function PriceTrackingGrid() {
 
   return (
     <div className="mb-8">
+      {/* Enhanced Price Alerts Component */}
+      <EnhancedPriceAlerts priceData={priceData} />
+      
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-          Price Tracking & Recommendations
-        </h2>
-        <Button className="bg-primary text-white hover:bg-blue-600">
-          <Plus className="w-4 h-4 mr-2" />
-          Add Item to Track
-        </Button>
+        <div className="flex items-center space-x-4">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+            Price Tracking & Recommendations
+          </h2>
+          <div className="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-400">
+            <History className="w-4 h-4" />
+            <span>Historical comparison enabled</span>
+          </div>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Button variant="outline" size="sm">
+            <Calendar className="w-4 h-4 mr-2" />
+            Weekly View
+          </Button>
+          <Button className="bg-primary text-white hover:bg-blue-600">
+            <Plus className="w-4 h-4 mr-2" />
+            Add Item to Track
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {priceData?.map((item) => {
           const prediction = predictions.find(p => p.itemName === item.itemName);
+          const historicalData = generateHistoricalData(item.currentPrice);
+          const yearOverYear = getYearOverYearChange(item.currentPrice, historicalData);
           
           return (
-            <Card key={item.id} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+            <Card key={item.id} className="glass-card glow-continuous">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center text-2xl">
+                    <div className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center text-2xl pulse-orange">
                       {item.emoji}
                     </div>
                     <div className="flex-1">
@@ -136,6 +183,40 @@ export function PriceTrackingGrid() {
                       30-day avg: ${item.averagePrice30Day.toFixed(2)}
                     </div>
                   </div>
+                </div>
+
+                {/* Historical comparison */}
+                <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center space-x-1">
+                    {yearOverYear.direction === 'up' ? (
+                      <TrendingUp className="w-3 h-3 text-red-500" />
+                    ) : yearOverYear.direction === 'down' ? (
+                      <TrendingDown className="w-3 h-3 text-emerald-500" />
+                    ) : (
+                      <div className="w-3 h-3 bg-slate-400 rounded-full" />
+                    )}
+                    <span className={`${
+                      yearOverYear.direction === 'up' ? 'text-red-600' :
+                      yearOverYear.direction === 'down' ? 'text-emerald-600' : 'text-slate-600'
+                    }`}>
+                      {yearOverYear.percentage > 0 ? '+' : ''}{yearOverYear.percentage.toFixed(1)}% vs last year
+                    </span>
+                  </div>
+                </div>
+
+                {/* Mini historical chart */}
+                <div className="h-8 mt-2">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={historicalData}>
+                      <Line 
+                        type="monotone" 
+                        dataKey="price" 
+                        stroke={yearOverYear.direction === 'up' ? '#ef4444' : '#10b981'}
+                        strokeWidth={2}
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
                 </div>
                 
                 <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">

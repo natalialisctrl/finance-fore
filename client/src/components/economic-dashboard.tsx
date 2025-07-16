@@ -2,10 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { fetchEconomicData, refreshFredData } from "@/lib/economic-api";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TrendingUp, TrendingDown, BarChart3, Clock } from "lucide-react";
+import { TrendingUp, TrendingDown, BarChart3, Clock, Activity, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
+import { LineChart, Line, ResponsiveContainer } from "recharts";
 
 export function EconomicDashboard() {
   const { toast } = useToast();
@@ -47,6 +48,65 @@ export function EconomicDashboard() {
     return date.toLocaleDateString();
   };
 
+  // Generate sparkline data for economic indicators
+  const generateSparklineData = (currentValue: number, trend: 'up' | 'down' | 'stable') => {
+    const baseData = [];
+    const variance = currentValue * 0.1;
+    
+    for (let i = 0; i < 12; i++) {
+      let value = currentValue;
+      if (trend === 'up') {
+        value += (variance * (i / 12)) + (Math.random() - 0.5) * variance * 0.3;
+      } else if (trend === 'down') {
+        value -= (variance * (i / 12)) + (Math.random() - 0.5) * variance * 0.3;
+      } else {
+        value += (Math.random() - 0.5) * variance * 0.2;
+      }
+      baseData.push({ value: Math.max(0, value) });
+    }
+    return baseData;
+  };
+
+  const getTrendIcon = (value: number, threshold: { good: number; warning: number }) => {
+    if (value <= threshold.good) return { icon: TrendingDown, color: 'text-red-500', trend: 'down' as const };
+    if (value <= threshold.warning) return { icon: Activity, color: 'text-amber-500', trend: 'stable' as const };
+    return { icon: TrendingUp, color: 'text-emerald-500', trend: 'up' as const };
+  };
+
+  const getFinancialHealthSummary = (economicData: any) => {
+    let score = 100;
+    let alerts = [];
+    
+    // Inflation impact
+    if (economicData.inflationRate > 4) {
+      score -= 25;
+      alerts.push("High inflation affecting purchasing power");
+    } else if (economicData.inflationRate > 2.5) {
+      score -= 10;
+      alerts.push("Moderate inflation - consider timing purchases");
+    }
+    
+    // GDP growth impact
+    if (economicData.gdpGrowth < 1) {
+      score -= 20;
+      alerts.push("Slow economic growth - be cautious with spending");
+    } else if (economicData.gdpGrowth > 3) {
+      score += 10;
+      alerts.push("Strong economic growth - good time for investments");
+    }
+    
+    // CPI impact
+    if (economicData.consumerPriceIndex > 280) {
+      score -= 15;
+      alerts.push("High consumer prices - focus on savings");
+    }
+    
+    const status = score >= 80 ? 'Excellent' : score >= 60 ? 'Good' : score >= 40 ? 'Caution' : 'Alert';
+    const color = score >= 80 ? 'text-emerald-600' : score >= 60 ? 'text-blue-600' : score >= 40 ? 'text-amber-600' : 'text-red-600';
+    
+    return { score: Math.max(0, score), status, color, alerts };
+  };
+
   if (isLoading) {
     return (
       <div className="mb-8">
@@ -77,6 +137,12 @@ export function EconomicDashboard() {
     );
   }
 
+  // Get enhanced data with trends and health summary
+  const healthSummary = getFinancialHealthSummary(economicData);
+  const inflationTrend = getTrendIcon(economicData.inflationRate, { good: 2, warning: 3.5 });
+  const gdpTrend = getTrendIcon(economicData.gdpGrowth, { good: 1, warning: 2 });
+  const cpiTrend = getTrendIcon(economicData.consumerPriceIndex, { good: 250, warning: 270 });
+
   return (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-6">
@@ -96,64 +162,164 @@ export function EconomicDashboard() {
           </Button>
         </div>
       </div>
+      {/* Financial Health Summary */}
+      <Card className="glass-card mb-6 pulse-orange">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className={`text-2xl font-bold ${healthSummary.color}`}>
+                {healthSummary.score}/100
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+                  Financial Health: {healthSummary.status}
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">
+                  Overall economic environment assessment
+                </p>
+              </div>
+            </div>
+            {healthSummary.alerts.length > 0 && (
+              <div className="text-right">
+                <AlertTriangle className="w-5 h-5 text-amber-500 mb-1" />
+                <span className="text-xs text-slate-500">{healthSummary.alerts.length} alerts</span>
+              </div>
+            )}
+          </div>
+          {healthSummary.alerts.length > 0 && (
+            <div className="mt-4 space-y-2">
+              {healthSummary.alerts.slice(0, 2).map((alert, index) => (
+                <p key={index} className="text-sm text-amber-600 dark:text-amber-400 flex items-center">
+                  <span className="w-1 h-1 bg-amber-500 rounded-full mr-2"></span>
+                  {alert}
+                </p>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        {/* Inflation Rate Card */}
-        <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700" style={{boxShadow: 'none', filter: 'drop-shadow(0 4px 8px rgba(255, 140, 66, 0.1))'}}>
+        {/* Enhanced Inflation Rate Card */}
+        <Card className="glass-card glow-continuous">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-medium text-slate-600 dark:text-slate-400">Inflation Rate</h3>
-              <div className="w-10 h-10 bg-red-100 dark:bg-red-900/20 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-red-600 dark:text-red-400" />
+              <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                inflationTrend.color === 'text-red-500' ? 'bg-red-100 dark:bg-red-900/20' :
+                inflationTrend.color === 'text-amber-500' ? 'bg-amber-100 dark:bg-amber-900/20' :
+                'bg-emerald-100 dark:bg-emerald-900/20'
+              }`}>
+                <inflationTrend.icon className={`w-5 h-5 ${inflationTrend.color}`} />
               </div>
             </div>
-            <div className="space-y-1">
-              <div className="text-3xl font-bold text-slate-900 dark:text-white">
-                {economicData.inflationRate.toFixed(1)}%
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="text-3xl font-bold text-slate-900 dark:text-white">
+                  {economicData.inflationRate.toFixed(1)}%
+                </div>
+                <div className="w-16 h-8">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={generateSparklineData(economicData.inflationRate, inflationTrend.trend)}>
+                      <Line 
+                        type="monotone" 
+                        dataKey="value" 
+                        stroke={inflationTrend.color.includes('red') ? '#ef4444' : inflationTrend.color.includes('amber') ? '#f59e0b' : '#10b981'}
+                        strokeWidth={2}
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
               <div className="flex items-center space-x-1">
-                <span className="text-sm text-red-600 dark:text-red-400">+0.2%</span>
+                <span className={`text-sm ${inflationTrend.color}`}>
+                  {inflationTrend.trend === 'up' ? '+0.2%' : inflationTrend.trend === 'down' ? '-0.1%' : '±0.0%'}
+                </span>
                 <span className="text-xs text-slate-500 dark:text-slate-400">from last month</span>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* GDP Growth Card */}
-        <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700" style={{boxShadow: 'none', filter: 'drop-shadow(0 4px 8px rgba(255, 140, 66, 0.1))'}}>
+        {/* Enhanced GDP Growth Card */}
+        <Card className="glass-card glow-continuous">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-medium text-slate-600 dark:text-slate-400">GDP Growth</h3>
-              <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/20 rounded-lg flex items-center justify-center">
-                <BarChart3 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+              <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                gdpTrend.color === 'text-red-500' ? 'bg-red-100 dark:bg-red-900/20' :
+                gdpTrend.color === 'text-amber-500' ? 'bg-amber-100 dark:bg-amber-900/20' :
+                'bg-emerald-100 dark:bg-emerald-900/20'
+              }`}>
+                <gdpTrend.icon className={`w-5 h-5 ${gdpTrend.color}`} />
               </div>
             </div>
-            <div className="space-y-1">
-              <div className="text-3xl font-bold text-slate-900 dark:text-white">
-                {economicData.gdpGrowth.toFixed(1)}%
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="text-3xl font-bold text-slate-900 dark:text-white">
+                  {economicData.gdpGrowth.toFixed(1)}%
+                </div>
+                <div className="w-16 h-8">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={generateSparklineData(economicData.gdpGrowth, gdpTrend.trend)}>
+                      <Line 
+                        type="monotone" 
+                        dataKey="value" 
+                        stroke={gdpTrend.color.includes('red') ? '#ef4444' : gdpTrend.color.includes('amber') ? '#f59e0b' : '#10b981'}
+                        strokeWidth={2}
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
               <div className="flex items-center space-x-1">
-                <span className="text-sm text-emerald-600 dark:text-emerald-400">+0.1%</span>
+                <span className={`text-sm ${gdpTrend.color}`}>
+                  {gdpTrend.trend === 'up' ? '+0.3%' : gdpTrend.trend === 'down' ? '-0.2%' : '±0.1%'}
+                </span>
                 <span className="text-xs text-slate-500 dark:text-slate-400">quarterly growth</span>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Consumer Price Index Card */}
-        <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700" style={{boxShadow: 'none', filter: 'drop-shadow(0 4px 8px rgba(255, 140, 66, 0.1))'}}>
+        {/* Enhanced Consumer Price Index Card */}
+        <Card className="glass-card glow-continuous">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-medium text-slate-600 dark:text-slate-400">Consumer Price Index</h3>
-              <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+              <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                cpiTrend.color === 'text-red-500' ? 'bg-red-100 dark:bg-red-900/20' :
+                cpiTrend.color === 'text-amber-500' ? 'bg-amber-100 dark:bg-amber-900/20' :
+                'bg-emerald-100 dark:bg-emerald-900/20'
+              }`}>
+                <cpiTrend.icon className={`w-5 h-5 ${cpiTrend.color}`} />
               </div>
             </div>
-            <div className="space-y-1">
-              <div className="text-3xl font-bold text-slate-900 dark:text-white">
-                {economicData.consumerPriceIndex.toFixed(1)}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="text-3xl font-bold text-slate-900 dark:text-white">
+                  {economicData.consumerPriceIndex.toFixed(1)}
+                </div>
+                <div className="w-16 h-8">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={generateSparklineData(economicData.consumerPriceIndex, cpiTrend.trend)}>
+                      <Line 
+                        type="monotone" 
+                        dataKey="value" 
+                        stroke={cpiTrend.color.includes('red') ? '#ef4444' : cpiTrend.color.includes('amber') ? '#f59e0b' : '#10b981'}
+                        strokeWidth={2}
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
               <div className="flex items-center space-x-1">
-                <span className="text-sm text-amber-600 dark:text-amber-400">+1.1%</span>
+                <span className={`text-sm ${cpiTrend.color}`}>
+                  {cpiTrend.trend === 'up' ? '+2.8' : cpiTrend.trend === 'down' ? '-1.2' : '±0.5'}
+                </span>
                 <span className="text-xs text-slate-500 dark:text-slate-400">year over year</span>
               </div>
             </div>

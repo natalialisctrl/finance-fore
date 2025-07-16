@@ -3,6 +3,7 @@ import { AIPredictionsDashboard } from "@/components/ai-predictions-dashboard";
 import { PriceTrackingGrid } from "@/components/price-tracking-grid";
 import { ChartsAndAnalytics } from "@/components/charts-analytics";
 import { BudgetTracker } from "@/components/budget-tracker";
+import { EnhancedBudgetTracker } from "@/components/enhanced-budget-tracker";
 import { ShoppingList } from "@/components/shopping-list";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
@@ -174,7 +175,7 @@ export default function Dashboard() {
           {activeTab === 'budget' && (
             <>
               <div className="fade-in">
-                <BudgetTracker />
+                <EnhancedBudgetTracker />
               </div>
               <div className="slide-up" style={{ animationDelay: '0.2s' }}>
                 <ShoppingList />
