@@ -104,7 +104,7 @@ export default function Dashboard() {
           </div>
 
           {/* Hero Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 pl-[3px] pr-[3px]">
             <div className="glass-card p-6 text-center scale-in">
               <div className="text-3xl font-bold text-white number-glow">94%</div>
               <div className="text-white/70 text-sm">Prediction Accuracy</div>
@@ -127,7 +127,6 @@ export default function Dashboard() {
           </svg>
         </div>
       </div>
-
       {/* Main Content */}
       <div className="relative z-30 -mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -172,7 +171,6 @@ export default function Dashboard() {
           )}
         </div>
       </div>
-
       {/* Floating Action Button */}
       <button 
         className="fab flex items-center justify-center ripple"
