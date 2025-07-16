@@ -5,7 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { fetchPriceData, fetchEconomicData } from "@/lib/economic-api";
 import { generatePricePredictions, generatePersonalizedRecommendations, type UserPreferences } from "@/lib/ai-predictions";
+import { EnhancedPricePredictionCard } from "./enhanced-price-prediction-card";
+import { MonthlySavingsSummary } from "./monthly-savings-summary";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Brain, 
   TrendingUp, 
@@ -15,17 +18,48 @@ import {
   Calendar, 
   DollarSign,
   Lightbulb,
-  Settings
+  Settings,
+  Zap
 } from "lucide-react";
 import { useState } from "react";
+import { usePullToRefresh, useDeviceType, useMobileToast } from "./mobile-enhancements";
 
 export function AIPredictionsDashboard() {
+  const { toast } = useToast();
   const [userPreferences] = useState<UserPreferences>({
     location: "US-National",
     shoppingFrequency: "weekly",
     budgetPriority: "savings",
     riskTolerance: "moderate"
   });
+
+  const handleAddToCart = (itemName: string) => {
+    toast({
+      title: "Added to Shopping List",
+      description: `${itemName} has been added to your shopping list.`,
+    });
+  };
+
+  const handleSetAlert = (itemName: string) => {
+    toast({
+      title: "Price Alert Set",
+      description: `You'll be notified when ${itemName} price changes.`,
+    });
+  };
+
+  const handleTrackItem = (itemName: string) => {
+    toast({
+      title: "Now Tracking",
+      description: `${itemName} is now being tracked for price changes.`,
+    });
+  };
+
+  const handleViewDetails = (itemName: string) => {
+    toast({
+      title: "Price History",
+      description: `Viewing detailed price history for ${itemName}.`,
+    });
+  };
 
   const { data: priceData, isLoading: isPriceLoading } = useQuery({
     queryKey: ["/api/price-data"],
@@ -122,6 +156,11 @@ export function AIPredictionsDashboard() {
         </Button>
       </div>
 
+      {/* Monthly Savings Summary */}
+      <div className="mb-8">
+        <MonthlySavingsSummary predictions={predictions} />
+      </div>
+
       {/* Top Recommendations & Insights */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* Smart Recommendations */}
@@ -195,77 +234,17 @@ export function AIPredictionsDashboard() {
         </div>
       </div>
 
-      {/* Detailed Predictions Grid */}
+      {/* Enhanced Predictions Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {predictions.map((prediction, index) => (
-          <div key={prediction.itemName} className="glass-card p-6 scale-in" style={{ animationDelay: `${index * 0.1}s` }}>
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <h3 className="font-semibold text-slate-900 dark:text-white">{prediction.itemName}</h3>
-                  <div className="flex items-center space-x-2 mt-1">
-                    <span className={`flex items-center space-x-1 text-sm ${getDirectionColor(prediction.priceDirection)}`}>
-                      {getDirectionIcon(prediction.priceDirection)}
-                      <span>{prediction.priceDirection.toLowerCase()}</span>
-                    </span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400">
-                      {Math.round(prediction.confidence * 100)}% confidence
-                    </span>
-                  </div>
-                </div>
-                <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${getScoreBg(prediction.smartBuyScore)}`}>
-                  <div className="text-center">
-                    <div className={`text-lg font-bold ${getScoreColor(prediction.smartBuyScore)}`}>
-                      {prediction.smartBuyScore}
-                    </div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400">score</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-600 dark:text-slate-400">Current</span>
-                  <span className="font-medium text-slate-900 dark:text-white">
-                    ${prediction.currentPrice.toFixed(2)}
-                  </span>
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-600 dark:text-slate-400">30-day forecast</span>
-                  <span className={`font-medium ${getDirectionColor(prediction.priceDirection)}`}>
-                    ${prediction.predicted30DayPrice.toFixed(2)}
-                  </span>
-                </div>
-
-                {prediction.expectedSavings > 0 && (
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-slate-600 dark:text-slate-400">Potential savings</span>
-                    <span className="font-medium text-emerald-600 dark:text-emerald-400">
-                      ${prediction.expectedSavings.toFixed(2)}
-                    </span>
-                  </div>
-                )}
-
-                <div className="pt-3 border-t border-slate-200 dark:border-slate-700">
-                  <Badge className={`w-full justify-center ${getActionBadgeStyle(prediction.recommendedAction)}`}>
-                    {prediction.recommendedAction.replace("_", " ")}
-                  </Badge>
-                </div>
-
-                {/* Prediction Factors */}
-                <div className="space-y-2">
-                  <span className="text-xs font-medium text-slate-600 dark:text-slate-400">Prediction Factors</span>
-                  {Object.entries(prediction.predictionFactors).map(([factor, value]) => (
-                    <div key={factor} className="flex items-center justify-between">
-                      <span className="text-xs text-slate-500 dark:text-slate-400 capitalize">
-                        {factor.replace(/([A-Z])/g, ' $1').trim()}
-                      </span>
-                      <Progress value={value * 100} className="w-16 h-1" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+          <EnhancedPricePredictionCard
+            key={prediction.itemName}
+            prediction={prediction}
+            onAddToCart={() => handleAddToCart(prediction.itemName)}
+            onSetAlert={() => handleSetAlert(prediction.itemName)}
+            onTrackItem={() => handleTrackItem(prediction.itemName)}
+            onViewDetails={() => handleViewDetails(prediction.itemName)}
+          />
         ))}
       </div>
     </div>

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { fetchPriceData, fetchEconomicData } from "@/lib/economic-api";
 import { generatePricePredictions } from "@/lib/ai-predictions";
-import { SmartBuyIndicator } from "@/components/smart-buy-indicator";
+import { EnhancedSmartBuyIndicator } from "@/components/enhanced-smart-buy-indicator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Plus } from "lucide-react";
 
@@ -105,11 +105,12 @@ export function PriceTrackingGrid() {
                   </div>
                   <div className="flex flex-col items-end space-y-2">
                     {prediction && (
-                      <SmartBuyIndicator 
+                      <EnhancedSmartBuyIndicator 
                         score={prediction.smartBuyScore}
                         confidence={prediction.confidence}
                         direction={prediction.priceDirection}
                         size="sm"
+                        animate={true}
                       />
                     )}
                     <Badge className={`px-2 py-1 text-xs font-medium ${getRecommendationColor(item.recommendation)}`}>
