@@ -7,13 +7,33 @@ import { EnhancedBudgetTracker } from "@/components/enhanced-budget-tracker";
 import { ShoppingList } from "@/components/shopping-list";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
-import { Moon, Sun, CreditCard, User, Plus } from "lucide-react";
-import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { Moon, Sun, CreditCard, User, Plus, LogOut } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { isUnauthorizedError } from "@/lib/authUtils";
 import floatingDollarVideo from "@assets/vecteezy_3d-dollar-money-bundle-floating-animation-on-black-background_23936705_1752690826601.mp4";
 
 export default function Dashboard() {
   const { theme, toggleTheme } = useTheme();
+  const { user, isAuthenticated, isLoading } = useAuth();
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('dashboard');
+
+  // Redirect to home if not authenticated
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      toast({
+        title: "Unauthorized",
+        description: "You are logged out. Logging in again...",
+        variant: "destructive",
+      });
+      setTimeout(() => {
+        window.location.href = "/api/login";
+      }, 500);
+      return;
+    }
+  }, [isAuthenticated, isLoading, toast]);
 
   return (
     <div className="min-h-screen">
@@ -99,9 +119,35 @@ export default function Dashboard() {
                   )}
                 </Button>
                 
-                <div className="w-10 h-10 glass-card rounded-full flex items-center justify-center">
-                  <User className="w-5 h-5 text-white" />
-                </div>
+                {user && (
+                  <div className="flex items-center space-x-3">
+                    <div className="text-right text-white text-sm">
+                      <div className="font-medium">
+                        {user.firstName || user.lastName ? `${user.firstName || ''} ${user.lastName || ''}`.trim() : user.email}
+                      </div>
+                      {user.email && <div className="text-xs opacity-75">{user.email}</div>}
+                    </div>
+                    {user.profileImageUrl ? (
+                      <img 
+                        src={user.profileImageUrl} 
+                        alt="Profile" 
+                        className="w-10 h-10 rounded-full border-2 border-white/20 object-cover"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 glass-card rounded-full flex items-center justify-center">
+                        <User className="w-5 h-5 text-white" />
+                      </div>
+                    )}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => window.location.href = '/api/logout'}
+                      className="glass-card p-3 text-white hover:bg-white/20 border-white/20"
+                    >
+                      <LogOut className="w-5 h-5" />
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

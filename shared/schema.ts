@@ -1,11 +1,27 @@
-import { pgTable, text, serial, integer, real, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, real, timestamp, jsonb, varchar, index } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+// Session storage table for Replit Auth
+export const sessions = pgTable(
+  "sessions",
+  {
+    sid: varchar("sid").primaryKey(),
+    sess: jsonb("sess").notNull(),
+    expire: timestamp("expire").notNull(),
+  },
+  (table) => [index("IDX_session_expire").on(table.expire)],
+);
+
+// User storage table for Replit Auth
 export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+  id: varchar("id").primaryKey().notNull(),
+  email: varchar("email").unique(),
+  firstName: varchar("first_name"),
+  lastName: varchar("last_name"),
+  profileImageUrl: varchar("profile_image_url"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export const economicData = pgTable("economic_data", {
@@ -31,7 +47,7 @@ export const priceData = pgTable("price_data", {
 
 export const userBudgets = pgTable("user_budgets", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").notNull(),
+  userId: varchar("user_id").notNull(),
   category: text("category").notNull(),
   budgetAmount: real("budget_amount").notNull(),
   spentAmount: real("spent_amount").notNull(),
@@ -40,7 +56,7 @@ export const userBudgets = pgTable("user_budgets", {
 
 export const userSavings = pgTable("user_savings", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").notNull(),
+  userId: varchar("user_id").notNull(),
   weeklyTotal: real("weekly_total").notNull(),
   projectedMonthly: real("projected_monthly").notNull(),
   bestPurchases: jsonb("best_purchases").$type<Array<{ item: string; saved: number }>>().notNull(),
@@ -49,7 +65,7 @@ export const userSavings = pgTable("user_savings", {
 
 export const shoppingListItems = pgTable("shopping_list_items", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").notNull(),
+  userId: varchar("user_id").notNull(),
   itemName: text("item_name").notNull(),
   quantity: integer("quantity").notNull(),
   estimatedPrice: real("estimated_price").notNull(),
@@ -61,10 +77,12 @@ export const shoppingListItems = pgTable("shopping_list_items", {
 });
 
 // Insert schemas
-export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  password: true,
+export const insertUserSchema = createInsertSchema(users).omit({
+  createdAt: true,
+  updatedAt: true,
 });
+
+export type UpsertUser = typeof users.$inferInsert;
 
 export const insertEconomicDataSchema = createInsertSchema(economicData).omit({
   id: true,

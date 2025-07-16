@@ -7,6 +7,7 @@ import {
   shoppingListItems,
   type User, 
   type InsertUser,
+  type UpsertUser,
   type EconomicData,
   type InsertEconomicData,
   type PriceData,
@@ -22,10 +23,9 @@ import { db } from "./db";
 import { eq, and } from "drizzle-orm";
 
 export interface IStorage {
-  // User methods
-  getUser(id: number): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  // User methods (Replit Auth compatible)
+  getUser(id: string): Promise<User | undefined>;
+  upsertUser(user: UpsertUser): Promise<User>;
   
   // Economic data methods
   getEconomicData(): Promise<EconomicData | undefined>;
@@ -37,35 +37,37 @@ export interface IStorage {
   updatePriceData(data: InsertPriceData): Promise<PriceData>;
   
   // Budget methods
-  getUserBudgets(userId: number, month: string): Promise<UserBudget[]>;
+  getUserBudgets(userId: string, month: string): Promise<UserBudget[]>;
   updateUserBudget(budget: InsertUserBudget): Promise<UserBudget>;
   
   // Savings methods
-  getUserSavings(userId: number, weekOf: string): Promise<UserSavings | undefined>;
+  getUserSavings(userId: string, weekOf: string): Promise<UserSavings | undefined>;
   updateUserSavings(savings: InsertUserSavings): Promise<UserSavings>;
   
   // Shopping list methods
-  getShoppingListItems(userId: number): Promise<ShoppingListItem[]>;
+  getShoppingListItems(userId: string): Promise<ShoppingListItem[]>;
   addShoppingListItem(item: InsertShoppingListItem): Promise<ShoppingListItem>;
   updateShoppingListItem(id: number, updates: Partial<ShoppingListItem>): Promise<ShoppingListItem>;
   deleteShoppingListItem(id: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
-  async getUser(id: number): Promise<User | undefined> {
+  async getUser(id: string): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, id));
-    return user || undefined;
+    return user;
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.username, username));
-    return user || undefined;
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
+  async upsertUser(userData: UpsertUser): Promise<User> {
     const [user] = await db
       .insert(users)
-      .values(insertUser)
+      .values(userData)
+      .onConflictDoUpdate({
+        target: users.id,
+        set: {
+          ...userData,
+          updatedAt: new Date(),
+        },
+      })
       .returning();
     return user;
   }
@@ -120,7 +122,7 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  async getUserBudgets(userId: number, month: string): Promise<UserBudget[]> {
+  async getUserBudgets(userId: string, month: string): Promise<UserBudget[]> {
     return await db
       .select()
       .from(userBudgets)
@@ -156,7 +158,7 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  async getUserSavings(userId: number, weekOf: string): Promise<UserSavings | undefined> {
+  async getUserSavings(userId: string, weekOf: string): Promise<UserSavings | undefined> {
     const [savings] = await db
       .select()
       .from(userSavings)
@@ -182,7 +184,7 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  async getShoppingListItems(userId: number): Promise<ShoppingListItem[]> {
+  async getShoppingListItems(userId: string): Promise<ShoppingListItem[]> {
     return await db
       .select()
       .from(shoppingListItems)
