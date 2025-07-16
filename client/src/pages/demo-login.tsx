@@ -30,10 +30,10 @@ export default function DemoLogin() {
           description: "Demo login successful! Redirecting...",
         });
 
-        // Redirect to dashboard
+        // Force a full page reload to ensure session is picked up
         setTimeout(() => {
-          window.location.href = "/";
-        }, 1000);
+          window.location.reload();
+        }, 500);
       } else {
         throw new Error("Login failed");
       }

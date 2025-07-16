@@ -26,12 +26,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         const user = await storage.upsertUser(demoUser);
         
-        // Store demo session in request session
-        (req.session as any).demoUser = {
-          claims: { sub: 'demo-natalia' },
-          expires_at: Math.floor(Date.now() / 1000) + 3600 // 1 hour
-        };
+        // Set demo session flag
+        (req.session as any).demoUserId = 'demo-natalia';
+        (req.session as any).demoLoginTime = Date.now();
         
+        console.log("Demo session created for:", user.id);
         res.json({ success: true, user });
       } catch (error) {
         console.error("Demo login error:", error);
@@ -57,19 +56,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Demo auth user endpoint (check demo session)
   app.get('/api/demo-auth/user', async (req, res) => {
     try {
-      const demoSession = (req.session as any)?.demoUser;
+      const demoUserId = (req.session as any)?.demoUserId;
+      const demoLoginTime = (req.session as any)?.demoLoginTime;
       
-      if (demoSession && demoSession.expires_at > Math.floor(Date.now() / 1000)) {
+      console.log("Demo auth check - UserId:", demoUserId, "LoginTime:", demoLoginTime);
+      
+      if (demoUserId === 'demo-natalia' && demoLoginTime && (Date.now() - demoLoginTime < 24 * 60 * 60 * 1000)) {
         const user = await storage.getUser('demo-natalia');
         if (user) {
+          console.log("Demo user authenticated successfully");
           res.json(user);
-        } else {
-          res.status(401).json({ message: "Demo user not found" });
+          return;
         }
-      } else {
-        res.status(401).json({ message: "No demo session" });
       }
+      
+      console.log("Demo authentication failed");
+      res.status(401).json({ message: "No demo session" });
     } catch (error) {
+      console.error("Demo auth error:", error);
       res.status(401).json({ message: "Unauthorized" });
     }
   });
