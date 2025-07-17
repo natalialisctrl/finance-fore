@@ -174,7 +174,7 @@ export function BudgetTracker() {
                 Set Up Budget
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto mx-2 sm:mx-auto w-[calc(100vw-16px)] sm:w-full">
               <DialogHeader>
                 <DialogTitle className="flex items-center text-xl font-bold bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent">
                   <DollarSign className="w-5 h-5 mr-2 text-orange-500" />
@@ -210,7 +210,7 @@ export function BudgetTracker() {
                     </div>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {Object.entries(budgetAllocations).map(([category, amount]) => (
                       <div key={category} className="space-y-2">
                         <Label htmlFor={category} className="text-sm font-medium">{category}</Label>
@@ -245,7 +245,7 @@ export function BudgetTracker() {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex space-x-3">
+                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
                   <Button 
                     onClick={handleBudgetSubmit}
                     disabled={updateBudgetMutation.isPending || !monthlyIncome}

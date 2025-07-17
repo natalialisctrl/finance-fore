@@ -72,65 +72,65 @@ export default function Dashboard() {
         </div>
 
         {/* Navigation */}
-        <nav className="relative z-50 glass-card mx-4 mt-4 lg:mx-8">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center glow-pulse">
-                  <CreditCard className="w-6 h-6 text-white" />
+        <nav className="relative z-50 glass-card mx-2 mt-2 lg:mx-8 lg:mt-4">
+          <div className="max-w-7xl mx-auto px-3 lg:px-8">
+            <div className="flex justify-between items-center h-14 lg:h-16">
+              <div className="flex items-center space-x-2 lg:space-x-3">
+                <div className="w-8 h-8 lg:w-10 lg:h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center glow-pulse">
+                  <CreditCard className="w-4 h-4 lg:w-6 lg:h-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-white">
+                  <h1 className="text-lg lg:text-xl font-bold text-white">
                     Financial Forecast
                   </h1>
-                  <p className="text-xs text-white/70">AI-Powered Financial Intelligence</p>
+                  <p className="text-xs text-white/70 hidden sm:block">AI-Powered Financial Intelligence</p>
                 </div>
               </div>
               
-              <div className="hidden md:flex items-center space-x-8">
+              <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
                 <button 
                   onClick={() => setActiveTab('dashboard')}
-                  className={`font-semibold transition-colors ${activeTab === 'dashboard' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                  className={`text-sm lg:text-base font-semibold transition-colors ${activeTab === 'dashboard' ? 'text-white' : 'text-white/80 hover:text-white'}`}
                 >
                   Dashboard
                 </button>
                 <button 
                   onClick={() => setActiveTab('ai-predictions')}
-                  className={`font-semibold transition-colors ${activeTab === 'ai-predictions' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                  className={`text-sm lg:text-base font-semibold transition-colors ${activeTab === 'ai-predictions' ? 'text-white' : 'text-white/80 hover:text-white'}`}
                 >
                   AI Predictions
                 </button>
                 <button 
                   onClick={() => setActiveTab('price-tracking')}
-                  className={`font-semibold transition-colors ${activeTab === 'price-tracking' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                  className={`text-sm lg:text-base font-semibold transition-colors ${activeTab === 'price-tracking' ? 'text-white' : 'text-white/80 hover:text-white'}`}
                 >
                   Price Tracking
                 </button>
                 <button 
                   onClick={() => setActiveTab('budget')}
-                  className={`font-semibold transition-colors ${activeTab === 'budget' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                  className={`text-sm lg:text-base font-semibold transition-colors ${activeTab === 'budget' ? 'text-white' : 'text-white/80 hover:text-white'}`}
                 >
                   Budget
                 </button>
               </div>
 
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-1 lg:space-x-3">
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={toggleTheme}
-                  className="glass-card p-3 text-white hover:bg-white/20 border-white/20"
+                  className="glass-card p-2 lg:p-3 text-white hover:bg-white/20 border-white/20"
                 >
                   {theme === "light" ? (
-                    <Moon className="w-5 h-5" />
+                    <Moon className="w-4 h-4 lg:w-5 lg:h-5" />
                   ) : (
-                    <Sun className="w-5 h-5" />
+                    <Sun className="w-4 h-4 lg:w-5 lg:h-5" />
                   )}
                 </Button>
                 
                 {user && (
-                  <div className="flex items-center space-x-3">
-                    <div className="text-right text-white text-sm">
+                  <div className="flex items-center space-x-2 lg:space-x-3">
+                    <div className="text-right text-white text-xs lg:text-sm hidden sm:block">
                       <div className="font-medium">
                         {user.firstName || user.lastName ? `${user.firstName || ''} ${user.lastName || ''}`.trim() : user.email}
                       </div>
@@ -140,20 +140,20 @@ export default function Dashboard() {
                       <img 
                         src={user.profileImageUrl} 
                         alt="Profile" 
-                        className="w-10 h-10 rounded-full border-2 border-white/20 object-cover"
+                        className="w-8 h-8 lg:w-10 lg:h-10 rounded-full border-2 border-white/20 object-cover"
                       />
                     ) : (
-                      <div className="w-10 h-10 glass-card rounded-full flex items-center justify-center">
-                        <User className="w-5 h-5 text-white" />
+                      <div className="w-8 h-8 lg:w-10 lg:h-10 glass-card rounded-full flex items-center justify-center">
+                        <User className="w-4 h-4 lg:w-5 lg:h-5 text-white" />
                       </div>
                     )}
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => window.location.href = '/api/logout'}
-                      className="glass-card p-3 text-white hover:bg-white/20 border-white/20"
+                      className="glass-card p-2 lg:p-3 text-white hover:bg-white/20 border-white/20"
                     >
-                      <LogOut className="w-5 h-5" />
+                      <LogOut className="w-4 h-4 lg:w-5 lg:h-5" />
                     </Button>
                   </div>
                 )}
@@ -162,33 +162,81 @@ export default function Dashboard() {
           </div>
         </nav>
 
+        {/* Mobile Navigation Tabs */}
+        <div className="md:hidden relative z-50 glass-card mx-2 mt-2">
+          <div className="flex justify-center items-center p-2">
+            <div className="flex space-x-1 bg-white/10 rounded-lg p-1">
+              <button 
+                onClick={() => setActiveTab('dashboard')}
+                className={`px-3 py-2 text-xs font-medium rounded-md transition-all ${
+                  activeTab === 'dashboard' 
+                    ? 'bg-white/20 text-white' 
+                    : 'text-white/70 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                Home
+              </button>
+              <button 
+                onClick={() => setActiveTab('ai-predictions')}
+                className={`px-3 py-2 text-xs font-medium rounded-md transition-all ${
+                  activeTab === 'ai-predictions' 
+                    ? 'bg-white/20 text-white' 
+                    : 'text-white/70 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                AI
+              </button>
+              <button 
+                onClick={() => setActiveTab('price-tracking')}
+                className={`px-3 py-2 text-xs font-medium rounded-md transition-all ${
+                  activeTab === 'price-tracking' 
+                    ? 'bg-white/20 text-white' 
+                    : 'text-white/70 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                Prices
+              </button>
+              <button 
+                onClick={() => setActiveTab('budget')}
+                className={`px-3 py-2 text-xs font-medium rounded-md transition-all ${
+                  activeTab === 'budget' 
+                    ? 'bg-white/20 text-white' 
+                    : 'text-white/70 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                Budget
+              </button>
+            </div>
+          </div>
+        </div>
+
         {/* Hero Content */}
-        <div className="relative z-40 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pb-24 ml-[-4px] mr-[-4px] pl-[34px] pr-[34px]">
+        <div className="relative z-40 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-16 pb-12 lg:pb-24">
           <div className="text-center">
-            <h2 className="text-4xl lg:text-6xl font-bold text-white mb-6 fade-in">
+            <h2 className="text-2xl sm:text-4xl lg:text-6xl font-bold text-white mb-4 lg:mb-6 fade-in">
               Smart Financial
               <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent pb-2 leading-tight">
                 Intelligence
               </span>
             </h2>
-            <p className="text-xl text-white/80 max-w-3xl mx-auto mb-8 slide-up">
+            <p className="text-sm sm:text-lg lg:text-xl text-white/80 max-w-3xl mx-auto mb-6 lg:mb-8 slide-up px-4">
               Harness the power of AI to make smarter purchase decisions with real-time economic data and predictive analytics.
             </p>
           </div>
 
           {/* Hero Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 pl-[3px] pr-[3px]">
-            <div className="glass-card p-6 text-center scale-in pulse-orange">
-              <div className="text-3xl font-bold text-white number-glow">94%</div>
-              <div className="text-white/70 text-sm">Prediction Accuracy</div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6 mt-8 lg:mt-12 px-2">
+            <div className="glass-card p-4 lg:p-6 text-center scale-in pulse-orange">
+              <div className="text-2xl lg:text-3xl font-bold text-white number-glow">94%</div>
+              <div className="text-white/70 text-xs lg:text-sm">Prediction Accuracy</div>
             </div>
-            <div className="glass-card p-6 text-center scale-in pulse-orange" style={{ animationDelay: '0.2s' }}>
-              <div className="text-3xl font-bold text-white number-glow">$2,340</div>
-              <div className="text-white/70 text-sm">Avg Monthly Savings</div>
+            <div className="glass-card p-4 lg:p-6 text-center scale-in pulse-orange" style={{ animationDelay: '0.2s' }}>
+              <div className="text-2xl lg:text-3xl font-bold text-white number-glow">$2,340</div>
+              <div className="text-white/70 text-xs lg:text-sm">Avg Monthly Savings</div>
             </div>
-            <div className="glass-card p-6 text-center scale-in pulse-orange" style={{ animationDelay: '0.4s' }}>
-              <div className="text-3xl font-bold text-white number-glow">8.7/10</div>
-              <div className="text-white/70 text-sm">Smart Buy Score</div>
+            <div className="glass-card p-4 lg:p-6 text-center scale-in pulse-orange" style={{ animationDelay: '0.4s' }}>
+              <div className="text-2xl lg:text-3xl font-bold text-white number-glow">8.7/10</div>
+              <div className="text-white/70 text-xs lg:text-sm">Smart Buy Score</div>
             </div>
           </div>
         </div>
@@ -196,8 +244,8 @@ export default function Dashboard() {
 
       </div>
       {/* Main Content */}
-      <div className="relative z-30 -mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="relative z-30 -mt-8 lg:-mt-16">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 lg:py-8">
           {activeTab === 'dashboard' && (
             <>
               <div className="fade-in">
