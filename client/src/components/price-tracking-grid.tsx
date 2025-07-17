@@ -9,6 +9,7 @@ import { EnhancedPriceAlerts } from "@/components/enhanced-price-alerts";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Plus, Calendar, TrendingUp, TrendingDown, History } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
+import { formatCurrency } from "@/lib/utils";
 
 export function PriceTrackingGrid() {
   const { data: priceData, isLoading: isPriceLoading } = useQuery({

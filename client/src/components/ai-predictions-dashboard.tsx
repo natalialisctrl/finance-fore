@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { usePullToRefresh, useDeviceType, useMobileToast } from "./mobile-enhancements";
+import { formatCurrency } from "@/lib/utils";
 
 export function AIPredictionsDashboard() {
   const { toast } = useToast();

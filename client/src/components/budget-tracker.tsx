@@ -11,6 +11,7 @@ import { AlertCircle, TrendingUp, Target, Plus, Settings, DollarSign } from "luc
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { formatCurrency } from "@/lib/utils";
 
 export function BudgetTracker() {
   const currentMonth = new Date().toISOString().slice(0, 7);
@@ -209,7 +210,7 @@ export function BudgetTracker() {
                     <Label className="text-base font-semibold">Allocate Your Budget</Label>
                     <div className="text-sm text-gray-600 dark:text-gray-400">
                       Remaining: <span className={`font-semibold ${getRemainingIncome() < 0 ? 'text-red-500' : 'text-green-500'}`}>
-                        ${getRemainingIncome().toFixed(2)}
+                        {formatCurrency(getRemainingIncome())}
                       </span>
                     </div>
                   </div>
@@ -234,16 +235,16 @@ export function BudgetTracker() {
                 <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg space-y-2">
                   <div className="flex justify-between text-sm">
                     <span>Total Income:</span>
-                    <span className="font-semibold">${parseFloat(monthlyIncome) || 0}</span>
+                    <span className="font-semibold">{formatCurrency(parseFloat(monthlyIncome) || 0)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>Total Allocated:</span>
-                    <span className="font-semibold">${getTotalAllocated().toFixed(2)}</span>
+                    <span className="font-semibold">{formatCurrency(getTotalAllocated())}</span>
                   </div>
                   <div className="flex justify-between text-sm border-t pt-2">
                     <span>Remaining:</span>
                     <span className={`font-semibold ${getRemainingIncome() < 0 ? 'text-red-500' : 'text-green-500'}`}>
-                      ${getRemainingIncome().toFixed(2)}
+                      {formatCurrency(getRemainingIncome())}
                     </span>
                   </div>
                 </div>
@@ -285,7 +286,7 @@ export function BudgetTracker() {
                       {budget.category}
                     </span>
                     <span className="text-sm font-medium text-slate-900 dark:text-white">
-                      ${budget.spentAmount} / ${budget.budgetAmount}
+                      {formatCurrency(budget.spentAmount)} / {formatCurrency(budget.budgetAmount)}
                     </span>
                   </div>
                   <Progress value={progress} className="h-2" />
