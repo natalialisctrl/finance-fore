@@ -4,6 +4,88 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile-First CSS Optimizations */
+@layer utilities {
+  /* Touch-friendly sizing */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better mobile typography */
+  .text-mobile-sm {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  
+  .text-mobile-base {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  /* Mobile-safe video handling */
+  video {
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  
+  /* Improved glass morphism for mobile */
+  .glass-card {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  }
+  
+  /* Hero gradient optimized for mobile */
+  .hero-gradient {
+    background: linear-gradient(135deg, 
+      #ff6b35 0%, 
+      #f7931e 25%, 
+      #1e40af 75%, 
+      #3b82f6 100%);
+    background-size: 200% 200%;
+    animation: gradient-shift 15s ease infinite;
+  }
+  
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  
+  /* Pulse animations for better mobile performance */
+  .glow-pulse {
+    animation: glow-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  @keyframes glow-pulse {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 30px rgba(255, 107, 53, 0.8);
+    }
+  }
+  
+  /* Floating animation for particles */
+  .float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+  
+  /* Optimized dark mode */
+  .dark {
+    color-scheme: dark;
+  }
+}
+
 :root {
   /* Vibrant Orange & Blue Theme */
   --background: hsl(210, 100%, 97%);
