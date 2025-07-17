@@ -19,86 +19,115 @@ interface EconomicDataSources {
 // Free APIs that don't require keys for basic data
 export class EconomicDataService {
   
-  // Use multiple free sources for economic data
+  // Fetch real economic data from FRED API
   async fetchRealEconomicData(): Promise<any> {
     try {
-      // Try multiple sources in parallel
-      const [inflationData, gdpData, unemploymentData] = await Promise.allSettled([
-        this.fetchInflationFromAlphaVantage(),
-        this.fetchGDPFromWorldBank(),
-        this.fetchUnemploymentFromBLS()
+      console.log("Fetching real economic data from FRED API...");
+      
+      // Try FRED API with parallel requests
+      const [inflationData, gdpData, cpiData] = await Promise.allSettled([
+        this.fetchInflationFromFRED(),
+        this.fetchGDPFromFRED(),
+        this.fetchCPIFromFRED()
       ]);
 
       const economicData = {
-        inflationRate: this.extractValue(inflationData, 3.2), // Current US inflation rate (Jan 2025)
-        gdpGrowth: this.extractValue(gdpData, 2.8), // Q4 2024 actual GDP growth
-        consumerPriceIndex: 309.7, // Current CPI (Jan 2025)
-        unemploymentRate: this.extractValue(unemploymentData, 4.1), // Current unemployment (Jan 2025)
+        inflationRate: this.extractValue(inflationData, 3.2), 
+        gdpGrowth: this.extractValue(gdpData, 2.8), 
+        consumerPriceIndex: this.extractValue(cpiData, 309.7), 
         lastUpdated: new Date()
       };
 
+      console.log("FRED API data retrieved:", economicData);
+      
       // Store in database
       await storage.updateEconomicData(economicData);
       return economicData;
 
     } catch (error) {
-      console.log("Using current realistic economic estimates due to API limits");
+      console.error("FRED API error:", error);
       
-      // Use current realistic economic data (January 2025)
-      const realisticData = {
-        inflationRate: 3.2, // Current US inflation rate (Jan 2025)
-        gdpGrowth: 2.8, // Q4 2024 actual GDP growth
-        consumerPriceIndex: 309.7, // Current CPI (Jan 2025)  
+      // Fallback to current estimates only if FRED fails
+      const fallbackData = {
+        inflationRate: 3.2, // Latest available estimate
+        gdpGrowth: 2.8, // Q4 2024 actual 
+        consumerPriceIndex: 309.7, // Latest estimate
         lastUpdated: new Date()
       };
 
-      await storage.updateEconomicData(realisticData);
-      return realisticData;
+      await storage.updateEconomicData(fallbackData);
+      return fallbackData;
     }
   }
 
   private extractValue(settledResult: PromiseSettledResult<any>, fallback: number): number {
-    if (settledResult.status === 'fulfilled' && settledResult.value) {
+    if (settledResult.status === 'fulfilled' && settledResult.value !== null && settledResult.value !== undefined) {
       return settledResult.value;
     }
     return fallback;
   }
 
-  // Alpha Vantage free tier (no key required for some endpoints)
-  private async fetchInflationFromAlphaVantage(): Promise<number> {
-    try {
-      // Use a free economic indicator API or web scraping approach
-      return 3.2; // Current realistic inflation rate
-    } catch {
-      return 3.2;
-    }
-  }
-
-  // World Bank API (free, no key required)
-  private async fetchGDPFromWorldBank(): Promise<number> {
+  // FRED API integration for inflation (CPIAUCSL year-over-year)
+  private async fetchInflationFromFRED(): Promise<number> {
     try {
       const response = await fetch(
-        'https://api.worldbank.org/v2/country/US/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2024'
+        `https://api.stlouisfed.org/fred/series/observations?series_id=CPIAUCSL&api_key=${process.env.FRED_API_KEY}&file_type=json&limit=24&sort_order=desc`
       );
-      if (response.ok) {
-        const data = await response.json();
-        if (data[1] && data[1][0] && data[1][0].value) {
-          return parseFloat(data[1][0].value);
-        }
+      const data = await response.json();
+      
+      if (data.observations && data.observations.length >= 12) {
+        const current = parseFloat(data.observations[0].value);
+        const yearAgo = parseFloat(data.observations[11].value);
+        const inflationRate = ((current - yearAgo) / yearAgo) * 100;
+        console.log(`FRED Inflation Rate: ${inflationRate.toFixed(2)}%`);
+        return Math.round(inflationRate * 10) / 10; // Round to 1 decimal
       }
-      return 2.1; // Realistic fallback
-    } catch {
-      return 2.1;
+      throw new Error('Insufficient FRED inflation data');
+    } catch (error) {
+      console.error('FRED inflation fetch failed:', error);
+      throw error;
     }
   }
 
-  // Bureau of Labor Statistics (some endpoints are free)
-  private async fetchUnemploymentFromBLS(): Promise<number> {
+  // FRED API integration for GDP growth (GDPC1 quarterly)
+  private async fetchGDPFromFRED(): Promise<number> {
     try {
-      // BLS provides some data without API key
-      return 3.7; // Current realistic unemployment rate
-    } catch {
-      return 3.7;
+      const response = await fetch(
+        `https://api.stlouisfed.org/fred/series/observations?series_id=GDPC1&api_key=${process.env.FRED_API_KEY}&file_type=json&limit=8&sort_order=desc`
+      );
+      const data = await response.json();
+      
+      if (data.observations && data.observations.length >= 4) {
+        const current = parseFloat(data.observations[0].value);
+        const yearAgo = parseFloat(data.observations[3].value);
+        const gdpGrowth = ((current - yearAgo) / yearAgo) * 100;
+        console.log(`FRED GDP Growth: ${gdpGrowth.toFixed(2)}%`);
+        return Math.round(gdpGrowth * 10) / 10; // Round to 1 decimal
+      }
+      throw new Error('Insufficient FRED GDP data');
+    } catch (error) {
+      console.error('FRED GDP fetch failed:', error);
+      throw error;
+    }
+  }
+
+  // FRED API integration for Consumer Price Index (CPIAUCSL)
+  private async fetchCPIFromFRED(): Promise<number> {
+    try {
+      const response = await fetch(
+        `https://api.stlouisfed.org/fred/series/observations?series_id=CPIAUCSL&api_key=${process.env.FRED_API_KEY}&file_type=json&limit=1&sort_order=desc`
+      );
+      const data = await response.json();
+      
+      if (data.observations && data.observations.length > 0) {
+        const cpi = parseFloat(data.observations[0].value);
+        console.log(`FRED CPI: ${cpi}`);
+        return Math.round(cpi * 10) / 10; // Round to 1 decimal
+      }
+      throw new Error('No FRED CPI data available');
+    } catch (error) {
+      console.error('FRED CPI fetch failed:', error);
+      throw error;
     }
   }
 
