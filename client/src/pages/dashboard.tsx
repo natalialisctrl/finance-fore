@@ -37,7 +37,19 @@ export default function Dashboard() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [newItemName, setNewItemName] = useState("");
   const [newItemQuantity, setNewItemQuantity] = useState("");
+  const [videoInteracted, setVideoInteracted] = useState(false);
   const queryClient = useQueryClient();
+
+  // Video interaction handler for mobile
+  const handleVideoInteraction = () => {
+    if (!videoInteracted) {
+      const video = document.querySelector('video');
+      if (video) {
+        video.play().catch(e => console.log('Video play failed:', e));
+        setVideoInteracted(true);
+      }
+    }
+  };
 
   // Mutation to add shopping list item
   const addItemMutation = useMutation({
@@ -94,7 +106,11 @@ export default function Dashboard() {
   }, [isAuthenticated, isLoading, toast]);
 
   return (
-    <div className="min-h-screen">
+    <div 
+      className="min-h-screen" 
+      onClick={handleVideoInteraction}
+      onTouchStart={handleVideoInteraction}
+    >
       {/* Premium Hero Section */}
       <div className="hero-gradient relative overflow-hidden">
         {/* Floating dollar video background overlay */}
@@ -104,18 +120,37 @@ export default function Dashboard() {
             loop 
             muted 
             playsInline
-            preload="auto"
-            className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-screen"
-            style={{ filter: 'brightness(0.8) contrast(1.3)' }}
+            preload="metadata"
+            webkit-playsinline="true"
+            x5-playsinline="true"
+            className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay"
+            style={{ 
+              filter: 'brightness(1.2) contrast(1.5) saturate(1.3)',
+              zIndex: 1
+            }}
             onError={(e) => console.log('Video error:', e)}
             onLoadStart={() => console.log('Video loading started')}
             onCanPlay={() => console.log('Video can play')}
+            onLoadedData={() => console.log('Video data loaded')}
           >
             <source src={floatingDollarVideo} type="video/mp4" />
+            <source src={floatingDollarVideo} type="video/webm" />
             Your browser does not support the video tag.
           </video>
+          {/* Fallback animated background for when video doesn't load */}
+          <div 
+            className="absolute inset-0 opacity-20"
+            style={{
+              background: `
+                radial-gradient(circle at 20% 30%, rgba(255, 193, 7, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 152, 0, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(255, 235, 59, 0.15) 0%, transparent 50%)
+              `,
+              animation: 'float 6s ease-in-out infinite'
+            }}
+          ></div>
           {/* Overlay gradient to blend video with existing background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-blue-600/10"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-blue-600/5" style={{ zIndex: 2 }}></div>
         </div>
         
         {/* Floating particles background */}
