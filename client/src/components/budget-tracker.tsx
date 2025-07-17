@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { formatCurrency } from "@/lib/utils";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 
 export function BudgetTracker() {
   const currentMonth = new Date().toISOString().slice(0, 7);
@@ -271,86 +272,169 @@ export function BudgetTracker() {
           </Dialog>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Monthly Budget Overview */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Monthly Budget Pie Chart */}
           <div className="space-y-4">
-            <h4 className="font-medium text-slate-900 dark:text-white">Monthly Budget</h4>
-            {budgetData?.map((budget) => {
-              const progress = getBudgetProgress(budget.spentAmount, budget.budgetAmount);
-              const status = getBudgetStatus(progress);
-              
-              return (
-                <div key={budget.id} className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-slate-600 dark:text-slate-400">
-                      {budget.category}
-                    </span>
-                    <span className="text-sm font-medium text-slate-900 dark:text-white">
-                      {formatCurrency(budget.spentAmount)} / {formatCurrency(budget.budgetAmount)}
-                    </span>
+            <h4 className="font-medium text-slate-900 dark:text-white">Budget Overview</h4>
+            <div className="h-80 bg-white/10 dark:bg-black/10 backdrop-blur-sm rounded-xl p-4">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={budgetData?.map((budget, index) => ({
+                      name: budget.category,
+                      value: budget.budgetAmount,
+                      spent: budget.spentAmount,
+                      remaining: budget.budgetAmount - budget.spentAmount,
+                      fill: [
+                        '#FF6B35', '#4F46E5', '#10B981', '#F59E0B', '#EF4444', 
+                        '#8B5CF6', '#06B6D4', '#84CC16', '#F97316', '#EC4899'
+                      ][index % 10]
+                    }))}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={120}
+                    paddingAngle={2}
+                    dataKey="value"
+                  >
+                    {budgetData?.map((entry, index) => (
+                      <Cell 
+                        key={`cell-${index}`} 
+                        fill={[
+                          '#FF6B35', '#4F46E5', '#10B981', '#F59E0B', '#EF4444', 
+                          '#8B5CF6', '#06B6D4', '#84CC16', '#F97316', '#EC4899'
+                        ][index % 10]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    formatter={(value: any, name: any, props: any) => [
+                      formatCurrency(value),
+                      `Budget: ${formatCurrency(props.payload.spent)} spent of ${formatCurrency(value)}`
+                    ]}
+                    labelStyle={{ color: '#1f2937' }}
+                    contentStyle={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                      border: 'none',
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                    }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            
+            {/* Budget Legend with Status */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto">
+              {budgetData?.map((budget, index) => {
+                const progress = getBudgetProgress(budget.spentAmount, budget.budgetAmount);
+                const color = [
+                  '#FF6B35', '#4F46E5', '#10B981', '#F59E0B', '#EF4444', 
+                  '#8B5CF6', '#06B6D4', '#84CC16', '#F97316', '#EC4899'
+                ][index % 10];
+                
+                return (
+                  <div key={budget.id} className="flex items-center space-x-3 p-2 rounded-lg bg-white/5 dark:bg-black/5">
+                    <div 
+                      className="w-3 h-3 rounded-full flex-shrink-0" 
+                      style={{ backgroundColor: color }}
+                    />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-xs font-medium text-slate-900 dark:text-white truncate">
+                        {budget.category}
+                      </div>
+                      <div className="text-xs text-slate-500 dark:text-slate-400">
+                        {formatCurrency(budget.spentAmount)} of {formatCurrency(budget.budgetAmount)}
+                      </div>
+                    </div>
+                    <div className={`text-xs px-2 py-1 rounded-full ${
+                      progress > 90 ? 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400' :
+                      progress > 75 ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400' :
+                      'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400'
+                    }`}>
+                      {progress.toFixed(0)}%
+                    </div>
                   </div>
-                  <Progress value={progress} className="h-2" />
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
 
-          {/* Spending Insights */}
-          <div className="space-y-4">
-            <h4 className="font-medium text-slate-900 dark:text-white">Spending Insights</h4>
-            <div className="space-y-3">
-              <div className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2"></div>
-                <div>
-                  <div className="text-sm font-medium text-slate-900 dark:text-white">
-                    On track this month
-                  </div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400">
-                    You're 15% under budget so far
-                  </div>
-                </div>
-              </div>
-              
-              <div className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-amber-500 rounded-full mt-2"></div>
-                <div>
-                  <div className="text-sm font-medium text-slate-900 dark:text-white">
-                    Gas budget alert
-                  </div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400">
-                    Consider bulk buying when prices drop
+          {/* Spending Analytics & Insights */}
+          <div className="space-y-6">
+            {/* Spending Insights */}
+            <div className="space-y-4">
+              <h4 className="font-medium text-slate-900 dark:text-white">Spending Insights</h4>
+              <div className="space-y-3">
+                <div className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2"></div>
+                  <div>
+                    <div className="text-sm font-medium text-slate-900 dark:text-white">
+                      On track this month
+                    </div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400">
+                      You're 15% under budget so far
+                    </div>
                   </div>
                 </div>
-              </div>
-              
-              <div className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                <div>
-                  <div className="text-sm font-medium text-slate-900 dark:text-white">
-                    Optimal buying window
+                
+                <div className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-amber-500 rounded-full mt-2"></div>
+                  <div>
+                    <div className="text-sm font-medium text-slate-900 dark:text-white">
+                      Gas budget alert
+                    </div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400">
+                      Consider bulk buying when prices drop
+                    </div>
                   </div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400">
-                    Next week ideal for grocery stock-up
+                </div>
+                
+                <div className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                  <div>
+                    <div className="text-sm font-medium text-slate-900 dark:text-white">
+                      Optimal buying window
+                    </div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400">
+                      Next week ideal for grocery stock-up
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Smart Recommendations */}
-          <div className="space-y-4">
-            <h4 className="font-medium text-slate-900 dark:text-white">Smart Recommendations</h4>
-            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-              <div className="flex items-start space-x-2">
-                <AlertCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
-                <div>
-                  <div className="text-sm font-medium text-blue-900 dark:text-blue-300">
-                    Inflation Adjustment
-                  </div>
-                  <div className="text-xs text-blue-700 dark:text-blue-400 mt-1">
-                    With current inflation at 3.7%, consider increasing your grocery budget by $25/month and stocking up on non-perishables this week.
+            {/* Smart Recommendations */}
+            <div className="space-y-4">
+              <h4 className="font-medium text-slate-900 dark:text-white">Smart Recommendations</h4>
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                <div className="flex items-start space-x-2">
+                  <AlertCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
+                  <div>
+                    <div className="text-sm font-medium text-blue-900 dark:text-blue-300">
+                      Inflation Adjustment
+                    </div>
+                    <div className="text-xs text-blue-700 dark:text-blue-400 mt-1">
+                      With current inflation at 3.7%, consider increasing your grocery budget by $25/month and stocking up on non-perishables this week.
+                    </div>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            {/* Budget Summary Stats */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-gradient-to-br from-orange-500/10 to-blue-500/10 p-4 rounded-lg">
+                <div className="text-lg font-bold text-slate-900 dark:text-white">
+                  {formatCurrency(budgetData?.reduce((sum, b) => sum + b.spentAmount, 0) || 0)}
+                </div>
+                <div className="text-xs text-slate-500 dark:text-slate-400">Total Spent</div>
+              </div>
+              <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 p-4 rounded-lg">
+                <div className="text-lg font-bold text-slate-900 dark:text-white">
+                  {formatCurrency(budgetData?.reduce((sum, b) => sum + (b.budgetAmount - b.spentAmount), 0) || 0)}
+                </div>
+                <div className="text-xs text-slate-500 dark:text-slate-400">Remaining</div>
               </div>
             </div>
           </div>
