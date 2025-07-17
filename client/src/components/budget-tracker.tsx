@@ -163,19 +163,18 @@ export function BudgetTracker() {
   }
 
   return (
-    <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 mb-4 sm:mb-8" style={{boxShadow: 'none', filter: 'drop-shadow(0 4px 8px rgba(255, 140, 66, 0.1))'}}>
-      <CardContent className="p-3 sm:p-6">
-        <div className="flex items-center justify-between mb-4 sm:mb-6">
-          <h3 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-white">Budget Tracker</h3>
+    <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 mb-8" style={{boxShadow: 'none', filter: 'drop-shadow(0 4px 8px rgba(255, 140, 66, 0.1))'}}>
+      <CardContent className="p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Budget Tracker</h3>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button size="sm" className="bg-gradient-to-r from-orange-500 to-blue-500 hover:from-orange-600 hover:to-blue-600 text-white text-xs sm:text-sm">
-                <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                <span className="hidden sm:inline">Set Up Budget</span>
-                <span className="sm:hidden">Budget</span>
+              <Button className="bg-gradient-to-r from-orange-500 to-blue-500 hover:from-orange-600 hover:to-blue-600 text-white">
+                <Plus className="w-4 h-4 mr-2" />
+                Set Up Budget
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-[95vw] sm:max-w-4xl max-h-[90vh] sm:max-h-[80vh] overflow-y-auto mx-2 sm:mx-0">
+            <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle className="flex items-center text-xl font-bold bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent">
                   <DollarSign className="w-5 h-5 mr-2 text-orange-500" />
@@ -211,7 +210,7 @@ export function BudgetTracker() {
                     </div>
                   </div>
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {Object.entries(budgetAllocations).map(([category, amount]) => (
                       <div key={category} className="space-y-2">
                         <Label htmlFor={category} className="text-sm font-medium">{category}</Label>
