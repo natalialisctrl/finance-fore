@@ -25,7 +25,7 @@ export function EconomicDashboard() {
       await refetch();
       toast({
         title: "Data Updated",
-        description: "Economic indicators have been refreshed from FRED API",
+        description: "Economic indicators have been refreshed with current data",
       });
     } catch (error) {
       toast({

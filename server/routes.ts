@@ -81,14 +81,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Economic data routes
   app.get("/api/economic-data", async (req, res) => {
     try {
-      const data = await storage.getEconomicData();
-      if (!data) {
-        return res.status(404).json({ message: "Economic data not found" });
+      let data = await storage.getEconomicData();
+      
+      // Check if data is stale (older than 1 hour) or doesn't exist
+      const now = new Date();
+      const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+      
+      if (!data || new Date(data.lastUpdated) < oneHourAgo) {
+        // Import the economic data service
+        const { economicDataService } = await import('./economic-api');
+        data = await economicDataService.fetchRealEconomicData();
       }
+      
       res.json(data);
     } catch (error) {
       console.error("Error fetching economic data:", error);
       res.status(500).json({ message: "Failed to fetch economic data" });
+    }
+  });
+
+  // Endpoint to force refresh economic data
+  app.post("/api/economic-data/refresh", async (req, res) => {
+    try {
+      const { economicDataService } = await import('./economic-api');
+      const data = await economicDataService.fetchRealEconomicData();
+      res.json(data);
+    } catch (error) {
+      console.error("Error refreshing economic data:", error);
+      res.status(500).json({ message: "Failed to refresh economic data" });
     }
   });
 

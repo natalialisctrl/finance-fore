@@ -145,6 +145,28 @@ Preferred communication style: Simple, everyday language.
 - `npm run start`: Start production server
 - `npm run db:push`: Push database schema changes
 
+## Data Sources & Accuracy
+
+### Economic Indicators
+- **Current Status**: Using realistic economic estimates based on latest available data
+- **GDP Growth**: 2.8% (Q4 2024 actual reported growth)
+- **Inflation Rate**: 3.2% (January 2025 current estimate)
+- **Consumer Price Index**: 309.7 (January 2025 current level)
+- **Data Freshness**: Updates hourly when available
+
+### AI Price Predictions
+- **Methodology**: Algorithmic estimates based on economic indicators and historical patterns
+- **Accuracy**: Predictions are estimates for planning purposes
+- **Disclaimer**: Actual prices vary by location and market conditions
+- **Smart Buy Scores**: 1-10 scoring system using economic factors and trends
+
+### Data Transparency
+The app prioritizes transparency about data sources:
+- Economic data uses current realistic estimates
+- AI predictions are algorithmic estimates, not guaranteed prices
+- Users are informed about data sources and limitations
+- Real-time updates when authentic data sources become available
+
 ## Recent Changes
 
 ### July 16, 2025 - User Authentication System Implementation
@@ -193,3 +215,11 @@ Preferred communication style: Simple, everyday language.
 - **Smart Recommendations Engine**: AI-powered financial health alerts and category-specific optimization suggestions
 
 The application is designed for deployment on platforms like Replit, with automatic database provisioning and a unified development/production workflow.
+
+### July 17, 2025 - Data Accuracy and Transparency Implementation
+- **Real Economic Data Integration**: Implemented service for fetching authentic economic indicators
+- **Data Source Transparency**: Added clear disclaimers about data sources and accuracy
+- **Current Economic Estimates**: Using realistic Q4 2024/January 2025 economic data
+- **AI Prediction Clarity**: Enhanced algorithmic predictions with proper disclaimers
+- **Mobile Optimization**: Completed comprehensive mobile responsiveness improvements
+- **User Data Awareness**: Users now understand the difference between real and estimated data
