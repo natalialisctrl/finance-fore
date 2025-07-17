@@ -9,7 +9,7 @@ import { EconomicTrendPrediction } from "@/components/economic-trend-prediction"
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 // import { useAuth } from "@/hooks/useAuth"; // Auto-login mode
-import { Moon, Sun, CreditCard, User, Plus, LogOut } from "lucide-react";
+import { CreditCard, User, Plus, LogOut, TrendingUp, ShoppingCart, DollarSign, PiggyBank, AlertTriangle, CheckCircle, Clock, MapPin, MoreVertical, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/authUtils";
@@ -21,7 +21,7 @@ import { apiRequest } from "@/lib/queryClient";
 import floatingDollarVideo from "@assets/vecteezy_3d-dollar-money-bundle-floating-animation-on-black-background_23936705_1752690826601.mp4";
 
 export default function Dashboard() {
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   // Auto-login user data - skip authentication
   const user = {
     id: 'demo-natalia',
@@ -140,12 +140,18 @@ export default function Dashboard() {
             webkit-playsinline="true"
             x5-playsinline="true"
             x-webkit-airplay="deny"
-            className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-screen"
+            className="absolute inset-0 w-full h-full object-cover opacity-50"
             style={{ 
-              filter: 'brightness(1.5) contrast(2) saturate(1.5) hue-rotate(10deg)',
-              zIndex: 1
+              filter: 'brightness(3) contrast(2.5) saturate(3) hue-rotate(20deg)',
+              zIndex: 1,
+              display: 'block',
+              mixBlendMode: 'screen'
             }}
-            onError={(e) => console.log('Video error:', e)}
+            onError={(e) => {
+              console.log('Video error:', e);
+              const fallback = document.querySelector('.video-fallback');
+              if (fallback) (fallback as HTMLElement).style.opacity = '0.8';
+            }}
             onLoadStart={() => console.log('Video loading started')}
             onCanPlay={() => console.log('Video can play')}
             onLoadedData={() => console.log('Video data loaded')}
@@ -156,23 +162,26 @@ export default function Dashboard() {
           </video>
           {/* Enhanced fallback animated background */}
           <div 
-            className="video-fallback absolute inset-0 opacity-30"
+            className="video-fallback absolute inset-0 opacity-80"
             style={{
               background: `
-                radial-gradient(circle at 20% 30%, rgba(255, 193, 7, 0.4) 0%, transparent 60%),
-                radial-gradient(circle at 80% 70%, rgba(255, 152, 0, 0.3) 0%, transparent 60%),
-                radial-gradient(circle at 40% 80%, rgba(255, 235, 59, 0.2) 0%, transparent 60%),
-                radial-gradient(circle at 60% 20%, rgba(255, 215, 0, 0.25) 0%, transparent 50%)
+                radial-gradient(circle at 20% 30%, rgba(255, 193, 7, 0.6) 0%, transparent 60%),
+                radial-gradient(circle at 80% 70%, rgba(255, 152, 0, 0.5) 0%, transparent 60%),
+                radial-gradient(circle at 40% 80%, rgba(255, 235, 59, 0.4) 0%, transparent 60%),
+                radial-gradient(circle at 60% 20%, rgba(255, 215, 0, 0.5) 0%, transparent 50%)
               `,
               animation: 'float 8s ease-in-out infinite, pulse 4s ease-in-out infinite alternate',
-              display: 'block'
+              display: 'block',
+              mixBlendMode: 'screen'
             }}
           >
             {/* Floating dollar symbols */}
-            <div className="absolute top-1/4 left-1/4 text-6xl text-yellow-400/30 animate-bounce" style={{ animationDelay: '0s', animationDuration: '3s' }}>$</div>
-            <div className="absolute top-3/4 right-1/4 text-4xl text-orange-400/40 animate-bounce" style={{ animationDelay: '1s', animationDuration: '4s' }}>$</div>
-            <div className="absolute bottom-1/3 left-1/3 text-5xl text-yellow-300/25 animate-bounce" style={{ animationDelay: '2s', animationDuration: '3.5s' }}>$</div>
-            <div className="absolute top-1/2 right-1/3 text-3xl text-amber-400/35 animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '4.5s' }}>$</div>
+            <div className="absolute top-1/4 left-1/4 text-6xl text-yellow-400/50 animate-bounce" style={{ animationDelay: '0s', animationDuration: '3s' }}>$</div>
+            <div className="absolute top-3/4 right-1/4 text-4xl text-orange-400/60 animate-bounce" style={{ animationDelay: '1s', animationDuration: '4s' }}>$</div>
+            <div className="absolute bottom-1/3 left-1/3 text-5xl text-yellow-300/45 animate-bounce" style={{ animationDelay: '2s', animationDuration: '3.5s' }}>$</div>
+            <div className="absolute top-1/2 right-1/3 text-3xl text-amber-400/55 animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '4.5s' }}>$</div>
+            <div className="absolute top-1/3 left-2/3 text-5xl text-yellow-500/40 animate-bounce" style={{ animationDelay: '1.5s', animationDuration: '3.8s' }}>$</div>
+            <div className="absolute bottom-1/4 right-2/3 text-4xl text-orange-300/50 animate-bounce" style={{ animationDelay: '2.5s', animationDuration: '4.2s' }}>$</div>
           </div>
           {/* Overlay gradient to blend video with existing background */}
           <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-blue-600/5" style={{ zIndex: 2 }}></div>
@@ -235,18 +244,7 @@ export default function Dashboard() {
               </div>
 
               <div className="flex items-center space-x-1 lg:space-x-3">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={toggleTheme}
-                  className="glass-card p-2 lg:p-3 text-white hover:bg-white/20 border-white/20"
-                >
-                  {theme === "light" ? (
-                    <Moon className="w-4 h-4 lg:w-5 lg:h-5" />
-                  ) : (
-                    <Sun className="w-4 h-4 lg:w-5 lg:h-5" />
-                  )}
-                </Button>
+{/* Dark mode only - no theme toggle */}
                 
                 {user && (
                   <div className="flex items-center space-x-2 lg:space-x-3">
