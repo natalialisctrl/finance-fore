@@ -156,10 +156,12 @@ export function AIPredictionsDashboard() {
           Preferences
         </Button>
       </div>
+
       {/* Monthly Savings Summary */}
       <div className="mb-8">
         <MonthlySavingsSummary predictions={predictions} />
       </div>
+
       {/* Top Recommendations & Insights */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* Smart Recommendations */}
@@ -212,7 +214,7 @@ export function AIPredictionsDashboard() {
             {personalizedRecs?.budgetOptimization.map((tip, index) => (
               <div key={index} className="flex items-start space-x-3 glass-card p-3 bg-white/30 dark:bg-white/5">
                 <div className="w-3 h-3 bg-emerald-500 rounded-full mt-1.5 glow-pulse"></div>
-                <p className="text-sm dark:text-slate-400 text-[#ffffff]">{tip}</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">{tip}</p>
               </div>
             ))}
           </div>
@@ -232,6 +234,7 @@ export function AIPredictionsDashboard() {
           </div>
         </div>
       </div>
+
       {/* Enhanced Predictions Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {predictions.map((prediction, index) => (
