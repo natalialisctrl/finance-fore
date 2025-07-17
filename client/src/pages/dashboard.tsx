@@ -45,11 +45,27 @@ export default function Dashboard() {
     if (!videoInteracted) {
       const video = document.querySelector('video');
       if (video) {
-        video.play().catch(e => console.log('Video play failed:', e));
+        video.muted = true; // Ensure muted for autoplay
+        video.play().catch(e => {
+          console.log('Video play failed:', e);
+          // Show fallback if video fails
+          const fallback = document.querySelector('.video-fallback');
+          if (fallback) {
+            (fallback as HTMLElement).style.display = 'block';
+          }
+        });
         setVideoInteracted(true);
       }
     }
   };
+
+  // Force video play on component mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      handleVideoInteraction();
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Mutation to add shopping list item
   const addItemMutation = useMutation({
@@ -120,12 +136,13 @@ export default function Dashboard() {
             loop 
             muted 
             playsInline
-            preload="metadata"
+            preload="auto"
             webkit-playsinline="true"
             x5-playsinline="true"
-            className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay"
+            x-webkit-airplay="deny"
+            className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-screen"
             style={{ 
-              filter: 'brightness(1.2) contrast(1.5) saturate(1.3)',
+              filter: 'brightness(1.5) contrast(2) saturate(1.5) hue-rotate(10deg)',
               zIndex: 1
             }}
             onError={(e) => console.log('Video error:', e)}
@@ -137,18 +154,26 @@ export default function Dashboard() {
             <source src={floatingDollarVideo} type="video/webm" />
             Your browser does not support the video tag.
           </video>
-          {/* Fallback animated background for when video doesn't load */}
+          {/* Enhanced fallback animated background */}
           <div 
-            className="absolute inset-0 opacity-20"
+            className="video-fallback absolute inset-0 opacity-30"
             style={{
               background: `
-                radial-gradient(circle at 20% 30%, rgba(255, 193, 7, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255, 152, 0, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(255, 235, 59, 0.15) 0%, transparent 50%)
+                radial-gradient(circle at 20% 30%, rgba(255, 193, 7, 0.4) 0%, transparent 60%),
+                radial-gradient(circle at 80% 70%, rgba(255, 152, 0, 0.3) 0%, transparent 60%),
+                radial-gradient(circle at 40% 80%, rgba(255, 235, 59, 0.2) 0%, transparent 60%),
+                radial-gradient(circle at 60% 20%, rgba(255, 215, 0, 0.25) 0%, transparent 50%)
               `,
-              animation: 'float 6s ease-in-out infinite'
+              animation: 'float 8s ease-in-out infinite, pulse 4s ease-in-out infinite alternate',
+              display: 'block'
             }}
-          ></div>
+          >
+            {/* Floating dollar symbols */}
+            <div className="absolute top-1/4 left-1/4 text-6xl text-yellow-400/30 animate-bounce" style={{ animationDelay: '0s', animationDuration: '3s' }}>$</div>
+            <div className="absolute top-3/4 right-1/4 text-4xl text-orange-400/40 animate-bounce" style={{ animationDelay: '1s', animationDuration: '4s' }}>$</div>
+            <div className="absolute bottom-1/3 left-1/3 text-5xl text-yellow-300/25 animate-bounce" style={{ animationDelay: '2s', animationDuration: '3.5s' }}>$</div>
+            <div className="absolute top-1/2 right-1/3 text-3xl text-amber-400/35 animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '4.5s' }}>$</div>
+          </div>
           {/* Overlay gradient to blend video with existing background */}
           <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-blue-600/5" style={{ zIndex: 2 }}></div>
         </div>
