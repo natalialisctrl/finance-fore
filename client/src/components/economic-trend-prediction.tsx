@@ -185,28 +185,30 @@ export function EconomicTrendPrediction() {
       </div>
 
       {/* Prediction Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
         {/* Inflation Prediction Chart */}
         <Card className="glass-card">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center space-x-2">
-              <TrendingUp className="w-5 h-5 text-orange-500" />
-              <span>Inflation Rate Forecast</span>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base sm:text-lg flex items-center space-x-2">
+              <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
+              <span className="text-sm sm:text-base">Inflation Rate Forecast</span>
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="h-64">
+          <CardContent className="px-3 sm:px-6">
+            <div className="h-48 sm:h-64">
               <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={predictions}>
+                <ComposedChart data={predictions} margin={{ left: 0, right: 5, top: 5, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
                   <XAxis 
                     dataKey="date" 
                     stroke="rgba(255,255,255,0.6)"
-                    fontSize={12}
+                    fontSize={10}
+                    tick={{ fontSize: 10 }}
                   />
                   <YAxis 
                     stroke="rgba(255,255,255,0.6)"
-                    fontSize={12}
+                    fontSize={10}
+                    tick={{ fontSize: 10 }}
                     tickFormatter={(value) => `${value}%`}
                   />
                   <Tooltip 
@@ -275,25 +277,27 @@ export function EconomicTrendPrediction() {
 
         {/* GDP Prediction Chart */}
         <Card className="glass-card">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center space-x-2">
-              <Activity className="w-5 h-5 text-blue-500" />
-              <span>GDP Growth Forecast</span>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base sm:text-lg flex items-center space-x-2">
+              <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />
+              <span className="text-sm sm:text-base">GDP Growth Forecast</span>
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="h-64">
+          <CardContent className="px-3 sm:px-6">
+            <div className="h-48 sm:h-64">
               <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={predictions}>
+                <ComposedChart data={predictions} margin={{ left: 0, right: 5, top: 5, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
                   <XAxis 
                     dataKey="date" 
                     stroke="rgba(255,255,255,0.6)"
-                    fontSize={12}
+                    fontSize={10}
+                    tick={{ fontSize: 10 }}
                   />
                   <YAxis 
                     stroke="rgba(255,255,255,0.6)"
-                    fontSize={12}
+                    fontSize={10}
+                    tick={{ fontSize: 10 }}
                     tickFormatter={(value) => `${value}%`}
                   />
                   <Tooltip 
@@ -363,14 +367,14 @@ export function EconomicTrendPrediction() {
 
       {/* Trend Analysis Summary */}
       <Card className="glass-card">
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center space-x-2">
-            <Brain className="w-5 h-5 text-purple-500" />
-            <span>AI Trend Analysis</span>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base sm:text-lg flex items-center space-x-2">
+            <Brain className="w-4 h-4 sm:w-5 sm:h-5 text-purple-500" />
+            <span className="text-sm sm:text-base">AI Trend Analysis</span>
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <CardContent className="px-3 sm:px-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {trendAnalysis.map((analysis, index) => (
               <div key={index} className="space-y-4">
                 <div className="flex items-center justify-between">

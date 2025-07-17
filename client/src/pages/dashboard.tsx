@@ -104,10 +104,15 @@ export default function Dashboard() {
             loop 
             muted 
             playsInline
-            className="absolute inset-0 w-full h-full object-cover opacity-15 mix-blend-screen"
-            style={{ filter: 'brightness(0.7) contrast(1.2)' }}
+            preload="auto"
+            className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-screen"
+            style={{ filter: 'brightness(0.8) contrast(1.3)' }}
+            onError={(e) => console.log('Video error:', e)}
+            onLoadStart={() => console.log('Video loading started')}
+            onCanPlay={() => console.log('Video can play')}
           >
             <source src={floatingDollarVideo} type="video/mp4" />
+            Your browser does not support the video tag.
           </video>
           {/* Overlay gradient to blend video with existing background */}
           <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-blue-600/10"></div>
