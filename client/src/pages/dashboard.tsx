@@ -98,15 +98,18 @@ export default function Dashboard() {
       {/* Premium Hero Section */}
       <div className="hero-gradient relative overflow-hidden">
         {/* Floating dollar video background overlay */}
-        <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden z-0">
           <video 
             autoPlay 
             loop 
             muted 
             playsInline
             preload="auto"
-            className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-screen"
-            style={{ filter: 'brightness(0.8) contrast(1.3)' }}
+            className="absolute inset-0 w-full h-full object-cover opacity-40"
+            style={{ 
+              filter: 'brightness(0.8) contrast(1.8) saturate(1.2)',
+              mixBlendMode: 'multiply'
+            }}
             onError={(e) => console.log('Video error:', e)}
             onLoadStart={() => console.log('Video loading started')}
             onCanPlay={() => console.log('Video can play')}
@@ -114,9 +117,10 @@ export default function Dashboard() {
             <source src={floatingDollarVideo} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          {/* Overlay gradient to blend video with existing background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-blue-600/10"></div>
         </div>
+        
+        {/* Background gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/30 via-purple-600/20 to-blue-600/30 z-5"></div>
         
         {/* Floating particles background */}
         <div className="absolute inset-0 overflow-hidden z-10">
