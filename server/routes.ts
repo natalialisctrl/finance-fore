@@ -169,7 +169,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/budgets/:userId/:month", async (req, res) => {
     try {
       const { userId, month } = req.params;
-      const data = await storage.getUserBudgets(parseInt(userId), month);
+      const data = await storage.getUserBudgets(userId, month);
       res.json(data);
     } catch (error) {
       console.error("Error fetching budget data:", error);

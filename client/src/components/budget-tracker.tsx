@@ -34,23 +34,29 @@ export function BudgetTracker() {
   });
   
   const { data: budgetData, isLoading } = useQuery({
-    queryKey: ["/api/budgets/1", currentMonth],
-    queryFn: () => fetchBudgetData(1, currentMonth),
+    queryKey: ["/api/budgets/demo-natalia", currentMonth],
+    queryFn: () => fetchBudgetData("demo-natalia", currentMonth),
   });
 
   // Mutation to update budget
   const updateBudgetMutation = useMutation({
     mutationFn: async (budgets: any[]) => {
-      for (const budget of budgets) {
-        await apiRequest(`/api/budgets`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(budget),
-        });
+      try {
+        for (const budget of budgets) {
+          const response = await apiRequest(`/api/budgets`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(budget),
+          });
+          console.log("Budget created:", response);
+        }
+      } catch (error) {
+        console.error("Budget creation error:", error);
+        throw error;
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/budgets/1", currentMonth] });
+      queryClient.invalidateQueries({ queryKey: ["/api/budgets/demo-natalia", currentMonth] });
       toast({
         title: "Budget Updated",
         description: "Your budget has been successfully updated!",
@@ -105,13 +111,15 @@ export function BudgetTracker() {
     }
 
     // Create budget entries
-    const budgets = Object.entries(budgetAllocations).map(([category, amount]) => ({
-      userId: "demo-natalia",
-      category,
-      budgetAmount: parseFloat(amount) || 0,
-      spentAmount: Math.random() * (parseFloat(amount) || 0) * 0.7, // Random spending for demo
-      month: currentMonth,
-    }));
+    const budgets = Object.entries(budgetAllocations)
+      .filter(([_, amount]) => parseFloat(amount) > 0) // Only include categories with allocated amounts
+      .map(([category, amount]) => ({
+        userId: "demo-natalia",
+        category,
+        budgetAmount: parseFloat(amount),
+        spentAmount: Math.random() * parseFloat(amount) * 0.7, // Random spending for demo
+        month: currentMonth,
+      }));
 
     updateBudgetMutation.mutate(budgets);
   };

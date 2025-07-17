@@ -73,7 +73,7 @@ export const fetchPriceData = async (): Promise<PriceItem[]> => {
   }));
 };
 
-export const fetchBudgetData = async (userId: number, month: string): Promise<BudgetCategory[]> => {
+export const fetchBudgetData = async (userId: string, month: string): Promise<BudgetCategory[]> => {
   const response = await fetch(`/api/budgets/${userId}/${month}`);
   if (!response.ok) {
     throw new Error('Failed to fetch budget data');
