@@ -5,6 +5,7 @@ import { ChartsAndAnalytics } from "@/components/charts-analytics";
 import { BudgetTracker } from "@/components/budget-tracker";
 import { EnhancedBudgetTracker } from "@/components/enhanced-budget-tracker";
 import { ShoppingList } from "@/components/shopping-list";
+import { EconomicTrendPrediction } from "@/components/economic-trend-prediction";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 // import { useAuth } from "@/hooks/useAuth"; // Auto-login mode
@@ -149,6 +150,12 @@ export default function Dashboard() {
                   AI Predictions
                 </button>
                 <button 
+                  onClick={() => setActiveTab('trend-analysis')}
+                  className={`text-sm lg:text-base font-semibold transition-colors ${activeTab === 'trend-analysis' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                >
+                  Trend Analysis
+                </button>
+                <button 
                   onClick={() => setActiveTab('price-tracking')}
                   className={`text-sm lg:text-base font-semibold transition-colors ${activeTab === 'price-tracking' ? 'text-white' : 'text-white/80 hover:text-white'}`}
                 >
@@ -235,6 +242,16 @@ export default function Dashboard() {
                 AI
               </button>
               <button 
+                onClick={() => setActiveTab('trend-analysis')}
+                className={`px-3 py-2 text-xs font-medium rounded-md transition-all ${
+                  activeTab === 'trend-analysis' 
+                    ? 'bg-white/20 text-white' 
+                    : 'text-white/70 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                Trends
+              </button>
+              <button 
                 onClick={() => setActiveTab('price-tracking')}
                 className={`px-3 py-2 text-xs font-medium rounded-md transition-all ${
                   activeTab === 'price-tracking' 
@@ -314,6 +331,12 @@ export default function Dashboard() {
           {activeTab === 'ai-predictions' && (
             <div className="fade-in">
               <AIPredictionsDashboard />
+            </div>
+          )}
+          
+          {activeTab === 'trend-analysis' && (
+            <div className="fade-in">
+              <EconomicTrendPrediction />
             </div>
           )}
           
