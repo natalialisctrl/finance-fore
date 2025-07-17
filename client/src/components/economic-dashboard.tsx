@@ -159,7 +159,12 @@ export function EconomicDashboard() {
   return (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold dark:text-white text-[#ffffff] bg-[#72747d00]">Economic Dashboard</h2>
+        <div>
+          <h2 className="text-2xl font-bold dark:text-white text-[#ffffff] bg-[#72747d00]">Economic Dashboard</h2>
+          <p className="text-sm text-slate-400 mt-1">
+            Data sources: Current economic estimates based on latest available indicators
+          </p>
+        </div>
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-400">
             <Clock className="w-4 h-4" />
@@ -339,6 +344,18 @@ export function EconomicDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Data Transparency Section */}
+      <Card className="glass-card mt-6" style={{boxShadow: 'none', filter: 'drop-shadow(0 4px 8px rgba(255, 140, 66, 0.1))'}}>
+        <CardContent className="p-4">
+          <div className="text-xs text-slate-500 dark:text-slate-400 space-y-1">
+            <div className="font-medium text-slate-600 dark:text-slate-300">Data Transparency</div>
+            <div>• Economic indicators based on latest available government data and estimates</div>
+            <div>• AI predictions are algorithmic estimates for planning purposes only</div>
+            <div>• Actual prices and conditions may vary by location and market factors</div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
