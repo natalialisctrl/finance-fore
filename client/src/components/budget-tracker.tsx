@@ -43,10 +43,7 @@ export function BudgetTracker() {
     mutationFn: async (budgets: any[]) => {
       try {
         for (const budget of budgets) {
-          const response = await apiRequest("/api/budgets", {
-            method: "POST",
-            body: budget,
-          });
+          const response = await apiRequest("POST", "/api/budgets", budget);
           console.log("Budget created:", response);
         }
       } catch (error) {
