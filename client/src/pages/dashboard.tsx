@@ -12,6 +12,11 @@ import { Moon, Sun, CreditCard, User, Plus, LogOut } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/authUtils";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 import floatingDollarVideo from "@assets/vecteezy_3d-dollar-money-bundle-floating-animation-on-black-background_23936705_1752690826601.mp4";
 
 export default function Dashboard() {
@@ -28,6 +33,49 @@ export default function Dashboard() {
   const isLoading = false;
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [newItemName, setNewItemName] = useState("");
+  const [newItemQuantity, setNewItemQuantity] = useState("");
+  const queryClient = useQueryClient();
+
+  // Mutation to add shopping list item
+  const addItemMutation = useMutation({
+    mutationFn: async (item: any) => {
+      return await apiRequest("POST", "/api/shopping-list", item);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/shopping-list"] });
+      toast({
+        title: "Item Added",
+        description: `${newItemName} has been added to your shopping list!`,
+      });
+      setIsAddDialogOpen(false);
+      setNewItemName("");
+      setNewItemQuantity("");
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to add item to shopping list.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleAddItem = () => {
+    if (!newItemName.trim()) return;
+    
+    addItemMutation.mutate({
+      userId: user.id,
+      itemName: newItemName,
+      quantity: parseInt(newItemQuantity) || 1,
+      estimatedPrice: Math.random() * 10 + 2, // Random price for demo
+      averagePrice: Math.random() * 10 + 2,
+      recommendation: "CONSIDER",
+      savings: 0,
+      completed: 0
+    });
+  };
 
   // Redirect to home if not authenticated
   useEffect(() => {

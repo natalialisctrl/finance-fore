@@ -74,37 +74,50 @@ export function EconomicDashboard() {
   };
 
   const getFinancialHealthSummary = (economicData: any) => {
-    let score = 100;
+    let score = 45; // Start with a much lower baseline reflecting current economic reality
     let alerts = [];
     
-    // Inflation impact
+    // Inflation impact - much more severe penalties
     if (economicData.inflationRate > 4) {
+      score -= 35;
+      alerts.push("High inflation severely affecting purchasing power");
+    } else if (economicData.inflationRate > 3) {
       score -= 25;
-      alerts.push("High inflation affecting purchasing power");
+      alerts.push("Elevated inflation reducing buying power significantly");
     } else if (economicData.inflationRate > 2.5) {
-      score -= 10;
-      alerts.push("Moderate inflation - consider timing purchases");
-    }
-    
-    // GDP growth impact
-    if (economicData.gdpGrowth < 1) {
-      score -= 20;
-      alerts.push("Slow economic growth - be cautious with spending");
-    } else if (economicData.gdpGrowth > 3) {
-      score += 10;
-      alerts.push("Strong economic growth - good time for investments");
-    }
-    
-    // CPI impact
-    if (economicData.consumerPriceIndex > 280) {
       score -= 15;
-      alerts.push("High consumer prices - focus on savings");
+      alerts.push("Moderate inflation - prices rising faster than wages");
     }
     
-    const status = score >= 80 ? 'Excellent' : score >= 60 ? 'Good' : score >= 40 ? 'Caution' : 'Alert';
-    const color = score >= 80 ? 'text-emerald-600' : score >= 60 ? 'text-blue-600' : score >= 40 ? 'text-amber-600' : 'text-red-600';
+    // GDP growth impact - realistic assessment
+    if (economicData.gdpGrowth < 1) {
+      score -= 25;
+      alerts.push("Economic slowdown - job market uncertain");
+    } else if (economicData.gdpGrowth < 2) {
+      score -= 10;
+      alerts.push("Sluggish economic growth - be cautious with major purchases");
+    } else if (economicData.gdpGrowth > 3.5) {
+      score += 5; // Only small bonus for very strong growth
+    }
     
-    return { score: Math.max(0, score), status, color, alerts };
+    // CPI impact - reflect actual price pressures
+    if (economicData.consumerPriceIndex > 310) {
+      score -= 20;
+      alerts.push("Consumer prices at concerning levels - budget carefully");
+    } else if (economicData.consumerPriceIndex > 300) {
+      score -= 12;
+      alerts.push("Rising consumer costs affecting household budgets");
+    }
+    
+    // Additional reality checks
+    score -= 8; // General economic uncertainty factor
+    alerts.push("Current economic conditions challenging for most households");
+    
+    // More realistic status thresholds
+    const status = score >= 70 ? 'Good' : score >= 50 ? 'Caution' : score >= 30 ? 'Concerning' : 'Critical';
+    const color = score >= 70 ? 'text-emerald-600' : score >= 50 ? 'text-amber-600' : score >= 30 ? 'text-orange-600' : 'text-red-600';
+    
+    return { score: Math.max(5, score), status, color, alerts };
   };
 
   if (isLoading) {

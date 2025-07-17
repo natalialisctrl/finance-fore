@@ -367,13 +367,13 @@ export function BudgetTracker() {
               <h4 className="font-medium text-slate-900 dark:text-white">Spending Insights</h4>
               <div className="space-y-3">
                 <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2"></div>
+                  <div className="w-2 h-2 bg-amber-500 rounded-full mt-2"></div>
                   <div>
                     <div className="text-sm font-medium text-slate-900 dark:text-white">
-                      On track this month
+                      Budget pressure detected
                     </div>
                     <div className="text-xs text-slate-500 dark:text-slate-400">
-                      You're 15% under budget so far
+                      Inflation making it harder to stay within limits
                     </div>
                   </div>
                 </div>
@@ -415,7 +415,7 @@ export function BudgetTracker() {
                       Inflation Adjustment
                     </div>
                     <div className="text-xs text-blue-700 dark:text-blue-400 mt-1">
-                      With current inflation at 3.7%, consider increasing your grocery budget by $25/month and stocking up on non-perishables this week.
+                      With current inflation at 3.2%, consider increasing your grocery budget by $50/month and prioritize essential purchases over discretionary spending.
                     </div>
                   </div>
                 </div>
