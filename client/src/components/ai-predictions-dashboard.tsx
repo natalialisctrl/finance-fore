@@ -90,7 +90,17 @@ export function AIPredictionsDashboard() {
   }, [priceData, economicData, userPreferences]);
 
   const personalizedRecs = predictions.length > 0 ? 
-    generatePersonalizedRecommendations(predictions, userPreferences) : null;
+    generatePersonalizedRecommendations(predictions, userPreferences || {
+      location: "United States",
+      shoppingFrequency: "weekly",
+      budgetPriority: "savings",
+      riskTolerance: "moderate"
+    }) : null;
+
+  // Show message about AI service status
+  const isAIActive = predictions.some(p => 
+    p.predictionFactors?.economicTrends !== 0.8 // AI predictions have varied factors
+  );
 
   const getDirectionIcon = (direction: string) => {
     switch (direction) {
@@ -161,8 +171,15 @@ export function AIPredictionsDashboard() {
               AI Predictions & Smart Buy Scores
             </h2>
             <p className="text-slate-600 dark:text-slate-400">
-              30-day price forecasts powered by machine learning algorithms
+              {isAIActive ? "30-day price forecasts powered by OpenAI GPT-4o" : "Economic analysis with algorithmic predictions"}
             </p>
+            {!isAIActive && (
+              <div className="mt-2">
+                <div className="inline-flex items-center px-3 py-1 bg-amber-500/20 border border-amber-500/30 rounded-full">
+                  <span className="text-amber-600 dark:text-amber-400 text-xs font-medium">Economic Mode Active</span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <Button className="btn-premium ripple">
@@ -190,7 +207,7 @@ export function AIPredictionsDashboard() {
           </div>
             
           <div className="space-y-4">
-            {personalizedRecs?.topRecommendations.slice(0, 3).map((rec, index) => (
+            {personalizedRecs?.topRecommendations?.slice(0, 3).map((rec, index) => (
               <div key={index} className="glass-card p-4 bg-white/50 dark:bg-white/5">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
