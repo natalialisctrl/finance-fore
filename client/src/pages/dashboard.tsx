@@ -10,7 +10,7 @@ import { MinimalistFloatingDollars } from "@/components/minimalist-floating-doll
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 // import { useAuth } from "@/hooks/useAuth"; // Auto-login mode
-import { CreditCard, User, Plus, LogOut, TrendingUp, ShoppingCart, DollarSign, PiggyBank, AlertTriangle, CheckCircle, Clock, MapPin, MoreVertical, X } from "lucide-react";
+import { CreditCard, User, Plus, LogOut, TrendingUp, ShoppingCart, DollarSign, PiggyBank, AlertTriangle, CheckCircle, Clock, MapPin, MoreVertical, X, BarChart3, Brain, Wallet } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/authUtils";
@@ -250,62 +250,47 @@ export default function Dashboard() {
           </div>
         </nav>
 
-        {/* Mobile Navigation Tabs - Enhanced Design */}
-        <div className="md:hidden relative z-50 mx-3 mt-3">
-          <div className="glass-card rounded-2xl p-1 bg-white/5 backdrop-blur-xl border border-white/10">
-            <div className="flex justify-center items-center">
-              <div className="flex space-x-1 w-full">
-                <button 
-                  onClick={() => setActiveTab('dashboard')}
-                  className={`flex-1 px-2 py-3 text-xs font-semibold rounded-xl transition-all duration-300 ${
-                    activeTab === 'dashboard' 
-                      ? 'bg-gradient-to-r from-orange-500/30 to-blue-500/30 text-white border border-white/20 shadow-lg backdrop-blur-sm' 
-                      : 'text-white/70 hover:text-white hover:bg-white/10'
+        {/* Top-Tier Mobile Navigation Tabs */}
+        <div className="md:hidden relative z-50 mx-4 mt-4 mb-6">
+          <div className="glass-card rounded-3xl p-3 bg-white/12 backdrop-blur-2xl border-2 border-white/20 shadow-2xl">
+            <div className="flex space-x-2">
+              {[
+                { id: 'dashboard', label: 'Home', icon: BarChart3 },
+                { id: 'ai-predictions', label: 'AI', icon: Brain },
+                { id: 'price-tracking', label: 'Prices', icon: TrendingUp },
+                { id: 'budget', label: 'Budget', icon: Wallet },
+                { id: 'shopping-list', label: 'Shop', icon: ShoppingCart }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`relative flex-1 flex flex-col items-center py-4 px-2 rounded-2xl transition-all duration-300 transform ${
+                    activeTab === tab.id
+                      ? 'bg-gradient-to-br from-orange-500/35 to-orange-600/45 text-white scale-105 shadow-xl border-2 border-orange-300/60'
+                      : 'text-white/75 hover:text-white hover:bg-white/15 hover:scale-102 active:scale-95'
                   }`}
+                  style={{
+                    minHeight: '72px',
+                    touchAction: 'manipulation',
+                    WebkitTapHighlightColor: 'transparent'
+                  }}
                 >
-                  Home
+                  <tab.icon className={`mb-2 transition-all duration-200 ${
+                    activeTab === tab.id ? 'w-7 h-7 text-white' : 'w-6 h-6 text-white/80'
+                  }`} />
+                  <span className={`text-xs font-bold leading-tight transition-all duration-200 ${
+                    activeTab === tab.id ? 'text-white' : 'text-white/85'
+                  }`}>
+                    {tab.label}
+                  </span>
+                  {activeTab === tab.id && (
+                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-orange-300 rounded-full animate-pulse shadow-lg"></div>
+                  )}
+                  {activeTab === tab.id && (
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-orange-400/20 to-orange-600/30 animate-pulse"></div>
+                  )}
                 </button>
-                <button 
-                  onClick={() => setActiveTab('ai-predictions')}
-                  className={`flex-1 px-2 py-3 text-xs font-semibold rounded-xl transition-all duration-300 ${
-                    activeTab === 'ai-predictions' 
-                      ? 'bg-gradient-to-r from-orange-500/30 to-blue-500/30 text-white border border-white/20 shadow-lg backdrop-blur-sm' 
-                      : 'text-white/70 hover:text-white hover:bg-white/10'
-                  }`}
-                >
-                  AI
-                </button>
-                <button 
-                  onClick={() => setActiveTab('trend-analysis')}
-                  className={`flex-1 px-2 py-3 text-xs font-semibold rounded-xl transition-all duration-300 ${
-                    activeTab === 'trend-analysis' 
-                      ? 'bg-gradient-to-r from-orange-500/30 to-blue-500/30 text-white border border-white/20 shadow-lg backdrop-blur-sm' 
-                      : 'text-white/70 hover:text-white hover:bg-white/10'
-                  }`}
-                >
-                  Trends
-                </button>
-                <button 
-                  onClick={() => setActiveTab('price-tracking')}
-                  className={`flex-1 px-2 py-3 text-xs font-semibold rounded-xl transition-all duration-300 ${
-                    activeTab === 'price-tracking' 
-                      ? 'bg-gradient-to-r from-orange-500/30 to-blue-500/30 text-white border border-white/20 shadow-lg backdrop-blur-sm' 
-                      : 'text-white/70 hover:text-white hover:bg-white/10'
-                  }`}
-                >
-                  Prices
-                </button>
-                <button 
-                  onClick={() => setActiveTab('budget')}
-                  className={`flex-1 px-2 py-3 text-xs font-semibold rounded-xl transition-all duration-300 ${
-                    activeTab === 'budget' 
-                      ? 'bg-gradient-to-r from-orange-500/30 to-blue-500/30 text-white border border-white/20 shadow-lg backdrop-blur-sm' 
-                      : 'text-white/70 hover:text-white hover:bg-white/10'
-                  }`}
-                >
-                  Budget
-                </button>
-              </div>
+              ))}
             </div>
           </div>
         </div>
