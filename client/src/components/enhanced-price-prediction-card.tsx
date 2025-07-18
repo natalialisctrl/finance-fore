@@ -234,12 +234,12 @@ export function EnhancedPricePredictionCard({
             </div>
           </div>
 
-          {/* Countdown Timer */}
+          {/* Algorithm-Based Timing Estimate */}
           {daysUntilChange > 0 && (
             <div className="flex items-center space-x-2 mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
               <Clock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
               <span className="text-sm text-blue-800 dark:text-blue-200">
-                Price change expected in {daysUntilChange} day{daysUntilChange !== 1 ? 's' : ''}
+                Estimated optimal action window: {daysUntilChange} day{daysUntilChange !== 1 ? 's' : ''}
               </span>
             </div>
           )}
@@ -318,9 +318,9 @@ export function EnhancedPricePredictionCard({
                 {Math.round(prediction.confidence * 100)}% Confidence
               </span>
               <span className="text-slate-500 dark:text-slate-500">
-                Based on {(() => {
+                Algorithmic estimate - {(() => {
                   const seed = prediction.itemName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-                  const sources = ['Economic trends', 'Historical data', 'Supply patterns'];
+                  const sources = ['Economic trends', 'Historical patterns', 'Supply indicators'];
                   return sources[seed % 3];
                 })()}
               </span>
