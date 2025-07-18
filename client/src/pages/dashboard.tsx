@@ -137,10 +137,12 @@ export default function Dashboard() {
             muted 
             playsInline
             preload="auto"
+            controls={false}
             webkit-playsinline="true"
             x5-playsinline="true"
             x-webkit-airplay="deny"
-            className="absolute inset-0 w-full h-full object-cover opacity-50"
+            disablePictureInPicture
+            className="absolute inset-0 w-full h-full object-cover opacity-50 pointer-events-none"
             style={{ 
               filter: 'brightness(3) contrast(2.5) saturate(3) hue-rotate(20deg)',
               zIndex: 1,
@@ -280,60 +282,62 @@ export default function Dashboard() {
           </div>
         </nav>
 
-        {/* Mobile Navigation Tabs */}
-        <div className="md:hidden relative z-50 glass-card mx-2 mt-2">
-          <div className="flex justify-center items-center p-2">
-            <div className="flex space-x-1 bg-white/10 rounded-lg p-1">
-              <button 
-                onClick={() => setActiveTab('dashboard')}
-                className={`px-3 py-2 text-xs font-medium rounded-md transition-all ${
-                  activeTab === 'dashboard' 
-                    ? 'bg-white/20 text-white' 
-                    : 'text-white/70 hover:text-white hover:bg-white/10'
-                }`}
-              >
-                Home
-              </button>
-              <button 
-                onClick={() => setActiveTab('ai-predictions')}
-                className={`px-3 py-2 text-xs font-medium rounded-md transition-all ${
-                  activeTab === 'ai-predictions' 
-                    ? 'bg-white/20 text-white' 
-                    : 'text-white/70 hover:text-white hover:bg-white/10'
-                }`}
-              >
-                AI
-              </button>
-              <button 
-                onClick={() => setActiveTab('trend-analysis')}
-                className={`px-3 py-2 text-xs font-medium rounded-md transition-all ${
-                  activeTab === 'trend-analysis' 
-                    ? 'bg-white/20 text-white' 
-                    : 'text-white/70 hover:text-white hover:bg-white/10'
-                }`}
-              >
-                Trends
-              </button>
-              <button 
-                onClick={() => setActiveTab('price-tracking')}
-                className={`px-3 py-2 text-xs font-medium rounded-md transition-all ${
-                  activeTab === 'price-tracking' 
-                    ? 'bg-white/20 text-white' 
-                    : 'text-white/70 hover:text-white hover:bg-white/10'
-                }`}
-              >
-                Prices
-              </button>
-              <button 
-                onClick={() => setActiveTab('budget')}
-                className={`px-3 py-2 text-xs font-medium rounded-md transition-all ${
-                  activeTab === 'budget' 
-                    ? 'bg-white/20 text-white' 
-                    : 'text-white/70 hover:text-white hover:bg-white/10'
-                }`}
-              >
-                Budget
-              </button>
+        {/* Mobile Navigation Tabs - Enhanced Design */}
+        <div className="md:hidden relative z-50 mx-3 mt-3">
+          <div className="glass-card rounded-2xl p-1 bg-white/5 backdrop-blur-xl border border-white/10">
+            <div className="flex justify-center items-center">
+              <div className="flex space-x-1 w-full">
+                <button 
+                  onClick={() => setActiveTab('dashboard')}
+                  className={`flex-1 px-2 py-3 text-xs font-semibold rounded-xl transition-all duration-300 ${
+                    activeTab === 'dashboard' 
+                      ? 'bg-gradient-to-r from-orange-500/30 to-blue-500/30 text-white border border-white/20 shadow-lg backdrop-blur-sm' 
+                      : 'text-white/70 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  Home
+                </button>
+                <button 
+                  onClick={() => setActiveTab('ai-predictions')}
+                  className={`flex-1 px-2 py-3 text-xs font-semibold rounded-xl transition-all duration-300 ${
+                    activeTab === 'ai-predictions' 
+                      ? 'bg-gradient-to-r from-orange-500/30 to-blue-500/30 text-white border border-white/20 shadow-lg backdrop-blur-sm' 
+                      : 'text-white/70 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  AI
+                </button>
+                <button 
+                  onClick={() => setActiveTab('trend-analysis')}
+                  className={`flex-1 px-2 py-3 text-xs font-semibold rounded-xl transition-all duration-300 ${
+                    activeTab === 'trend-analysis' 
+                      ? 'bg-gradient-to-r from-orange-500/30 to-blue-500/30 text-white border border-white/20 shadow-lg backdrop-blur-sm' 
+                      : 'text-white/70 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  Trends
+                </button>
+                <button 
+                  onClick={() => setActiveTab('price-tracking')}
+                  className={`flex-1 px-2 py-3 text-xs font-semibold rounded-xl transition-all duration-300 ${
+                    activeTab === 'price-tracking' 
+                      ? 'bg-gradient-to-r from-orange-500/30 to-blue-500/30 text-white border border-white/20 shadow-lg backdrop-blur-sm' 
+                      : 'text-white/70 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  Prices
+                </button>
+                <button 
+                  onClick={() => setActiveTab('budget')}
+                  className={`flex-1 px-2 py-3 text-xs font-semibold rounded-xl transition-all duration-300 ${
+                    activeTab === 'budget' 
+                      ? 'bg-gradient-to-r from-orange-500/30 to-blue-500/30 text-white border border-white/20 shadow-lg backdrop-blur-sm' 
+                      : 'text-white/70 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  Budget
+                </button>
+              </div>
             </div>
           </div>
         </div>
