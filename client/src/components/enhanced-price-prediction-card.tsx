@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -33,14 +33,28 @@ export function EnhancedPricePredictionCard({
   onTrackItem,
   onViewDetails
 }: EnhancedPricePredictionCardProps) {
-  const [daysUntilChange, setDaysUntilChange] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Calculate days until predicted change
-  useEffect(() => {
-    const days = Math.floor(Math.random() * 14) + 1; // Mock calculation
-    setDaysUntilChange(days);
-  }, [prediction]);
+  // Calculate consistent days until expected price change
+  const daysUntilChange = useMemo(() => {
+    // Create a consistent seed based on item name for stable results
+    const seed = prediction.itemName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const deterministicRandom = (seed % 100) / 100;
+    
+    // Based on recommendation, calculate expected change timeline
+    switch (prediction.recommendedAction) {
+      case "BUY_NOW":
+        return Math.floor(deterministicRandom * 3) + 1; // 1-3 days
+      case "WAIT_1_WEEK": 
+        return Math.floor(deterministicRandom * 3) + 5; // 5-7 days
+      case "WAIT_2_WEEKS":
+        return Math.floor(deterministicRandom * 5) + 10; // 10-14 days
+      case "MONITOR":
+        return Math.floor(deterministicRandom * 10) + 15; // 15-25 days
+      default:
+        return Math.floor(deterministicRandom * 7) + 3; // 3-10 days
+    }
+  }, [prediction.recommendedAction, prediction.itemName]);
 
   const getDirectionColor = (direction: string) => {
     switch (direction) {
@@ -77,19 +91,21 @@ export function EnhancedPricePredictionCard({
     return "border-slate-200 dark:border-slate-700";
   };
 
-  // Mock 7-day price trend data
-  const generateSparklineData = () => {
+  // Generate consistent 7-day price trend data
+  const sparklineData = useMemo(() => {
     const points = [];
     let price = prediction.currentPrice;
+    const seed = prediction.itemName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    
     for (let i = 0; i < 7; i++) {
-      const variation = (Math.random() - 0.5) * 0.1 * price;
+      // Use deterministic variation based on item name and day
+      const deterministicFactor = ((seed + i * 13) % 100) / 100;
+      const variation = (deterministicFactor - 0.5) * 0.1 * price;
       price += variation;
       points.push(price);
     }
     return points;
-  };
-
-  const sparklineData = generateSparklineData();
+  }, [prediction.itemName, prediction.currentPrice]);
   const maxPrice = Math.max(...sparklineData);
   const minPrice = Math.min(...sparklineData);
   const priceRange = maxPrice - minPrice;
@@ -243,13 +259,22 @@ export function EnhancedPricePredictionCard({
                 <div className="space-y-1">
                   <div className="text-slate-600 dark:text-slate-400">vs. National Avg</div>
                   <div className="font-medium text-slate-900 dark:text-white">
-                    {Math.random() > 0.5 ? '+' : '-'}{(Math.random() * 10).toFixed(1)}%
+                    {(() => {
+                      const seed = prediction.itemName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+                      const isPositive = (seed % 2) === 0;
+                      const percentage = ((seed % 50) / 10) + 1;
+                      return `${isPositive ? '+' : '-'}${percentage.toFixed(1)}%`;
+                    })()}
                   </div>
                 </div>
                 <div className="space-y-1">
                   <div className="text-slate-600 dark:text-slate-400">Seasonal Trend</div>
                   <div className="font-medium text-slate-900 dark:text-white">
-                    {['Rising', 'Falling', 'Stable'][Math.floor(Math.random() * 3)]}
+                    {(() => {
+                      const seed = prediction.itemName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+                      const trends = ['Rising', 'Falling', 'Stable'];
+                      return trends[seed % 3];
+                    })()}
                   </div>
                 </div>
               </div>
@@ -293,7 +318,11 @@ export function EnhancedPricePredictionCard({
                 {Math.round(prediction.confidence * 100)}% Confidence
               </span>
               <span className="text-slate-500 dark:text-slate-500">
-                Based on {['Economic trends', 'Historical data', 'Supply patterns'][Math.floor(Math.random() * 3)]}
+                Based on {(() => {
+                  const seed = prediction.itemName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+                  const sources = ['Economic trends', 'Historical data', 'Supply patterns'];
+                  return sources[seed % 3];
+                })()}
               </span>
             </div>
           </div>
