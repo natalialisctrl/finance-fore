@@ -876,6 +876,92 @@ video::-moz-media-controls {
   display: none !important;
 }
 
+/* Minimalist floating dollar animations */
+@keyframes minimalistFloat {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg) scale(1); 
+    opacity: 0.08;
+  }
+  25% { 
+    transform: translateY(-12px) rotate(3deg) scale(1.05); 
+    opacity: 0.15;
+  }
+  50% { 
+    transform: translateY(-22px) rotate(-2deg) scale(1.1); 
+    opacity: 0.12;
+  }
+  75% { 
+    transform: translateY(-16px) rotate(1deg) scale(1.02); 
+    opacity: 0.1;
+  }
+}
+
+@keyframes minimalistDrift {
+  0% { 
+    transform: translate(0px, 0px) rotate(0deg) scale(0.9); 
+    opacity: 0.06;
+  }
+  25% { 
+    transform: translate(8px, -15px) rotate(4deg) scale(1); 
+    opacity: 0.12;
+  }
+  50% { 
+    transform: translate(-5px, -28px) rotate(-3deg) scale(1.05); 
+    opacity: 0.15;
+  }
+  75% { 
+    transform: translate(3px, -35px) rotate(2deg) scale(0.95); 
+    opacity: 0.08;
+  }
+  100% { 
+    transform: translate(0px, -40px) rotate(0deg) scale(0.85); 
+    opacity: 0;
+  }
+}
+
+@keyframes minimalistFadeInOut {
+  0%, 100% { 
+    opacity: 0;
+    transform: scale(0.7) rotate(-5deg);
+  }
+  33% { 
+    opacity: 0.1;
+    transform: scale(1.1) rotate(2deg);
+  }
+  66% { 
+    opacity: 0.08;
+    transform: scale(1.05) rotate(-1deg);
+  }
+}
+
+@keyframes minimalistPulse {
+  0%, 100% { 
+    opacity: 0.05;
+    transform: scale(0.95);
+  }
+  50% { 
+    opacity: 0.12;
+    transform: scale(1.08);
+  }
+}
+
+/* Minimalist floating dollar classes */
+.minimalist-float {
+  animation: minimalistFloat 10s ease-in-out infinite;
+}
+
+.minimalist-drift {
+  animation: minimalistDrift 15s linear infinite;
+}
+
+.minimalist-fade {
+  animation: minimalistFadeInOut 8s ease-in-out infinite;
+}
+
+.minimalist-pulse {
+  animation: minimalistPulse 6s ease-in-out infinite;
+}
+
 /* Enhanced mobile glass design */
 @media (max-width: 768px) {
   .glass-card {

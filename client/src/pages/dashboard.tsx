@@ -6,6 +6,7 @@ import { BudgetTracker } from "@/components/budget-tracker";
 import { EnhancedBudgetTracker } from "@/components/enhanced-budget-tracker";
 import { ShoppingList } from "@/components/shopping-list";
 import { EconomicTrendPrediction } from "@/components/economic-trend-prediction";
+import { MinimalistFloatingDollars } from "@/components/minimalist-floating-dollars";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 // import { useAuth } from "@/hooks/useAuth"; // Auto-login mode
@@ -127,6 +128,9 @@ export default function Dashboard() {
       onClick={handleVideoInteraction}
       onTouchStart={handleVideoInteraction}
     >
+      {/* Minimalist Floating Dollar Animations */}
+      <MinimalistFloatingDollars />
+      
       {/* Premium Hero Section */}
       <div className="hero-gradient relative overflow-hidden">
         {/* Floating dollar video background overlay */}
