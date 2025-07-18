@@ -10,7 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Plus, Calendar, TrendingUp, TrendingDown, History } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 import { formatCurrency } from "@/lib/utils";
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 export function PriceTrackingGrid() {
   const { data: priceData, isLoading: isPriceLoading } = useQuery({
@@ -56,8 +56,18 @@ export function PriceTrackingGrid() {
   }, []);
   
   // Generate AI predictions for Smart Buy Scores
-  const predictions = priceData && economicData ? 
-    generatePricePredictions(priceData, economicData) : [];
+  const [predictions, setPredictions] = useState<any[]>([]);
+  
+  useEffect(() => {
+    if (priceData && economicData) {
+      generatePricePredictions(priceData, economicData)
+        .then(setPredictions)
+        .catch(error => {
+          console.error("Failed to load AI predictions:", error);
+          setPredictions([]);
+        });
+    }
+  }, [priceData, economicData]);
 
   const getRecommendationColor = (recommendation: string) => {
     switch (recommendation) {

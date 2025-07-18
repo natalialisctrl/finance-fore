@@ -21,7 +21,7 @@ import {
   Settings,
   Zap
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePullToRefresh, useDeviceType, useMobileToast } from "./mobile-enhancements";
 import { formatCurrency } from "@/lib/utils";
 
@@ -72,8 +72,22 @@ export function AIPredictionsDashboard() {
     queryFn: fetchEconomicData,
   });
 
-  const predictions = priceData && economicData ? 
-    generatePricePredictions(priceData, economicData, userPreferences) : [];
+  const [predictions, setPredictions] = useState<any[]>([]);
+  const [isLoadingPredictions, setIsLoadingPredictions] = useState(false);
+
+  // Load AI predictions when data is available
+  useEffect(() => {
+    if (priceData && economicData) {
+      setIsLoadingPredictions(true);
+      generatePricePredictions(priceData, economicData, userPreferences)
+        .then(setPredictions)
+        .catch(error => {
+          console.error("Failed to load AI predictions:", error);
+          setPredictions([]);
+        })
+        .finally(() => setIsLoadingPredictions(false));
+    }
+  }, [priceData, economicData, userPreferences]);
 
   const personalizedRecs = predictions.length > 0 ? 
     generatePersonalizedRecommendations(predictions, userPreferences) : null;
@@ -115,7 +129,7 @@ export function AIPredictionsDashboard() {
     }
   };
 
-  if (isPriceLoading || isEconomicLoading) {
+  if (isPriceLoading || isEconomicLoading || isLoadingPredictions) {
     return (
       <div className="mb-8">
         <div className="flex items-center justify-between mb-6">

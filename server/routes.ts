@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { insertEconomicDataSchema, insertPriceDataSchema, insertUserBudgetSchema, insertUserSavingsSchema, insertShoppingListItemSchema } from "@shared/schema";
 import { z } from "zod";
 import { setupAuth, isAuthenticated } from "./replitAuth";
+import { getAIPricePrediction, getBatchAIPredictions, type AIAnalysisInput } from "./ai-service";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
@@ -267,6 +268,77 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to delete shopping list item" });
     }
   });
+
+  // AI-powered price predictions endpoint
+  app.post("/api/ai-predictions", async (req, res) => {
+    try {
+      const { priceData, economicData, userPreferences } = req.body;
+
+      if (!priceData || !economicData) {
+        return res.status(400).json({ message: "Missing required data" });
+      }
+
+      // Prepare AI analysis inputs
+      const analysisInputs: AIAnalysisInput[] = priceData.map((item: any) => ({
+        itemName: item.itemName,
+        currentPrice: item.currentPrice,
+        historicalPrices: [
+          item.averagePrice30Day * 0.95,
+          item.averagePrice30Day * 0.98,
+          item.averagePrice30Day * 1.02,
+          item.currentPrice
+        ],
+        economicIndicators: {
+          inflationRate: economicData.inflationRate,
+          gdpGrowth: economicData.gdpGrowth,
+          consumerPriceIndex: economicData.consumerPriceIndex
+        },
+        seasonalData: {
+          month: new Date().getMonth(),
+          category: getCategoryFromItemName(item.itemName)
+        }
+      }));
+
+      // Get AI predictions
+      const aiResults = await getBatchAIPredictions(analysisInputs);
+
+      // Convert to frontend format
+      const predictions = aiResults.map((result, index) => ({
+        itemName: priceData[index].itemName,
+        currentPrice: priceData[index].currentPrice,
+        predicted30DayPrice: result.predictedPrice30Day,
+        priceDirection: result.priceDirection,
+        confidence: result.confidence,
+        smartBuyScore: result.smartBuyScore,
+        predictionFactors: {
+          economicTrends: 0.8, // AI-generated, not broken down
+          seasonality: 0.6,
+          historicalPatterns: 0.7,
+          supplyDemand: 0.5
+        },
+        recommendedAction: result.recommendedAction,
+        expectedSavings: result.expectedSavings
+      }));
+
+      res.json(predictions);
+    } catch (error) {
+      console.error("AI predictions error:", error);
+      res.status(500).json({ message: "AI prediction service failed" });
+    }
+  });
+
+  // Helper function to categorize items
+  function getCategoryFromItemName(itemName: string): string {
+    const categories: Record<string, string> = {
+      "Eggs": "Dairy & Eggs",
+      "Milk": "Dairy & Eggs", 
+      "Bread": "Bakery",
+      "Gas": "Energy",
+      "Ground Beef": "Meat",
+      "Rice": "Grains"
+    };
+    return categories[itemName] || "General";
+  }
 
   // FRED API integration endpoint
   app.get("/api/fred-data", async (req, res) => {

@@ -22,63 +22,74 @@ export interface UserPreferences {
   riskTolerance: "conservative" | "moderate" | "aggressive";
 }
 
-// Simulated AI prediction engine
-export const generatePricePredictions = (
+// Real AI-powered prediction engine using OpenAI GPT-4o
+export const generatePricePredictions = async (
   priceData: any[],
   economicData: any,
   userPreferences?: UserPreferences
-): PricePrediction[] => {
-  return priceData.map((item) => {
-    // Simulate ML model calculations
-    const economicWeight = calculateEconomicWeight(economicData);
-    const seasonalWeight = calculateSeasonalWeight(item.itemName);
-    const historicalWeight = calculateHistoricalWeight(item);
-    const supplyDemandWeight = calculateSupplyDemandWeight(item.itemName);
+): Promise<PricePrediction[]> => {
+  try {
+    // Call backend API for real AI predictions
+    const response = await fetch('/api/ai-predictions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        priceData,
+        economicData,
+        userPreferences
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`AI prediction API failed: ${response.statusText}`);
+    }
+
+    const aiPredictions = await response.json();
+    return aiPredictions;
+  } catch (error) {
+    console.error('AI prediction error, falling back to algorithmic analysis:', error);
     
-    // Combine factors for prediction
-    const predictionFactors = {
-      economicTrends: economicWeight,
-      seasonality: seasonalWeight,
-      historicalPatterns: historicalWeight,
-      supplyDemand: supplyDemandWeight
-    };
-    
-    // Calculate predicted price change
-    const totalWeight = Object.values(predictionFactors).reduce((sum, val) => sum + val, 0) / 4;
-    const priceChangePercent = (totalWeight - 0.5) * 0.3; // ±15% max change
-    const predicted30DayPrice = item.currentPrice * (1 + priceChangePercent);
-    
-    // Determine direction and confidence
-    const priceDirection = Math.abs(priceChangePercent) < 0.02 ? "STABLE" : 
-                          priceChangePercent > 0 ? "UP" : "DOWN";
-    const confidence = Math.min(0.95, Math.max(0.6, Math.abs(totalWeight - 0.5) * 2));
-    
-    // Calculate Smart Buy Score (1-10)
-    const smartBuyScore = calculateSmartBuyScore(
-      item,
-      predicted30DayPrice,
-      confidence,
-      userPreferences
-    );
-    
-    // Determine recommended action
-    const recommendedAction = getRecommendedAction(smartBuyScore, priceDirection, confidence);
-    
-    // Calculate expected savings
-    const expectedSavings = Math.max(0, item.currentPrice - predicted30DayPrice);
-    
-    return {
-      itemName: item.itemName,
-      currentPrice: item.currentPrice,
-      predicted30DayPrice: Math.round(predicted30DayPrice * 100) / 100,
-      priceDirection,
-      confidence: Math.round(confidence * 100) / 100,
-      smartBuyScore,
-      predictionFactors,
-      recommendedAction,
-      expectedSavings: Math.round(expectedSavings * 100) / 100
-    };
-  });
+    // Fallback to algorithmic predictions if AI fails
+    return priceData.map((item) => {
+      const economicWeight = calculateEconomicWeight(economicData);
+      const seasonalWeight = calculateSeasonalWeight(item.itemName);
+      const historicalWeight = calculateHistoricalWeight(item);
+      const supplyDemandWeight = calculateSupplyDemandWeight(item.itemName);
+      
+      const predictionFactors = {
+        economicTrends: economicWeight,
+        seasonality: seasonalWeight,
+        historicalPatterns: historicalWeight,
+        supplyDemand: supplyDemandWeight
+      };
+      
+      const totalWeight = Object.values(predictionFactors).reduce((sum, val) => sum + val, 0) / 4;
+      const priceChangePercent = (totalWeight - 0.5) * 0.3;
+      const predicted30DayPrice = item.currentPrice * (1 + priceChangePercent);
+      
+      const priceDirection = Math.abs(priceChangePercent) < 0.02 ? "STABLE" : 
+                            priceChangePercent > 0 ? "UP" : "DOWN";
+      const confidence = Math.min(0.95, Math.max(0.6, Math.abs(totalWeight - 0.5) * 2));
+      
+      const smartBuyScore = calculateSmartBuyScore(item, predicted30DayPrice, confidence, userPreferences);
+      const recommendedAction = getRecommendedAction(smartBuyScore, priceDirection, confidence);
+      const expectedSavings = Math.max(0, item.currentPrice - predicted30DayPrice);
+
+      return {
+        itemName: item.itemName,
+        currentPrice: item.currentPrice,
+        predicted30DayPrice: Math.round(predicted30DayPrice * 100) / 100,
+        priceDirection,
+        confidence: Math.round(confidence * 100) / 100,
+        smartBuyScore,
+        predictionFactors,
+        recommendedAction,
+        expectedSavings: Math.round(expectedSavings * 100) / 100
+      };
+    });
+  }
 };
 
 const calculateEconomicWeight = (economicData: any): number => {
