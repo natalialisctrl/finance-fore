@@ -300,9 +300,7 @@ export default function Dashboard() {
           <div className="text-center">
             <div className="text-2xl sm:text-4xl lg:text-6xl font-bold mb-4 lg:mb-6 fade-in">
               <div className="spinning-3d-text">
-                <span className="text-white">Smart Financial</span>
-              </div>
-              <div className="spinning-3d-text spinning-3d-text-delayed">
+                <span className="text-white block">Smart Financial</span>
                 <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent pb-2 leading-tight">
                   Intelligence
                 </span>

@@ -967,9 +967,10 @@ video::after {
   transition: all 0.3s ease;
 }
 
-/* Delayed animation for second line */
-.spinning-3d-text-delayed span {
-  animation-delay: -4s; /* Start halfway through the cycle for offset effect */
+/* Enhanced 3D text container */
+.spinning-3d-text span {
+  text-align: center;
+  line-height: 1.1;
 }
 
 .spinning-3d-text:hover span {
