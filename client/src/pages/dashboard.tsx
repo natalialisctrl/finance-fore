@@ -203,53 +203,53 @@ export default function Dashboard() {
         {/* Navigation */}
         <nav className="relative z-50 glass-card mx-2 mt-2 lg:mx-8 lg:mt-4">
           <div className="max-w-7xl mx-auto px-3 lg:px-8">
-            <div className="flex justify-between items-center h-14 lg:h-16">
-              <div className="flex items-center space-x-2 lg:space-x-3">
-                <div className="w-8 h-8 lg:w-10 lg:h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center glow-pulse">
+            <div className="flex justify-between items-center h-16 lg:h-18 min-h-[64px]">
+              <div className="flex items-center space-x-2 lg:space-x-3 min-w-0 flex-shrink-0">
+                <div className="w-8 h-8 lg:w-10 lg:h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center glow-pulse flex-shrink-0">
                   <CreditCard className="w-4 h-4 lg:w-6 lg:h-6 text-white" />
                 </div>
-                <div>
-                  <h1 className="text-lg lg:text-xl font-bold text-white">
+                <div className="min-w-0">
+                  <h1 className="text-base sm:text-lg lg:text-xl font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
                     Financial Forecast
                   </h1>
-                  <p className="text-xs text-white/70 hidden sm:block">AI-Powered Financial Intelligence</p>
+                  <p className="text-xs text-white/70 hidden sm:block whitespace-nowrap">AI-Powered Financial Intelligence</p>
                 </div>
               </div>
               
-              <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
+              <div className="hidden md:flex items-center space-x-4 lg:space-x-6 flex-shrink">
                 <button 
                   onClick={() => setActiveTab('dashboard')}
-                  className={`text-sm lg:text-base font-semibold transition-colors ${activeTab === 'dashboard' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'dashboard' ? 'text-white' : 'text-white/80 hover:text-white'}`}
                 >
                   Dashboard
                 </button>
                 <button 
                   onClick={() => setActiveTab('ai-predictions')}
-                  className={`text-sm lg:text-base font-semibold transition-colors ${activeTab === 'ai-predictions' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'ai-predictions' ? 'text-white' : 'text-white/80 hover:text-white'}`}
                 >
                   AI Predictions
                 </button>
                 <button 
                   onClick={() => setActiveTab('trend-analysis')}
-                  className={`text-sm lg:text-base font-semibold transition-colors ${activeTab === 'trend-analysis' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'trend-analysis' ? 'text-white' : 'text-white/80 hover:text-white'}`}
                 >
                   Trend Analysis
                 </button>
                 <button 
                   onClick={() => setActiveTab('price-tracking')}
-                  className={`text-sm lg:text-base font-semibold transition-colors ${activeTab === 'price-tracking' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'price-tracking' ? 'text-white' : 'text-white/80 hover:text-white'}`}
                 >
                   Price Tracking
                 </button>
                 <button 
                   onClick={() => setActiveTab('budget')}
-                  className={`text-sm lg:text-base font-semibold transition-colors ${activeTab === 'budget' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'budget' ? 'text-white' : 'text-white/80 hover:text-white'}`}
                 >
                   Budget
                 </button>
               </div>
 
-              <div className="flex items-center space-x-1 lg:space-x-3">
+              <div className="flex items-center space-x-1 lg:space-x-3 flex-shrink-0">
 {/* Dark mode only - no theme toggle */}
                 
                 {user && (
