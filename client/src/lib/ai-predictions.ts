@@ -191,11 +191,18 @@ export const generatePersonalizedRecommendations = (
   budgetOptimization: string[];
   timingAdvice: string[];
 } => {
-  // Sort by Smart Buy Score
-  const topRecommendations = predictions
-    .filter(p => p.smartBuyScore >= 7)
+  // Sort by Smart Buy Score - be more lenient to ensure we get recommendations
+  let topRecommendations = predictions
+    .filter(p => p.smartBuyScore >= 6)
     .sort((a, b) => b.smartBuyScore - a.smartBuyScore)
     .slice(0, 3);
+  
+  // Fallback: if no high-scoring items, get the top 3 regardless of score
+  if (topRecommendations.length === 0) {
+    topRecommendations = predictions
+      .sort((a, b) => b.smartBuyScore - a.smartBuyScore)
+      .slice(0, 3);
+  }
   
   const budgetOptimization = [
     "Stock up on eggs and bread this week - prices expected to rise 8-12% next month",
