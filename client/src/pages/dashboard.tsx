@@ -39,7 +39,43 @@ export default function Dashboard() {
   const [newItemName, setNewItemName] = useState("");
   const [newItemQuantity, setNewItemQuantity] = useState("");
   const [videoInteracted, setVideoInteracted] = useState(false);
+  const [titleSpinning, setTitleSpinning] = useState(false);
   const queryClient = useQueryClient();
+
+  // Handle title 3D interaction
+  const handleTitleClick = () => {
+    setTitleSpinning(true);
+    setTimeout(() => setTitleSpinning(false), 600);
+  };
+
+  // Handle scroll-triggered 3D effect on mobile
+  useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (window.innerWidth <= 768) { // Mobile only
+            setTitleSpinning(true);
+            setTimeout(() => setTitleSpinning(false), 400);
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    let scrollTimeout: NodeJS.Timeout;
+    const debouncedScroll = () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(handleScroll, 100);
+    };
+
+    window.addEventListener('scroll', debouncedScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', debouncedScroll);
+      clearTimeout(scrollTimeout);
+    };
+  }, []);
 
   // Video interaction handler for mobile
   const handleVideoInteraction = () => {
@@ -298,12 +334,15 @@ export default function Dashboard() {
         {/* Hero Content */}
         <div className="relative z-40 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-16 pb-12 lg:pb-24">
           <div className="text-center">
-            <div className="text-2xl sm:text-4xl lg:text-6xl font-bold mb-4 lg:mb-6 fade-in">
-              <div className="spinning-3d-text">
-                <span className="text-white block">Smart Financial</span>
-                <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent pb-2 leading-tight">
+            <div 
+              className={`text-2xl sm:text-4xl lg:text-6xl font-bold mb-4 lg:mb-6 fade-in interactive-3d-title ${titleSpinning ? 'spinning' : ''}`}
+              onClick={handleTitleClick}
+            >
+              <div className="title-content">
+                <div className="text-white">Smart Financial</div>
+                <div className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent pb-2 leading-tight">
                   Intelligence
-                </span>
+                </div>
               </div>
             </div>
             <p className="text-sm sm:text-lg lg:text-xl text-white/80 max-w-3xl mx-auto mb-6 lg:mb-8 slide-up px-4">
