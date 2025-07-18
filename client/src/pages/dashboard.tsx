@@ -10,7 +10,7 @@ import { MinimalistFloatingDollars } from "@/components/minimalist-floating-doll
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 // import { useAuth } from "@/hooks/useAuth"; // Auto-login mode
-import { CreditCard, User, Plus, LogOut, TrendingUp, ShoppingCart, DollarSign, PiggyBank, AlertTriangle, CheckCircle, Clock, MapPin, MoreVertical, X, BarChart3, Brain, Wallet } from "lucide-react";
+import { CreditCard, User, LogOut, TrendingUp, ShoppingCart, DollarSign, PiggyBank, AlertTriangle, CheckCircle, Clock, MapPin, MoreVertical, X, BarChart3, Brain, Wallet } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/authUtils";
@@ -419,16 +419,7 @@ export default function Dashboard() {
           )}
         </div>
       </div>
-      {/* Floating Action Button */}
-      <button 
-        className="fab flex items-center justify-center ripple"
-        onClick={() => {
-          // Add item functionality - could open a modal or navigate to add item page
-          console.log('Add item clicked');
-        }}
-      >
-        <Plus className="w-6 h-6 text-white" />
-      </button>
+
     </div>
   );
 }
