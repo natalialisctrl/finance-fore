@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Plus, Calendar, TrendingUp, TrendingDown, History } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 import { formatCurrency } from "@/lib/utils";
+import { useMemo } from "react";
 
 export function PriceTrackingGrid() {
   const { data: priceData, isLoading: isPriceLoading } = useQuery({
@@ -25,15 +26,16 @@ export function PriceTrackingGrid() {
 
   const isLoading = isPriceLoading || isEconomicLoading;
 
-  // Generate historical comparison data (simulated)
-  const generateHistoricalData = (currentPrice: number) => {
+  // Generate consistent historical comparison data
+  const generateHistoricalData = useMemo(() => (currentPrice: number, itemName: string) => {
     const data = [];
-    const basePrice = currentPrice * (0.8 + Math.random() * 0.4); // Historical base
+    const seed = itemName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const basePrice = currentPrice * (0.8 + ((seed % 40) / 100)); // Deterministic base
     
     for (let i = 0; i < 12; i++) {
       const variance = 0.1 * Math.sin((i / 12) * Math.PI * 2); // Seasonal pattern
-      const noise = (Math.random() - 0.5) * 0.05; // Random noise
-      const price = basePrice * (1 + variance + noise);
+      const deterministicNoise = (((seed + i * 17) % 100) / 100 - 0.5) * 0.05; // Deterministic noise
+      const price = basePrice * (1 + variance + deterministicNoise);
       data.push({ 
         month: i, 
         price: Math.max(0, price),
@@ -41,9 +43,9 @@ export function PriceTrackingGrid() {
       });
     }
     return data;
-  };
+  }, []);
 
-  const getYearOverYearChange = (currentPrice: number, historicalData: any[]) => {
+  const getYearOverYearChange = useMemo(() => (currentPrice: number, historicalData: any[]) => {
     const lastYearPrice = historicalData[historicalData.length - 1]?.price || currentPrice;
     const change = ((currentPrice - lastYearPrice) / lastYearPrice) * 100;
     return {
@@ -51,7 +53,7 @@ export function PriceTrackingGrid() {
       direction: change > 0 ? 'up' : change < 0 ? 'down' : 'stable',
       amount: Math.abs(currentPrice - lastYearPrice)
     };
-  };
+  }, []);
   
   // Generate AI predictions for Smart Buy Scores
   const predictions = priceData && economicData ? 
@@ -135,7 +137,7 @@ export function PriceTrackingGrid() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {priceData?.map((item) => {
           const prediction = predictions.find(p => p.itemName === item.itemName);
-          const historicalData = generateHistoricalData(item.currentPrice);
+          const historicalData = generateHistoricalData(item.currentPrice, item.itemName);
           const yearOverYear = getYearOverYearChange(item.currentPrice, historicalData);
           
           return (

@@ -293,9 +293,9 @@ export default function Dashboard() {
               {[
                 { id: 'dashboard', label: 'Home', icon: BarChart3 },
                 { id: 'ai-predictions', label: 'AI', icon: Brain },
-                { id: 'price-tracking', label: 'Prices', icon: TrendingUp },
-                { id: 'budget', label: 'Budget', icon: Wallet },
-                { id: 'shopping-list', label: 'Shop', icon: ShoppingCart }
+                { id: 'trend-analysis', label: 'Trends', icon: TrendingUp },
+                { id: 'price-tracking', label: 'Prices', icon: DollarSign },
+                { id: 'budget', label: 'Budget', icon: Wallet }
               ].map((tab) => (
                 <button
                   key={tab.id}
