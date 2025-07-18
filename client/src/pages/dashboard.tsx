@@ -194,7 +194,7 @@ export default function Dashboard() {
         </div>
         
         {/* Floating particles background */}
-        <div className="absolute inset-0 overflow-hidden z-10">
+        <div className="absolute inset-0 overflow-hidden z-10 bg-slate-900">
           <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-white/20 rounded-full animate-pulse float"></div>
           <div className="absolute top-3/4 left-3/4 w-1 h-1 bg-white/30 rounded-full animate-pulse" style={{ animationDelay: '2s' }}></div>
           <div className="absolute top-1/2 right-1/4 w-3 h-3 bg-white/10 rounded-full float" style={{ animationDelay: '4s' }}></div>
