@@ -300,9 +300,11 @@ export default function Dashboard() {
           <div className="text-center">
             <h2 className="text-2xl sm:text-4xl lg:text-6xl font-bold text-white mb-4 lg:mb-6 fade-in">
               Smart Financial
-              <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent pb-2 leading-tight">
-                Intelligence
-              </span>
+              <div className="spinning-3d-text">
+                <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent pb-2 leading-tight">
+                  Intelligence
+                </span>
+              </div>
             </h2>
             <p className="text-sm sm:text-lg lg:text-xl text-white/80 max-w-3xl mx-auto mb-6 lg:mb-8 slide-up px-4">
               Harness the power of AI to make smarter purchase decisions with real-time economic data and predictive analytics.
