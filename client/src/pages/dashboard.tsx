@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import floatingDollarVideo from "@assets/vecteezy_3d-dollar-money-bundle-floating-animation-on-black-background_23936705_1752690826601.mp4";
+
 
 export default function Dashboard() {
   const { theme } = useTheme();
@@ -123,73 +123,37 @@ export default function Dashboard() {
   }, [isAuthenticated, isLoading, toast]);
 
   return (
-    <div 
-      className="min-h-screen" 
-      onClick={handleVideoInteraction}
-      onTouchStart={handleVideoInteraction}
-    >
+    <div className="min-h-screen">
       {/* Minimalist Floating Dollar Animations */}
       <MinimalistFloatingDollars />
       
       {/* Premium Hero Section */}
       <div className="hero-gradient relative overflow-hidden">
-        {/* Floating dollar video background overlay */}
+        {/* Enhanced animated background */}
         <div className="absolute inset-0 overflow-hidden">
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-            preload="auto"
-            controls={false}
-            webkit-playsinline="true"
-            x5-playsinline="true"
-            x-webkit-airplay="deny"
-            disablePictureInPicture
-            className="absolute inset-0 w-full h-full object-cover opacity-50 pointer-events-none"
-            style={{ 
-              filter: 'brightness(3) contrast(2.5) saturate(3) hue-rotate(20deg)',
-              zIndex: 1,
-              display: 'block',
-              mixBlendMode: 'screen'
-            }}
-            onError={(e) => {
-              console.log('Video error:', e);
-              const fallback = document.querySelector('.video-fallback');
-              if (fallback) (fallback as HTMLElement).style.opacity = '0.8';
-            }}
-            onLoadStart={() => console.log('Video loading started')}
-            onCanPlay={() => console.log('Video can play')}
-            onLoadedData={() => console.log('Video data loaded')}
-          >
-            <source src={floatingDollarVideo} type="video/mp4" />
-            <source src={floatingDollarVideo} type="video/webm" />
-            Your browser does not support the video tag.
-          </video>
-          {/* Enhanced fallback animated background */}
           <div 
-            className="video-fallback absolute inset-0 opacity-80"
+            className="absolute inset-0 opacity-60"
             style={{
               background: `
-                radial-gradient(circle at 20% 30%, rgba(255, 193, 7, 0.6) 0%, transparent 60%),
-                radial-gradient(circle at 80% 70%, rgba(255, 152, 0, 0.5) 0%, transparent 60%),
-                radial-gradient(circle at 40% 80%, rgba(255, 235, 59, 0.4) 0%, transparent 60%),
-                radial-gradient(circle at 60% 20%, rgba(255, 215, 0, 0.5) 0%, transparent 50%)
+                radial-gradient(circle at 20% 30%, rgba(255, 193, 7, 0.4) 0%, transparent 60%),
+                radial-gradient(circle at 80% 70%, rgba(255, 152, 0, 0.3) 0%, transparent 60%),
+                radial-gradient(circle at 40% 80%, rgba(255, 235, 59, 0.25) 0%, transparent 60%),
+                radial-gradient(circle at 60% 20%, rgba(255, 215, 0, 0.35) 0%, transparent 50%)
               `,
               animation: 'float 8s ease-in-out infinite, pulse 4s ease-in-out infinite alternate',
               display: 'block',
               mixBlendMode: 'screen'
             }}
           >
-            {/* Floating dollar symbols */}
-            <div className="absolute top-1/4 left-1/4 text-6xl text-yellow-400/50 animate-bounce" style={{ animationDelay: '0s', animationDuration: '3s' }}>$</div>
-            <div className="absolute top-3/4 right-1/4 text-4xl text-orange-400/60 animate-bounce" style={{ animationDelay: '1s', animationDuration: '4s' }}>$</div>
-            <div className="absolute bottom-1/3 left-1/3 text-5xl text-yellow-300/45 animate-bounce" style={{ animationDelay: '2s', animationDuration: '3.5s' }}>$</div>
-            <div className="absolute top-1/2 right-1/3 text-3xl text-amber-400/55 animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '4.5s' }}>$</div>
-            <div className="absolute top-1/3 left-2/3 text-5xl text-yellow-500/40 animate-bounce" style={{ animationDelay: '1.5s', animationDuration: '3.8s' }}>$</div>
-            <div className="absolute bottom-1/4 right-2/3 text-4xl text-orange-300/50 animate-bounce" style={{ animationDelay: '2.5s', animationDuration: '4.2s' }}>$</div>
+            {/* Enhanced floating dollar symbols */}
+            <div className="absolute top-1/4 left-1/4 text-6xl text-yellow-400/30 animate-bounce" style={{ animationDelay: '0s', animationDuration: '3s' }}>$</div>
+            <div className="absolute top-3/4 right-1/4 text-4xl text-orange-400/40 animate-bounce" style={{ animationDelay: '1s', animationDuration: '4s' }}>$</div>
+            <div className="absolute bottom-1/3 left-1/3 text-5xl text-yellow-300/25 animate-bounce" style={{ animationDelay: '2s', animationDuration: '3.5s' }}>$</div>
+            <div className="absolute top-1/2 right-1/3 text-3xl text-amber-400/35 animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '4.5s' }}>$</div>
+            <div className="absolute top-1/3 left-2/3 text-5xl text-yellow-500/20 animate-bounce" style={{ animationDelay: '1.5s', animationDuration: '3.8s' }}>$</div>
+            <div className="absolute bottom-1/4 right-2/3 text-4xl text-orange-300/30 animate-bounce" style={{ animationDelay: '2.5s', animationDuration: '4.2s' }}>$</div>
           </div>
-          {/* Overlay gradient to blend video with existing background */}
+          {/* Overlay gradient for blending */}
           <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-blue-600/5" style={{ zIndex: 2 }}></div>
         </div>
         

@@ -843,37 +843,75 @@
   }
 }
 
-/* Remove video controls completely */
-video::-webkit-media-controls {
+/* COMPLETE video controls removal - ALL browsers */
+video::-webkit-media-controls,
+video::-webkit-media-controls-panel,
+video::-webkit-media-controls-play-button,
+video::-webkit-media-controls-start-playback-button,
+video::-webkit-media-controls-volume-slider,
+video::-webkit-media-controls-fullscreen-button,
+video::-webkit-media-controls-timeline,
+video::-webkit-media-controls-current-time-display,
+video::-webkit-media-controls-time-remaining-display,
+video::-webkit-media-controls-seek-back-button,
+video::-webkit-media-controls-seek-forward-button,
+video::-webkit-media-controls-rewind-button,
+video::-webkit-media-controls-return-to-realtime-button,
+video::-webkit-media-controls-toggle-closed-captions-button {
   display: none !important;
-}
-
-video::-webkit-media-controls-panel {
-  display: none !important;
-}
-
-video::-webkit-media-controls-play-button {
-  display: none !important;
-}
-
-video::-webkit-media-controls-start-playback-button {
-  display: none !important;
-}
-
-video::-webkit-media-controls-volume-slider {
-  display: none !important;
-}
-
-video::-webkit-media-controls-fullscreen-button {
-  display: none !important;
-}
-
-video::-webkit-media-controls-timeline {
-  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 video::-moz-media-controls {
   display: none !important;
+}
+
+video::-ms-media-controls {
+  display: none !important;
+}
+
+/* Force video to never show controls */
+video {
+  pointer-events: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+}
+
+video[controls] {
+  pointer-events: none !important;
+}
+
+video[controls="controls"] {
+  pointer-events: none !important;
+}
+
+/* Hide any overlay controls */
+video::before,
+video::after {
+  display: none !important;
+}
+
+/* Mobile specific video control removal */
+@media (max-width: 768px) {
+  video {
+    pointer-events: none !important;
+    touch-action: none !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+  }
+  
+  video::-webkit-media-controls-overlay-play-button {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
 }
 
 /* Minimalist floating dollar animations */
