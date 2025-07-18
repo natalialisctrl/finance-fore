@@ -157,8 +157,8 @@ export function EconomicDashboard() {
   const cpiTrend = getTrendIcon(economicData.consumerPriceIndex, { good: 250, warning: 270 });
 
   return (
-    <div className="mb-8">
-      <div className="flex items-center justify-between mb-6">
+    <div className="mb-8 mt-12">
+      <div className="flex items-center justify-between mb-6 mt-8">
         <div>
           <h2 className="text-2xl font-bold dark:text-white text-[#ffffff] bg-[#72747d00]">Economic Dashboard</h2>
           <p className="text-sm text-slate-400 mt-1">

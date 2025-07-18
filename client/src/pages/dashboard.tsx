@@ -370,7 +370,7 @@ export default function Dashboard() {
 
       </div>
       {/* Main Content */}
-      <div className="relative z-30 -mt-8 lg:-mt-16">
+      <div className="relative z-30 mt-4 lg:mt-8">
         <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 lg:py-8">
           {activeTab === 'dashboard' && (
             <>
