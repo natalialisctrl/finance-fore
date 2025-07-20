@@ -256,7 +256,7 @@ The application is designed for deployment on platforms like Replit, with automa
   - Home: Main dashboard with economic data, budget tracking, shopping list
   - AI Insights: AI predictions and price tracking grid
   - Budget & Goals: Enhanced budget tracker and goals/debt management
-  - Planning: Scenario planning and economic trend analysis
+  - Smart Planning: Scenario planning and economic trend analysis
   - Settings: Notifications center and security/privacy dashboard
 - **Reduced Cognitive Load**: Each tab contains 1-2 related components to prevent information overload
 - **Enhanced Usability**: Balanced between functionality and simplicity for optimal daily use

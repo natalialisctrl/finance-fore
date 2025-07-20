@@ -243,7 +243,7 @@ export default function Dashboard() {
                   onClick={() => setActiveTab('planning')}
                   className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'planning' ? 'text-white' : 'text-white/80 hover:text-white'}`}
                 >
-                  Planning
+                  Smart Planning
                 </button>
                 <button 
                   onClick={() => setActiveTab('settings')}
@@ -298,7 +298,7 @@ export default function Dashboard() {
                 { id: 'dashboard', label: 'Home', icon: BarChart3 },
                 { id: 'ai-predictions', label: 'AI Insights', icon: Brain },
                 { id: 'budget-goals', label: 'Budget & Goals', icon: Target },
-                { id: 'planning', label: 'Planning', icon: Calculator },
+                { id: 'planning', label: 'Smart Planning', icon: Calculator },
                 { id: 'settings', label: 'Settings', icon: Bell }
               ].map((tab) => (
                 <button
