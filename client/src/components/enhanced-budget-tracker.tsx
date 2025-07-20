@@ -247,7 +247,7 @@ export function EnhancedBudgetTracker() {
                           <Line 
                             type="monotone" 
                             dataKey="projected" 
-                            stroke="#94a3b8" 
+                            stroke="#ffffff" 
                             strokeWidth={1} 
                             strokeDasharray="3 3"
                             dot={false}

@@ -72,9 +72,9 @@ export function ShoppingList() {
       case "CONSIDER":
         return "text-amber-600 dark:text-amber-400";
       case "WAIT":
-        return "text-slate-500 dark:text-slate-400";
+        return "text-white";
       default:
-        return "text-slate-500 dark:text-slate-400";
+        return "text-white";
     }
   };
 
@@ -196,7 +196,7 @@ export function ShoppingList() {
                   <div className="font-semibold text-slate-900 dark:text-white">
                     ${item.estimatedPrice.toFixed(2)}
                   </div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400">
+                  <div className="text-xs text-white">
                     vs ${item.averagePrice.toFixed(2)} avg
                   </div>
                 </div>

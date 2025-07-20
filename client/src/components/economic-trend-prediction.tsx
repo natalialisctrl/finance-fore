@@ -158,7 +158,7 @@ export function EconomicTrendPrediction() {
     return (
       <Card className="glass-card">
         <CardContent className="p-6">
-          <p className="text-center text-slate-500 dark:text-slate-400">
+          <p className="text-center text-white">
             Unable to load economic data for predictions.
           </p>
         </CardContent>
@@ -174,11 +174,11 @@ export function EconomicTrendPrediction() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold dark:text-white text-white">Economic Trend Predictions</h2>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-white mt-1">
             AI-powered forecasts with confidence intervals based on FRED data
           </p>
         </div>
-        <div className="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-400">
+        <div className="flex items-center space-x-2 text-sm text-white">
           <Brain className="w-4 h-4" />
           <span>ML Predictions</span>
         </div>

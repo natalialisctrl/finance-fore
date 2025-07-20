@@ -64,7 +64,7 @@ export function SmartBuyIndicator({
         <div className={`font-bold ${getScoreColor(score)}`}>
           {score}
         </div>
-        <div className="text-xs text-slate-500 dark:text-slate-400">
+        <div className="text-xs text-white">
           AI
         </div>
         
@@ -79,7 +79,7 @@ export function SmartBuyIndicator({
           <div className={`text-sm font-medium ${getScoreColor(score)}`}>
             {getRecommendation(score)}
           </div>
-          <div className="text-xs text-slate-500 dark:text-slate-400">
+          <div className="text-xs text-white">
             {Math.round(confidence * 100)}% confidence
           </div>
         </div>
