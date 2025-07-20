@@ -337,14 +337,21 @@ export default function Dashboard() {
         {/* Hero Content */}
         <div className="relative z-40 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-16 pb-12 lg:pb-24">
           <div className="text-center">
-            <div 
-              className={`text-2xl sm:text-4xl lg:text-6xl font-bold mb-4 lg:mb-6 fade-in interactive-3d-title ${titleSpinning ? 'spinning' : ''}`}
-              onClick={handleTitleClick}
-            >
-              <div className="title-content">
-                <div className="text-white">Smart Financial</div>
-                <div className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent pb-2 leading-tight">
-                  Intelligence
+            <div className="flex items-center justify-center mb-4 lg:mb-6">
+              <img 
+                src={ForeseeLogo} 
+                alt="Foresee Logo" 
+                className="w-16 h-16 lg:w-24 lg:h-24 object-contain mr-4 lg:mr-6"
+              />
+              <div 
+                className={`text-2xl sm:text-4xl lg:text-6xl font-bold fade-in interactive-3d-title ${titleSpinning ? 'spinning' : ''}`}
+                onClick={handleTitleClick}
+              >
+                <div className="title-content">
+                  <div className="text-white">Smart Financial</div>
+                  <div className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent pb-2 leading-tight">
+                    Intelligence
+                  </div>
                 </div>
               </div>
             </div>
