@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 // import { useAuth } from "@/hooks/useAuth"; // Auto-login mode
 import { CreditCard, User, LogOut, TrendingUp, ShoppingCart, DollarSign, PiggyBank, AlertTriangle, CheckCircle, Clock, MapPin, MoreVertical, X, BarChart3, Brain, Wallet, Target, Calculator, Bell, Shield } from "lucide-react";
+import ForeseeLogo from "@assets/Foresee_1753054026597.png";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/authUtils";
@@ -211,7 +212,7 @@ export default function Dashboard() {
               <div className="flex items-center space-x-2 lg:space-x-3 min-w-0 flex-shrink-0">
                 <div className="w-8 h-8 lg:w-10 lg:h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center glow-pulse flex-shrink-0 overflow-hidden">
                   <img 
-                    src="/attached_assets/Foresee_1753054026597.png" 
+                    src={ForeseeLogo} 
                     alt="Foresee Logo" 
                     className="w-6 h-6 lg:w-8 lg:h-8 object-contain"
                   />
