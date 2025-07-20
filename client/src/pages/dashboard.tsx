@@ -204,48 +204,10 @@ export default function Dashboard() {
           <div className="absolute top-1/2 right-1/4 w-3 h-3 bg-white/10 rounded-full float" style={{ animationDelay: '4s' }}></div>
         </div>
 
-        {/* Navigation */}
-        <nav className="relative z-50 glass-card mx-2 mt-2 lg:mx-8 lg:mt-4 bg-[#000000]">
-          <div className="max-w-7xl mx-auto px-3 lg:px-8">
-            <div className="flex justify-center items-center h-16 lg:h-18 min-h-[64px]">
-              <div className="hidden md:flex items-center space-x-4 lg:space-x-6">
-                <button 
-                  onClick={() => setActiveTab('dashboard')}
-                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'dashboard' ? 'text-white' : 'text-white/80 hover:text-white'}`}
-                >
-                  Dashboard
-                </button>
-                <button 
-                  onClick={() => setActiveTab('ai-predictions')}
-                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'ai-predictions' ? 'text-white' : 'text-white/80 hover:text-white'}`}
-                >
-                  AI Insights
-                </button>
-                <button 
-                  onClick={() => setActiveTab('budget-goals')}
-                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'budget-goals' ? 'text-white' : 'text-white/80 hover:text-white'}`}
-                >
-                  Budget & Goals
-                </button>
-                <button 
-                  onClick={() => setActiveTab('planning')}
-                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'planning' ? 'text-white' : 'text-white/80 hover:text-white'}`}
-                >
-                  Smart Planning
-                </button>
-                <button 
-                  onClick={() => setActiveTab('settings')}
-                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'settings' ? 'text-white' : 'text-white/80 hover:text-white'}`}
-                >
-                  Settings
-                </button>
-              </div>
-            </div>
-          </div>
-        </nav>
 
-        {/* Top-Tier Mobile Navigation Tabs */}
-        <div className="md:hidden relative z-50 mx-4 mt-4 mb-6">
+
+        {/* Navigation Tabs */}
+        <div className="relative z-50 mx-4 mt-4 mb-6">
           <div className="glass-card rounded-3xl p-3 bg-white/12 backdrop-blur-2xl border-2 border-white/20 shadow-2xl">
             <div className="flex space-x-2">
               {[
@@ -292,21 +254,14 @@ export default function Dashboard() {
         {/* Hero Content */}
         <div className="relative z-40 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-16 pb-12 lg:pb-24">
           <div className="text-center">
-            <div className="flex items-center justify-center mb-4 lg:mb-6">
-              <img 
-                src={ForeseeLogo} 
-                alt="Foresee Logo" 
-                className="w-16 h-16 lg:w-24 lg:h-24 object-contain mr-4 lg:mr-6"
-              />
-              <div 
-                className={`text-2xl sm:text-4xl lg:text-6xl font-bold fade-in interactive-3d-title ${titleSpinning ? 'spinning' : ''}`}
-                onClick={handleTitleClick}
-              >
-                <div className="title-content">
-                  <div className="text-white">Smart Financial</div>
-                  <div className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent pb-2 leading-tight">
-                    Intelligence
-                  </div>
+            <div 
+              className={`text-2xl sm:text-4xl lg:text-6xl font-bold mb-4 lg:mb-6 fade-in interactive-3d-title ${titleSpinning ? 'spinning' : ''}`}
+              onClick={handleTitleClick}
+            >
+              <div className="title-content">
+                <div className="text-white">Smart Financial</div>
+                <div className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent pb-2 leading-tight">
+                  Intelligence
                 </div>
               </div>
             </div>
