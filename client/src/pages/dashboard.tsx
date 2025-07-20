@@ -209,7 +209,7 @@ export default function Dashboard() {
           <div className="max-w-7xl mx-auto px-3 lg:px-8">
             <div className="flex justify-between items-center h-16 lg:h-18 min-h-[64px]">
               <div className="flex items-center space-x-2 lg:space-x-3 min-w-0 flex-shrink-0">
-                <div className="w-16 h-16 lg:w-20 lg:h-20 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center glow-pulse flex-shrink-0 overflow-hidden">
+                <div className="w-16 h-16 lg:w-20 lg:h-20 flex items-center justify-center flex-shrink-0">
                   <img 
                     src={ForeseeLogo} 
                     alt="Foresee Logo" 
