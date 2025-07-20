@@ -167,7 +167,6 @@ export default function Dashboard() {
     <div className="min-h-screen">
       {/* Minimalist Floating Dollar Animations */}
       <MinimalistFloatingDollars />
-      
       {/* Premium Hero Section */}
       <div className="hero-gradient relative overflow-hidden">
         {/* Enhanced animated background */}
@@ -218,9 +217,7 @@ export default function Dashboard() {
                   />
                 </div>
                 <div className="min-w-0">
-                  <h1 className="text-base sm:text-lg lg:text-xl font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
-                    Financial Forecast
-                  </h1>
+                  <h1 className="sm:text-lg lg:text-xl whitespace-nowrap overflow-hidden text-ellipsis font-extralight text-[25px] text-center text-[#173ce8] bg-[#000000] mt-[4px] mb-[4px] pl-[7px] pr-[7px]">Foresee</h1>
                   <p className="text-xs text-white/70 hidden sm:block whitespace-nowrap">AI-Powered Financial Intelligence</p>
                 </div>
               </div>
@@ -443,7 +440,6 @@ export default function Dashboard() {
           )}
         </div>
       </div>
-
     </div>
   );
 }
