@@ -183,7 +183,7 @@ export function AIPredictionsDashboard() {
             <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
               AI Predictions & Smart Buy Scores
             </h2>
-            <p className="text-slate-600 dark:text-slate-400">
+            <p className="text-white">
               {isAIActive ? "30-day price forecasts powered by OpenAI GPT-4o" : "Economic analysis with algorithmic predictions"}
             </p>
             {!isAIActive && (
@@ -230,7 +230,7 @@ export function AIPredictionsDashboard() {
                       </div>
                       <div>
                         <div className="font-semibold text-slate-900 dark:text-white">{rec.itemName}</div>
-                        <div className="text-sm text-slate-500 dark:text-slate-400">
+                        <div className="text-sm text-white">
                           {rec.confidence > 0.8 ? "High confidence" : "Moderate confidence"}
                         </div>
                       </div>
@@ -280,7 +280,7 @@ export function AIPredictionsDashboard() {
               personalizedRecs.budgetOptimization.map((tip, index) => (
                 <div key={index} className="flex items-start space-x-3 glass-card p-3 bg-white/30 dark:bg-white/5">
                   <div className="w-3 h-3 bg-emerald-500 rounded-full mt-1.5 glow-pulse"></div>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">{tip}</p>
+                  <p className="text-sm text-white">{tip}</p>
                 </div>
               )) :
               // Fallback budget tips
@@ -291,7 +291,7 @@ export function AIPredictionsDashboard() {
               ].map((tip, index) => (
                 <div key={index} className="flex items-start space-x-3 glass-card p-3 bg-white/30 dark:bg-white/5">
                   <div className="w-3 h-3 bg-emerald-500 rounded-full mt-1.5 glow-pulse"></div>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">{tip}</p>
+                  <p className="text-sm text-white">{tip}</p>
                 </div>
               ))}
           </div>
@@ -306,14 +306,14 @@ export function AIPredictionsDashboard() {
             <div className="space-y-2">
               {personalizedRecs?.timingAdvice && personalizedRecs.timingAdvice.length > 0 ? 
                 personalizedRecs.timingAdvice.slice(0, 2).map((advice, index) => (
-                  <p key={index} className="text-sm text-slate-600 dark:text-slate-400 glass-card p-2 bg-white/20 dark:bg-white/5">{advice}</p>
+                  <p key={index} className="text-sm text-white glass-card p-2 bg-white/20 dark:bg-white/5">{advice}</p>
                 )) :
                 // Fallback timing advice
                 [
                   "Best shopping day this week: Tuesday - avoid weekend price premiums",
                   "Gas prices peak in 7-10 days - fill up early if needed"
                 ].map((advice, index) => (
-                  <p key={index} className="text-sm text-slate-600 dark:text-slate-400 glass-card p-2 bg-white/20 dark:bg-white/5">{advice}</p>
+                  <p key={index} className="text-sm text-white glass-card p-2 bg-white/20 dark:bg-white/5">{advice}</p>
                 ))}
             </div>
           </div>

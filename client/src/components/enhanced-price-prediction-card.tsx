@@ -60,7 +60,7 @@ export function EnhancedPricePredictionCard({
     switch (direction) {
       case "UP": return "text-red-600 dark:text-red-400";
       case "DOWN": return "text-blue-600 dark:text-blue-400";
-      default: return "text-slate-500 dark:text-slate-400";
+      default: return "text-white";
     }
   };
 
@@ -196,19 +196,19 @@ export function EnhancedPricePredictionCard({
           <div className="mb-4">
             <div className="flex items-center justify-between mb-3">
               <div className="space-y-1">
-                <div className="text-sm text-slate-600 dark:text-slate-400">Current Price</div>
+                <div className="text-sm text-white">Current Price</div>
                 <div className="text-2xl font-bold text-slate-900 dark:text-white">
                   ${prediction.currentPrice.toFixed(2)}
                 </div>
               </div>
               
               <div className="text-center">
-                <div className="text-sm text-slate-600 dark:text-slate-400">vs.</div>
-                <div className="text-xs text-slate-500 dark:text-slate-500 mt-1">30-day</div>
+                <div className="text-sm text-white">vs.</div>
+                <div className="text-xs text-white mt-1">30-day</div>
               </div>
               
               <div className="space-y-1 text-right">
-                <div className="text-sm text-slate-600 dark:text-slate-400">Forecast</div>
+                <div className="text-sm text-white">Forecast</div>
                 <div className={`text-2xl font-bold ${getDirectionColor(prediction.priceDirection)}`}>
                   ${prediction.predicted30DayPrice.toFixed(2)}
                 </div>
@@ -257,7 +257,7 @@ export function EnhancedPricePredictionCard({
               {/* Regional Comparison */}
               <div className="grid grid-cols-2 gap-4 text-xs">
                 <div className="space-y-1">
-                  <div className="text-slate-600 dark:text-slate-400">vs. National Avg</div>
+                  <div className="text-white">vs. National Avg</div>
                   <div className="font-medium text-slate-900 dark:text-white">
                     {(() => {
                       const seed = prediction.itemName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -268,7 +268,7 @@ export function EnhancedPricePredictionCard({
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <div className="text-slate-600 dark:text-slate-400">Seasonal Trend</div>
+                  <div className="text-white">Seasonal Trend</div>
                   <div className="font-medium text-slate-900 dark:text-white">
                     {(() => {
                       const seed = prediction.itemName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -314,10 +314,10 @@ export function EnhancedPricePredictionCard({
           {/* Confidence Level at Bottom */}
           <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-600 dark:text-slate-400">
+              <span className="text-white">
                 {Math.round(prediction.confidence * 100)}% Confidence
               </span>
-              <span className="text-slate-500 dark:text-slate-500">
+              <span className="text-white">
                 Algorithmic estimate - {(() => {
                   const seed = prediction.itemName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
                   const sources = ['Economic trends', 'Historical patterns', 'Supply indicators'];
