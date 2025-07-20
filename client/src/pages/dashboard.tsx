@@ -209,15 +209,15 @@ export default function Dashboard() {
           <div className="max-w-7xl mx-auto px-3 lg:px-8">
             <div className="flex justify-between items-center h-16 lg:h-18 min-h-[64px]">
               <div className="flex items-center space-x-2 lg:space-x-3 min-w-0 flex-shrink-0">
-                <div className="w-8 h-8 lg:w-10 lg:h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center glow-pulse flex-shrink-0 overflow-hidden">
+                <div className="w-16 h-16 lg:w-20 lg:h-20 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center glow-pulse flex-shrink-0 overflow-hidden">
                   <img 
                     src={ForeseeLogo} 
                     alt="Foresee Logo" 
-                    className="w-6 h-6 lg:w-8 lg:h-8 object-contain"
+                    className="w-14 h-14 lg:w-18 lg:h-18 object-contain"
                   />
                 </div>
                 <div className="min-w-0">
-                  <h1 className="sm:text-lg lg:text-xl whitespace-nowrap overflow-hidden text-ellipsis text-center mt-[4px] mb-[4px] pl-[7px] pr-[7px] bg-[#00000000] text-[#ffffff] font-bold text-[25px]">Foresee</h1>
+                  <h1 className="sm:text-lg lg:text-xl whitespace-nowrap overflow-hidden text-ellipsis mt-[4px] mb-[4px] pl-[7px] pr-[7px] bg-[#00000000] text-[#ffffff] text-[25px] text-left font-normal">Foresee</h1>
                   <p className="text-xs text-white/70 hidden sm:block whitespace-nowrap">AI-Powered Financial Intelligence</p>
                 </div>
               </div>
