@@ -228,16 +228,28 @@ export default function Dashboard() {
                   Dashboard
                 </button>
                 <button 
-                  onClick={() => setActiveTab('smart-tools')}
-                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'smart-tools' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                  onClick={() => setActiveTab('ai-predictions')}
+                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'ai-predictions' ? 'text-white' : 'text-white/80 hover:text-white'}`}
                 >
-                  AI Tools
+                  AI Insights
                 </button>
                 <button 
-                  onClick={() => setActiveTab('management')}
-                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'management' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                  onClick={() => setActiveTab('budget-goals')}
+                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'budget-goals' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                >
+                  Budget & Goals
+                </button>
+                <button 
+                  onClick={() => setActiveTab('planning')}
+                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'planning' ? 'text-white' : 'text-white/80 hover:text-white'}`}
                 >
                   Planning
+                </button>
+                <button 
+                  onClick={() => setActiveTab('settings')}
+                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'settings' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                >
+                  Settings
                 </button>
               </div>
 
@@ -283,9 +295,11 @@ export default function Dashboard() {
           <div className="glass-card rounded-3xl p-3 bg-white/12 backdrop-blur-2xl border-2 border-white/20 shadow-2xl">
             <div className="flex space-x-2">
               {[
-                { id: 'dashboard', label: 'Overview', icon: BarChart3 },
-                { id: 'smart-tools', label: 'AI Tools', icon: Brain },
-                { id: 'management', label: 'Planning', icon: Target }
+                { id: 'dashboard', label: 'Home', icon: BarChart3 },
+                { id: 'ai-predictions', label: 'AI Insights', icon: Brain },
+                { id: 'budget-goals', label: 'Budget & Goals', icon: Target },
+                { id: 'planning', label: 'Planning', icon: Calculator },
+                { id: 'settings', label: 'Settings', icon: Bell }
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -379,7 +393,7 @@ export default function Dashboard() {
             </>
           )}
           
-          {activeTab === 'smart-tools' && (
+          {activeTab === 'ai-predictions' && (
             <div className="space-y-8">
               <div className="fade-in">
                 <AIPredictionsDashboard />
@@ -387,24 +401,37 @@ export default function Dashboard() {
               <div className="slide-up" style={{ animationDelay: '0.2s' }}>
                 <PriceTrackingGrid />
               </div>
-              <div className="slide-up" style={{ animationDelay: '0.4s' }}>
+            </div>
+          )}
+          
+          {activeTab === 'budget-goals' && (
+            <div className="space-y-8">
+              <div className="fade-in">
+                <EnhancedBudgetTracker />
+              </div>
+              <div className="slide-up" style={{ animationDelay: '0.2s' }}>
+                <GoalsDebtDashboard />
+              </div>
+            </div>
+          )}
+          
+          {activeTab === 'planning' && (
+            <div className="space-y-8">
+              <div className="fade-in">
+                <ScenarioPlanningDashboard />
+              </div>
+              <div className="slide-up" style={{ animationDelay: '0.2s' }}>
                 <EconomicTrendPrediction />
               </div>
             </div>
           )}
           
-          {activeTab === 'management' && (
+          {activeTab === 'settings' && (
             <div className="space-y-8">
               <div className="fade-in">
-                <GoalsDebtDashboard />
-              </div>
-              <div className="slide-up" style={{ animationDelay: '0.2s' }}>
-                <ScenarioPlanningDashboard />
-              </div>
-              <div className="slide-up" style={{ animationDelay: '0.4s' }}>
                 <NotificationsCenter />
               </div>
-              <div className="slide-up" style={{ animationDelay: '0.6s' }}>
+              <div className="slide-up" style={{ animationDelay: '0.2s' }}>
                 <SecurityPrivacyDashboard />
               </div>
             </div>
