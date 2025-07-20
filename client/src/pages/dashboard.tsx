@@ -216,10 +216,7 @@ export default function Dashboard() {
                     className="w-14 h-14 lg:w-18 lg:h-18 object-contain"
                   />
                 </div>
-                <div className="min-w-0">
-                  <h1 className="sm:text-lg lg:text-xl whitespace-nowrap overflow-hidden text-ellipsis mt-[4px] mb-[4px] pl-[7px] pr-[7px] bg-[#00000000] text-[#ffffff] text-[25px] text-left font-normal">Foresee</h1>
-                  <p className="text-xs text-white/70 hidden sm:block whitespace-nowrap">AI-Powered Financial Intelligence</p>
-                </div>
+                
               </div>
               
               <div className="hidden md:flex items-center space-x-4 lg:space-x-6 flex-shrink">
