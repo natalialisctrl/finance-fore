@@ -342,15 +342,20 @@ export default function Dashboard() {
               className={`text-2xl sm:text-4xl lg:text-6xl font-bold mb-4 lg:mb-6 fade-in interactive-3d-title ${titleSpinning ? 'spinning' : ''}`}
               onClick={handleTitleClick}
             >
-              <div className="title-content">
+              <div className="title-content flex flex-col items-center">
+                <img 
+                  src="/attached_assets/Foresee_1753053885013.png" 
+                  alt="Foresee Logo" 
+                  className="w-16 h-16 lg:w-20 lg:h-20 mb-4 opacity-90 hover:opacity-100 transition-opacity duration-300"
+                />
                 <div className="text-white">Smart Financial</div>
                 <div className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent pb-2 leading-tight">
-                  Intelligence
+                  Foresee
                 </div>
               </div>
             </div>
             <p className="text-sm sm:text-lg lg:text-xl text-white/80 max-w-3xl mx-auto mb-6 lg:mb-8 slide-up px-4">
-              Harness the power of AI to make smarter purchase decisions with real-time economic data and predictive analytics.
+              AI-powered financial intelligence that predicts the future of your money.
             </p>
           </div>
 
