@@ -208,16 +208,7 @@ export default function Dashboard() {
         <nav className="relative z-50 glass-card mx-2 mt-2 lg:mx-8 lg:mt-4 bg-[#000000]">
           <div className="max-w-7xl mx-auto px-3 lg:px-8">
             <div className="flex justify-between items-center h-16 lg:h-18 min-h-[64px]">
-              <div className="flex items-center space-x-2 lg:space-x-3 min-w-0 flex-shrink-0">
-                <div className="w-16 h-16 lg:w-20 lg:h-20 flex items-center justify-center flex-shrink-0">
-                  <img 
-                    src={ForeseeLogo} 
-                    alt="Foresee Logo" 
-                    className="w-14 h-14 lg:w-18 lg:h-18 object-contain"
-                  />
-                </div>
-                
-              </div>
+              
               
               <div className="hidden md:flex items-center space-x-4 lg:space-x-6 flex-shrink">
                 <button 
