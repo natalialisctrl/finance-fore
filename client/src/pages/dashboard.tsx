@@ -228,46 +228,16 @@ export default function Dashboard() {
                   Dashboard
                 </button>
                 <button 
-                  onClick={() => setActiveTab('ai-predictions')}
-                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'ai-predictions' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                  onClick={() => setActiveTab('smart-tools')}
+                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'smart-tools' ? 'text-white' : 'text-white/80 hover:text-white'}`}
                 >
-                  AI Predictions
+                  AI Tools
                 </button>
                 <button 
-                  onClick={() => setActiveTab('trend-analysis')}
-                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'trend-analysis' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                  onClick={() => setActiveTab('management')}
+                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'management' ? 'text-white' : 'text-white/80 hover:text-white'}`}
                 >
-                  Trend Analysis
-                </button>
-                <button 
-                  onClick={() => setActiveTab('price-tracking')}
-                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'price-tracking' ? 'text-white' : 'text-white/80 hover:text-white'}`}
-                >
-                  Price Tracking
-                </button>
-                <button 
-                  onClick={() => setActiveTab('goals-debt')}
-                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'goals-debt' ? 'text-white' : 'text-white/80 hover:text-white'}`}
-                >
-                  Goals & Debt
-                </button>
-                <button 
-                  onClick={() => setActiveTab('scenarios')}
-                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'scenarios' ? 'text-white' : 'text-white/80 hover:text-white'}`}
-                >
-                  Scenarios
-                </button>
-                <button 
-                  onClick={() => setActiveTab('notifications')}
-                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'notifications' ? 'text-white' : 'text-white/80 hover:text-white'}`}
-                >
-                  Alerts
-                </button>
-                <button 
-                  onClick={() => setActiveTab('security')}
-                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'security' ? 'text-white' : 'text-white/80 hover:text-white'}`}
-                >
-                  Security
+                  Planning
                 </button>
               </div>
 
@@ -313,11 +283,9 @@ export default function Dashboard() {
           <div className="glass-card rounded-3xl p-3 bg-white/12 backdrop-blur-2xl border-2 border-white/20 shadow-2xl">
             <div className="flex space-x-2">
               {[
-                { id: 'dashboard', label: 'Home', icon: BarChart3 },
-                { id: 'ai-predictions', label: 'AI', icon: Brain },
-                { id: 'goals-debt', label: 'Goals', icon: Target },
-                { id: 'scenarios', label: 'Plans', icon: Calculator },
-                { id: 'notifications', label: 'Alerts', icon: Bell }
+                { id: 'dashboard', label: 'Overview', icon: BarChart3 },
+                { id: 'smart-tools', label: 'AI Tools', icon: Brain },
+                { id: 'management', label: 'Planning', icon: Target }
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -411,56 +379,34 @@ export default function Dashboard() {
             </>
           )}
           
-          {activeTab === 'ai-predictions' && (
-            <div className="fade-in">
-              <AIPredictionsDashboard />
-            </div>
-          )}
-          
-          {activeTab === 'trend-analysis' && (
-            <div className="fade-in">
-              <EconomicTrendPrediction />
-            </div>
-          )}
-          
-          {activeTab === 'price-tracking' && (
-            <div className="fade-in">
-              <PriceTrackingGrid />
-            </div>
-          )}
-          
-          {activeTab === 'budget' && (
-            <>
+          {activeTab === 'smart-tools' && (
+            <div className="space-y-8">
               <div className="fade-in">
-                <EnhancedBudgetTracker />
+                <AIPredictionsDashboard />
               </div>
               <div className="slide-up" style={{ animationDelay: '0.2s' }}>
-                <ShoppingList />
+                <PriceTrackingGrid />
               </div>
-            </>
-          )}
-          
-          {activeTab === 'goals-debt' && (
-            <div className="fade-in">
-              <GoalsDebtDashboard />
+              <div className="slide-up" style={{ animationDelay: '0.4s' }}>
+                <EconomicTrendPrediction />
+              </div>
             </div>
           )}
           
-          {activeTab === 'scenarios' && (
-            <div className="fade-in">
-              <ScenarioPlanningDashboard />
-            </div>
-          )}
-          
-          {activeTab === 'notifications' && (
-            <div className="fade-in">
-              <NotificationsCenter />
-            </div>
-          )}
-          
-          {activeTab === 'security' && (
-            <div className="fade-in">
-              <SecurityPrivacyDashboard />
+          {activeTab === 'management' && (
+            <div className="space-y-8">
+              <div className="fade-in">
+                <GoalsDebtDashboard />
+              </div>
+              <div className="slide-up" style={{ animationDelay: '0.2s' }}>
+                <ScenarioPlanningDashboard />
+              </div>
+              <div className="slide-up" style={{ animationDelay: '0.4s' }}>
+                <NotificationsCenter />
+              </div>
+              <div className="slide-up" style={{ animationDelay: '0.6s' }}>
+                <SecurityPrivacyDashboard />
+              </div>
             </div>
           )}
         </div>
