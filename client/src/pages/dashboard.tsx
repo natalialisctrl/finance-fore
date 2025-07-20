@@ -209,8 +209,12 @@ export default function Dashboard() {
           <div className="max-w-7xl mx-auto px-3 lg:px-8">
             <div className="flex justify-between items-center h-16 lg:h-18 min-h-[64px]">
               <div className="flex items-center space-x-2 lg:space-x-3 min-w-0 flex-shrink-0">
-                <div className="w-8 h-8 lg:w-10 lg:h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center glow-pulse flex-shrink-0">
-                  <CreditCard className="w-4 h-4 lg:w-6 lg:h-6 text-white" />
+                <div className="w-8 h-8 lg:w-10 lg:h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center glow-pulse flex-shrink-0 overflow-hidden">
+                  <img 
+                    src="/attached_assets/Foresee_1753054026597.png" 
+                    alt="Foresee Logo" 
+                    className="w-6 h-6 lg:w-8 lg:h-8 object-contain"
+                  />
                 </div>
                 <div className="min-w-0">
                   <h1 className="text-base sm:text-lg lg:text-xl font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
