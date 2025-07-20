@@ -207,10 +207,8 @@ export default function Dashboard() {
         {/* Navigation */}
         <nav className="relative z-50 glass-card mx-2 mt-2 lg:mx-8 lg:mt-4 bg-[#000000]">
           <div className="max-w-7xl mx-auto px-3 lg:px-8">
-            <div className="flex justify-between items-center h-16 lg:h-18 min-h-[64px]">
-              
-              
-              <div className="hidden md:flex items-center space-x-4 lg:space-x-6 flex-shrink">
+            <div className="flex justify-center items-center h-16 lg:h-18 min-h-[64px]">
+              <div className="hidden md:flex items-center space-x-4 lg:space-x-6">
                 <button 
                   onClick={() => setActiveTab('dashboard')}
                   className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'dashboard' ? 'text-white' : 'text-white/80 hover:text-white'}`}
@@ -241,40 +239,6 @@ export default function Dashboard() {
                 >
                   Settings
                 </button>
-              </div>
-
-              <div className="flex items-center space-x-1 lg:space-x-3 flex-shrink-0">
-{/* Dark mode only - no theme toggle */}
-                
-                {user && (
-                  <div className="flex items-center space-x-2 lg:space-x-3">
-                    <div className="text-right text-white text-xs lg:text-sm hidden sm:block">
-                      <div className="font-medium">
-                        {user.firstName || user.lastName ? `${user.firstName || ''} ${user.lastName || ''}`.trim() : user.email}
-                      </div>
-                      {user.email && <div className="text-xs opacity-75">{user.email}</div>}
-                    </div>
-                    {user.profileImageUrl ? (
-                      <img 
-                        src={user.profileImageUrl} 
-                        alt="Profile" 
-                        className="w-8 h-8 lg:w-10 lg:h-10 rounded-full border-2 border-white/20 object-cover"
-                      />
-                    ) : (
-                      <div className="w-8 h-8 lg:w-10 lg:h-10 glass-card rounded-full flex items-center justify-center">
-                        <User className="w-4 h-4 lg:w-5 lg:h-5 text-white" />
-                      </div>
-                    )}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => window.location.href = '/api/logout'}
-                      className="glass-card p-2 lg:p-3 text-white hover:bg-white/20 border-white/20"
-                    >
-                      <LogOut className="w-4 h-4 lg:w-5 lg:h-5" />
-                    </Button>
-                  </div>
-                )}
               </div>
             </div>
           </div>
