@@ -83,7 +83,7 @@ export function EnhancedSmartBuyIndicator({
     switch (direction) {
       case "UP": return <TrendingUp className="w-3 h-3 text-red-500" />;
       case "DOWN": return <TrendingDown className="w-3 h-3 text-emerald-500" />;
-      default: return <Minus className="w-3 h-3 text-slate-500" />;
+      default: return <Minus className="w-3 h-3 text-white" />;
     }
   };
 

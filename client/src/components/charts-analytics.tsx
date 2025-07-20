@@ -165,7 +165,7 @@ export function ChartsAndAnalytics() {
             <div className="space-y-3">
               {savingsData?.bestPurchases.map((purchase, index) => (
                 <div key={index} className="flex items-center justify-between">
-                  <span className="text-sm text-slate-600 dark:text-slate-400">
+                  <span className="text-sm text-white">
                     {index === 0 ? "Best Purchase: " : "Smart timing on "}{purchase.item}
                   </span>
                   <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
@@ -177,7 +177,7 @@ export function ChartsAndAnalytics() {
 
             <div className="pt-4 border-t border-slate-200 dark:border-slate-700">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
+                <span className="text-sm font-medium text-white">
                   Projected Monthly Savings
                 </span>
                 <span className="text-lg font-bold text-primary">

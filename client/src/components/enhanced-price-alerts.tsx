@@ -128,7 +128,7 @@ export function EnhancedPriceAlerts({ priceData = [] }: EnhancedPriceAlertsProps
               <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
                 Price Alerts
               </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="text-sm text-white">
                 Custom notifications for price targets
               </p>
             </div>
@@ -220,7 +220,7 @@ export function EnhancedPriceAlerts({ priceData = [] }: EnhancedPriceAlertsProps
 
         <div className="space-y-4">
           {alerts.length === 0 ? (
-            <div className="text-center py-8 text-slate-500 dark:text-slate-400">
+            <div className="text-center py-8 text-white">
               No price alerts set. Create your first alert to get notified when prices hit your targets.
             </div>
           ) : (
@@ -242,7 +242,7 @@ export function EnhancedPriceAlerts({ priceData = [] }: EnhancedPriceAlertsProps
                       <div className="font-medium text-slate-900 dark:text-white">
                         {alert.itemName}
                       </div>
-                      <div className="text-sm text-slate-600 dark:text-slate-400">
+                      <div className="text-sm text-white">
                         {alert.alertType === "below" && `Alert when below $${alert.targetPrice}`}
                         {alert.alertType === "above" && `Alert when above $${alert.targetPrice}`}
                         {alert.alertType === "percentage" && `Alert on ${alert.percentageChange}% change from $${alert.targetPrice}`}
@@ -258,7 +258,7 @@ export function EnhancedPriceAlerts({ priceData = [] }: EnhancedPriceAlertsProps
                       <div className="text-sm font-medium text-slate-900 dark:text-white">
                         ${alert.currentPrice.toFixed(2)}
                       </div>
-                      <div className="text-xs text-slate-500 dark:text-slate-400">
+                      <div className="text-xs text-white">
                         Current
                       </div>
                     </div>

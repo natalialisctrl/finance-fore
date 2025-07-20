@@ -209,7 +209,7 @@ export function BudgetTracker() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <Label className="text-base font-semibold">Allocate Your Budget</Label>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className="text-sm text-white">
                       Remaining: <span className={`font-semibold ${getRemainingIncome() < 0 ? 'text-red-500' : 'text-green-500'}`}>
                         {formatCurrency(getRemainingIncome())}
                       </span>
@@ -343,7 +343,7 @@ export function BudgetTracker() {
                       <div className="text-xs font-medium text-slate-900 dark:text-white truncate">
                         {budget.category}
                       </div>
-                      <div className="text-xs text-slate-500 dark:text-slate-400">
+                      <div className="text-xs text-white">
                         {formatCurrency(budget.spentAmount)} of {formatCurrency(budget.budgetAmount)}
                       </div>
                     </div>
@@ -372,7 +372,7 @@ export function BudgetTracker() {
                     <div className="text-sm font-medium text-slate-900 dark:text-white">
                       Budget pressure detected
                     </div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400">
+                    <div className="text-xs text-white">
                       Inflation making it harder to stay within limits
                     </div>
                   </div>
@@ -384,7 +384,7 @@ export function BudgetTracker() {
                     <div className="text-sm font-medium text-slate-900 dark:text-white">
                       Gas budget alert
                     </div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400">
+                    <div className="text-xs text-white">
                       Consider bulk buying when prices drop
                     </div>
                   </div>
@@ -396,7 +396,7 @@ export function BudgetTracker() {
                     <div className="text-sm font-medium text-slate-900 dark:text-white">
                       Optimal buying window
                     </div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400">
+                    <div className="text-xs text-white">
                       Next week ideal for grocery stock-up
                     </div>
                   </div>
@@ -428,13 +428,13 @@ export function BudgetTracker() {
                 <div className="text-lg font-bold text-slate-900 dark:text-white">
                   {formatCurrency(budgetData?.reduce((sum, b) => sum + b.spentAmount, 0) || 0)}
                 </div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">Total Spent</div>
+                <div className="text-xs text-white">Total Spent</div>
               </div>
               <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 p-4 rounded-lg">
                 <div className="text-lg font-bold text-slate-900 dark:text-white">
                   {formatCurrency(budgetData?.reduce((sum, b) => sum + (b.budgetAmount - b.spentAmount), 0) || 0)}
                 </div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">Remaining</div>
+                <div className="text-xs text-white">Remaining</div>
               </div>
             </div>
           </div>

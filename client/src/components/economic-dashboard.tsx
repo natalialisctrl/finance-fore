@@ -141,7 +141,7 @@ export function EconomicDashboard() {
       <div className="mb-8">
         <Card className="p-6" style={{boxShadow: 'none', filter: 'drop-shadow(0 4px 8px rgba(255, 140, 66, 0.1))'}}>
           <CardContent>
-            <p className="text-center text-slate-500 dark:text-slate-400">
+            <p className="text-center text-white">
               Unable to load economic data. Please try again later.
             </p>
           </CardContent>
@@ -161,12 +161,12 @@ export function EconomicDashboard() {
       <div className="flex items-center justify-between mb-6 mt-8">
         <div>
           <h2 className="text-2xl font-bold dark:text-white text-[#ffffff] bg-[#72747d00]">Economic Dashboard</h2>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-white mt-1">
             Data sources: Federal Reserve Economic Data (FRED) API - Official US economic indicators
           </p>
         </div>
         <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-400">
+          <div className="flex items-center space-x-2 text-sm text-white">
             <Clock className="w-4 h-4" />
             <span>Last updated: {formatTimestamp(economicData.lastUpdated)}</span>
           </div>
@@ -192,7 +192,7 @@ export function EconomicDashboard() {
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
                   Financial Health: {healthSummary.status}
                 </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <p className="text-sm text-white">
                   Overall economic environment assessment
                 </p>
               </div>
@@ -200,7 +200,7 @@ export function EconomicDashboard() {
             {healthSummary.alerts.length > 0 && (
               <div className="text-right">
                 <AlertTriangle className="w-5 h-5 text-amber-500 mb-1" />
-                <span className="text-xs text-slate-500">{healthSummary.alerts.length} alerts</span>
+                <span className="text-xs text-white">{healthSummary.alerts.length} alerts</span>
               </div>
             )}
           </div>
@@ -222,7 +222,7 @@ export function EconomicDashboard() {
         <Card className="glass-card glow-continuous">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-medium text-slate-600 dark:text-slate-400">Inflation Rate</h3>
+              <h3 className="text-sm font-medium text-white">Inflation Rate</h3>
               <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                 inflationTrend.color === 'text-red-500' ? 'bg-red-100 dark:bg-red-900/20' :
                 inflationTrend.color === 'text-amber-500' ? 'bg-amber-100 dark:bg-amber-900/20' :

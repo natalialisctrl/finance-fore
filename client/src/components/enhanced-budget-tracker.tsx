@@ -218,7 +218,7 @@ export function EnhancedBudgetTracker() {
                   
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-slate-600 dark:text-slate-400">
+                      <span className="text-white">
                         ${budget.spentAmount} / ${budget.budgetAmount}
                       </span>
                       <span className={status.color}>
@@ -235,7 +235,7 @@ export function EnhancedBudgetTracker() {
                       }`}>
                         {velocity.message}
                       </span>
-                      <span className="text-slate-500">
+                      <span className="text-white">
                         ${(budget.budgetAmount - budget.spentAmount).toFixed(0)} left
                       </span>
                     </div>
