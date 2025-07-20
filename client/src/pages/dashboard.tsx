@@ -7,10 +7,14 @@ import { EnhancedBudgetTracker } from "@/components/enhanced-budget-tracker";
 import { ShoppingList } from "@/components/shopping-list";
 import { EconomicTrendPrediction } from "@/components/economic-trend-prediction";
 import { MinimalistFloatingDollars } from "@/components/minimalist-floating-dollars";
+import { GoalsDebtDashboard } from "@/components/goals-debt-dashboard";
+import { ScenarioPlanningDashboard } from "@/components/scenario-planning-dashboard";
+import { NotificationsCenter } from "@/components/notifications-center";
+import { SecurityPrivacyDashboard } from "@/components/security-privacy-dashboard";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 // import { useAuth } from "@/hooks/useAuth"; // Auto-login mode
-import { CreditCard, User, LogOut, TrendingUp, ShoppingCart, DollarSign, PiggyBank, AlertTriangle, CheckCircle, Clock, MapPin, MoreVertical, X, BarChart3, Brain, Wallet } from "lucide-react";
+import { CreditCard, User, LogOut, TrendingUp, ShoppingCart, DollarSign, PiggyBank, AlertTriangle, CheckCircle, Clock, MapPin, MoreVertical, X, BarChart3, Brain, Wallet, Target, Calculator, Bell, Shield } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/authUtils";
@@ -242,10 +246,28 @@ export default function Dashboard() {
                   Price Tracking
                 </button>
                 <button 
-                  onClick={() => setActiveTab('budget')}
-                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'budget' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                  onClick={() => setActiveTab('goals-debt')}
+                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'goals-debt' ? 'text-white' : 'text-white/80 hover:text-white'}`}
                 >
-                  Budget
+                  Goals & Debt
+                </button>
+                <button 
+                  onClick={() => setActiveTab('scenarios')}
+                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'scenarios' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                >
+                  Scenarios
+                </button>
+                <button 
+                  onClick={() => setActiveTab('notifications')}
+                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'notifications' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                >
+                  Alerts
+                </button>
+                <button 
+                  onClick={() => setActiveTab('security')}
+                  className={`text-sm lg:text-base font-semibold transition-colors whitespace-nowrap ${activeTab === 'security' ? 'text-white' : 'text-white/80 hover:text-white'}`}
+                >
+                  Security
                 </button>
               </div>
 
@@ -293,9 +315,9 @@ export default function Dashboard() {
               {[
                 { id: 'dashboard', label: 'Home', icon: BarChart3 },
                 { id: 'ai-predictions', label: 'AI', icon: Brain },
-                { id: 'trend-analysis', label: 'Trends', icon: TrendingUp },
-                { id: 'price-tracking', label: 'Prices', icon: DollarSign },
-                { id: 'budget', label: 'Budget', icon: Wallet }
+                { id: 'goals-debt', label: 'Goals', icon: Target },
+                { id: 'scenarios', label: 'Plans', icon: Calculator },
+                { id: 'notifications', label: 'Alerts', icon: Bell }
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -416,6 +438,30 @@ export default function Dashboard() {
                 <ShoppingList />
               </div>
             </>
+          )}
+          
+          {activeTab === 'goals-debt' && (
+            <div className="fade-in">
+              <GoalsDebtDashboard />
+            </div>
+          )}
+          
+          {activeTab === 'scenarios' && (
+            <div className="fade-in">
+              <ScenarioPlanningDashboard />
+            </div>
+          )}
+          
+          {activeTab === 'notifications' && (
+            <div className="fade-in">
+              <NotificationsCenter />
+            </div>
+          )}
+          
+          {activeTab === 'security' && (
+            <div className="fade-in">
+              <SecurityPrivacyDashboard />
+            </div>
           )}
         </div>
       </div>
