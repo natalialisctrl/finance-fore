@@ -3,6 +3,27 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { DollarSign, TrendingUp, Target, Calendar } from "lucide-react";
 
+// Helper function to determine best shopping window based on predictions
+const getBestShoppingWindow = (predictions: any[]) => {
+  if (!predictions || predictions.length === 0) {
+    return "This weekend";
+  }
+  
+  const buyNowCount = predictions.filter(p => p.recommendedAction === "BUY_NOW").length;
+  const waitCount = predictions.filter(p => p.recommendedAction?.includes("WAIT")).length;
+  
+  if (buyNowCount >= 3) {
+    return "This weekend";
+  } else if (waitCount >= 2) {
+    return "Next week";
+  } else {
+    // Use day of week to provide consistent but varied recommendations
+    const dayOfWeek = new Date().getDay();
+    const windows = ["This weekend", "Tuesday-Wednesday", "Next weekend"];
+    return windows[dayOfWeek % 3];
+  }
+};
+
 interface MonthlySavingsSummaryProps {
   predictions: any[];
 }
@@ -143,7 +164,7 @@ export function MonthlySavingsSummary({ predictions }: MonthlySavingsSummaryProp
           <div className="flex items-center space-x-2 text-xs text-slate-600 dark:text-slate-400">
             <Calendar className="w-3 h-3" />
             <span>
-              Best shopping window: {['This weekend', 'Next week', 'Mid-month'][Math.floor(Math.random() * 3)]}
+              Best shopping window: {getBestShoppingWindow(predictions)}
             </span>
           </div>
         </div>
