@@ -15,6 +15,7 @@ import { AISpendingCoach } from "@/components/ai-spending-coach";
 import { LifeModeSettings } from "@/components/life-mode-settings";
 import { LocationAlerts } from "@/components/location-alerts";
 import { LocationSettings } from "@/components/location-settings";
+import { SmartSceneBuilder } from "@/components/smart-scene-builder";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 // import { useAuth } from "@/hooks/useAuth"; // Auto-login mode
@@ -330,7 +331,7 @@ export default function Dashboard() {
           {activeTab === 'budget-goals' && (
             <div className="space-y-8">
               <div className="fade-in">
-                <LifeModeSettings />
+                <SmartSceneBuilder />
               </div>
               <div className="slide-up" style={{ animationDelay: '0.2s' }}>
                 <EnhancedBudgetTracker />
