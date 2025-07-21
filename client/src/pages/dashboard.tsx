@@ -15,6 +15,7 @@ import { AISpendingCoach } from "@/components/ai-spending-coach";
 import { LifeModeSettings } from "@/components/life-mode-settings";
 import { LocationAlerts } from "@/components/location-alerts";
 import { LocationSettings } from "@/components/location-settings";
+import { AutomatedBudgetFixer } from "@/components/automated-budget-fixer";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 // import { useAuth } from "@/hooks/useAuth"; // Auto-login mode
@@ -305,9 +306,10 @@ export default function Dashboard() {
                 <ChartsAndAnalytics />
               </div>
               <div className="slide-up" style={{ animationDelay: '0.4s' }}>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                   <BudgetTracker />
                   <AISpendingCoach />
+                  <AutomatedBudgetFixer />
                 </div>
               </div>
               <div className="slide-up" style={{ animationDelay: '0.6s' }}>
