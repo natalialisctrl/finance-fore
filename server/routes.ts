@@ -388,33 +388,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Budget fix application route
-  app.post('/api/budgets/apply-fix', isAuthenticated, async (req: any, res) => {
-    try {
-      const { fromCategory, adjustmentAmount, adjustmentType, newBudget } = req.body;
-      const userId = req.user?.claims?.sub;
-      
-      if (!userId) {
-        return res.status(401).json({ message: 'User not authenticated' });
-      }
-
-      // For demo purposes, simulate budget adjustment
-      // In a real app, this would update the database
-      const adjustmentResult = {
-        success: true,
-        fromCategory,
-        adjustmentAmount,
-        newBudget,
-        message: `Successfully ${adjustmentType}d ${fromCategory} budget by $${adjustmentAmount}`
-      };
-
-      res.json(adjustmentResult);
-    } catch (error) {
-      console.error('Error applying budget fix:', error);
-      res.status(500).json({ message: 'Failed to apply budget fix' });
-    }
-  });
-
   const httpServer = createServer(app);
   return httpServer;
 }
