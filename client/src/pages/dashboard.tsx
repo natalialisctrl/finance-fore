@@ -13,8 +13,6 @@ import { NotificationsCenter } from "@/components/notifications-center";
 import { SecurityPrivacyDashboard } from "@/components/security-privacy-dashboard";
 import { AISpendingCoach } from "@/components/ai-spending-coach";
 import { LifeModeSettings } from "@/components/life-mode-settings";
-import { ProactiveAIAssistant } from "@/components/proactive-ai-assistant";
-import { SmartPurchaseAdvisor } from "@/components/smart-purchase-advisor";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 // import { useAuth } from "@/hooks/useAuth"; // Auto-login mode
@@ -319,15 +317,9 @@ export default function Dashboard() {
           {activeTab === 'ai-predictions' && (
             <div className="space-y-8">
               <div className="fade-in">
-                <ProactiveAIAssistant />
+                <AIPredictionsDashboard />
               </div>
               <div className="slide-up" style={{ animationDelay: '0.2s' }}>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <AIPredictionsDashboard />
-                  <SmartPurchaseAdvisor />
-                </div>
-              </div>
-              <div className="slide-up" style={{ animationDelay: '0.4s' }}>
                 <PriceTrackingGrid />
               </div>
             </div>
