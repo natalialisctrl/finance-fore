@@ -11,6 +11,8 @@ import { GoalsDebtDashboard } from "@/components/goals-debt-dashboard";
 import { ScenarioPlanningDashboard } from "@/components/scenario-planning-dashboard";
 import { NotificationsCenter } from "@/components/notifications-center";
 import { SecurityPrivacyDashboard } from "@/components/security-privacy-dashboard";
+import { AISpendingCoach } from "@/components/ai-spending-coach";
+import { LifeModeSettings } from "@/components/life-mode-settings";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 // import { useAuth } from "@/hooks/useAuth"; // Auto-login mode
@@ -301,7 +303,10 @@ export default function Dashboard() {
                 <ChartsAndAnalytics />
               </div>
               <div className="slide-up" style={{ animationDelay: '0.4s' }}>
-                <BudgetTracker />
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <BudgetTracker />
+                  <AISpendingCoach />
+                </div>
               </div>
               <div className="slide-up" style={{ animationDelay: '0.6s' }}>
                 <ShoppingList />
@@ -323,9 +328,12 @@ export default function Dashboard() {
           {activeTab === 'budget-goals' && (
             <div className="space-y-8">
               <div className="fade-in">
-                <EnhancedBudgetTracker />
+                <LifeModeSettings />
               </div>
               <div className="slide-up" style={{ animationDelay: '0.2s' }}>
+                <EnhancedBudgetTracker />
+              </div>
+              <div className="slide-up" style={{ animationDelay: '0.4s' }}>
                 <GoalsDebtDashboard />
               </div>
             </div>
@@ -345,7 +353,10 @@ export default function Dashboard() {
           {activeTab === 'settings' && (
             <div className="space-y-8">
               <div className="fade-in">
-                <NotificationsCenter />
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <LifeModeSettings />
+                  <NotificationsCenter />
+                </div>
               </div>
               <div className="slide-up" style={{ animationDelay: '0.2s' }}>
                 <SecurityPrivacyDashboard />
