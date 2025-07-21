@@ -36,6 +36,29 @@ interface Recommendation {
 }
 
 export function EnhancedBudgetTracker() {
+  // Mobile-safe early return for complex state
+  if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+    return (
+      <Card className="glass-card">
+        <CardContent className="p-4">
+          <div className="flex items-center space-x-3 mb-4">
+            <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
+              <PiggyBank className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-white">Budget Tracker</h3>
+              <p className="text-sm text-white/70">Track your spending goals</p>
+            </div>
+          </div>
+          <div className="text-center py-8">
+            <p className="text-white/80 mb-4">Mobile version loading...</p>
+            <div className="animate-pulse bg-white/20 h-4 rounded mb-2"></div>
+            <div className="animate-pulse bg-white/20 h-4 rounded w-3/4"></div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
   const [whatIfDialogOpen, setWhatIfDialogOpen] = useState(false);
 
   // Get current period for budget calculations

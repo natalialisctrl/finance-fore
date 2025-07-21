@@ -8,7 +8,7 @@ import { ShoppingList } from "@/components/shopping-list";
 import { EconomicTrendPrediction } from "@/components/economic-trend-prediction";
 import { MinimalistFloatingDollars } from "@/components/minimalist-floating-dollars";
 import { GoalsDebtDashboard } from "@/components/goals-debt-dashboard";
-import { ScenarioPlanningDashboard } from "@/components/scenario-planning-dashboard";
+import { ScenarioPlanning } from "@/components/scenario-planning";
 import { NotificationsCenter } from "@/components/notifications-center";
 import { SecurityPrivacyDashboard } from "@/components/security-privacy-dashboard";
 import { AISpendingCoach } from "@/components/ai-spending-coach";
@@ -16,6 +16,7 @@ import { LifeModeSettings } from "@/components/life-mode-settings";
 import { LocationAlerts } from "@/components/location-alerts";
 import { LocationSettings } from "@/components/location-settings";
 import { SmartSceneBuilder } from "@/components/smart-scene-builder";
+import { MobileSafeWrapper } from "@/components/mobile-safe-wrapper";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 // import { useAuth } from "@/hooks/useAuth"; // Auto-login mode
@@ -332,13 +333,19 @@ export default function Dashboard() {
           {activeTab === 'budget-goals' && (
             <div className="space-y-8">
               <div className="fade-in">
-                <SmartSceneBuilder />
+                <MobileSafeWrapper fallbackTitle="Scene Builder Error" componentName="SmartSceneBuilder">
+                  <SmartSceneBuilder />
+                </MobileSafeWrapper>
               </div>
               <div className="slide-up" style={{ animationDelay: '0.2s' }}>
-                <EnhancedBudgetTracker />
+                <MobileSafeWrapper fallbackTitle="Budget Tracker Error" componentName="EnhancedBudgetTracker">
+                  <EnhancedBudgetTracker />
+                </MobileSafeWrapper>
               </div>
               <div className="slide-up" style={{ animationDelay: '0.4s' }}>
-                <GoalsDebtDashboard />
+                <MobileSafeWrapper fallbackTitle="Goals & Debt Error" componentName="GoalsDebtDashboard">
+                  <GoalsDebtDashboard />
+                </MobileSafeWrapper>
               </div>
             </div>
           )}
@@ -346,10 +353,14 @@ export default function Dashboard() {
           {activeTab === 'planning' && (
             <div className="space-y-8">
               <div className="fade-in">
-                <ScenarioPlanningDashboard />
+                <MobileSafeWrapper fallbackTitle="Scenario Planning Error" componentName="ScenarioPlanning">
+                  <ScenarioPlanning />
+                </MobileSafeWrapper>
               </div>
               <div className="slide-up" style={{ animationDelay: '0.2s' }}>
-                <EconomicTrendPrediction />
+                <MobileSafeWrapper fallbackTitle="Economic Trends Error" componentName="EconomicTrendPrediction">
+                  <EconomicTrendPrediction />
+                </MobileSafeWrapper>
               </div>
             </div>
           )}
