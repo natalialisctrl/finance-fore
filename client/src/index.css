@@ -474,6 +474,54 @@
     transform: translateY(0);
   }
 
+  /* Mobile-optimized touch and performance enhancements */
+  .touch-manipulation {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  /* Smooth scrolling for mobile */
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Hide scrollbars while keeping functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Mobile-specific optimizations */
+  @media (max-width: 640px) {
+    .glass-card {
+      backdrop-filter: blur(8px) !important;
+      -webkit-backdrop-filter: blur(8px) !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    /* Reduce motion for better mobile performance */
+    .animate-bounce {
+      animation-duration: 2s !important;
+    }
+    
+    /* Touch-friendly minimum sizes */
+    button {
+      min-height: 44px;
+    }
+    
+    /* Optimize floating dollars for mobile */
+    .hero-gradient .absolute {
+      animation-duration: 4s !important;
+    }
+  }
+
   /* Orange accent button */
   .btn-orange {
     background: linear-gradient(135deg, #FF8C42 0%, #FF7A28 100%);

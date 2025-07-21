@@ -1,63 +1,88 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
-import { fetchBudgetData } from "@/lib/economic-api";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { AlertCircle, TrendingUp, Target, Zap, Calculator, DollarSign, Calendar } from "lucide-react";
-import { LineChart, Line, ResponsiveContainer, BarChart, Bar, XAxis, YAxis } from "recharts";
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Target, Calculator, Zap, TrendingUp, TrendingDown, AlertTriangle } from 'lucide-react';
+import { ResponsiveContainer, LineChart, Line } from 'recharts';
 
-interface WhatIfScenario {
-  categoryChanges: { [key: string]: number };
-  description: string;
+interface Budget {
+  id: number;
+  userId: string;
+  category: string;
+  budgetAmount: number;
+  spentAmount: number;
+  month: string;
+}
+
+interface BudgetStatus {
+  status: 'on-track' | 'warning' | 'over-budget';
+  color: string;
+}
+
+interface VelocityStatus {
+  velocity: number;
+  status: 'fast' | 'normal' | 'slow';
+  message: string;
+}
+
+interface Recommendation {
+  category: string;
+  type: 'alert' | 'warning' | 'opportunity';
+  message: string;
+  potential: number;
 }
 
 export function EnhancedBudgetTracker() {
-  const currentMonth = new Date().toISOString().slice(0, 7);
   const [whatIfDialogOpen, setWhatIfDialogOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [adjustmentAmount, setAdjustmentAmount] = useState("");
-  
-  const { data: budgetData, isLoading } = useQuery({
-    queryKey: ["/api/budgets/1", currentMonth],
-    queryFn: () => fetchBudgetData(1, currentMonth),
+
+  // Get current period for budget calculations
+  const getCurrentPeriod = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    return `${year}-${month.toString().padStart(2, '0')}`;
+  };
+
+  const { data: budgetData, isLoading } = useQuery<Budget[]>({
+    queryKey: ['/api/budgets/demo-natalia', getCurrentPeriod()],
   });
 
-  const getBudgetProgress = (spent: number, budget: number) => {
+  // Calculate budget progress percentage
+  const getBudgetProgress = (spent: number, budget: number): number => {
     return Math.min((spent / budget) * 100, 100);
   };
 
-  const getBudgetStatus = (progress: number) => {
-    if (progress >= 90) return { color: "text-red-600 dark:text-red-400", bg: "bg-red-500" };
-    if (progress >= 75) return { color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-500" };
-    return { color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-500" };
+  // Determine budget status based on progress
+  const getBudgetStatus = (progress: number): BudgetStatus => {
+    if (progress >= 100) {
+      return { status: 'over-budget', color: 'text-red-500' };
+    } else if (progress >= 80) {
+      return { status: 'warning', color: 'text-yellow-500' };
+    }
+    return { status: 'on-track', color: 'text-green-500' };
   };
 
-  // Calculate spending velocity (rate of spending compared to time passed in month)
-  const getSpendingVelocity = (spent: number, budget: number) => {
-    const now = new Date();
-    const dayOfMonth = now.getDate();
-    const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-    const monthProgress = dayOfMonth / daysInMonth;
-    
-    const expectedSpending = budget * monthProgress;
-    const actualSpending = spent;
-    
-    if (expectedSpending === 0) return { status: "on-track", velocity: 1, message: "Month just started" };
-    
-    const velocity = actualSpending / expectedSpending;
-    
-    if (velocity > 1.2) return { status: "fast", velocity, message: "Spending faster than planned" };
-    if (velocity < 0.8) return { status: "slow", velocity, message: "Spending slower than planned" };
-    return { status: "on-track", velocity, message: "On track with budget" };
+  // Calculate spending velocity
+  const getSpendingVelocity = (spent: number, budget: number): VelocityStatus => {
+    const currentDay = new Date().getDate();
+    const daysInMonth = new Date().getDate();
+    const expectedSpent = (budget / 30) * currentDay;
+    const velocity = spent / expectedSpent;
+
+    if (velocity > 1.2) {
+      return { velocity, status: 'fast', message: 'Spending fast' };
+    } else if (velocity < 0.8) {
+      return { velocity, status: 'slow', message: 'Under budget' };
+    }
+    return { velocity, status: 'normal', message: 'On track' };
   };
 
   // Generate category-based savings recommendations
-  const getSavingsRecommendations = (budgetData: any[]) => {
-    const recommendations = [];
+  const getSavingsRecommendations = (budgetData: Budget[]): Recommendation[] => {
+    const recommendations: Recommendation[] = [];
     
     budgetData.forEach(budget => {
       const progress = getBudgetProgress(budget.spentAmount, budget.budgetAmount);
@@ -90,26 +115,6 @@ export function EnhancedBudgetTracker() {
     return recommendations;
   };
 
-  // What-if scenario calculator
-  const calculateWhatIf = (scenario: WhatIfScenario) => {
-    if (!budgetData) return null;
-    
-    return budgetData.map(budget => {
-      const change = scenario.categoryChanges[budget.category] || 0;
-      const newBudget = budget.budgetAmount + change;
-      const newProgress = getBudgetProgress(budget.spentAmount, newBudget);
-      
-      return {
-        ...budget,
-        originalBudget: budget.budgetAmount,
-        newBudget,
-        change,
-        newProgress,
-        improvement: getBudgetProgress(budget.spentAmount, budget.budgetAmount) - newProgress
-      };
-    });
-  };
-
   // Generate trend data for spending patterns
   const generateSpendingTrend = (currentSpent: number, budget: number) => {
     const data = [];
@@ -118,13 +123,13 @@ export function EnhancedBudgetTracker() {
     const currentDay = new Date().getDate();
     
     for (let day = 1; day <= daysInMonth; day++) {
-      let projected = dailyBudget * day;
-      let actual = day <= currentDay ? (currentSpent / currentDay) * day : null;
+      const projected = dailyBudget * day;
+      const actual = day <= currentDay ? (currentSpent / currentDay) * day : undefined;
       
       data.push({
         day,
         projected,
-        actual: actual || undefined
+        actual
       });
     }
     
@@ -133,13 +138,13 @@ export function EnhancedBudgetTracker() {
 
   if (isLoading) {
     return (
-      <Card className="mb-8">
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between mb-6">
+      <Card className="mb-6 sm:mb-8">
+        <CardContent className="p-3 sm:p-6">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
             <Skeleton className="h-6 w-32" />
             <Skeleton className="h-8 w-24" />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
             <Skeleton className="h-32" />
             <Skeleton className="h-32" />
             <Skeleton className="h-32" />
@@ -152,32 +157,33 @@ export function EnhancedBudgetTracker() {
   const recommendations = budgetData ? getSavingsRecommendations(budgetData) : [];
 
   return (
-    <div className="space-y-6">
-      {/* Enhanced Budget Overview */}
+    <div className="space-y-4 sm:space-y-6">
+      {/* Mobile-Optimized Budget Overview */}
       <Card className="glass-card pulse-orange">
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-blue-600 rounded-xl flex items-center justify-center pulse-orange">
-                <Target className="w-5 h-5 text-white" />
+        <CardContent className="p-3 sm:p-6">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-orange-500 to-blue-600 rounded-xl flex items-center justify-center">
+                <Target className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-                  Enhanced Budget Tracker
+                <h3 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-white">
+                  Budget Tracker
                 </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 hidden sm:block">
                   Advanced spending analysis and velocity tracking
                 </p>
               </div>
             </div>
             <Dialog open={whatIfDialogOpen} onOpenChange={setWhatIfDialogOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="flex items-center space-x-2">
-                  <Calculator className="w-4 h-4" />
-                  <span>What-If</span>
+                <Button variant="outline" size="sm" className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm touch-manipulation">
+                  <Calculator className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <span className="hidden sm:inline">What-If</span>
+                  <span className="sm:hidden">If</span>
                 </Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="w-[95vw] sm:w-auto max-w-lg">
                 <DialogHeader>
                   <DialogTitle>Budget What-If Scenario</DialogTitle>
                 </DialogHeader>
@@ -185,7 +191,6 @@ export function EnhancedBudgetTracker() {
                   <p className="text-sm text-slate-600 dark:text-slate-400">
                     See how budget adjustments would affect your spending goals
                   </p>
-                  {/* What-if calculator content would go here */}
                   <div className="text-center py-8 text-slate-500">
                     What-if calculator implementation...
                   </div>
@@ -194,7 +199,7 @@ export function EnhancedBudgetTracker() {
             </Dialog>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
             {budgetData?.map((budget) => {
               const progress = getBudgetProgress(budget.spentAmount, budget.budgetAmount);
               const status = getBudgetStatus(progress);
@@ -202,13 +207,13 @@ export function EnhancedBudgetTracker() {
               const trendData = generateSpendingTrend(budget.spentAmount, budget.budgetAmount);
               
               return (
-                <div key={budget.id} className="space-y-4 p-4 bg-white/50 dark:bg-slate-800/50 rounded-lg">
+                <div key={budget.id} className="space-y-3 sm:space-y-4 p-3 sm:p-4 bg-white/50 dark:bg-slate-800/50 rounded-lg touch-manipulation">
                   <div className="flex items-center justify-between">
-                    <span className="font-medium text-slate-900 dark:text-white">
+                    <span className="font-medium text-slate-900 dark:text-white text-sm sm:text-base">
                       {budget.category}
                     </span>
-                    <div className="flex items-center space-x-2">
-                      <Zap className={`w-4 h-4 ${
+                    <div className="flex items-center space-x-1 sm:space-x-2">
+                      <Zap className={`w-3 h-3 sm:w-4 sm:h-4 ${
                         velocity.status === 'fast' ? 'text-red-500' :
                         velocity.status === 'slow' ? 'text-emerald-500' : 'text-blue-500'
                       }`} />
@@ -227,7 +232,7 @@ export function EnhancedBudgetTracker() {
                     </div>
                     <Progress value={progress} className="h-2" />
                     
-                    {/* Spending velocity indicator */}
+                    {/* Mobile-optimized velocity indicator */}
                     <div className="flex items-center justify-between text-xs">
                       <span className={`${
                         velocity.status === 'fast' ? 'text-red-600' :
@@ -240,8 +245,8 @@ export function EnhancedBudgetTracker() {
                       </span>
                     </div>
                     
-                    {/* Mini trend chart */}
-                    <div className="h-8 mt-2">
+                    {/* Condensed mobile trend chart */}
+                    <div className="h-6 sm:h-8 mt-2">
                       <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={trendData.slice(0, new Date().getDate())}>
                           <Line 
@@ -270,41 +275,63 @@ export function EnhancedBudgetTracker() {
         </CardContent>
       </Card>
 
-      {/* Savings Recommendations */}
+      {/* Mobile-Optimized Savings Recommendations */}
       {recommendations.length > 0 && (
-        <Card className="glass-card glow-continuous">
-          <CardContent className="p-6">
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-lg flex items-center justify-center">
-                <DollarSign className="w-4 h-4 text-white" />
+        <Card className="glass-card">
+          <CardContent className="p-3 sm:p-6">
+            <div className="flex items-center space-x-2 sm:space-x-3 mb-3 sm:mb-4">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
+                <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
-              <h4 className="font-semibold text-slate-900 dark:text-white">
-                Smart Savings Recommendations
-              </h4>
+              <div>
+                <h3 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-white">
+                  Smart Recommendations
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 hidden sm:block">
+                  AI-powered savings suggestions
+                </p>
+              </div>
             </div>
             
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               {recommendations.slice(0, 3).map((rec, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <div className={`w-2 h-2 rounded-full ${
-                      rec.type === 'alert' ? 'bg-red-500' :
-                      rec.type === 'warning' ? 'bg-amber-500' : 'bg-emerald-500'
-                    }`}></div>
-                    <div>
-                      <p className="text-sm font-medium text-slate-900 dark:text-white">
-                        {rec.message}
-                      </p>
-                      <p className="text-xs text-slate-600 dark:text-slate-400">
+                <div key={index} className={`p-3 sm:p-4 rounded-lg border-l-4 touch-manipulation ${
+                  rec.type === 'alert' ? 'bg-red-50 dark:bg-red-900/20 border-red-500' :
+                  rec.type === 'warning' ? 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-500' :
+                  'bg-green-50 dark:bg-green-900/20 border-green-500'
+                }`}>
+                  <div className="flex items-start space-x-2 sm:space-x-3">
+                    {rec.type === 'alert' ? 
+                      <AlertTriangle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" /> :
+                      rec.type === 'warning' ? 
+                      <TrendingDown className="w-4 h-4 text-yellow-500 mt-0.5 flex-shrink-0" /> :
+                      <TrendingUp className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                    }
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-sm sm:text-base font-medium ${
+                        rec.type === 'alert' ? 'text-red-800 dark:text-red-300' :
+                        rec.type === 'warning' ? 'text-yellow-800 dark:text-yellow-300' :
+                        'text-green-800 dark:text-green-300'
+                      }`}>
                         {rec.category}
                       </p>
+                      <p className={`text-xs sm:text-sm ${
+                        rec.type === 'alert' ? 'text-red-700 dark:text-red-400' :
+                        rec.type === 'warning' ? 'text-yellow-700 dark:text-yellow-400' :
+                        'text-green-700 dark:text-green-400'
+                      }`}>
+                        {rec.message}
+                      </p>
+                      {rec.potential > 0 && (
+                        <p className={`text-xs font-medium mt-1 ${
+                          rec.type === 'alert' ? 'text-red-800 dark:text-red-300' :
+                          rec.type === 'warning' ? 'text-yellow-800 dark:text-yellow-300' :
+                          'text-green-800 dark:text-green-300'
+                        }`}>
+                          Potential: ${rec.potential.toFixed(0)}
+                        </p>
+                      )}
                     </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
-                      ${rec.potential.toFixed(0)}
-                    </div>
-                    <div className="text-xs text-slate-500">potential</div>
                   </div>
                 </div>
               ))}

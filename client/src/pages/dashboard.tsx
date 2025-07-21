@@ -211,44 +211,45 @@ export default function Dashboard() {
 
 
 
-        {/* Navigation Tabs */}
-        <div className="relative z-50 mx-4 mt-4 mb-6">
-          <div className="glass-card rounded-3xl p-3 bg-white/12 backdrop-blur-2xl border-2 border-white/20 shadow-2xl">
-            <div className="flex space-x-2">
+        {/* Mobile-Optimized Navigation Tabs */}
+        <div className="relative z-50 mx-2 sm:mx-4 mt-2 sm:mt-4 mb-4 sm:mb-6">
+          <div className="glass-card rounded-2xl sm:rounded-3xl p-2 sm:p-3 bg-white/12 backdrop-blur-2xl border-2 border-white/20 shadow-2xl">
+            <div className="flex space-x-1 sm:space-x-2">
               {[
-                { id: 'dashboard', label: 'Home', icon: BarChart3 },
-                { id: 'ai-predictions', label: 'AI Insights', icon: Brain },
-                { id: 'budget-goals', label: 'Budget & Goals', icon: Target },
-                { id: 'planning', label: 'Smart Planning', icon: Calculator },
-                { id: 'settings', label: 'Settings', icon: Bell }
+                { id: 'dashboard', label: 'Home', icon: BarChart3, shortLabel: 'Home' },
+                { id: 'ai-predictions', label: 'AI Insights', icon: Brain, shortLabel: 'AI' },
+                { id: 'budget-goals', label: 'Budget & Goals', icon: Target, shortLabel: 'Goals' },
+                { id: 'planning', label: 'Smart Planning', icon: Calculator, shortLabel: 'Plan' },
+                { id: 'settings', label: 'Settings', icon: Bell, shortLabel: 'Set' }
               ].map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`relative flex-1 flex flex-col items-center py-4 px-2 rounded-2xl transition-all duration-300 transform ${
+                  className={`relative flex-1 flex flex-col items-center py-2 sm:py-4 px-1 sm:px-2 rounded-xl sm:rounded-2xl transition-all duration-300 transform touch-manipulation ${
                     activeTab === tab.id
                       ? 'bg-gradient-to-br from-orange-500/35 to-orange-600/45 text-white scale-105 shadow-xl border-2 border-orange-300/60'
                       : 'text-white/75 hover:text-white hover:bg-white/15 hover:scale-102 active:scale-95'
                   }`}
                   style={{
-                    minHeight: '72px',
+                    minHeight: window.innerWidth < 640 ? '56px' : '72px',
                     touchAction: 'manipulation',
                     WebkitTapHighlightColor: 'transparent'
                   }}
                 >
-                  <tab.icon className={`mb-2 transition-all duration-200 ${
-                    activeTab === tab.id ? 'w-7 h-7 text-white' : 'w-6 h-6 text-white/80'
+                  <tab.icon className={`mb-1 sm:mb-2 transition-all duration-200 ${
+                    activeTab === tab.id ? 'w-5 h-5 sm:w-7 sm:h-7 text-white' : 'w-4 h-4 sm:w-6 sm:h-6 text-white/80'
                   }`} />
-                  <span className={`text-xs font-bold leading-tight transition-all duration-200 ${
+                  <span className={`text-xs sm:text-xs font-bold leading-tight transition-all duration-200 ${
                     activeTab === tab.id ? 'text-white' : 'text-white/85'
                   }`}>
-                    {tab.label}
+                    <span className="sm:hidden">{tab.shortLabel}</span>
+                    <span className="hidden sm:inline">{tab.label}</span>
                   </span>
                   {activeTab === tab.id && (
-                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-orange-300 rounded-full animate-pulse shadow-lg"></div>
+                    <div className="absolute -bottom-0.5 sm:-bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 sm:w-3 sm:h-3 bg-orange-300 rounded-full animate-pulse shadow-lg"></div>
                   )}
                   {activeTab === tab.id && (
-                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-orange-400/20 to-orange-600/30 animate-pulse"></div>
+                    <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-orange-400/20 to-orange-600/30 animate-pulse"></div>
                   )}
                 </button>
               ))}
@@ -275,28 +276,28 @@ export default function Dashboard() {
             </p>
           </div>
 
-          {/* Hero Stats Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6 mt-8 lg:mt-12 px-2">
-            <div className="glass-card p-4 lg:p-6 text-center scale-in pulse-orange">
-              <div className="text-2xl lg:text-3xl font-bold text-white number-glow">94%</div>
-              <div className="text-white/70 text-xs lg:text-sm">Prediction Accuracy</div>
+          {/* Mobile-Optimized Hero Stats Cards */}
+          <div className="grid grid-cols-3 sm:grid-cols-3 gap-2 sm:gap-4 lg:gap-6 mt-6 sm:mt-8 lg:mt-12 px-2 sm:px-2">
+            <div className="glass-card p-3 sm:p-4 lg:p-6 text-center scale-in pulse-orange touch-manipulation">
+              <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-white number-glow">94%</div>
+              <div className="text-white/70 text-xs sm:text-xs lg:text-sm leading-tight">Prediction<br className="sm:hidden" /><span className="hidden sm:inline"> </span>Accuracy</div>
             </div>
-            <div className="glass-card p-4 lg:p-6 text-center scale-in pulse-orange" style={{ animationDelay: '0.2s' }}>
-              <div className="text-2xl lg:text-3xl font-bold text-white number-glow">$2,340</div>
-              <div className="text-white/70 text-xs lg:text-sm">Avg Monthly Savings</div>
+            <div className="glass-card p-3 sm:p-4 lg:p-6 text-center scale-in pulse-orange touch-manipulation" style={{ animationDelay: '0.2s' }}>
+              <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-white number-glow">$2,340</div>
+              <div className="text-white/70 text-xs sm:text-xs lg:text-sm leading-tight">Monthly<br className="sm:hidden" /><span className="hidden sm:inline"> </span>Savings</div>
             </div>
-            <div className="glass-card p-4 lg:p-6 text-center scale-in pulse-orange" style={{ animationDelay: '0.4s' }}>
-              <div className="text-2xl lg:text-3xl font-bold text-white number-glow">8.7/10</div>
-              <div className="text-white/70 text-xs lg:text-sm">Smart Buy Score</div>
+            <div className="glass-card p-3 sm:p-4 lg:p-6 text-center scale-in pulse-orange touch-manipulation" style={{ animationDelay: '0.4s' }}>
+              <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-white number-glow">8.7/10</div>
+              <div className="text-white/70 text-xs sm:text-xs lg:text-sm leading-tight">Smart Buy<br className="sm:hidden" /><span className="hidden sm:inline"> </span>Score</div>
             </div>
           </div>
         </div>
 
 
       </div>
-      {/* Main Content */}
-      <div className="relative z-30 mt-4 lg:mt-8">
-        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 lg:py-8">
+      {/* Mobile-Optimized Main Content */}
+      <div className="relative z-30 mt-2 sm:mt-4 lg:mt-8">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-2 sm:py-4 lg:py-8">
           {activeTab === 'dashboard' && (
             <>
               <div className="fade-in">
