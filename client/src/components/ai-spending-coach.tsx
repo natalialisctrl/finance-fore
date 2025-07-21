@@ -3,8 +3,9 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Brain, MessageCircle, TrendingUp, TrendingDown, Target, Coffee, Car, Home, ShoppingBag, Heart } from 'lucide-react';
+import { Brain, MessageCircle, TrendingUp, TrendingDown, Target, Coffee, Car, Home, ShoppingBag, Heart, MapPin, Clock } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+import { useLocationAlerts } from './geo-location-service';
 
 interface SpendingInsight {
   category: string;
@@ -32,6 +33,7 @@ export function AISpendingCoach() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [insights, setInsights] = useState<SpendingInsight[]>([]);
   const [coachMessages, setCoachMessages] = useState<AICoachMessage[]>([]);
+  const { location, locationAlerts, isLoading: locationLoading } = useLocationAlerts();
 
   const { data: budgetData } = useQuery({
     queryKey: ['/api/budgets/demo-natalia/2025-07'],
@@ -44,9 +46,12 @@ export function AISpendingCoach() {
   useEffect(() => {
     if (budgetData) {
       generateSpendingInsights();
-      generateCoachMessages();
     }
   }, [budgetData]);
+
+  useEffect(() => {
+    generateCoachMessages();
+  }, [budgetData, location, locationAlerts]);
 
   const generateSpendingInsights = () => {
     if (!budgetData || !Array.isArray(budgetData)) return;
@@ -62,7 +67,7 @@ export function AISpendingCoach() {
         variance,
         variancePercent,
         suggestion: generateSuggestion(budget.category, variancePercent),
-        tone: variancePercent > 20 ? 'warning' : variancePercent < -10 ? 'encouraging' : 'neutral',
+        tone: (variancePercent > 20 ? 'warning' : variancePercent < -10 ? 'encouraging' : 'neutral') as 'encouraging' | 'warning' | 'neutral',
         icon: getCategoryIcon(budget.category)
       };
     }).filter(insight => Math.abs(insight.variancePercent) > 5);
@@ -91,18 +96,25 @@ export function AISpendingCoach() {
           action: () => console.log("Transferring to savings")
         },
         timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000)
-      },
-      {
-        id: '3',
-        message: "I noticed you're spending more on gas lately. With prices expected to rise 8% next week, consider filling up today to save about $12.",
-        category: "Transportation",
-        actionSuggestion: {
-          text: "Set gas price alert",
-          action: () => console.log("Setting gas price alert")
-        },
-        timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000)
       }
     ];
+
+    // Add location-based messages
+    if (location && locationAlerts.length > 0) {
+      const urgentAlert = locationAlerts.find(alert => alert.daysOut <= 3);
+      if (urgentAlert) {
+        messages.unshift({
+          id: 'location-' + urgentAlert.id,
+          message: `📍 ${location.city}: ${urgentAlert.message}. ${urgentAlert.prediction}. ${urgentAlert.actionSuggestion || ''}`,
+          category: urgentAlert.type,
+          actionSuggestion: urgentAlert.actionSuggestion ? {
+            text: "View location alerts",
+            action: () => console.log("Viewing location alerts")
+          } : undefined,
+          timestamp: new Date()
+        });
+      }
+    }
 
     setCoachMessages(messages);
   };
@@ -158,12 +170,27 @@ export function AISpendingCoach() {
             </div>
             <div>
               <h3 className="text-xl font-bold text-slate-900 dark:text-white">AI Spending Coach</h3>
-              <p className="text-white">Personalized insights from your spending patterns</p>
+              <div className="flex items-center space-x-2">
+                <p className="text-white">Personalized insights from your spending patterns</p>
+                {location && (
+                  <div className="flex items-center space-x-1 text-xs text-orange-400">
+                    <MapPin className="w-3 h-3" />
+                    <span>{location.city}, {location.state}</span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-          <Badge className="bg-purple-500/20 text-purple-600 dark:text-purple-400 border-purple-500/30">
-            {coachMessages.length} insights
-          </Badge>
+          <div className="flex flex-col space-y-2">
+            <Badge className="bg-purple-500/20 text-purple-600 dark:text-purple-400 border-purple-500/30">
+              {coachMessages.length} insights
+            </Badge>
+            {locationAlerts.some(alert => alert.severity === 'high') && (
+              <Badge className="bg-red-500/20 text-red-600 dark:text-red-400 border-red-500/30">
+                Location Alert
+              </Badge>
+            )}
+          </div>
         </div>
       </CardHeader>
 
@@ -172,13 +199,31 @@ export function AISpendingCoach() {
         {coachMessages.length > 0 && (
           <div className="glass-card p-4 bg-gradient-to-r from-purple-500/10 to-pink-500/10">
             <div className="flex items-start space-x-3">
-              <MessageCircle className="w-5 h-5 text-purple-600 dark:text-purple-400 mt-1" />
+              {coachMessages[0].id.startsWith('location-') ? (
+                <MapPin className="w-5 h-5 text-orange-600 dark:text-orange-400 mt-1" />
+              ) : (
+                <MessageCircle className="w-5 h-5 text-purple-600 dark:text-purple-400 mt-1" />
+              )}
               <div className="flex-1">
+                {coachMessages[0].id.startsWith('location-') && (
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Badge className="bg-orange-500/20 text-orange-600 border-orange-500/30 text-xs">
+                      Location Alert
+                    </Badge>
+                    <div className="flex items-center space-x-1 text-xs text-white">
+                      <Clock className="w-3 h-3" />
+                      <span>Just now</span>
+                    </div>
+                  </div>
+                )}
                 <p className="text-white mb-3">{coachMessages[0].message}</p>
                 {coachMessages[0].actionSuggestion && (
                   <Button 
                     size="sm" 
-                    className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white border-0"
+                    className={`${coachMessages[0].id.startsWith('location-') 
+                      ? 'bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700' 
+                      : 'bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700'
+                    } text-white border-0`}
                     onClick={coachMessages[0].actionSuggestion.action}
                   >
                     {coachMessages[0].actionSuggestion.text}
