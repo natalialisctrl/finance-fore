@@ -17,6 +17,9 @@ import { LocationAlerts } from "@/components/location-alerts";
 import { LocationSettings } from "@/components/location-settings";
 import { SmartSceneBuilder } from "@/components/smart-scene-builder";
 import { MobileSafeWrapper } from "@/components/mobile-safe-wrapper";
+import { MobileGoalsDebt } from "@/components/mobile-goals-debt";
+import { MobileSceneBuilder } from "@/components/mobile-scene-builder";
+import { MobileScenarioPlanning } from "@/components/mobile-scenario-planning";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 // import { useAuth } from "@/hooks/useAuth"; // Auto-login mode
@@ -331,36 +334,55 @@ export default function Dashboard() {
           )}
           
           {activeTab === 'budget-goals' && (
-            <div className="space-y-8">
-              <div className="fade-in">
-                <MobileSafeWrapper fallbackTitle="Scene Builder Error" componentName="SmartSceneBuilder">
-                  <SmartSceneBuilder />
-                </MobileSafeWrapper>
+            <div className="space-y-4 sm:space-y-8">
+              {/* Mobile-First Approach */}
+              <div className="block sm:hidden">
+                <MobileSceneBuilder />
+                <div className="mt-4">
+                  <MobileGoalsDebt />
+                </div>
               </div>
-              <div className="slide-up" style={{ animationDelay: '0.2s' }}>
-                <MobileSafeWrapper fallbackTitle="Budget Tracker Error" componentName="EnhancedBudgetTracker">
-                  <EnhancedBudgetTracker />
-                </MobileSafeWrapper>
-              </div>
-              <div className="slide-up" style={{ animationDelay: '0.4s' }}>
-                <MobileSafeWrapper fallbackTitle="Goals & Debt Error" componentName="GoalsDebtDashboard">
-                  <GoalsDebtDashboard />
-                </MobileSafeWrapper>
+              
+              {/* Desktop Components */}
+              <div className="hidden sm:block">
+                <div className="fade-in">
+                  <MobileSafeWrapper fallbackTitle="Scene Builder Error" componentName="SmartSceneBuilder">
+                    <SmartSceneBuilder />
+                  </MobileSafeWrapper>
+                </div>
+                <div className="slide-up" style={{ animationDelay: '0.2s' }}>
+                  <MobileSafeWrapper fallbackTitle="Budget Tracker Error" componentName="EnhancedBudgetTracker">
+                    <EnhancedBudgetTracker />
+                  </MobileSafeWrapper>
+                </div>
+                <div className="slide-up" style={{ animationDelay: '0.4s' }}>
+                  <MobileSafeWrapper fallbackTitle="Goals & Debt Error" componentName="GoalsDebtDashboard">
+                    <GoalsDebtDashboard />
+                  </MobileSafeWrapper>
+                </div>
               </div>
             </div>
           )}
           
           {activeTab === 'planning' && (
-            <div className="space-y-8">
-              <div className="fade-in">
-                <MobileSafeWrapper fallbackTitle="Scenario Planning Error" componentName="ScenarioPlanning">
-                  <ScenarioPlanning />
-                </MobileSafeWrapper>
+            <div className="space-y-4 sm:space-y-8">
+              {/* Mobile-First Approach */}
+              <div className="block sm:hidden">
+                <MobileScenarioPlanning />
               </div>
-              <div className="slide-up" style={{ animationDelay: '0.2s' }}>
-                <MobileSafeWrapper fallbackTitle="Economic Trends Error" componentName="EconomicTrendPrediction">
-                  <EconomicTrendPrediction />
-                </MobileSafeWrapper>
+              
+              {/* Desktop Components */}
+              <div className="hidden sm:block">
+                <div className="fade-in">
+                  <MobileSafeWrapper fallbackTitle="Scenario Planning Error" componentName="ScenarioPlanning">
+                    <ScenarioPlanning />
+                  </MobileSafeWrapper>
+                </div>
+                <div className="slide-up" style={{ animationDelay: '0.2s' }}>
+                  <MobileSafeWrapper fallbackTitle="Economic Trends Error" componentName="EconomicTrendPrediction">
+                    <EconomicTrendPrediction />
+                  </MobileSafeWrapper>
+                </div>
               </div>
             </div>
           )}

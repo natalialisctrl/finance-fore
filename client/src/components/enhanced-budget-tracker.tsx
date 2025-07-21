@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Target, Calculator, Zap, TrendingUp, TrendingDown, AlertTriangle } from 'lucide-react';
+import { Target, Calculator, Zap, TrendingUp, TrendingDown, AlertTriangle, PiggyBank } from 'lucide-react';
 import { ResponsiveContainer, LineChart, Line } from 'recharts';
 
 interface Budget {
