@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Bell, CheckCircle, AlertTriangle, Info, TrendingUp, Settings, X } from "lucide-react";
+import { Bell, CheckCircle, AlertTriangle, Info, TrendingUp, Settings, X, MapPin } from "lucide-react";
+import { useLocationAlerts } from './geo-location-service';
 
 interface Notification {
   id: number;
@@ -17,6 +18,7 @@ interface Notification {
 export function NotificationsCenter() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [filter, setFilter] = useState<string>('all');
+  const { locationAlerts, location } = useLocationAlerts();
 
   // Sample notifications for demonstration
   useEffect(() => {
@@ -66,8 +68,21 @@ export function NotificationsCenter() {
         createdAt: '2025-07-18T11:20:00Z'
       }
     ];
-    setNotifications(sampleNotifications);
-  }, []);
+
+    // Add location-based notifications
+    const locationNotifications: Notification[] = locationAlerts
+      .filter(alert => alert.severity === 'high' || alert.daysOut <= 3)
+      .map((alert, index) => ({
+        id: 100 + index,
+        title: `📍 ${location?.city} - ${alert.title}`,
+        message: `${alert.message}. ${alert.prediction}. ${alert.actionSuggestion || ''}`,
+        notificationType: alert.severity === 'high' ? 'urgent' as const : 'warning' as const,
+        isRead: false,
+        createdAt: new Date().toISOString()
+      }));
+
+    setNotifications([...locationNotifications, ...sampleNotifications]);
+  }, [locationAlerts, location]);
 
   const getNotificationIcon = (type: string) => {
     switch (type) {

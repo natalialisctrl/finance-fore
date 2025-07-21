@@ -14,6 +14,7 @@ import { SecurityPrivacyDashboard } from "@/components/security-privacy-dashboar
 import { AISpendingCoach } from "@/components/ai-spending-coach";
 import { LifeModeSettings } from "@/components/life-mode-settings";
 import { LocationAlerts } from "@/components/location-alerts";
+import { LocationSettings } from "@/components/location-settings";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 // import { useAuth } from "@/hooks/useAuth"; // Auto-login mode
@@ -354,7 +355,10 @@ export default function Dashboard() {
           {activeTab === 'settings' && (
             <div className="space-y-8">
               <div className="fade-in">
-                <LocationAlerts />
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <LocationSettings />
+                  <LocationAlerts />
+                </div>
               </div>
               <div className="slide-up" style={{ animationDelay: '0.2s' }}>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

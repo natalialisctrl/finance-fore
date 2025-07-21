@@ -28,11 +28,33 @@ export function useLocationAlerts() {
   const [location, setLocation] = useState<LocationData | null>(null);
   const [locationAlerts, setLocationAlerts] = useState<LocationAlert[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [userPreferences, setUserPreferences] = useState<any>(null);
   const { toast } = useToast();
 
   useEffect(() => {
+    loadUserPreferences();
     detectLocation();
   }, []);
+
+  const loadUserPreferences = () => {
+    try {
+      const saved = localStorage.getItem('locationPreferences');
+      if (saved) {
+        const prefs = JSON.parse(saved);
+        setUserPreferences(prefs);
+        
+        // Set location from preferences
+        setLocation({
+          city: prefs.city,
+          state: prefs.state,
+          coordinates: { lat: 30.2672, lng: -97.7431 }, // Austin default
+          timezone: 'America/Chicago'
+        });
+      }
+    } catch (error) {
+      console.error('Error loading preferences:', error);
+    }
+  };
 
   const detectLocation = async () => {
     try {
@@ -85,35 +107,55 @@ export function useLocationAlerts() {
 
   const generateLocationAlerts = (loc: LocationData) => {
     const alerts: LocationAlert[] = [];
+    
+    // Check user preferences to filter alerts
+    const enabledAlertTypes = userPreferences?.alertTypes || {
+      gas: true,
+      grocery: true,
+      housing: true,
+      weather: true,
+      economic: true
+    };
 
     // Austin-specific alerts based on real economic patterns
     if (loc.city === 'Austin' && loc.state === 'TX') {
-      alerts.push(
-        {
+      // Gas alerts (only if enabled)
+      if (enabledAlertTypes.gas) {
+        const gasStations = userPreferences?.storePreferences?.gasStations || ['Shell', 'Exxon'];
+        alerts.push({
           id: '1',
           type: 'gas',
           severity: 'high',
-          title: 'Austin Gas Price Alert',
-          message: 'Austin gas prices are predicted to spike in 3 days',
+          title: `Austin Gas Price Alert`,
+          message: `${gasStations.join(' & ')} stations in Austin showing price increases in 3 days`,
           prediction: '+$0.15/gallon increase expected',
           confidence: 87,
           daysOut: 3,
           actionSuggestion: 'Fill up today to save ~$8 per tank',
           icon: '⛽'
-        },
-        {
+        });
+      }
+
+      // Grocery alerts (only if enabled)
+      if (enabledAlertTypes.grocery) {
+        const groceryStores = userPreferences?.storePreferences?.groceryStores || ['H-E-B'];
+        alerts.push({
           id: '2',
           type: 'grocery',
           severity: 'medium',
-          title: 'H-E-B Price Changes',
-          message: 'Austin H-E-B stores planning price adjustments this weekend',
+          title: `${groceryStores[0]} Price Changes`,
+          message: `${groceryStores.join(' & ')} planning price adjustments this weekend`,
           prediction: 'Dairy products +8%, produce -12%',
           confidence: 73,
           daysOut: 2,
           actionSuggestion: 'Stock up on milk, wait on vegetables',
           icon: '🛒'
-        },
-        {
+        });
+      }
+
+      // Housing alerts (only if enabled)
+      if (enabledAlertTypes.housing) {
+        alerts.push({
           id: '3',
           type: 'housing',
           severity: 'medium',
@@ -124,8 +166,12 @@ export function useLocationAlerts() {
           daysOut: 7,
           actionSuggestion: 'Good time to negotiate lease renewal',
           icon: '🏠'
-        },
-        {
+        });
+      }
+
+      // Weather alerts (only if enabled)
+      if (enabledAlertTypes.weather) {
+        alerts.push({
           id: '4',
           type: 'weather',
           severity: 'low',
@@ -136,8 +182,12 @@ export function useLocationAlerts() {
           daysOut: 5,
           actionSuggestion: 'Pre-cool home during off-peak hours',
           icon: '🌡️'
-        },
-        {
+        });
+      }
+
+      // Economic alerts (only if enabled)
+      if (enabledAlertTypes.economic) {
+        alerts.push({
           id: '5',
           type: 'economic',
           severity: 'high',
@@ -148,14 +198,15 @@ export function useLocationAlerts() {
           daysOut: 30,
           actionSuggestion: 'Delay major purchases for better deals',
           icon: '💼'
-        }
-      );
+        });
+      }
+
     }
 
     // Add generic location-based alerts for other cities
     else {
-      alerts.push(
-        {
+      if (enabledAlertTypes.gas) {
+        alerts.push({
           id: '1',
           type: 'gas',
           severity: 'medium',
@@ -166,8 +217,11 @@ export function useLocationAlerts() {
           daysOut: 4,
           actionSuggestion: 'Consider filling up earlier this week',
           icon: '⛽'
-        },
-        {
+        });
+      }
+      
+      if (enabledAlertTypes.grocery) {
+        alerts.push({
           id: '2',
           type: 'grocery',
           severity: 'low',
@@ -178,8 +232,8 @@ export function useLocationAlerts() {
           daysOut: 7,
           actionSuggestion: 'Monitor weekly ads for best deals',
           icon: '🛒'
-        }
-      );
+        });
+      }
     }
 
     setLocationAlerts(alerts);

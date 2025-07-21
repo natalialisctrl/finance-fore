@@ -51,7 +51,7 @@ export function AISpendingCoach() {
 
   useEffect(() => {
     generateCoachMessages();
-  }, [budgetData, location, locationAlerts]);
+  }, [location, locationAlerts]);
 
   const generateSpendingInsights = () => {
     if (!budgetData || !Array.isArray(budgetData)) return;
