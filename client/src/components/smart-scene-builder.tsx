@@ -1,446 +1,279 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
-import { Upload, Target, Camera, Play, Lock, Unlock, Zap } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { Target, Plus, Camera, Play, Lock, Unlock, AlertTriangle } from 'lucide-react';
 
 interface SceneGoal {
   id: string;
   title: string;
   targetAmount: number;
   currentAmount: number;
-  targetDate: Date;
-  category: 'car' | 'home' | 'vacation' | 'education' | 'business' | 'other';
-  image?: string;
+  targetDate: string;
+  category: string;
   description: string;
   weeklyGoal: number;
   monthsToGoal: number;
   unlockedElements: number;
   totalElements: number;
-  quests: Quest[];
   isCompleted: boolean;
-}
-
-interface Quest {
-  id: string;
-  title: string;
-  description: string;
-  targetAmount: number;
-  currentAmount: number;
-  isCompleted: boolean;
-  unlockElement: string;
-  weeklyTarget: number;
-  estimatedWeeks: number;
 }
 
 const GOAL_CATEGORIES = [
-  { value: 'car', label: 'Dream Car', icon: '🚗', elements: ['Engine', 'Wheels', 'Interior', 'Paint', 'Features'] },
-  { value: 'home', label: 'Home Purchase', icon: '🏠', elements: ['Foundation', 'Walls', 'Roof', 'Kitchen', 'Garden'] },
-  { value: 'vacation', label: 'Dream Vacation', icon: '✈️', elements: ['Flight', 'Hotel', 'Activities', 'Meals', 'Souvenirs'] },
-  { value: 'education', label: 'Education', icon: '🎓', elements: ['Tuition', 'Books', 'Laptop', 'Certification', 'Graduation'] },
-  { value: 'business', label: 'Start Business', icon: '💼', elements: ['License', 'Equipment', 'Marketing', 'Inventory', 'Launch'] },
-  { value: 'other', label: 'Other Goal', icon: '🎯', elements: ['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4', 'Complete'] }
+  { value: 'car', label: 'Dream Car', icon: '🚗' },
+  { value: 'home', label: 'Home Purchase', icon: '🏠' },
+  { value: 'vacation', label: 'Dream Vacation', icon: '✈️' },
+  { value: 'education', label: 'Education', icon: '🎓' },
+  { value: 'business', label: 'Start Business', icon: '💼' },
+  { value: 'other', label: 'Other Goal', icon: '🎯' }
 ];
 
 export function SmartSceneBuilder() {
-  const { toast } = useToast();
   const [scenes, setScenes] = useState<SceneGoal[]>([]);
-  const [activeScene, setActiveScene] = useState<SceneGoal | null>(null);
-  const [isCreating, setIsCreating] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [newGoal, setNewGoal] = useState({
-    title: '',
-    targetAmount: 0,
-    targetDate: '',
-    category: '',
-    description: '',
-    image: ''
-  });
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      loadSampleScenes();
-      setLoading(false);
-    }, 100);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const loadSampleScenes = () => {
-    const sampleScenes: SceneGoal[] = [
-      {
-        id: '1',
-        title: 'Tesla Model 3',
-        targetAmount: 45000,
-        currentAmount: 12500,
-        targetDate: new Date('2025-12-31'),
-        category: 'car',
-        description: 'My dream electric vehicle with autopilot',
-        weeklyGoal: 625,
-        monthsToGoal: 13,
-        unlockedElements: 2,
-        totalElements: 5,
-        isCompleted: false,
-        quests: [
+    try {
+      const timer = setTimeout(() => {
+        setScenes([
           {
-            id: 'q1',
-            title: 'Engine Fund',
-            description: 'Save for the electric drivetrain',
-            targetAmount: 15000,
-            currentAmount: 15000,
-            isCompleted: true,
-            unlockElement: 'Engine',
-            weeklyTarget: 290,
-            estimatedWeeks: 12
+            id: '1',
+            title: 'Dream Car Fund',
+            targetAmount: 35000,
+            currentAmount: 8750,
+            targetDate: '2026-06-01',
+            category: 'car',
+            description: 'Save for a Tesla Model 3',
+            weeklyGoal: 290,
+            monthsToGoal: 22,
+            unlockedElements: 1,
+            totalElements: 5,
+            isCompleted: false
           },
           {
-            id: 'q2',
-            title: 'Premium Wheels',
-            description: '19-inch sport wheels upgrade',
-            targetAmount: 8000,
-            currentAmount: 7200,
-            isCompleted: false,
-            unlockElement: 'Wheels',
-            weeklyTarget: 155,
-            estimatedWeeks: 2
+            id: '2',
+            title: 'Home Down Payment',
+            targetAmount: 60000,
+            currentAmount: 15000,
+            targetDate: '2027-01-01',
+            category: 'home',
+            description: 'Save for house down payment',
+            weeklyGoal: 450,
+            monthsToGoal: 36,
+            unlockedElements: 2,
+            totalElements: 5,
+            isCompleted: false
           }
-        ]
-      },
-      {
-        id: '2',
-        title: 'European Adventure',
-        targetAmount: 8500,
-        currentAmount: 3200,
-        targetDate: new Date('2025-09-15'),
-        category: 'vacation',
-        description: '3-week journey through Paris, Rome, and Barcelona',
-        weeklyGoal: 175,
-        monthsToGoal: 8,
-        unlockedElements: 1,
-        totalElements: 5,
-        isCompleted: false,
-        quests: [
-          {
-            id: 'q3',
-            title: 'Flight Tickets',
-            description: 'Round-trip flights to Europe',
-            targetAmount: 2500,
-            currentAmount: 2500,
-            isCompleted: true,
-            unlockElement: 'Flight',
-            weeklyTarget: 95,
-            estimatedWeeks: 8
-          }
-        ]
-      }
-    ];
-    setScenes(sampleScenes);
-    setActiveScene(sampleScenes[0]);
-  };
+        ]);
+        setLoading(false);
+      }, 100);
 
-  const calculateProgress = (scene: SceneGoal) => {
-    return Math.min((scene.currentAmount / scene.targetAmount) * 100, 100);
-  };
-
-  const getCategoryIcon = (category: string) => {
-    return GOAL_CATEGORIES.find(c => c.value === category)?.icon || '🎯';
-  };
-
-  const getUnlockAnimation = (isUnlocked: boolean) => {
-    return isUnlocked 
-      ? "animate-pulse bg-gradient-to-r from-green-500 to-emerald-600" 
-      : "bg-gradient-to-r from-gray-400 to-gray-600 opacity-50";
-  };
-
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      if (file.size > 2 * 1024 * 1024) {
-        toast({
-          title: "File Too Large",
-          description: "Please choose an image smaller than 2MB",
-          variant: "destructive"
-        });
-        return;
-      }
-      
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setNewGoal(prev => ({ ...prev, image: e.target?.result as string }));
-        toast({
-          title: "Image Uploaded",
-          description: "Your goal visualization is ready!",
-        });
-      };
-      reader.onerror = () => {
-        toast({
-          title: "Upload Failed",
-          description: "Please try a different image",
-          variant: "destructive"
-        });
-      };
-      reader.readAsDataURL(file);
+      return () => clearTimeout(timer);
+    } catch (err) {
+      console.error("Error loading scenes:", err);
+      setError("Failed to load scenes");
+      setLoading(false);
     }
+  }, []);
+
+  const getProgressPercentage = (current: number, target: number): number => {
+    if (!target || target <= 0) return 0;
+    return Math.min((current / target) * 100, 100);
   };
+
+  const getCategoryInfo = (category: string) => {
+    return GOAL_CATEGORIES.find(cat => cat.value === category) || GOAL_CATEGORIES[5];
+  };
+
+  if (error) {
+    return (
+      <Card className="glass-card">
+        <CardContent className="p-4 text-center">
+          <AlertTriangle className="w-8 h-8 text-red-500 mx-auto mb-2" />
+          <p className="text-white">Unable to load scene data</p>
+          <Button 
+            onClick={() => window.location.reload()} 
+            className="mt-4 touch-manipulation"
+            size="sm"
+          >
+            Retry
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
 
   if (loading) {
     return (
-      <Card className="glass-card border-none">
-        <CardContent className="flex items-center justify-center py-12">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
+      <Card className="glass-card">
+        <CardContent className="p-4 text-center">
+          <div className="animate-spin w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+          <p className="text-white">Loading scene builder...</p>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card className="glass-card border-none">
-      <CardHeader className="pb-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
-              <Target className="w-5 h-5 text-white" />
+    <div className="space-y-4 sm:space-y-6">
+      {/* Mobile-Optimized Scene Builder Header */}
+      <Card className="glass-card pulse-orange">
+        <CardContent className="p-3 sm:p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
+                <Target className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+              </div>
+              <div>
+                <h3 className="text-base sm:text-lg font-semibold text-white">Smart Scene Builder</h3>
+                <p className="text-xs sm:text-sm text-white/70 hidden sm:block">Visual goal tracking system</p>
+              </div>
+            </div>
+            <Button size="sm" className="touch-manipulation text-xs sm:text-sm">
+              <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+              <span className="hidden sm:inline">Create Scene</span>
+              <span className="sm:hidden">Add</span>
+            </Button>
+          </div>
+
+          {/* Goals Overview Stats */}
+          <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-4">
+            <div className="text-center">
+              <div className="text-lg sm:text-xl font-bold text-white">
+                {scenes.length}
+              </div>
+              <div className="text-xs text-white/70">Active Scenes</div>
+            </div>
+            <div className="text-center">
+              <div className="text-lg sm:text-xl font-bold text-green-400">
+                ${scenes.reduce((sum, scene) => sum + scene.currentAmount, 0).toLocaleString()}
+              </div>
+              <div className="text-xs text-white/70">Total Saved</div>
+            </div>
+            <div className="text-center">
+              <div className="text-lg sm:text-xl font-bold text-blue-400">
+                ${scenes.reduce((sum, scene) => sum + scene.weeklyGoal, 0)}
+              </div>
+              <div className="text-xs text-white/70">Weekly Goal</div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Mobile-Optimized Scene Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+        {scenes.map((scene) => {
+          const progress = getProgressPercentage(scene.currentAmount, scene.targetAmount);
+          const categoryInfo = getCategoryInfo(scene.category);
+          const questProgress = (scene.unlockedElements / scene.totalElements) * 100;
+          
+          return (
+            <Card key={scene.id} className="glass-card hover:scale-102 transition-transform touch-manipulation">
+              <CardContent className="p-3 sm:p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-lg sm:text-xl">{categoryInfo.icon}</span>
+                    <div>
+                      <h4 className="font-semibold text-white text-sm sm:text-base">{scene.title}</h4>
+                      <Badge variant="secondary" className="text-xs mt-1">
+                        {categoryInfo.label}
+                      </Badge>
+                    </div>
+                  </div>
+                  <Button size="sm" variant="outline" className="touch-manipulation">
+                    <Camera className="w-3 h-3 sm:w-4 sm:h-4" />
+                  </Button>
+                </div>
+
+                <div className="space-y-3">
+                  {/* Progress Section */}
+                  <div>
+                    <div className="flex justify-between text-xs sm:text-sm text-white/80 mb-1">
+                      <span>${scene.currentAmount.toLocaleString()}</span>
+                      <span>${scene.targetAmount.toLocaleString()}</span>
+                    </div>
+                    <Progress value={progress} className="h-2 mb-1" />
+                    <div className="text-xs text-white/70 text-center">
+                      {progress.toFixed(0)}% Complete
+                    </div>
+                  </div>
+
+                  {/* Quest Progress */}
+                  <div className="bg-white/10 rounded-lg p-2">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-medium text-white">Scene Elements</span>
+                      <span className="text-xs text-white/70">
+                        {scene.unlockedElements}/{scene.totalElements}
+                      </span>
+                    </div>
+                    <div className="flex space-x-1">
+                      {Array.from({ length: scene.totalElements }).map((_, index) => (
+                        <div
+                          key={index}
+                          className={`flex-1 h-2 rounded ${
+                            index < scene.unlockedElements 
+                              ? 'bg-green-500' 
+                              : 'bg-white/20'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Weekly Goal & Timeline */}
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div className="bg-blue-500/20 p-2 rounded text-center">
+                      <div className="font-semibold text-blue-200">${scene.weeklyGoal}</div>
+                      <div className="text-blue-300">Weekly Goal</div>
+                    </div>
+                    <div className="bg-purple-500/20 p-2 rounded text-center">
+                      <div className="font-semibold text-purple-200">{scene.monthsToGoal}mo</div>
+                      <div className="text-purple-300">Time Left</div>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex space-x-2">
+                    <Button size="sm" className="flex-1 touch-manipulation text-xs">
+                      <Play className="w-3 h-3 mr-1" />
+                      View Scene
+                    </Button>
+                    <Button size="sm" variant="outline" className="touch-manipulation">
+                      {scene.unlockedElements > 0 ? <Unlock className="w-3 h-3" /> : <Lock className="w-3 h-3" />}
+                    </Button>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-xs text-white/60 leading-relaxed">
+                    {scene.description}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+
+      {/* Create New Scene Card */}
+      <Card className="glass-card border-dashed border-2 border-white/30 hover:border-white/50 transition-colors">
+        <CardContent className="p-6 text-center">
+          <div className="space-y-3">
+            <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-blue-600 rounded-xl flex items-center justify-center mx-auto">
+              <Plus className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">Smart Scene Builder</h3>
-              <p className="text-white">Build the life you see - Visual goal tracking</p>
+              <h4 className="font-semibold text-white mb-1">Create New Scene</h4>
+              <p className="text-sm text-white/70">Build a visual goal moodboard</p>
             </div>
-          </div>
-          <Dialog open={isCreating} onOpenChange={setIsCreating}>
-            <DialogTrigger asChild>
-              <Button className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white border-0">
-                <Camera className="w-4 h-4 mr-2" />
-                New Scene
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto w-[95vw] sm:w-auto">
-              <DialogHeader>
-                <DialogTitle>Create Your Dream Scene</DialogTitle>
-              </DialogHeader>
-              
-              <div className="space-y-4 mt-4">
-                <div>
-                  <Label>Scene Image</Label>
-                  <div className="border-2 border-dashed rounded-lg p-6 text-center">
-                    {newGoal.image ? (
-                      <img src={newGoal.image} alt="Goal" className="max-h-32 mx-auto rounded-lg" />
-                    ) : (
-                      <div>
-                        <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleImageUpload}
-                          className="hidden"
-                          id="image-upload"
-                        />
-                        <Button asChild variant="outline" size="sm">
-                          <label htmlFor="image-upload" className="cursor-pointer">
-                            Upload Image
-                          </label>
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 gap-4">
-                  <div>
-                    <Label>Goal Title</Label>
-                    <Input
-                      value={newGoal.title}
-                      onChange={(e) => setNewGoal(prev => ({ ...prev, title: e.target.value }))}
-                      placeholder="e.g., Tesla Model 3"
-                    />
-                  </div>
-                  <div>
-                    <Label>Category</Label>
-                    <Select value={newGoal.category} onValueChange={(value) => setNewGoal(prev => ({ ...prev, category: value }))}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {GOAL_CATEGORIES.map((category) => (
-                          <SelectItem key={category.value} value={category.value}>
-                            {category.icon} {category.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label>Target Amount ($)</Label>
-                    <Input
-                      type="number"
-                      value={newGoal.targetAmount || ''}
-                      onChange={(e) => setNewGoal(prev => ({ ...prev, targetAmount: Number(e.target.value) }))}
-                      placeholder="45000"
-                    />
-                  </div>
-                  <div>
-                    <Label>Target Date</Label>
-                    <Input
-                      type="date"
-                      value={newGoal.targetDate}
-                      onChange={(e) => setNewGoal(prev => ({ ...prev, targetDate: e.target.value }))}
-                    />
-                  </div>
-                </div>
-
-                <div className="flex justify-end space-x-2">
-                  <Button variant="outline" onClick={() => setIsCreating(false)}>Cancel</Button>
-                  <Button disabled={!newGoal.title || !newGoal.targetAmount}>Create Scene</Button>
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
-        </div>
-      </CardHeader>
-
-      <CardContent className="space-y-6">
-        <div className="flex space-x-2 overflow-x-auto pb-2">
-          {scenes.map((scene) => (
-            <Button
-              key={scene.id}
-              variant={activeScene?.id === scene.id ? "default" : "outline"}
-              size="sm"
-              onClick={() => setActiveScene(scene)}
-              className="flex-shrink-0"
-            >
-              {getCategoryIcon(scene.category)} {scene.title}
-            </Button>
-          ))}
-        </div>
-
-        {activeScene && (
-          <div className="space-y-4">
-            <div className="glass-card p-4 bg-gradient-to-r from-purple-500/10 to-pink-500/10">
-              <div className="mb-4">
-                <div className="flex items-center space-x-2 mb-2">
-                  <h4 className="text-lg font-bold text-white">{activeScene.title}</h4>
-                  <Badge className="bg-purple-500/20 text-purple-400">
-                    {getCategoryIcon(activeScene.category)} {activeScene.category}
-                  </Badge>
-                </div>
-                <p className="text-white text-sm mb-4">{activeScene.description}</p>
-                
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  <div>
-                    <div className="text-lg font-bold text-green-400">
-                      ${activeScene.currentAmount.toLocaleString()}
-                    </div>
-                    <div className="text-xs text-white">Saved</div>
-                  </div>
-                  <div>
-                    <div className="text-lg font-bold text-purple-400">
-                      ${activeScene.targetAmount.toLocaleString()}
-                    </div>
-                    <div className="text-xs text-white">Goal</div>
-                  </div>
-                  <div>
-                    <div className="text-lg font-bold text-pink-400">
-                      ${activeScene.weeklyGoal}
-                    </div>
-                    <div className="text-xs text-white">Per Week</div>
-                  </div>
-                  <div>
-                    <div className="text-lg font-bold text-cyan-400">
-                      {Math.ceil((activeScene.targetAmount - activeScene.currentAmount) / activeScene.weeklyGoal)}w
-                    </div>
-                    <div className="text-xs text-white">Remaining</div>
-                  </div>
-                </div>
-
-                <div className="mt-4">
-                  <div className="flex justify-between text-sm text-white mb-1">
-                    <span>Progress</span>
-                    <span>{calculateProgress(activeScene).toFixed(1)}%</span>
-                  </div>
-                  <Progress value={calculateProgress(activeScene)} className="h-2" />
-                </div>
-              </div>
-            </div>
-
-            <div className="glass-card p-4">
-              <div className="flex items-center space-x-2 mb-4">
-                <Play className="w-5 h-5 text-purple-400" />
-                <h4 className="font-semibold text-white">Scene Elements</h4>
-                <Badge className="bg-green-500/20 text-green-400">
-                  {activeScene.unlockedElements}/{activeScene.totalElements} Unlocked
-                </Badge>
-              </div>
-
-              <div className="grid grid-cols-5 gap-2">
-                {GOAL_CATEGORIES.find(c => c.value === activeScene.category)?.elements.map((element, index) => {
-                  const isUnlocked = index < activeScene.unlockedElements;
-                  return (
-                    <div key={element} className="text-center">
-                      <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center mx-auto mb-1 ${getUnlockAnimation(isUnlocked)}`}>
-                        {isUnlocked ? <Unlock className="w-4 h-4 text-white" /> : <Lock className="w-4 h-4 text-gray-300" />}
-                      </div>
-                      <div className={`text-xs ${isUnlocked ? 'text-green-400' : 'text-gray-400'} text-center`}>
-                        {element}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <div className="flex items-center space-x-2">
-                <Zap className="w-5 h-5 text-yellow-400" />
-                <h4 className="font-semibold text-white">Active Quests</h4>
-              </div>
-              
-              {activeScene.quests.slice(0, 2).map((quest) => (
-                <div key={quest.id} className="glass-card p-4 bg-white/5">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h5 className="font-medium text-white text-sm">{quest.title}</h5>
-                      <p className="text-xs text-white">{quest.description}</p>
-                    </div>
-                    <Badge className={quest.isCompleted 
-                      ? 'bg-green-500/20 text-green-400 text-xs' 
-                      : 'bg-blue-500/20 text-blue-400 text-xs'
-                    }>
-                      {quest.isCompleted ? 'Complete' : `${quest.estimatedWeeks}w left`}
-                    </Badge>
-                  </div>
-                  
-                  <div className="flex justify-between text-xs text-white mb-2">
-                    <span>${quest.currentAmount.toLocaleString()} / ${quest.targetAmount.toLocaleString()}</span>
-                    <span>{Math.min(((quest.currentAmount / quest.targetAmount) * 100), 100).toFixed(0)}%</span>
-                  </div>
-                  <Progress value={Math.min((quest.currentAmount / quest.targetAmount) * 100, 100)} className="h-1" />
-                  
-                  <div className="flex justify-between items-center mt-3">
-                    <span className="text-xs text-white">Unlocks: {quest.unlockElement}</span>
-                    <span className="text-xs text-purple-400 font-medium">${quest.weeklyTarget}/week</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {scenes.length === 0 && (
-          <div className="glass-card p-8 text-center">
-            <Target className="w-16 h-16 text-white/50 mx-auto mb-4" />
-            <h4 className="text-xl font-semibold text-white mb-2">Start Building Your Dreams</h4>
-            <p className="text-white mb-4">Upload photos of your goals and watch them come to life as you save!</p>
-            <Button onClick={() => setIsCreating(true)}>
+            <Button className="touch-manipulation">
               <Camera className="w-4 h-4 mr-2" />
-              Create Your First Scene
+              Start Building
             </Button>
           </div>
-        )}
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
