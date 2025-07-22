@@ -3,7 +3,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Target, Plus, Camera, Play, Lock, Unlock, AlertTriangle } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Target, Plus, Camera, Play, Lock, Unlock, AlertTriangle, X, Star } from 'lucide-react';
 
 interface SceneGoal {
   id: string;
@@ -33,6 +34,8 @@ export function SmartSceneBuilder() {
   const [scenes, setScenes] = useState<SceneGoal[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedScene, setSelectedScene] = useState<SceneGoal | null>(null);
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
 
   useEffect(() => {
     try {
@@ -236,7 +239,14 @@ export function SmartSceneBuilder() {
 
                   {/* Action Buttons */}
                   <div className="flex space-x-2">
-                    <Button size="sm" className="flex-1 touch-manipulation text-xs">
+                    <Button 
+                      size="sm" 
+                      className="flex-1 touch-manipulation text-xs"
+                      onClick={() => {
+                        setSelectedScene(scene);
+                        setIsViewerOpen(true);
+                      }}
+                    >
                       <Play className="w-3 h-3 mr-1" />
                       View Scene
                     </Button>
@@ -274,6 +284,149 @@ export function SmartSceneBuilder() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Scene Viewer Dialog */}
+      <Dialog open={isViewerOpen} onOpenChange={setIsViewerOpen}>
+        <DialogContent className="glass-card max-w-4xl w-full h-[80vh] p-0 border-2 border-white/20">
+          {selectedScene && (
+            <div className="h-full flex flex-col">
+              {/* Dialog Header */}
+              <DialogHeader className="p-4 border-b border-white/20">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <span className="text-2xl">{getCategoryInfo(selectedScene.category).icon}</span>
+                    <div>
+                      <DialogTitle className="text-xl font-bold text-white">
+                        {selectedScene.title}
+                      </DialogTitle>
+                      <p className="text-sm text-white/70">{selectedScene.description}</p>
+                    </div>
+                  </div>
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    onClick={() => setIsViewerOpen(false)}
+                    className="touch-manipulation"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              </DialogHeader>
+
+              {/* Scene Visual Area */}
+              <div className="flex-1 p-6 overflow-y-auto">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
+                  {/* Left: Scene Visualization */}
+                  <div className="space-y-4">
+                    <div className="bg-gradient-to-br from-purple-900/20 to-pink-900/20 rounded-xl p-6 h-80 border-2 border-dashed border-white/30 flex flex-col items-center justify-center">
+                      <Camera className="w-12 h-12 text-white/50 mb-4" />
+                      <p className="text-white/70 text-center">
+                        Upload images of your dream {getCategoryInfo(selectedScene.category).label.toLowerCase()}
+                      </p>
+                      <Button className="mt-4 touch-manipulation" size="sm">
+                        <Plus className="w-4 h-4 mr-2" />
+                        Add Images
+                      </Button>
+                    </div>
+                    
+                    {/* Quest Elements */}
+                    <div className="space-y-2">
+                      <h4 className="font-semibold text-white">Scene Elements</h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {Array.from({ length: selectedScene.totalElements }).map((_, index) => (
+                          <div
+                            key={index}
+                            className={`p-3 rounded-lg border transition-all ${
+                              index < selectedScene.unlockedElements
+                                ? 'bg-green-500/20 border-green-500/50 text-green-200'
+                                : 'bg-white/10 border-white/20 text-white/50'
+                            }`}
+                          >
+                            <div className="flex items-center space-x-2">
+                              {index < selectedScene.unlockedElements ? (
+                                <Star className="w-4 h-4 text-green-400" />
+                              ) : (
+                                <Lock className="w-4 h-4" />
+                              )}
+                              <span className="text-sm">Element {index + 1}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right: Goal Progress & Stats */}
+                  <div className="space-y-6">
+                    {/* Progress Card */}
+                    <Card className="glass-card">
+                      <CardContent className="p-4">
+                        <h4 className="font-semibold text-white mb-3">Savings Progress</h4>
+                        <div className="space-y-4">
+                          <div>
+                            <div className="flex justify-between text-sm text-white/80 mb-2">
+                              <span>${selectedScene.currentAmount.toLocaleString()}</span>
+                              <span>${selectedScene.targetAmount.toLocaleString()}</span>
+                            </div>
+                            <Progress value={getProgressPercentage(selectedScene.currentAmount, selectedScene.targetAmount)} className="h-3" />
+                            <div className="text-center text-sm text-white/70 mt-1">
+                              {getProgressPercentage(selectedScene.currentAmount, selectedScene.targetAmount).toFixed(1)}% Complete
+                            </div>
+                          </div>
+                          
+                          <div className="grid grid-cols-2 gap-4 text-center">
+                            <div className="bg-blue-500/20 p-3 rounded-lg">
+                              <div className="text-lg font-bold text-blue-200">${selectedScene.weeklyGoal}</div>
+                              <div className="text-xs text-blue-300">Weekly Goal</div>
+                            </div>
+                            <div className="bg-purple-500/20 p-3 rounded-lg">
+                              <div className="text-lg font-bold text-purple-200">{selectedScene.monthsToGoal}mo</div>
+                              <div className="text-xs text-purple-300">Time Remaining</div>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Action Buttons */}
+                    <div className="space-y-2">
+                      <Button className="w-full touch-manipulation">
+                        <Camera className="w-4 h-4 mr-2" />
+                        Upload Scene Images
+                      </Button>
+                      <Button variant="outline" className="w-full touch-manipulation">
+                        <Target className="w-4 h-4 mr-2" />
+                        Update Goal
+                      </Button>
+                    </div>
+
+                    {/* Milestones */}
+                    <Card className="glass-card">
+                      <CardContent className="p-4">
+                        <h4 className="font-semibold text-white mb-3">Upcoming Milestones</h4>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex items-center justify-between p-2 bg-white/10 rounded">
+                            <span className="text-white">25% Progress</span>
+                            <Badge variant="secondary">1 week</Badge>
+                          </div>
+                          <div className="flex items-center justify-between p-2 bg-white/10 rounded">
+                            <span className="text-white">50% Progress</span>
+                            <Badge variant="secondary">6 weeks</Badge>
+                          </div>
+                          <div className="flex items-center justify-between p-2 bg-white/10 rounded">
+                            <span className="text-white">Goal Complete</span>
+                            <Badge variant="secondary">{selectedScene.monthsToGoal} months</Badge>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
