@@ -310,7 +310,101 @@ export function SmartSceneBuilder() {
 
             {/* Content */}
             <div className="p-6 space-y-6">
-              {/* Progress */}
+              {/* AI Dream Video Player */}
+              <div className="relative">
+                <h4 className="font-semibold text-white mb-3 flex items-center">
+                  <Play className="w-5 h-5 mr-2 text-purple-400" />
+                  Your Dream Visualization
+                </h4>
+                
+                {/* Video Container */}
+                <div className="relative bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-xl overflow-hidden border-2 border-purple-500/30">
+                  <div className="aspect-video relative">
+                    {/* Video Placeholder - AI Generated Content */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-900/40 to-purple-900/40 flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="w-16 h-16 bg-purple-500/30 rounded-full flex items-center justify-center mb-4 mx-auto">
+                          <Play className="w-8 h-8 text-purple-300" />
+                        </div>
+                        <p className="text-white/80 font-medium mb-2">AI Dream Video</p>
+                        <p className="text-white/60 text-sm">
+                          {getCategoryInfo(selectedScene.category).label}: {selectedScene.title}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    {/* Video Reveal Overlay */}
+                    <div className="absolute inset-0 flex">
+                      {Array.from({ length: 5 }).map((_, index) => (
+                        <div
+                          key={index}
+                          className={`flex-1 transition-all duration-500 ${
+                            index < selectedScene.unlockedElements
+                              ? 'bg-transparent'
+                              : 'bg-black/80 backdrop-blur-sm'
+                          }`}
+                          style={{
+                            background: index >= selectedScene.unlockedElements 
+                              ? `linear-gradient(to right, 
+                                  ${index === 0 ? 'transparent' : 'rgba(0,0,0,0.8)'}, 
+                                  rgba(0,0,0,0.8))`
+                              : 'transparent'
+                          }}
+                        >
+                          {index >= selectedScene.unlockedElements && (
+                            <div className="h-full flex items-center justify-center">
+                              <Lock className="w-6 h-6 text-white/40" />
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {/* Progress Indicator */}
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <div className="bg-black/50 backdrop-blur-sm rounded-lg p-3">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-white/80 text-sm">Video Unlocked</span>
+                          <span className="text-purple-300 text-sm font-bold">
+                            {selectedScene.unlockedElements}/5 segments
+                          </span>
+                        </div>
+                        <div className="flex space-x-1">
+                          {Array.from({ length: 5 }).map((_, index) => (
+                            <div
+                              key={index}
+                              className={`flex-1 h-2 rounded transition-all ${
+                                index < selectedScene.unlockedElements
+                                  ? 'bg-purple-400'
+                                  : 'bg-white/20'
+                              }`}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Next Unlock Preview */}
+                {selectedScene.unlockedElements < 5 && (
+                  <div className="mt-3 p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-purple-200 font-medium text-sm">Next Unlock</p>
+                        <p className="text-white/70 text-xs">
+                          Save ${((selectedScene.targetAmount / 5) * (selectedScene.unlockedElements + 1) - selectedScene.currentAmount).toLocaleString()} more
+                        </p>
+                      </div>
+                      <div className="text-purple-300">
+                        <Lock className="w-5 h-5" />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Savings Progress */}
               <div>
                 <h4 className="font-semibold text-white mb-3">Savings Progress</h4>
                 <div className="flex justify-between text-sm text-white/80 mb-2">
@@ -323,51 +417,70 @@ export function SmartSceneBuilder() {
                 </div>
               </div>
 
-              {/* Stats */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-blue-500/20 p-4 rounded-lg text-center">
-                  <div className="text-lg font-bold text-blue-200">${selectedScene.weeklyGoal}</div>
-                  <div className="text-sm text-blue-300">Weekly Goal</div>
-                </div>
-                <div className="bg-purple-500/20 p-4 rounded-lg text-center">
-                  <div className="text-lg font-bold text-purple-200">{selectedScene.monthsToGoal}mo</div>
-                  <div className="text-sm text-purple-300">Time Left</div>
-                </div>
-              </div>
-
-              {/* Scene Elements */}
+              {/* Video Unlock Milestones */}
               <div>
-                <h4 className="font-semibold text-white mb-3">Quest Progress</h4>
-                <div className="grid grid-cols-2 gap-2">
-                  {Array.from({ length: selectedScene.totalElements }).map((_, index) => (
-                    <div
-                      key={index}
-                      className={`p-3 rounded-lg flex items-center space-x-2 ${
-                        index < selectedScene.unlockedElements
-                          ? 'bg-green-500/20 text-green-200'
-                          : 'bg-white/10 text-white/50'
-                      }`}
-                    >
-                      {index < selectedScene.unlockedElements ? (
-                        <Star className="w-4 h-4 text-green-400" />
-                      ) : (
-                        <Lock className="w-4 h-4" />
-                      )}
-                      <span className="text-sm">Element {index + 1}</span>
-                    </div>
-                  ))}
+                <h4 className="font-semibold text-white mb-3">Video Unlock Timeline</h4>
+                <div className="space-y-2">
+                  {Array.from({ length: 5 }).map((_, index) => {
+                    const unlockAmount = (selectedScene.targetAmount / 5) * (index + 1);
+                    const isUnlocked = selectedScene.currentAmount >= unlockAmount;
+                    const isCurrent = index === selectedScene.unlockedElements;
+                    
+                    return (
+                      <div
+                        key={index}
+                        className={`p-3 rounded-lg border transition-all ${
+                          isUnlocked
+                            ? 'bg-green-500/20 border-green-500/50 text-green-200'
+                            : isCurrent
+                            ? 'bg-purple-500/20 border-purple-500/50 text-purple-200 animate-pulse'
+                            : 'bg-white/10 border-white/20 text-white/50'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-3">
+                            {isUnlocked ? (
+                              <Star className="w-5 h-5 text-green-400" />
+                            ) : isCurrent ? (
+                              <Target className="w-5 h-5 text-purple-400" />
+                            ) : (
+                              <Lock className="w-5 h-5" />
+                            )}
+                            <div>
+                              <p className="font-medium text-sm">Segment {index + 1}</p>
+                              <p className="text-xs opacity-80">
+                                {index === 0 && "Opening scene & environment"}
+                                {index === 1 && "Main subject introduction"}
+                                {index === 2 && "Detailed features & highlights"}
+                                {index === 3 && "Action sequences & lifestyle"}
+                                {index === 4 && "Complete dream visualization"}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-bold text-sm">
+                              ${unlockAmount.toLocaleString()}
+                            </p>
+                            <p className="text-xs opacity-70">
+                              {isUnlocked ? "Unlocked" : isCurrent ? "Next" : "Locked"}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 
               {/* Actions */}
               <div className="space-y-3">
                 <Button className="w-full touch-manipulation" onClick={() => setIsViewerOpen(false)}>
-                  <Camera className="w-4 h-4 mr-2" />
-                  Upload Scene Images
+                  <Play className="w-4 h-4 mr-2" />
+                  Generate AI Dream Video
                 </Button>
                 <Button variant="outline" className="w-full touch-manipulation" onClick={() => setIsViewerOpen(false)}>
-                  <Target className="w-4 h-4 mr-2" />
-                  Update Goal Settings
+                  <Camera className="w-4 h-4 mr-2" />
+                  Customize Scene Details
                 </Button>
               </div>
             </div>

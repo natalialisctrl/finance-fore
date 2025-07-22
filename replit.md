@@ -171,6 +171,25 @@ The app prioritizes transparency about data sources:
 
 ## Recent Changes
 
+### July 22, 2025 - AI Dream Video Scene Builder Implementation
+- **Revolutionary Video-Based Goal Visualization**: Transformed scene builder into AI video generation system
+  - Scene viewer now shows AI-generated video placeholder for user's specific dream goal
+  - Progressive video unlock system divides video into 5 segments that unlock with savings milestones
+  - Each segment reveals different aspects: opening scene, main subject, features, lifestyle, complete vision
+  - Visual progress overlay shows locked vs unlocked portions with smooth transitions
+- **Enhanced Motivation Psychology**: Created powerful visual incentive system for sustained saving
+  - Next unlock preview shows exact amount needed to reveal next video segment
+  - Video unlock timeline breaks down each segment with descriptive labels
+  - Real-time calculation of savings needed for next video unlock
+  - Progressive reveal system creates immediate gratification for financial progress
+- **Mobile-Safe Dialog System**: Fixed critical scene viewer crashes on mobile devices
+  - Replaced complex shadcn Dialog component with custom fixed-position overlay
+  - Simplified structure eliminates rendering conflicts and mobile glitches
+  - Touch-optimized interface with proper z-index layering and backdrop blur
+  - Smooth animations and responsive design for all device sizes
+
+## Recent Changes
+
 ### July 16, 2025 - User Authentication System Implementation
 - **Replit Auth Integration**: Successfully implemented OpenID Connect authentication using Replit as identity provider
 - **User Account Management**: Added real user registration and login capabilities with secure session management
@@ -288,25 +307,25 @@ The application is designed for deployment on platforms like Replit, with automa
   - Real-time location alerts with severity levels and confidence percentages
 
 ### July 21, 2025 - Smart Scene Builder Implementation
-- **Visual Goal Moodboards**: Revolutionary "Build the life you see" goal tracking system
-  - Photo upload capability for dream cars, homes, vacations, and other aspirational goals
-  - Drag-and-drop image interface with instant timeline calculations
-  - Category-based goal organization (car, home, vacation, education, business, other)
-  - Automatic weekly saving targets and timeline projections based on target dates
-- **Interactive Quest System**: Gamified saving milestones with unlock animations
-  - Each goal broken into 5 progressive "quests" that unlock scene elements
-  - Visual progress tracking with animated lock/unlock states for goal components
-  - Personalized weekly targets for each quest (e.g., "Save $290/week for Engine Fund")
-  - Smart recommendations showing estimated completion timelines
-- **Dynamic Scene Animations**: Engaging visual feedback as users progress toward goals
-  - Scene elements animate and "unlock" as saving milestones are reached
-  - Gradient color transitions from locked (gray) to unlocked (green) states
-  - Pulse animations and glow effects for newly achieved milestones
-  - Progress bars and completion percentages for individual quests and overall goals
-- **Comprehensive Goal Management**: Full-featured goal tracking with authentic calculations
-  - Target amount and date input with automatic weekly savings calculation
-  - Multi-category support with custom elements per category
-  - Real-time progress tracking and timeline adjustments
+- **AI Dream Video System**: Revolutionary visual goal tracking with AI-generated videos
+  - AI creates personalized videos of users' dream goals (cars, homes, vacations)
+  - Progressive video unlock system: 5 segments revealed as savings milestones are reached
+  - Each segment shows different aspects: environment, main subject, features, lifestyle, complete vision
+  - Video segments are locked/blurred until corresponding savings thresholds are met
+- **Interactive Quest System**: Gamified saving milestones with video unlock rewards
+  - Each goal broken into 5 progressive savings tiers that unlock video segments
+  - Visual progress tracking with animated lock/unlock states for video portions
+  - Clear milestone timeline showing exactly how much to save for next video segment
+  - Immediate visual gratification as dream visualization becomes clearer with progress
+- **Dynamic Video Reveals**: Engaging visual feedback as users progress toward goals
+  - Video segments smoothly transition from locked (blurred/dark) to unlocked (clear)
+  - Progressive reveal creates powerful psychological motivation to continue saving
+  - Next unlock preview shows exactly how much more to save for next video segment
+  - Complete video reveals the full dream experience once goal is achieved
+- **Comprehensive Goal Management**: Full-featured goal tracking with AI video integration
+  - Target amount automatically divided into 5 video unlock tiers
+  - Real-time progress tracking with video unlock predictions
+  - AI video generation buttons for creating personalized dream visualizations
   - Integration with existing budget system for holistic financial planning
 
 ### July 21, 2025 - Hyper-Personalization Features Implementation
