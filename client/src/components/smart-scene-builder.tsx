@@ -320,51 +320,86 @@ export function SmartSceneBuilder() {
                 {/* Video Container */}
                 <div className="relative bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-xl overflow-hidden border-2 border-purple-500/30">
                   <div className="aspect-video relative">
-                    {/* Video Placeholder - AI Generated Content */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-900/40 to-purple-900/40 flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="w-16 h-16 bg-purple-500/30 rounded-full flex items-center justify-center mb-4 mx-auto">
-                          <Play className="w-8 h-8 text-purple-300" />
+                    {/* Actual Video Content Background */}
+                    <div className="absolute inset-0">
+                      {/* Simulated video frames based on category */}
+                      {selectedScene.category === 'car' && (
+                        <div className="w-full h-full bg-gradient-to-br from-red-600 via-orange-500 to-yellow-400 relative overflow-hidden">
+                          <div className="absolute inset-0 bg-gray-800 opacity-20">
+                            <div className="absolute bottom-0 left-0 right-0 h-16 bg-gray-900 opacity-50"></div>
+                            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-full h-1 bg-white opacity-60"></div>
+                          </div>
+                          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-32 h-16 bg-red-800 rounded-lg shadow-2xl">
+                            <div className="absolute top-2 left-2 right-2 h-6 bg-red-900 rounded opacity-80"></div>
+                            <div className="absolute bottom-2 left-1 w-4 h-4 bg-gray-800 rounded-full"></div>
+                            <div className="absolute bottom-2 right-1 w-4 h-4 bg-gray-800 rounded-full"></div>
+                          </div>
                         </div>
-                        <p className="text-white/80 font-medium mb-2">AI Dream Video</p>
-                        <p className="text-white/60 text-sm">
-                          {getCategoryInfo(selectedScene.category).label}: {selectedScene.title}
-                        </p>
-                      </div>
-                    </div>
-                    
-                    {/* Video Reveal Overlay */}
-                    <div className="absolute inset-0 flex">
-                      {Array.from({ length: 5 }).map((_, index) => (
-                        <div
-                          key={index}
-                          className={`flex-1 transition-all duration-500 ${
-                            index < selectedScene.unlockedElements
-                              ? 'bg-transparent'
-                              : 'bg-black/80 backdrop-blur-sm'
-                          }`}
-                          style={{
-                            background: index >= selectedScene.unlockedElements 
-                              ? `linear-gradient(to right, 
-                                  ${index === 0 ? 'transparent' : 'rgba(0,0,0,0.8)'}, 
-                                  rgba(0,0,0,0.8))`
-                              : 'transparent'
-                          }}
-                        >
-                          {index >= selectedScene.unlockedElements && (
-                            <div className="h-full flex items-center justify-center">
-                              <Lock className="w-6 h-6 text-white/40" />
+                      )}
+                      {selectedScene.category === 'home' && (
+                        <div className="w-full h-full bg-gradient-to-br from-green-500 via-blue-500 to-purple-500 relative overflow-hidden">
+                          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-40 h-24 bg-amber-100 relative">
+                            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-20 border-r-20 border-b-16 border-transparent border-b-red-600"></div>
+                            <div className="absolute top-8 left-4 w-6 h-8 bg-amber-800 rounded-sm"></div>
+                            <div className="absolute top-8 right-4 w-8 h-6 bg-blue-300 rounded-sm"></div>
+                          </div>
+                        </div>
+                      )}
+                      {selectedScene.category === 'vacation' && (
+                        <div className="w-full h-full bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-600 relative overflow-hidden">
+                          <div className="absolute top-4 left-4 w-16 h-16 bg-yellow-400 rounded-full opacity-80"></div>
+                          <div className="absolute bottom-0 left-0 right-0 h-8 bg-yellow-200"></div>
+                          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-8 h-12 bg-brown-600"></div>
+                          <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 w-16 h-8 bg-green-500 rounded-full"></div>
+                        </div>
+                      )}
+                      {(selectedScene.category === 'education' || selectedScene.category === 'business' || selectedScene.category === 'other') && (
+                        <div className="w-full h-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 relative overflow-hidden">
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                              <span className="text-4xl">{getCategoryInfo(selectedScene.category).icon}</span>
                             </div>
-                          )}
+                          </div>
                         </div>
-                      ))}
+                      )}
                     </div>
                     
-                    {/* Progress Indicator */}
+                    {/* Progressive Video Reveal Overlay */}
+                    <div className="absolute inset-0 flex">
+                      {Array.from({ length: 5 }).map((_, index) => {
+                        const isUnlocked = index < selectedScene.unlockedElements;
+                        const segmentWidth = 100 / 5; // 20% each
+                        
+                        return (
+                          <div
+                            key={index}
+                            className="flex-1 relative transition-all duration-1000"
+                            style={{ width: `${segmentWidth}%` }}
+                          >
+                            {/* Overlay for locked segments */}
+                            {!isUnlocked && (
+                              <div className="absolute inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center">
+                                <div className="text-center">
+                                  <Lock className="w-8 h-8 text-white/60 mx-auto mb-2" />
+                                  <div className="text-xs text-white/60">Locked</div>
+                                </div>
+                              </div>
+                            )}
+                            
+                            {/* Gradient edge effect for smooth transitions */}
+                            {!isUnlocked && index > 0 && selectedScene.unlockedElements === index && (
+                              <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-transparent to-black/90 -ml-4"></div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                    
+                    {/* Video Progress Indicator */}
                     <div className="absolute bottom-4 left-4 right-4">
-                      <div className="bg-black/50 backdrop-blur-sm rounded-lg p-3">
+                      <div className="bg-black/70 backdrop-blur-sm rounded-lg p-3 border border-white/20">
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-white/80 text-sm">Video Unlocked</span>
+                          <span className="text-white/90 text-sm font-medium">Dream Revealed</span>
                           <span className="text-purple-300 text-sm font-bold">
                             {selectedScene.unlockedElements}/5 segments
                           </span>
@@ -373,13 +408,21 @@ export function SmartSceneBuilder() {
                           {Array.from({ length: 5 }).map((_, index) => (
                             <div
                               key={index}
-                              className={`flex-1 h-2 rounded transition-all ${
+                              className={`flex-1 h-3 rounded-sm transition-all duration-500 ${
                                 index < selectedScene.unlockedElements
-                                  ? 'bg-purple-400'
-                                  : 'bg-white/20'
+                                  ? 'bg-gradient-to-r from-purple-400 to-pink-400 shadow-sm'
+                                  : 'bg-white/30'
                               }`}
                             />
                           ))}
+                        </div>
+                        <div className="text-center mt-2 text-xs text-white/70">
+                          {selectedScene.unlockedElements === 0 && "Save to start revealing your dream"}
+                          {selectedScene.unlockedElements === 1 && "Environment unlocked - keep saving!"}
+                          {selectedScene.unlockedElements === 2 && "Main subject visible - halfway there!"}
+                          {selectedScene.unlockedElements === 3 && "Details emerging - almost complete!"}
+                          {selectedScene.unlockedElements === 4 && "Lifestyle scenes revealed - final push!"}
+                          {selectedScene.unlockedElements === 5 && "Complete dream visualization unlocked!"}
                         </div>
                       </div>
                     </div>
