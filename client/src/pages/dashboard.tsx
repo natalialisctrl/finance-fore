@@ -261,46 +261,48 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Hero Content */}
-        <div className="relative z-40 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-16 pb-12 lg:pb-24">
-          <div className="text-center">
-            <div 
-              className={`text-2xl sm:text-4xl lg:text-6xl font-bold mb-4 lg:mb-6 fade-in interactive-3d-title ${titleSpinning ? 'spinning' : ''}`}
-              onClick={handleTitleClick}
-            >
-              <div className="title-content">
-                <div className="text-white">Smart Financial</div>
-                <div className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent pb-2 leading-tight">
-                  Intelligence
+        {/* Hero Content - Only show on Home tab */}
+        {activeTab === 'dashboard' && (
+          <div className="relative z-40 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-16 pb-12 lg:pb-24">
+            <div className="text-center">
+              <div 
+                className={`text-2xl sm:text-4xl lg:text-6xl font-bold mb-4 lg:mb-6 fade-in interactive-3d-title ${titleSpinning ? 'spinning' : ''}`}
+                onClick={handleTitleClick}
+              >
+                <div className="title-content">
+                  <div className="text-white">Smart Financial</div>
+                  <div className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent pb-2 leading-tight">
+                    Intelligence
+                  </div>
                 </div>
               </div>
+              <p className="text-sm sm:text-lg lg:text-xl text-white/80 max-w-3xl mx-auto mb-6 lg:mb-8 slide-up px-4">
+                Harness the power of AI to make smarter purchase decisions with real-time economic data and predictive analytics.
+              </p>
             </div>
-            <p className="text-sm sm:text-lg lg:text-xl text-white/80 max-w-3xl mx-auto mb-6 lg:mb-8 slide-up px-4">
-              Harness the power of AI to make smarter purchase decisions with real-time economic data and predictive analytics.
-            </p>
-          </div>
 
-          {/* Mobile-Optimized Hero Stats Cards */}
-          <div className="grid grid-cols-3 sm:grid-cols-3 gap-2 sm:gap-4 lg:gap-6 mt-6 sm:mt-8 lg:mt-12 px-2 sm:px-2">
-            <div className="glass-card p-3 sm:p-4 lg:p-6 text-center scale-in pulse-orange touch-manipulation">
-              <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-white number-glow">94%</div>
-              <div className="text-white/70 text-xs sm:text-xs lg:text-sm leading-tight">Prediction<br className="sm:hidden" /><span className="hidden sm:inline"> </span>Accuracy</div>
-            </div>
-            <div className="glass-card p-3 sm:p-4 lg:p-6 text-center scale-in pulse-orange touch-manipulation" style={{ animationDelay: '0.2s' }}>
-              <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-white number-glow">$2,340</div>
-              <div className="text-white/70 text-xs sm:text-xs lg:text-sm leading-tight">Monthly<br className="sm:hidden" /><span className="hidden sm:inline"> </span>Savings</div>
-            </div>
-            <div className="glass-card p-3 sm:p-4 lg:p-6 text-center scale-in pulse-orange touch-manipulation" style={{ animationDelay: '0.4s' }}>
-              <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-white number-glow">8.7/10</div>
-              <div className="text-white/70 text-xs sm:text-xs lg:text-sm leading-tight">Smart Buy<br className="sm:hidden" /><span className="hidden sm:inline"> </span>Score</div>
+            {/* Mobile-Optimized Hero Stats Cards */}
+            <div className="grid grid-cols-3 sm:grid-cols-3 gap-2 sm:gap-4 lg:gap-6 mt-6 sm:mt-8 lg:mt-12 px-2 sm:px-2">
+              <div className="glass-card p-3 sm:p-4 lg:p-6 text-center scale-in pulse-orange touch-manipulation">
+                <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-white number-glow">94%</div>
+                <div className="text-white/70 text-xs sm:text-xs lg:text-sm leading-tight">Prediction<br className="sm:hidden" /><span className="hidden sm:inline"> </span>Accuracy</div>
+              </div>
+              <div className="glass-card p-3 sm:p-4 lg:p-6 text-center scale-in pulse-orange touch-manipulation" style={{ animationDelay: '0.2s' }}>
+                <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-white number-glow">$2,340</div>
+                <div className="text-white/70 text-xs sm:text-xs lg:text-sm leading-tight">Monthly<br className="sm:hidden" /><span className="hidden sm:inline"> </span>Savings</div>
+              </div>
+              <div className="glass-card p-3 sm:p-4 lg:p-6 text-center scale-in pulse-orange touch-manipulation" style={{ animationDelay: '0.4s' }}>
+                <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-white number-glow">8.7/10</div>
+                <div className="text-white/70 text-xs sm:text-xs lg:text-sm leading-tight">Smart Buy<br className="sm:hidden" /><span className="hidden sm:inline"> </span>Score</div>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
 
       </div>
       {/* Mobile-Optimized Main Content */}
-      <div className="relative z-30 mt-2 sm:mt-4 lg:mt-8">
+      <div className={`relative z-30 ${activeTab === 'dashboard' ? 'mt-2 sm:mt-4 lg:mt-8' : 'mt-4 sm:mt-6 lg:mt-12'}`}>
         <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-2 sm:py-4 lg:py-8">
           {activeTab === 'dashboard' && (
             <>
