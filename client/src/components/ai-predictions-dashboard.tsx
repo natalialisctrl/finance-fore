@@ -74,21 +74,50 @@ export function AIPredictionsDashboard() {
 
   const [predictions, setPredictions] = useState<any[]>([]);
   const [isLoadingPredictions, setIsLoadingPredictions] = useState(false);
+  const [isAIActive, setIsAIActive] = useState(false);
 
   // Load AI predictions when data is available
   useEffect(() => {
     if (priceData && economicData) {
       setIsLoadingPredictions(true);
-      generatePricePredictions(priceData, economicData, userPreferences)
-        .then(predictions => {
-          console.log("AI Predictions loaded:", predictions.length, "items");
-          setPredictions(predictions);
-        })
-        .catch(error => {
-          console.error("Failed to load AI predictions:", error);
-          setPredictions([]);
-        })
-        .finally(() => setIsLoadingPredictions(false));
+      
+      // Try AI predictions first
+      const generateAndSetPredictions = async () => {
+        try {
+          const aiPredictions = await fetch("/api/ai-predictions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+              priceData, 
+              economicData,
+              userPreferences 
+            })
+          });
+          
+          if (aiPredictions.ok) {
+            const predictions = await aiPredictions.json();
+            setPredictions(predictions);
+            setIsAIActive(true);
+            console.log("AI Predictions loaded:", predictions.length, "items");
+          } else {
+            // Fallback to algorithmic predictions
+            const fallbackPredictions = await generatePricePredictions(priceData, economicData, userPreferences);
+            setPredictions(fallbackPredictions);
+            setIsAIActive(false);
+            console.log("Using fallback predictions:", fallbackPredictions.length, "items");
+          }
+        } catch (error) {
+          console.error("Error generating predictions:", error);
+          // Use algorithmic fallback
+          const fallbackPredictions = await generatePricePredictions(priceData, economicData, userPreferences);
+          setPredictions(fallbackPredictions);
+          setIsAIActive(false);
+        } finally {
+          setIsLoadingPredictions(false);
+        }
+      };
+
+      generateAndSetPredictions();
     }
   }, [priceData, economicData, userPreferences]);
 
@@ -110,10 +139,7 @@ export function AIPredictionsDashboard() {
     });
   }, [predictions, personalizedRecs]);
 
-  // Show message about AI service status
-  const isAIActive = predictions.some(p => 
-    p.predictionFactors?.economicTrends !== 0.8 // AI predictions have varied factors
-  );
+  // Remove duplicate AI status detection since we track it properly now
 
   const getDirectionIcon = (direction: string) => {
     switch (direction) {
@@ -186,13 +212,45 @@ export function AIPredictionsDashboard() {
             <p className="text-white">
               {isAIActive ? "30-day price forecasts powered by OpenAI GPT-4o" : "Economic analysis with algorithmic predictions"}
             </p>
-            {!isAIActive && (
-              <div className="mt-2">
-                <div className="inline-flex items-center px-3 py-1 bg-amber-500/20 border border-amber-500/30 rounded-full">
-                  <span className="text-amber-600 dark:text-amber-400 text-xs font-medium">Economic Mode Active</span>
+            <div className="mt-2">
+              <div className={`inline-flex items-center px-3 py-1 rounded-full ${
+                isAIActive 
+                  ? 'bg-emerald-500/20 border border-emerald-500/30' 
+                  : 'bg-amber-500/20 border border-amber-500/30'
+              }`}>
+                <Brain className="w-3 h-3 mr-1" />
+                <span className={`text-xs font-medium ${
+                  isAIActive 
+                    ? 'text-emerald-600 dark:text-emerald-400' 
+                    : 'text-amber-600 dark:text-amber-400'
+                }`}>
+                  {isAIActive ? 'AI Mode Active' : 'Economic Mode Active'}
+                </span>
+              </div>
+            </div>
+            
+            {/* AI Transparency Section */}
+            <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
+              <h4 className="text-sm font-medium text-blue-900 dark:text-blue-100 mb-2">Data Sources & Transparency</h4>
+              <div className="space-y-1 text-xs text-blue-800 dark:text-blue-200">
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+                  <span>Economic data sourced from Federal Reserve (FRED) API</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+                  <span>{isAIActive ? 'AI predictions powered by OpenAI GPT-4o' : 'Algorithmic predictions based on economic indicators'}</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+                  <span>Price data includes Ground Beef, Eggs, Milk, Bread, Gas, Rice</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+                  <span>Predictions are estimates for planning - actual prices may vary</span>
                 </div>
               </div>
-            )}
+            </div>
           </div>
         </div>
         <Button className="btn-premium ripple">
