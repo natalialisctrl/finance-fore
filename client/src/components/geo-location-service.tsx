@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { reverseGeocode, getCurrentPosition } from '@/lib/geocoding-service';
 
 interface LocationData {
   city: string;
@@ -43,13 +44,15 @@ export function useLocationAlerts() {
         const prefs = JSON.parse(saved);
         setUserPreferences(prefs);
         
-        // Set location from preferences
-        setLocation({
-          city: prefs.city || 'Houston',
-          state: prefs.state || 'TX',
-          coordinates: { lat: 29.7604, lng: -95.3698 }, // Houston default since user is there
-          timezone: 'America/Chicago'
-        });
+        // Set location from user preferences if available
+        if (prefs.city && prefs.state) {
+          setLocation({
+            city: prefs.city,
+            state: prefs.state,
+            coordinates: { lat: prefs.lat || 0, lng: prefs.lng || 0 },
+            timezone: prefs.timezone || 'America/New_York'
+          });
+        }
       }
     } catch (error) {
       console.error('Error loading preferences:', error);
@@ -58,90 +61,50 @@ export function useLocationAlerts() {
 
   const detectLocation = async () => {
     try {
-      // Try to get user's location
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            const { latitude, longitude } = position.coords;
-            await reverseGeocode(latitude, longitude);
-          },
-          () => {
-            // Fallback to Austin, TX for demo
-            setDefaultLocation();
-          }
-        );
-      } else {
-        setDefaultLocation();
-      }
+      // Try to get user's actual location using geolocation
+      const coords = await getCurrentPosition();
+      await processUserLocation(coords.lat, coords.lng);
     } catch (error) {
+      console.warn('Location detection failed:', error);
       setDefaultLocation();
     }
   };
 
-  const setDefaultLocation = () => {
-    // Default to Houston since user is currently there
-    const houstonLocation: LocationData = {
-      city: 'Houston',
-      state: 'TX',
-      coordinates: { lat: 29.7604, lng: -95.3698 },
-      timezone: 'America/Chicago'
-    };
-    setLocation(houstonLocation);
-    generateLocationAlerts(houstonLocation);
-    setIsLoading(false);
-  };
-
-  const reverseGeocode = async (lat: number, lng: number) => {
+  const processUserLocation = async (lat: number, lng: number) => {
     try {
-      // Use actual coordinates to determine the city
-      let locationData: LocationData;
+      // Use geocoding service to get city/state from coordinates
+      const geocodeResult = await reverseGeocode(lat, lng);
       
-      // Houston coordinates: approximately 29.7604° N, 95.3698° W
-      if (lat >= 29.5 && lat <= 30.0 && lng >= -95.7 && lng <= -95.0) {
-        locationData = {
-          city: 'Houston',
-          state: 'TX',
-          coordinates: { lat, lng },
-          timezone: 'America/Chicago'
-        };
-      }
-      // Austin coordinates: approximately 30.2672° N, 97.7431° W
-      else if (lat >= 30.0 && lat <= 30.5 && lng >= -98.0 && lng <= -97.4) {
-        locationData = {
-          city: 'Austin',
-          state: 'TX',
-          coordinates: { lat, lng },
-          timezone: 'America/Chicago'
-        };
-      }
-      // Dallas coordinates: approximately 32.7767° N, 96.7970° W
-      else if (lat >= 32.5 && lat <= 33.0 && lng >= -97.0 && lng <= -96.5) {
-        locationData = {
-          city: 'Dallas',
-          state: 'TX',
-          coordinates: { lat, lng },
-          timezone: 'America/Chicago'
-        };
-      }
-      else {
-        // For other locations, try to determine city from coordinates
-        // You could integrate with a real geocoding service here
-        locationData = {
-          city: 'Houston', // Default to Houston for demo since user is there
-          state: 'TX',
-          coordinates: { lat, lng },
-          timezone: 'America/Chicago'
-        };
-      }
+      const locationData: LocationData = {
+        city: geocodeResult?.city || `Location ${lat.toFixed(2)}, ${lng.toFixed(2)}`,
+        state: geocodeResult?.state || 'Unknown',
+        coordinates: { lat, lng },
+        timezone: geocodeResult?.timezone || 'America/New_York'
+      };
       
       setLocation(locationData);
       generateLocationAlerts(locationData);
       setIsLoading(false);
     } catch (error) {
-      console.error('Geocoding error:', error);
+      console.error('Failed to process location:', error);
       setDefaultLocation();
     }
   };
+
+  const setDefaultLocation = () => {
+    // Fallback to generic location if geolocation fails
+    const defaultLocation: LocationData = {
+      city: 'Unknown Location',
+      state: 'Unknown',
+      coordinates: { lat: 0, lng: 0 },
+      timezone: 'America/New_York'
+    };
+    setLocation(defaultLocation);
+    generateLocationAlerts(defaultLocation);
+    setIsLoading(false);
+  };
+
+
 
   const generateLocationAlerts = (loc: LocationData) => {
     const alerts: LocationAlert[] = [];
@@ -155,208 +118,89 @@ export function useLocationAlerts() {
       economic: true
     };
 
-    // Houston-specific alerts based on real economic patterns
-    if (loc.city === 'Houston' && loc.state === 'TX') {
-      // Gas alerts (only if enabled)
-      if (enabledAlertTypes.gas) {
-        const gasStations = userPreferences?.storePreferences?.gasStations || ['Shell', 'Exxon'];
-        alerts.push({
-          id: '1',
-          type: 'gas',
-          severity: 'high',
-          title: `Houston Gas Price Alert`,
-          message: `${gasStations.join(' & ')} stations in Houston showing price increases in 2 days`,
-          prediction: '+$0.12/gallon increase expected',
-          confidence: 89,
-          daysOut: 2,
-          actionSuggestion: 'Fill up today to save ~$7 per tank',
-          icon: '⛽'
-        });
-      }
+    // Generate location-based alerts based on actual user location
+    const cityName = loc.city === 'Unknown Location' ? 'your area' : loc.city;
+    const gasStations = userPreferences?.storePreferences?.gasStations || ['local gas stations'];
+    const groceryStores = userPreferences?.storePreferences?.groceryStores || ['local stores'];
 
-      // Grocery alerts (only if enabled)
-      if (enabledAlertTypes.grocery) {
-        const groceryStores = userPreferences?.storePreferences?.groceryStores || ['H-E-B', 'Kroger'];
-        alerts.push({
-          id: '2',
-          type: 'grocery',
-          severity: 'medium',
-          title: `${groceryStores[0]} Price Changes`,
-          message: `${groceryStores.join(' & ')} planning price adjustments in Houston area`,
-          prediction: 'Meat products +6%, produce -8%',
-          confidence: 76,
-          daysOut: 3,
-          actionSuggestion: 'Stock up on ground beef, wait on vegetables',
-          icon: '🛒'
-        });
-      }
-
-      // Housing alerts (only if enabled)
-      if (enabledAlertTypes.housing) {
-        alerts.push({
-          id: '3',
-          type: 'housing',
-          severity: 'medium',
-          title: 'Houston Rent Trends',
-          message: 'Houston rental market showing seasonal adjustments',
-          prediction: '2% increase in new lease rates expected',
-          confidence: 71,
-          daysOut: 14,
-          actionSuggestion: 'Consider locking in current rates soon',
-          icon: '🏠'
-        });
-      }
-
-      // Weather alerts (only if enabled)
-      if (enabledAlertTypes.weather) {
-        alerts.push({
-          id: '4',
-          type: 'weather',
-          severity: 'high',
-          title: 'Houston Weather Impact',
-          message: 'Hurricane season approaching - energy costs may fluctuate',
-          prediction: 'Electricity usage +30% during peak heat',
-          confidence: 94,
-          daysOut: 7,
-          actionSuggestion: 'Pre-cool home and charge devices during off-peak',
-          icon: '🌡️'
-        });
-      }
-
-      // Economic alerts (only if enabled)
-      if (enabledAlertTypes.economic) {
-        alerts.push({
-          id: '5',
-          type: 'economic',
-          severity: 'high',
-          title: 'Houston Energy Sector',
-          message: 'Oil prices affecting Houston local economy',
-          prediction: 'Service prices may rise 3-7% in Q4',
-          confidence: 82,
-          daysOut: 21,
-          actionSuggestion: 'Budget for increased service costs',
-          icon: '💼'
-        });
-      }
-    }
-    
-    // Austin-specific alerts based on real economic patterns
-    else if (loc.city === 'Austin' && loc.state === 'TX') {
-      // Gas alerts (only if enabled)
-      if (enabledAlertTypes.gas) {
-        const gasStations = userPreferences?.storePreferences?.gasStations || ['Shell', 'Exxon'];
-        alerts.push({
-          id: '1',
-          type: 'gas',
-          severity: 'high',
-          title: `Austin Gas Price Alert`,
-          message: `${gasStations.join(' & ')} stations in Austin showing price increases in 3 days`,
-          prediction: '+$0.15/gallon increase expected',
-          confidence: 87,
-          daysOut: 3,
-          actionSuggestion: 'Fill up today to save ~$8 per tank',
-          icon: '⛽'
-        });
-      }
-
-      // Grocery alerts (only if enabled)
-      if (enabledAlertTypes.grocery) {
-        const groceryStores = userPreferences?.storePreferences?.groceryStores || ['H-E-B'];
-        alerts.push({
-          id: '2',
-          type: 'grocery',
-          severity: 'medium',
-          title: `${groceryStores[0]} Price Changes`,
-          message: `${groceryStores.join(' & ')} planning price adjustments this weekend`,
-          prediction: 'Dairy products +8%, produce -12%',
-          confidence: 73,
-          daysOut: 2,
-          actionSuggestion: 'Stock up on milk, wait on vegetables',
-          icon: '🛒'
-        });
-      }
-
-      // Housing alerts (only if enabled)
-      if (enabledAlertTypes.housing) {
-        alerts.push({
-          id: '3',
-          type: 'housing',
-          severity: 'medium',
-          title: 'Austin Rent Trends',
-          message: 'East Austin rental market showing cooling signs',
-          prediction: '3% decline in new lease rates expected',
-          confidence: 65,
-          daysOut: 7,
-          actionSuggestion: 'Good time to negotiate lease renewal',
-          icon: '🏠'
-        });
-      }
-
-      // Weather alerts (only if enabled)
-      if (enabledAlertTypes.weather) {
-        alerts.push({
-          id: '4',
-          type: 'weather',
-          severity: 'low',
-          title: 'Austin Weather Impact',
-          message: 'Heat wave approaching - utility costs will rise',
-          prediction: 'Electricity usage +25% next week',
-          confidence: 91,
-          daysOut: 5,
-          actionSuggestion: 'Pre-cool home during off-peak hours',
-          icon: '🌡️'
-        });
-      }
-
-      // Economic alerts (only if enabled)
-      if (enabledAlertTypes.economic) {
-        alerts.push({
-          id: '5',
-          type: 'economic',
-          severity: 'high',
-          title: 'Austin Tech Job Market',
-          message: 'Local tech layoffs affecting Austin economy',
-          prediction: 'Service prices may drop 5-10% in Q4',
-          confidence: 78,
-          daysOut: 30,
-          actionSuggestion: 'Delay major purchases for better deals',
-          icon: '💼'
-        });
-      }
-
+    // Gas price alerts
+    if (enabledAlertTypes.gas) {
+      alerts.push({
+        id: '1',
+        type: 'gas',
+        severity: 'medium',
+        title: `Gas Price Alert - ${cityName}`,
+        message: `${gasStations.join(' & ')} showing price trends in your area`,
+        prediction: 'Price changes expected this week',
+        confidence: 75,
+        daysOut: 3,
+        actionSuggestion: 'Monitor local gas prices for best timing',
+        icon: '⛽'
+      });
     }
 
-    // Add generic location-based alerts for other cities
-    else {
-      if (enabledAlertTypes.gas) {
-        alerts.push({
-          id: '1',
-          type: 'gas',
-          severity: 'medium',
-          title: `${loc.city} Gas Prices`,
-          message: `${loc.city} gas prices trending upward`,
-          prediction: '+$0.08/gallon expected this week',
-          confidence: 72,
-          daysOut: 4,
-          actionSuggestion: 'Consider filling up earlier this week',
-          icon: '⛽'
-        });
-      }
-      
-      if (enabledAlertTypes.grocery) {
-        alerts.push({
-          id: '2',
-          type: 'grocery',
-          severity: 'low',
-          title: `${loc.city} Grocery Trends`,
-          message: `Local ${loc.city} stores adjusting seasonal pricing`,
-          prediction: 'Mixed changes across categories',
-          confidence: 68,
-          daysOut: 7,
-          actionSuggestion: 'Monitor weekly ads for best deals',
-          icon: '🛒'
-        });
-      }
+    // Grocery price alerts
+    if (enabledAlertTypes.grocery) {
+      alerts.push({
+        id: '2',
+        type: 'grocery',
+        severity: 'low',
+        title: `Grocery Trends - ${cityName}`,
+        message: `${groceryStores.join(' & ')} adjusting seasonal pricing`,
+        prediction: 'Mixed price changes across categories',
+        confidence: 68,
+        daysOut: 5,
+        actionSuggestion: 'Check weekly ads and promotions',
+        icon: '🛒'
+      });
+    }
+
+    // Housing market alerts
+    if (enabledAlertTypes.housing) {
+      alerts.push({
+        id: '3',
+        type: 'housing',
+        severity: 'low',
+        title: `Housing Market - ${cityName}`,
+        message: `Local rental market showing typical seasonal patterns`,
+        prediction: 'Standard market fluctuations expected',
+        confidence: 65,
+        daysOut: 14,
+        actionSuggestion: 'Monitor local market conditions',
+        icon: '🏠'
+      });
+    }
+
+    // Weather impact alerts
+    if (enabledAlertTypes.weather) {
+      alerts.push({
+        id: '4',
+        type: 'weather',
+        severity: 'medium',
+        title: `Weather Impact - ${cityName}`,
+        message: 'Seasonal weather patterns may affect utility costs',
+        prediction: 'Energy usage changes expected',
+        confidence: 80,
+        daysOut: 7,
+        actionSuggestion: 'Plan energy usage during peak times',
+        icon: '🌡️'
+      });
+    }
+
+    // Economic trends alerts
+    if (enabledAlertTypes.economic) {
+      alerts.push({
+        id: '5',
+        type: 'economic',
+        severity: 'low',
+        title: `Economic Trends - ${cityName}`,
+        message: 'National economic indicators affecting local markets',
+        prediction: 'Follow broader economic trends',
+        confidence: 70,
+        daysOut: 21,
+        actionSuggestion: 'Stay informed about market changes',
+        icon: '💼'
+      });
     }
 
     setLocationAlerts(alerts);
