@@ -470,7 +470,7 @@ export function BudgetTracker() {
           </div>
 
           {/* Spending Analytics & Insights */}
-          <div className="space-y-4 text-justify bg-[#04050a40]">
+          <div className="space-y-4 text-justify bg-[#04050a00]">
             {/* Spending Insights */}
             <div className="space-y-4">
               <h4 className="font-medium text-slate-900 dark:text-white">Spending Insights</h4>
