@@ -192,7 +192,7 @@ export default function Dashboard() {
           <div className="container mx-auto px-4 py-4 flex justify-between items-center">
             <ForeseeLogo size="md" className="text-white" />
             <div className="flex items-center space-x-4">
-              <span className="text-white/80 body-text pl-[1px] pr-[1px] mt-[-9px] mb-[-9px] ml-[-15px] mr-[-15px] text-justify pt-[5px] pb-[5px]">Welcome back, {user.firstName}</span>
+              
               <Button 
                 onClick={() => window.location.href = '/api/logout'}
                 variant="outline"
