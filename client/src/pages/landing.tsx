@@ -10,7 +10,7 @@ export default function Landing() {
   useEffect(() => {
     const autoLogin = async () => {
       try {
-        await apiRequest("/api/demo-login", {
+        await fetch("/api/demo-login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ username: "natalia", password: "1234" }),
@@ -25,7 +25,7 @@ export default function Landing() {
   }, []);
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-black overflow-hidden">
-      {/* Advanced Neural Network Background */}
+      {/* Advanced AI Network Background */}
       <div className="fixed inset-0 z-0">
         {/* Primary quantum field */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#fc304ed6]/5 via-transparent to-[#d4c4a0]/5 animate-pulse"></div>
@@ -60,7 +60,7 @@ export default function Landing() {
               <ForeseeLogo size="md" className="text-white" />
               <div className="w-[1px] h-8 bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
               <div className="text-sm text-[#d4c4a0] font-mono opacity-80">
-                Neural Financial Intelligence
+                Advanced Financial Intelligence
               </div>
             </div>
             
@@ -70,7 +70,7 @@ export default function Landing() {
                 className="group relative bg-gradient-to-r from-[#fc304ed6]/80 via-[#d4c4a0]/60 to-[#fc304ed6]/80 text-white font-medium px-6 py-2 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_30px_rgba(252,48,77,0.3)] border border-white/20"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                <div className="relative">Neural Connect</div>
+                <div className="relative">AI Connect</div>
               </Button>
               <Button 
                 onClick={() => window.location.href = '/demo-login'}
@@ -89,7 +89,7 @@ export default function Landing() {
               <div className="relative group inline-block mb-8">
                 <h1 className="text-5xl md:text-7xl font-light tracking-tight text-white mb-6 leading-tight">
                   <span className="bg-gradient-to-r from-white via-slate-200 to-white bg-clip-text text-transparent">
-                    Neural Financial
+                    Advanced Financial
                   </span>
                   <br/>
                   <span className="bg-gradient-to-r from-[#fc304ed6] via-[#d4c4a0] to-[#fc304ed6] bg-clip-text text-transparent animate-pulse">
@@ -109,14 +109,14 @@ export default function Landing() {
               <p className="text-xl text-[#d4c4a0] max-w-4xl mx-auto mb-12 font-light leading-relaxed opacity-90">
                 Advanced AI algorithms processing real-time economic data streams for intelligent financial decision making.
                 <br className="hidden md:block" />
-                Quantum-powered predictions for your local economy, from gas prices to groceries.
+                AI-powered predictions for your local economy, from gas prices to groceries.
               </p>
               
-              {/* Neural connection indicators */}
+              {/* AI connection indicators */}
               <div className="flex flex-col sm:flex-row justify-center items-center gap-8 mb-12">
                 <div className="flex items-center gap-2 glass-morphism px-6 py-3 rounded-full">
                   <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-                  <span className="text-sm text-white/80 font-mono">AI NEURAL ACTIVE</span>
+                  <span className="text-sm text-white/80 font-mono">AI SYSTEM ACTIVE</span>
                 </div>
                 <div className="flex items-center gap-2 glass-morphism px-6 py-3 rounded-full">
                   <div className="w-2 h-2 bg-[#fc304ed6] rounded-full animate-ping"></div>
@@ -133,10 +133,10 @@ export default function Landing() {
                     </div>
                   </div>
                   <p className="text-lg text-white font-light mb-2">
-                    Initializing Neural Matrix...
+                    Initializing AI Matrix...
                   </p>
                   <p className="text-sm text-[#d4c4a0] opacity-80">
-                    Preparing quantum financial insights for Natalia
+                    Preparing advanced financial insights for Natalia
                   </p>
                 </div>
               </div>
@@ -144,7 +144,7 @@ export default function Landing() {
           </div>
         </section>
 
-        {/* Quantum Neural Features Matrix */}
+        {/* Advanced AI Features Matrix */}
         <section className="py-24">
           <div className="container mx-auto px-6">
             <div className="text-center mb-16">
@@ -154,7 +154,7 @@ export default function Landing() {
                 </span>
                 <br/>
                 <span className="bg-gradient-to-r from-[#fc304ed6] via-[#d4c4a0] to-[#fc304ed6] bg-clip-text text-transparent">
-                  Neural Economic Intelligence
+                  Advanced Economic Intelligence
                 </span>
               </h3>
               <p className="text-lg text-[#d4c4a0] max-w-3xl mx-auto opacity-90 font-light">
@@ -166,25 +166,25 @@ export default function Landing() {
               {[
                 {
                   icon: Brain,
-                  title: "AI Neural Predictions",
-                  description: "Quantum algorithms analyzing inflation, GDP, and consumer price index to forecast local market trends with unprecedented accuracy",
+                  title: "AI Price Predictions",
+                  description: "Advanced algorithms analyzing inflation, GDP, and consumer price index to forecast local market trends with unprecedented accuracy",
                   gradient: "from-[#fc304ed6] to-[#d4c4a0]"
                 },
                 {
                   icon: TrendingUp,
                   title: "Economic Intelligence Matrix",
-                  description: "Real-time processing of Federal Reserve data streams combined with neural network analysis for hyper-local price predictions",
+                  description: "Real-time processing of Federal Reserve data streams combined with AI analysis for hyper-local price predictions",
                   gradient: "from-[#d4c4a0] to-[#fc304ed6]"
                 },
                 {
                   icon: Calculator,
-                  title: "Quantum Budget Engine",
-                  description: "Advanced budget optimization with velocity tracking and category-based neural recommendations for maximum efficiency",
+                  title: "Advanced Budget Engine",
+                  description: "Advanced budget optimization with velocity tracking and category-based AI recommendations for maximum efficiency",
                   gradient: "from-purple-500 to-indigo-600"
                 },
                 {
                   icon: ShoppingCart,
-                  title: "Neural Shopping Matrix",
+                  title: "Smart Shopping Engine",
                   description: "Optimal purchase timing algorithms with automated price alerts and market volatility predictions",
                   gradient: "from-emerald-500 to-teal-600"
                 },
@@ -197,7 +197,7 @@ export default function Landing() {
                 {
                   icon: DollarSign,
                   title: "Savings Intelligence Hub",
-                  description: "Advanced analytics tracking with predictive monthly projections and quantum financial optimization strategies",
+                  description: "Advanced analytics tracking with predictive monthly projections and intelligent financial optimization strategies",
                   gradient: "from-pink-500 to-rose-600"
                 }
               ].map((feature, index) => (

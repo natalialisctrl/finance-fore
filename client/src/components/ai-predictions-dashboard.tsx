@@ -223,7 +223,7 @@ export function AIPredictionsDashboard() {
           </div>
           
           <p className="text-base text-[#d4c4a0] max-w-2xl mx-auto mb-6 font-light leading-relaxed opacity-90">
-            {isAIActive ? "Neural networks processing 30-day forecasts via OpenAI GPT-4o architecture" : "Quantum algorithms analyzing economic data patterns and market trends"}
+{isAIActive ? "AI systems processing 30-day forecasts via OpenAI GPT-4o architecture" : "Advanced algorithms analyzing economic data patterns and market trends"}
           </p>
           
           {/* Neural interface controls */}
@@ -231,14 +231,14 @@ export function AIPredictionsDashboard() {
             <div className="flex items-center gap-2 glass-morphism px-4 py-2 rounded-full">
               <div className={`w-2 h-2 rounded-full animate-pulse ${isAIActive ? 'bg-emerald-400' : 'bg-amber-400'}`}></div>
               <span className="text-xs text-white/80 font-mono">
-                {isAIActive ? 'AI NEURAL ACTIVE' : 'QUANTUM PROCESSING'}
+{isAIActive ? 'AI SYSTEM ACTIVE' : 'ALGORITHM PROCESSING'}
               </span>
             </div>
             <Button className="group relative bg-gradient-to-r from-[#fc304ed6]/80 via-[#d4c4a0]/60 to-[#fc304ed6]/80 text-white font-medium px-4 py-2 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_30px_rgba(252,48,77,0.3)] border border-white/20">
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
               <div className="relative flex items-center">
                 <Settings className="w-4 h-4 mr-2 group-hover:rotate-90 transition-transform duration-300" />
-                Neural Config
+AI Config
               </div>
             </Button>
           </div>
@@ -253,13 +253,13 @@ export function AIPredictionsDashboard() {
             
             <h4 className="text-lg font-light bg-gradient-to-r from-white via-slate-200 to-[#d4c4a0] bg-clip-text text-transparent mb-4 flex items-center justify-center gap-3">
               <div className="w-2 h-6 bg-gradient-to-b from-[#fc304ed6] to-[#d4c4a0] rounded-full animate-pulse"></div>
-              Neural Data Stream Sources
+AI Data Stream Sources
             </h4>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
                 { label: "Economic Intelligence", value: "Federal Reserve (FRED) API", icon: "🏦" },
-                { label: "AI Processing Core", value: isAIActive ? 'OpenAI GPT-4o Neural Network' : 'Quantum Economic Algorithm', icon: "🧠" },
+{ label: "AI Processing Core", value: isAIActive ? 'OpenAI GPT-4o AI System' : 'Advanced Economic Algorithm', icon: "🧠" },
                 { label: "Market Data Points", value: "Ground Beef • Eggs • Milk • Bread • Gas • Rice", icon: "📊" },
                 { label: "Prediction Accuracy", value: "Algorithmic estimates for strategic planning", icon: "⚡" }
               ].map((item, index) => (
@@ -285,7 +285,7 @@ export function AIPredictionsDashboard() {
       <div className="mb-8">
         <MonthlySavingsSummary predictions={predictions} />
       </div>
-      {/* Neural Intelligence Grid */}
+{/* AI Intelligence Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Quantum Recommendations Engine */}
         <div className="relative glass-morphism p-6 rounded-2xl overflow-hidden group hover:neo-brutalism-card transition-all duration-500 animate-[fadeInUp_0.8s_ease-out]">
@@ -300,7 +300,7 @@ export function AIPredictionsDashboard() {
               <Lightbulb className="w-5 h-5 text-white" />
             </div>
             <h3 className="text-xl font-light bg-gradient-to-r from-white via-slate-200 to-[#d4c4a0] bg-clip-text text-transparent">
-              Neural Recommendations
+              AI Recommendations
             </h3>
           </div>
             
@@ -362,7 +362,7 @@ export function AIPredictionsDashboard() {
               <DollarSign className="w-5 h-5 text-white" />
             </div>
             <h3 className="text-xl font-light bg-gradient-to-r from-white via-slate-200 to-[#d4c4a0] bg-clip-text text-transparent">
-              Quantum Budget Engine
+              Advanced Budget Engine
             </h3>
           </div>
             
@@ -396,7 +396,7 @@ export function AIPredictionsDashboard() {
               <div className="w-8 h-8 bg-gradient-to-br from-[#fc304ed6] to-[#d4c4a0] rounded-xl flex items-center justify-center animate-pulse shadow-lg shadow-[#fc304ed6]/30">
                 <Calendar className="w-4 h-4 text-white" />
               </div>
-              <span className="text-lg font-light bg-gradient-to-r from-white to-[#d4c4a0] bg-clip-text text-transparent">Neural Timing Matrix</span>
+              <span className="text-lg font-light bg-gradient-to-r from-white to-[#d4c4a0] bg-clip-text text-transparent">AI Timing Engine</span>
             </div>
             <div className="space-y-3">
               {personalizedRecs?.timingAdvice && personalizedRecs.timingAdvice.length > 0 ? 
