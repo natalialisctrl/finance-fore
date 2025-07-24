@@ -207,10 +207,6 @@ export default function Dashboard() {
           <div className="relative container mx-auto px-6 py-5 flex justify-between items-center">
             <div className="flex items-center gap-4">
               <ForeseeLogo size="md" className="text-white" />
-              <div className="w-[1px] h-8 bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
-              <div className="text-sm text-[#d4c4a0] font-mono opacity-80">
-                Advanced Financial Intelligence
-              </div>
             </div>
             
             <div className="flex items-center space-x-4">
