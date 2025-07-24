@@ -209,18 +209,7 @@ export default function Dashboard() {
               <ForeseeLogo size="md" className="text-white" />
             </div>
             
-            <div className="flex items-center space-x-4">
-              <Button 
-                onClick={() => window.location.href = '/api/logout'}
-                className="group relative bg-gradient-to-r from-[#fc304ed6]/80 via-[#d4c4a0]/60 to-[#fc304ed6]/80 text-white font-medium px-6 py-2 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_30px_rgba(252,48,77,0.3)] border border-white/20"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                <div className="relative flex items-center">
-                  <LogOut className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
-                  AI Disconnect
-                </div>
-              </Button>
-            </div>
+            
           </div>
         </header>
 
