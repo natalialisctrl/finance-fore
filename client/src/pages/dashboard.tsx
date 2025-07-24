@@ -287,15 +287,15 @@ export default function Dashboard() {
                 loop
                 muted
                 playsInline
-                className="w-full h-full object-cover opacity-20"
+                className="w-full h-full object-cover opacity-60"
                 style={{
-                  filter: 'blur(1px) brightness(0.6)',
+                  filter: 'brightness(0.8) contrast(1.1)',
                   objectPosition: 'center'
                 }}
                 src={foreseeVideo}
               />
               {/* Video overlay gradient */}
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#051421]/30 to-[#051421]/60"></div>
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#051421]/10 to-[#051421]/40"></div>
             </div>
 
             <div className="relative z-10 text-center">
