@@ -322,9 +322,7 @@ export default function Dashboard() {
                 </div>
               </div>
               
-              <p className="text-[#d4c4a0] max-w-3xl mx-auto mb-8 slide-up opacity-90 text-[17px] font-light text-center drop-shadow-md">
-                Welcome to Foresee — your intelligent dashboard for tracking economic shifts, forecasting personal impact, and making smarter financial decisions in real time.
-              </p>
+              
             </div>
 
             {/* Foresee Stats Cards with Futuristic Effects */}
