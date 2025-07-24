@@ -209,7 +209,7 @@ export function AIPredictionsDashboard() {
             <p className="subheading text-white/70 text-center">
               {isAIActive ? "30-day price forecasts powered by OpenAI GPT-4o" : "Economic analysis with algorithmic predictions"}
             </p>
-            <div className="mt-2 flex items-center gap-3">
+            <div className="mt-2 flex items-center justify-center">
               <Button className="btn-coral text-xs px-2 py-1">
                 <Settings className="w-3 h-3 mr-1" />
                 Preferences
