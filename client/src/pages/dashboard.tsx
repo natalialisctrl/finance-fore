@@ -293,7 +293,7 @@ export default function Dashboard() {
 
         {/* Quantum Hero Matrix - AI Core Tab */}
         {activeTab === 'dashboard' && (
-          <div className="relative z-40 max-w-7xl mx-auto px-6 py-8">
+          <div className="relative z-40 max-w-7xl mx-auto px-6 py-8 pl-[24px] pr-[24px] pt-[17px] pb-[17px]">
             <div className="text-center">
               <div 
                 className={`relative group inline-block ${titleSpinning ? 'spinning' : ''}`}
