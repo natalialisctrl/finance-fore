@@ -322,25 +322,11 @@ export default function Dashboard() {
                 Welcome to Foresee — your intelligent dashboard for tracking economic shifts, forecasting personal impact, and making smarter financial decisions in real time.
               </p>
               
-              {/* AI connection indicators */}
-              <div className="flex justify-center items-center gap-8 mb-8">
-                <div className="flex items-center gap-2 glass-morphism px-4 py-2 rounded-full">
-                  <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-                  <span className="text-xs text-white/80 font-mono">AI LINK ACTIVE</span>
-                </div>
-                <div className="flex items-center gap-2 glass-morphism px-4 py-2 rounded-full">
-                  <div className="w-2 h-2 bg-[#fc304ed6] rounded-full animate-ping"></div>
-                  <span className="text-xs text-white/80 font-mono">DATA STREAMING</span>
-                </div>
-              </div>
+              
             </div>
 
             {/* Foresee Stats Cards with Futuristic Effects */}
-            <div className="grid grid-cols-3 gap-2 sm:gap-3 mt-6">
-              <div className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold p-2 sm:p-4 text-center fade-in-stagger min-w-0">
-                <div className="text-base sm:text-lg font-bold gradient-gold mb-1 pulse-metric overflow-visible whitespace-nowrap">94%</div>
-                <div className="text-white/70 text-xs leading-tight">AI Accuracy</div>
-              </div>
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 mt-6">
               <div className="foresee-card bg-black/40 backdrop-blur-md glow-border p-2 sm:p-4 text-center fade-in-stagger min-w-0">
                 <div className="text-base sm:text-lg font-bold gradient-coral-gold mb-1 pulse-metric overflow-visible whitespace-nowrap">$2,340</div>
                 <div className="text-white/70 text-xs leading-tight">Monthly Savings</div>
