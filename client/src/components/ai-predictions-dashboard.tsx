@@ -206,7 +206,7 @@ export function AIPredictionsDashboard() {
             <Brain className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="headline text-white mb-2">
+            <h2 className="headline text-white text-center ml-[10px] mr-[10px] mt-[-7px] mb-[-7px] pl-[-5px] pr-[-5px] pt-[6px] pb-[6px]">
               AI Predictions & Smart Buy Scores
             </h2>
             <p className="subheading text-white/70">
@@ -263,12 +263,10 @@ export function AIPredictionsDashboard() {
           </Button>
         </div>
       </div>
-
       {/* Monthly Savings Summary */}
       <div className="mb-8">
         <MonthlySavingsSummary predictions={predictions} />
       </div>
-
       {/* Top Recommendations & Insights */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-6 mb-6">
         {/* Smart Recommendations */}
@@ -382,7 +380,6 @@ export function AIPredictionsDashboard() {
           </div>
         </div>
       </div>
-
       {/* Enhanced Predictions Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 lg:gap-8">
         {predictions.map((prediction, index) => (
