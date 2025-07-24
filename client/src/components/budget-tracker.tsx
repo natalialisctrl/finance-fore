@@ -404,21 +404,27 @@ export function BudgetTracker() {
                         `${formatCurrency(props.payload.spent)} spent of ${formatCurrency(value)}`
                       ]}
                       labelStyle={{ 
-                        color: '#ffffff', 
+                        color: '#ffffff !important', 
                         fontWeight: '700',
                         fontSize: '16px',
                         textShadow: 'none'
                       }}
                       contentStyle={{
-                        backgroundColor: 'rgba(0, 0, 0, 0.95)',
-                        border: '2px solid rgba(252, 48, 77, 0.8)',
+                        backgroundColor: '#000000 !important',
+                        border: '2px solid #fc304ed6 !important',
                         borderRadius: '12px',
                         boxShadow: '0 8px 24px rgba(0, 0, 0, 0.8)',
-                        color: '#ffffff',
-                        fontSize: '14px',
+                        color: '#ffffff !important',
+                        fontSize: '14px !important',
                         fontWeight: '600',
                         padding: '12px'
                       }}
+                      itemStyle={{
+                        color: '#ffffff !important',
+                        fontSize: '14px',
+                        fontWeight: '600'
+                      }}
+                      cursor={{ fill: 'rgba(252, 48, 77, 0.1)' }}
                     />
                   </PieChart>
                 </ResponsiveContainer>

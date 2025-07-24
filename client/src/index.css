@@ -460,3 +460,18 @@ body {
 .fade-in-stagger:nth-child(3) { animation-delay: 0.3s; }
 .fade-in-stagger:nth-child(4) { animation-delay: 0.4s; }
 .fade-in-stagger:nth-child(5) { animation-delay: 0.5s; }
+
+/* Force Recharts Tooltip Text to be White - Budget Chart Fix */
+.recharts-tooltip-wrapper .recharts-tooltip-item,
+.recharts-tooltip-wrapper .recharts-tooltip-label,
+.recharts-tooltip-wrapper * {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: #000000 !important;
+  border: 2px solid #fc304ed6 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8) !important;
+}
