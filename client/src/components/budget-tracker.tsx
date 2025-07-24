@@ -400,41 +400,44 @@ export function BudgetTracker() {
                     {/* Clean, Readable Tooltip */}
                     <Tooltip 
                       formatter={(value: any, name: any, props: any) => [
-                        formatCurrency(value),
-                        `${formatCurrency(props.payload.spent)} spent of ${formatCurrency(value)}`
+                        `Budget: ${formatCurrency(value)}`,
+                        `Spent: ${formatCurrency(props.payload.spent)}`,
+                        `Remaining: ${formatCurrency(props.payload.remaining)}`
                       ]}
+                      labelFormatter={(label: any, payload: any) => {
+                        if (payload && payload.length > 0) {
+                          return payload[0].payload.name;
+                        }
+                        return label;
+                      }}
                       labelStyle={{ 
-                        color: '#ffffff !important', 
-                        fontWeight: '700',
-                        fontSize: '16px',
-                        textShadow: 'none'
+                        color: '#e5e7eb', 
+                        fontWeight: '600',
+                        fontSize: '15px',
+                        marginBottom: '8px'
                       }}
                       contentStyle={{
-                        backgroundColor: '#000000 !important',
-                        border: '2px solid #fc304ed6 !important',
-                        borderRadius: '12px',
-                        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.8)',
-                        color: '#ffffff !important',
-                        fontSize: '14px !important',
-                        fontWeight: '600',
-                        padding: '12px'
+                        backgroundColor: 'rgba(0, 0, 0, 0.92)',
+                        border: '1px solid rgba(252, 48, 77, 0.6)',
+                        borderRadius: '10px',
+                        boxShadow: '0 6px 20px rgba(0, 0, 0, 0.7)',
+                        color: '#d1d5db',
+                        fontSize: '13px',
+                        fontWeight: '500',
+                        padding: '10px'
                       }}
                       itemStyle={{
-                        color: '#ffffff !important',
-                        fontSize: '14px',
-                        fontWeight: '600'
+                        color: '#d1d5db',
+                        fontSize: '13px',
+                        fontWeight: '500',
+                        padding: '2px 0'
                       }}
                       cursor={{ fill: 'rgba(252, 48, 77, 0.1)' }}
                     />
                   </PieChart>
                 </ResponsiveContainer>
                 
-                {/* 3D Rotation Controls */}
-                <div className="absolute bottom-2 right-2 flex space-x-1">
-                  <div className="w-2 h-2 bg-[#fc304ed6] rounded-full animate-pulse"></div>
-                  <div className="w-2 h-2 bg-[#d4c4a0] rounded-full animate-pulse delay-100"></div>
-                  <div className="w-2 h-2 bg-[#051421] border border-[#d4c4a0]/50 rounded-full animate-pulse delay-200"></div>
-                </div>
+                
               </div>
               
 
