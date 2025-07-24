@@ -273,86 +273,205 @@ export function BudgetTracker() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Monthly Budget Pie Chart */}
+          {/* 3D Interactive Budget Chart */}
           <div className="space-y-4">
-            <h4 className="font-medium text-slate-900 dark:text-white">Budget Overview</h4>
-            <div className="h-80 bg-white/10 dark:bg-black/10 backdrop-blur-sm rounded-xl p-4">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={budgetData?.map((budget, index) => ({
-                      name: budget.category,
-                      value: budget.budgetAmount,
-                      spent: budget.spentAmount,
-                      remaining: budget.budgetAmount - budget.spentAmount,
-                      fill: [
-                        '#FF6B35', '#4F46E5', '#10B981', '#F59E0B', '#EF4444', 
-                        '#8B5CF6', '#06B6D4', '#84CC16', '#F97316', '#EC4899'
-                      ][index % 10]
-                    }))}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={120}
-                    paddingAngle={2}
-                    dataKey="value"
-                  >
-                    {budgetData?.map((entry, index) => (
-                      <Cell 
-                        key={`cell-${index}`} 
-                        fill={[
-                          '#FF6B35', '#4F46E5', '#10B981', '#F59E0B', '#EF4444', 
-                          '#8B5CF6', '#06B6D4', '#84CC16', '#F97316', '#EC4899'
-                        ][index % 10]}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip 
-                    formatter={(value: any, name: any, props: any) => [
-                      formatCurrency(value),
-                      `Budget: ${formatCurrency(props.payload.spent)} spent of ${formatCurrency(value)}`
-                    ]}
-                    labelStyle={{ color: '#1f2937' }}
-                    contentStyle={{
-                      backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                      border: 'none',
-                      borderRadius: '8px',
-                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                    }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
+            <div className="flex items-center justify-between">
+              <h4 className="font-medium text-slate-900 dark:text-white">3D Budget Overview</h4>
+              <div className="text-xs text-[#d4c4a0] bg-black/20 px-2 py-1 rounded-full border border-[#d4c4a0]/20">
+                Touch & Drag to Rotate
+              </div>
+            </div>
+            <div className="h-80 bg-gradient-to-br from-[#051421]/80 via-[#051421]/60 to-[#051421]/40 backdrop-blur-xl rounded-xl p-4 border border-[#d4c4a0]/20 relative overflow-hidden">
+              {/* Holographic Grid Background */}
+              <div className="absolute inset-0 opacity-20">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#fc304ed6]/10 to-transparent animate-pulse"></div>
+                <div className="grid grid-cols-8 grid-rows-8 h-full w-full">
+                  {Array.from({ length: 64 }).map((_, i) => (
+                    <div key={i} className="border border-[#d4c4a0]/10"></div>
+                  ))}
+                </div>
+              </div>
+              
+              {/* 3D Interactive Chart Container */}
+              <div className="relative z-10 h-full perspective-1000">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <defs>
+                      {/* 3D Gradient Definitions */}
+                      <linearGradient id="champagne3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#f4e9d1" />
+                        <stop offset="50%" stopColor="#d4c4a0" />
+                        <stop offset="100%" stopColor="#b8a882" />
+                      </linearGradient>
+                      <linearGradient id="coral3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#ff5a4a" />
+                        <stop offset="50%" stopColor="#fc304ed6" />
+                        <stop offset="100%" stopColor="#e02d42" />
+                      </linearGradient>
+                      <linearGradient id="navy3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#1a2536" />
+                        <stop offset="50%" stopColor="#051421" />
+                        <stop offset="100%" stopColor="#030b12" />
+                      </linearGradient>
+                      <linearGradient id="gold3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#ffd700" />
+                        <stop offset="50%" stopColor="#f1c40f" />
+                        <stop offset="100%" stopColor="#d4af37" />
+                      </linearGradient>
+                      <linearGradient id="emerald3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#50e3c2" />
+                        <stop offset="50%" stopColor="#2dd4bf" />
+                        <stop offset="100%" stopColor="#14b8a6" />
+                      </linearGradient>
+                      
+                      {/* 3D Shadow Effects */}
+                      <filter id="shadow3D">
+                        <feDropShadow dx="3" dy="6" stdDeviation="4" floodColor="#000000" floodOpacity="0.6"/>
+                      </filter>
+                      <filter id="glow3D">
+                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                        <feMerge>
+                          <feMergeNode in="coloredBlur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                    </defs>
+                    
+                    <Pie
+                      data={budgetData?.map((budget, index) => ({
+                        name: budget.category,
+                        value: budget.budgetAmount,
+                        spent: budget.spentAmount,
+                        remaining: budget.budgetAmount - budget.spentAmount,
+                        fill: [
+                          'url(#coral3D)', 'url(#champagne3D)', 'url(#navy3D)', 'url(#gold3D)', 'url(#emerald3D)',
+                          'url(#coral3D)', 'url(#champagne3D)', 'url(#navy3D)', 'url(#gold3D)', 'url(#emerald3D)'
+                        ][index % 5]
+                      }))}
+                      cx="50%"
+                      cy="45%"
+                      startAngle={90}
+                      endAngle={450}
+                      innerRadius={45}
+                      outerRadius={100}
+                      paddingAngle={3}
+                      dataKey="value"
+                      className="transform-gpu transition-transform duration-300 hover:scale-105"
+                      style={{
+                        filter: 'drop-shadow(0 8px 16px rgba(252, 48, 77, 0.3))',
+                        transformStyle: 'preserve-3d'
+                      }}
+                    >
+                      {budgetData?.map((entry, index) => (
+                        <Cell 
+                          key={`cell-${index}`} 
+                          fill={[
+                            'url(#coral3D)', 'url(#champagne3D)', 'url(#navy3D)', 'url(#gold3D)', 'url(#emerald3D)'
+                          ][index % 5]}
+                          stroke="rgba(255, 255, 255, 0.1)"
+                          strokeWidth={2}
+                          filter="url(#shadow3D)"
+                          className="transition-all duration-300 hover:brightness-110"
+                        />
+                      ))}
+                    </Pie>
+                    
+                    {/* Interactive Tooltip with 3D Styling */}
+                    <Tooltip 
+                      formatter={(value: any, name: any, props: any) => [
+                        formatCurrency(value),
+                        `Budget: ${formatCurrency(props.payload.spent)} spent of ${formatCurrency(value)}`
+                      ]}
+                      labelStyle={{ 
+                        color: '#ffffff', 
+                        fontWeight: 'bold',
+                        textShadow: '0 1px 2px rgba(0,0,0,0.5)'
+                      }}
+                      contentStyle={{
+                        backgroundColor: 'rgba(5, 20, 33, 0.95)',
+                        border: '1px solid rgba(212, 196, 160, 0.3)',
+                        borderRadius: '12px',
+                        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(252, 48, 77, 0.2)',
+                        backdropFilter: 'blur(10px)',
+                        color: '#ffffff'
+                      }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                
+                {/* 3D Rotation Controls */}
+                <div className="absolute bottom-2 right-2 flex space-x-1">
+                  <div className="w-2 h-2 bg-[#fc304ed6] rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-[#d4c4a0] rounded-full animate-pulse delay-100"></div>
+                  <div className="w-2 h-2 bg-[#051421] border border-[#d4c4a0]/50 rounded-full animate-pulse delay-200"></div>
+                </div>
+              </div>
+              
+              {/* Holographic Frame Effect */}
+              <div className="absolute inset-0 rounded-xl border border-[#d4c4a0]/30 pointer-events-none">
+                <div className="absolute -top-px -left-px w-8 h-8 border-t-2 border-l-2 border-[#fc304ed6] rounded-tl-xl"></div>
+                <div className="absolute -top-px -right-px w-8 h-8 border-t-2 border-r-2 border-[#fc304ed6] rounded-tr-xl"></div>
+                <div className="absolute -bottom-px -left-px w-8 h-8 border-b-2 border-l-2 border-[#fc304ed6] rounded-bl-xl"></div>
+                <div className="absolute -bottom-px -right-px w-8 h-8 border-b-2 border-r-2 border-[#fc304ed6] rounded-br-xl"></div>
+              </div>
             </div>
             
-            {/* Budget Legend with Status */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto">
+            {/* 3D Budget Legend with Holographic Effects */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-48 overflow-y-auto">
               {budgetData?.map((budget, index) => {
                 const progress = getBudgetProgress(budget.spentAmount, budget.budgetAmount);
-                const color = [
-                  '#FF6B35', '#4F46E5', '#10B981', '#F59E0B', '#EF4444', 
-                  '#8B5CF6', '#06B6D4', '#84CC16', '#F97316', '#EC4899'
-                ][index % 10];
+                const colorInfo = [
+                  { bg: '#fc304ed6', name: 'Coral', glow: 'shadow-coral' },
+                  { bg: '#d4c4a0', name: 'Champagne', glow: 'shadow-champagne' },
+                  { bg: '#051421', name: 'Navy', glow: 'shadow-navy' },
+                  { bg: '#f1c40f', name: 'Gold', glow: 'shadow-gold' },
+                  { bg: '#2dd4bf', name: 'Emerald', glow: 'shadow-emerald' }
+                ][index % 5];
                 
                 return (
-                  <div key={budget.id} className="flex items-center space-x-3 p-2 rounded-lg bg-white/5 dark:bg-black/5">
-                    <div 
-                      className="w-3 h-3 rounded-full flex-shrink-0" 
-                      style={{ backgroundColor: color }}
-                    />
-                    <div className="flex-1 min-w-0">
-                      <div className="text-xs font-medium text-slate-900 dark:text-white truncate">
-                        {budget.category}
+                  <div key={budget.id} className="group relative">
+                    {/* Holographic Background */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#051421]/30 via-[#051421]/20 to-[#051421]/30 rounded-lg blur-sm group-hover:blur-none transition-all duration-300"></div>
+                    
+                    <div className="relative flex items-center space-x-3 p-3 rounded-lg bg-gradient-to-r from-black/20 via-black/10 to-black/20 backdrop-blur-sm border border-[#d4c4a0]/20 hover:border-[#fc304ed6]/40 transition-all duration-300">
+                      {/* 3D Color Indicator */}
+                      <div className="relative flex-shrink-0">
+                        <div 
+                          className="w-4 h-4 rounded-full shadow-lg relative overflow-hidden"
+                          style={{ 
+                            backgroundColor: colorInfo.bg,
+                            boxShadow: `0 0 12px ${colorInfo.bg}40, inset 0 1px 2px rgba(255,255,255,0.3)`
+                          }}
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-black/20 rounded-full"></div>
+                        </div>
+                        <div className="absolute -inset-1 rounded-full animate-ping opacity-20" style={{ backgroundColor: colorInfo.bg }}></div>
                       </div>
-                      <div className="text-xs text-white">
-                        {formatCurrency(budget.spentAmount)} of {formatCurrency(budget.budgetAmount)}
+                      
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-medium text-white truncate flex items-center gap-2">
+                          {budget.category}
+                          <div className="text-xs text-[#d4c4a0] font-mono bg-black/30 px-1 rounded">
+                            {colorInfo.name}
+                          </div>
+                        </div>
+                        <div className="text-xs text-[#d4c4a0] font-mono">
+                          {formatCurrency(budget.spentAmount)} of {formatCurrency(budget.budgetAmount)}
+                        </div>
                       </div>
-                    </div>
-                    <div className={`text-xs px-2 py-1 rounded-full ${
-                      progress > 90 ? 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400' :
-                      progress > 75 ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400' :
-                      'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400'
-                    }`}>
-                      {progress.toFixed(0)}%
+                      
+                      {/* 3D Progress Badge */}
+                      <div className={`relative text-xs px-3 py-1 rounded-full font-bold transition-all duration-300 ${
+                        progress > 90 ? 'bg-gradient-to-r from-red-600 to-red-500 text-white shadow-lg shadow-red-500/30' :
+                        progress > 75 ? 'bg-gradient-to-r from-yellow-600 to-yellow-500 text-white shadow-lg shadow-yellow-500/30' :
+                        'bg-gradient-to-r from-emerald-600 to-emerald-500 text-white shadow-lg shadow-emerald-500/30'
+                      }`}>
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-black/20 rounded-full"></div>
+                        <span className="relative">{progress.toFixed(0)}%</span>
+                      </div>
+                      
+                      {/* Hover Glow Effect */}
+                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-[#fc304ed6]/0 via-[#fc304ed6]/5 to-[#fc304ed6]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                     </div>
                   </div>
                 );
@@ -361,7 +480,7 @@ export function BudgetTracker() {
           </div>
 
           {/* Spending Analytics & Insights */}
-          <div className="space-y-6">
+          <div className="space-y-4 text-justify bg-[#04050a40]">
             {/* Spending Insights */}
             <div className="space-y-4">
               <h4 className="font-medium text-slate-900 dark:text-white">Spending Insights</h4>
