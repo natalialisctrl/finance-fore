@@ -281,15 +281,10 @@ export function BudgetTracker() {
                 Touch & Drag to Rotate
               </div>
             </div>
-            <div className="h-80 bg-gradient-to-br from-[#051421]/80 via-[#051421]/60 to-[#051421]/40 backdrop-blur-xl rounded-xl p-4 border border-[#d4c4a0]/20 relative overflow-hidden">
-              {/* Holographic Grid Background */}
-              <div className="absolute inset-0 opacity-20">
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#fc304ed6]/10 to-transparent animate-pulse"></div>
-                <div className="grid grid-cols-8 grid-rows-8 h-full w-full">
-                  {Array.from({ length: 64 }).map((_, i) => (
-                    <div key={i} className="border border-[#d4c4a0]/10"></div>
-                  ))}
-                </div>
+            <div className="h-80 bg-gradient-to-br from-[#051421]/90 to-[#051421]/70 backdrop-blur-xl rounded-xl p-4 relative overflow-hidden">
+              {/* Subtle Ambient Glow */}
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#fc304ed6]/20 to-transparent animate-pulse"></div>
               </div>
               
               {/* 3D Interactive Chart Container */}
@@ -376,24 +371,25 @@ export function BudgetTracker() {
                       ))}
                     </Pie>
                     
-                    {/* Interactive Tooltip with 3D Styling */}
+                    {/* Clean, Readable Tooltip */}
                     <Tooltip 
                       formatter={(value: any, name: any, props: any) => [
                         formatCurrency(value),
-                        `Budget: ${formatCurrency(props.payload.spent)} spent of ${formatCurrency(value)}`
+                        `${formatCurrency(props.payload.spent)} spent of ${formatCurrency(value)}`
                       ]}
                       labelStyle={{ 
                         color: '#ffffff', 
-                        fontWeight: 'bold',
-                        textShadow: '0 1px 2px rgba(0,0,0,0.5)'
+                        fontWeight: '600',
+                        fontSize: '14px'
                       }}
                       contentStyle={{
-                        backgroundColor: 'rgba(5, 20, 33, 0.95)',
-                        border: '1px solid rgba(212, 196, 160, 0.3)',
-                        borderRadius: '12px',
-                        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(252, 48, 77, 0.2)',
-                        backdropFilter: 'blur(10px)',
-                        color: '#ffffff'
+                        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                        border: '1px solid rgba(252, 48, 77, 0.5)',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.6)',
+                        color: '#ffffff',
+                        fontSize: '13px',
+                        fontWeight: '500'
                       }}
                     />
                   </PieChart>
@@ -407,13 +403,7 @@ export function BudgetTracker() {
                 </div>
               </div>
               
-              {/* Holographic Frame Effect */}
-              <div className="absolute inset-0 rounded-xl border border-[#d4c4a0]/30 pointer-events-none">
-                <div className="absolute -top-px -left-px w-8 h-8 border-t-2 border-l-2 border-[#fc304ed6] rounded-tl-xl"></div>
-                <div className="absolute -top-px -right-px w-8 h-8 border-t-2 border-r-2 border-[#fc304ed6] rounded-tr-xl"></div>
-                <div className="absolute -bottom-px -left-px w-8 h-8 border-b-2 border-l-2 border-[#fc304ed6] rounded-bl-xl"></div>
-                <div className="absolute -bottom-px -right-px w-8 h-8 border-b-2 border-r-2 border-[#fc304ed6] rounded-br-xl"></div>
-              </div>
+
             </div>
             
             {/* 3D Budget Legend with Holographic Effects */}
