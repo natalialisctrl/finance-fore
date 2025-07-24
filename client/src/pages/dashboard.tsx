@@ -325,13 +325,7 @@ export default function Dashboard() {
               
             </div>
 
-            {/* Foresee Stats Cards with Futuristic Effects */}
-            <div className="relative z-10 grid grid-cols-1 gap-2 sm:gap-3 mt-6">
-              <div className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold p-2 sm:p-4 text-center fade-in-stagger min-w-0">
-                <div className="text-base sm:text-lg font-bold gradient-gold mb-1 pulse-metric overflow-visible whitespace-nowrap">8.7/10</div>
-                <div className="text-white/70 text-xs leading-tight">Smart Buy Score</div>
-              </div>
-            </div>
+            
           </div>
         )}
 
