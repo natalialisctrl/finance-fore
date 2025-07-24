@@ -171,7 +171,9 @@ The app prioritizes transparency about data sources:
 
 ## Recent Changes
 
-### July 24, 2025 - Clean Typography System & Complete Neural Terminology Removal
+### July 24, 2025 - Dashboard Title Update & Complete Neural Terminology Removal
+- **Updated Main Dashboard Title**: Changed "Advanced Financial Intelligence Matrix" to "Know what's coming. Spend with clarity." for clearer user messaging
+- **Clean Typography System & Complete Neural Terminology Removal**:
 - **Comprehensive Neural Text Removal**: Systematically removed ALL "neural" references throughout application
   - Updated dashboard.tsx, budget-tracker.tsx, ai-predictions-dashboard.tsx, mobile-scene-builder.tsx
   - Replaced "neural" terminology with appropriate alternatives: "AI", "Advanced", "Smart"

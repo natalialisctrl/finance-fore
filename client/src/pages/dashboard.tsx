@@ -301,11 +301,11 @@ export default function Dashboard() {
               >
                 <h1 className="text-4xl md:text-6xl font-light tracking-tight text-white mb-6 fade-in leading-tight">
                   <span className="bg-gradient-to-r from-white via-slate-200 to-white bg-clip-text text-transparent">
-                    Advanced Financial
+                    Know what's coming.
                   </span>
                   <br/>
                   <span className="bg-gradient-to-r from-[#fc304ed6] via-[#d4c4a0] to-[#fc304ed6] bg-clip-text text-transparent animate-pulse">
-                    Intelligence Matrix
+                    Spend with clarity.
                   </span>
                 </h1>
                 
