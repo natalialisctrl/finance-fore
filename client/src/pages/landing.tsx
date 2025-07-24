@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, DollarSign, Calculator, ShoppingCart, Brain, Target } from "lucide-react";
+import { ForeseeLogo } from "@/components/foresee-logo";
 import { useEffect } from "react";
 import { apiRequest } from "@/lib/queryClient";
 
@@ -23,42 +24,35 @@ export default function Landing() {
     autoLogin();
   }, []);
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900">
-      {/* Floating Video Background */}
-      <div className="fixed inset-0 z-0 opacity-20">
-        <video
-          autoPlay
-          loop
-          muted
-          className="w-full h-full object-cover"
-        >
-          <source src="/attached_assets/vecteezy_3d-dollar-money-bundle-floating-animation-on-black-background_23936705_1752690826601.mp4" type="video/mp4" />
-        </video>
+    <div className="min-h-screen bg-gradient-to-br from-[#1a2332] via-[#243447] to-[#2e4057]">
+      {/* Foresee Background Pattern */}
+      <div className="fixed inset-0 z-0 opacity-10">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#e74c3c]/20 to-transparent animate-pulse"></div>
+        <div className="absolute top-0 left-0 w-full h-full">
+          {/* Floating geometric shapes */}
+          <div className="absolute top-20 left-10 w-4 h-4 bg-[#e74c3c]/20 rounded-full float-1"></div>
+          <div className="absolute top-40 right-20 w-6 h-6 border border-[#e74c3c]/30 rounded-sm float-2"></div>
+          <div className="absolute bottom-40 left-1/4 w-3 h-3 bg-[#e74c3c]/25 rotate-45 float-3"></div>
+          <div className="absolute bottom-20 right-1/3 w-5 h-5 border border-[#e74c3c]/20 rounded-full float-4"></div>
+        </div>
       </div>
 
       <div className="relative z-10">
         {/* Header */}
-        <header className="border-b border-white/20 backdrop-blur-md bg-white/10 dark:bg-black/10">
+        <header className="border-b border-white/20 backdrop-blur-md bg-black/40 dark:bg-black/60">
           <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-orange-500 to-blue-500 flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-white" />
-              </div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent">
-                Financial Forecast
-              </h1>
-            </div>
+            <ForeseeLogo size="md" className="text-white" />
             <div className="flex space-x-3">
               <Button 
                 onClick={() => window.location.href = '/api/login'}
-                className="bg-gradient-to-r from-orange-500 to-blue-500 hover:from-orange-600 hover:to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                className="btn-coral shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 Sign In
               </Button>
               <Button 
                 variant="outline"
                 onClick={() => window.location.href = '/demo-login'}
-                className="border-orange-500 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/20"
+                className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
               >
                 Demo Login
               </Button>
@@ -70,21 +64,22 @@ export default function Landing() {
         <section className="py-20">
           <div className="container mx-auto px-4 text-center">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-orange-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
-                Smart Financial Decisions with AI
+              <h2 className="headline text-white mb-6">
+                Financial Foresight<br/>
+                <span className="accent-coral">in an Uncertain Economy</span>
               </h2>
-              <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-                Make informed purchasing decisions with AI-powered price predictions, real-time economic analysis, 
-                and personalized budget recommendations. Take control of your financial future today.
+              <p className="subheading text-white/80 mb-8 leading-relaxed">
+                AI-powered predictions for your local economy, from gas prices to groceries.
+                Make smarter purchasing decisions with real-time economic intelligence.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <div className="text-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500 mx-auto mb-4"></div>
-                  <p className="text-lg text-gray-600 dark:text-gray-300">
-                    Auto-logging you in as Natalia...
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#e74c3c] mx-auto mb-4"></div>
+                  <p className="text-lg text-white/90">
+                    Preparing your economic dashboard...
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                    Please wait while we prepare your dashboard
+                  <p className="text-sm text-white/60 mt-2">
+                    Loading personalized insights for Natalia
                   </p>
                 </div>
               </div>
@@ -95,30 +90,30 @@ export default function Landing() {
         {/* Features Grid */}
         <section className="py-16">
           <div className="container mx-auto px-4">
-            <h3 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent">
-              Powerful Features
+            <h3 className="subheading text-center mb-12 text-white">
+              Beyond Budgeting — Economic Intelligence for Your Daily Life
             </h3>
             <div className="grid md:grid-cols-3 gap-8">
-              <Card className="bg-white/70 dark:bg-black/30 backdrop-blur-md border-white/20 hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <Card className="foresee-card bg-black/40 backdrop-blur-md border-white/10 text-white">
                 <CardHeader>
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 rounded-lg bg-accent-coral flex items-center justify-center mb-4">
                     <Brain className="w-6 h-6 text-white" />
                   </div>
-                  <CardTitle className="text-xl">AI Price Predictions</CardTitle>
-                  <CardDescription>
-                    Advanced machine learning algorithms predict 30-day price movements with confidence scores
+                  <CardTitle className="text-xl text-white">AI Price Predictions</CardTitle>
+                  <CardDescription className="text-white/70">
+                    Using data on inflation, GDP, and the consumer price index, the app forecasts grocery and gas prices in your area.
                   </CardDescription>
                 </CardHeader>
               </Card>
 
-              <Card className="bg-white/70 dark:bg-black/30 backdrop-blur-md border-white/20 hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <Card className="foresee-card bg-black/40 backdrop-blur-md border-white/10 text-white">
                 <CardHeader>
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 rounded-lg bg-[#4a90e2] flex items-center justify-center mb-4">
                     <TrendingUp className="w-6 h-6 text-white" />
                   </div>
-                  <CardTitle className="text-xl">Economic Analysis</CardTitle>
-                  <CardDescription>
-                    Real-time economic indicators including inflation, GDP growth, and market trends
+                  <CardTitle className="text-xl text-white">Local Economic Intelligence</CardTitle>
+                  <CardDescription className="text-white/70">
+                    Utilizing inflation data, GDP, consumer price index, and AI, our app predicts local prices.
                   </CardDescription>
                 </CardHeader>
               </Card>

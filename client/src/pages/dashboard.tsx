@@ -24,7 +24,7 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 // import { useAuth } from "@/hooks/useAuth"; // Auto-login mode
 import { CreditCard, User, LogOut, TrendingUp, ShoppingCart, DollarSign, PiggyBank, AlertTriangle, CheckCircle, Clock, MapPin, MoreVertical, X, BarChart3, Brain, Wallet, Target, Calculator, Bell, Shield } from "lucide-react";
-import ForeseeLogo from "@assets/Foresee_1753054026597.png";
+import { ForeseeLogo } from "@/components/foresee-logo";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/authUtils";
@@ -173,51 +173,44 @@ export default function Dashboard() {
   }, [isAuthenticated, isLoading, toast]);
 
   return (
-    <div className="min-h-screen">
-      {/* Minimalist Floating Dollar Animations */}
-      <MinimalistFloatingDollars />
-      {/* Premium Hero Section */}
-      <div className="hero-gradient relative overflow-hidden">
-        {/* Enhanced animated background */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div 
-            className="absolute inset-0 opacity-60"
-            style={{
-              background: `
-                radial-gradient(circle at 20% 30%, rgba(255, 193, 7, 0.4) 0%, transparent 60%),
-                radial-gradient(circle at 80% 70%, rgba(255, 152, 0, 0.3) 0%, transparent 60%),
-                radial-gradient(circle at 40% 80%, rgba(255, 235, 59, 0.25) 0%, transparent 60%),
-                radial-gradient(circle at 60% 20%, rgba(255, 215, 0, 0.35) 0%, transparent 50%)
-              `,
-              animation: 'float 8s ease-in-out infinite, pulse 4s ease-in-out infinite alternate',
-              display: 'block',
-              mixBlendMode: 'screen'
-            }}
-          >
-            {/* Enhanced floating dollar symbols */}
-            <div className="absolute top-1/4 left-1/4 text-6xl text-yellow-400/30 animate-bounce" style={{ animationDelay: '0s', animationDuration: '3s' }}>$</div>
-            <div className="absolute top-3/4 right-1/4 text-4xl text-orange-400/40 animate-bounce" style={{ animationDelay: '1s', animationDuration: '4s' }}>$</div>
-            <div className="absolute bottom-1/3 left-1/3 text-5xl text-yellow-300/25 animate-bounce" style={{ animationDelay: '2s', animationDuration: '3.5s' }}>$</div>
-            <div className="absolute top-1/2 right-1/3 text-3xl text-amber-400/35 animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '4.5s' }}>$</div>
-            <div className="absolute top-1/3 left-2/3 text-5xl text-yellow-500/20 animate-bounce" style={{ animationDelay: '1.5s', animationDuration: '3.8s' }}>$</div>
-            <div className="absolute bottom-1/4 right-2/3 text-4xl text-orange-300/30 animate-bounce" style={{ animationDelay: '2.5s', animationDuration: '4.2s' }}>$</div>
+    <div className="min-h-screen bg-gradient-to-br from-[#1a2332] via-[#243447] to-[#2e4057]">
+      {/* Foresee Background Pattern */}
+      <div className="fixed inset-0 z-0 opacity-10">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#e74c3c]/20 to-transparent animate-pulse"></div>
+        <div className="absolute top-0 left-0 w-full h-full">
+          {/* Floating geometric shapes */}
+          <div className="absolute top-20 left-10 w-4 h-4 bg-[#e74c3c]/20 rounded-full float-1"></div>
+          <div className="absolute top-40 right-20 w-6 h-6 border border-[#e74c3c]/30 rounded-sm float-2"></div>
+          <div className="absolute bottom-40 left-1/4 w-3 h-3 bg-[#e74c3c]/25 rotate-45 float-3"></div>
+          <div className="absolute bottom-20 right-1/3 w-5 h-5 border border-[#e74c3c]/20 rounded-full float-4"></div>
+        </div>
+      </div>
+      
+      {/* Main Dashboard Content */}
+      <div className="relative z-10">
+        {/* Dashboard Header */}
+        <header className="border-b border-white/10 backdrop-blur-md bg-black/20 sticky top-0 z-40">
+          <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+            <ForeseeLogo size="md" className="text-white" />
+            <div className="flex items-center space-x-4">
+              <span className="text-white/80 body-text">Welcome back, {user.firstName}</span>
+              <Button 
+                onClick={() => window.location.href = '/api/logout'}
+                variant="outline"
+                className="border-white/30 text-white hover:bg-white/10"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
+              </Button>
+            </div>
           </div>
-          {/* Overlay gradient for blending */}
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-blue-600/5" style={{ zIndex: 2 }}></div>
-        </div>
-        
-        {/* Floating particles background */}
-        <div className="absolute inset-0 overflow-hidden z-10 bg-slate-900">
-          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-white/20 rounded-full animate-pulse float"></div>
-          <div className="absolute top-3/4 left-3/4 w-1 h-1 bg-white/30 rounded-full animate-pulse" style={{ animationDelay: '2s' }}></div>
-          <div className="absolute top-1/2 right-1/4 w-3 h-3 bg-white/10 rounded-full float" style={{ animationDelay: '4s' }}></div>
-        </div>
+        </header>
 
 
 
-        {/* Mobile-Optimized Navigation Tabs */}
-        <div className="relative z-50 mx-2 sm:mx-4 mt-2 sm:mt-4 mb-4 sm:mb-6">
-          <div className="glass-card rounded-2xl sm:rounded-3xl p-2 sm:p-3 bg-white/12 backdrop-blur-2xl border-2 border-white/20 shadow-2xl">
+        {/* Foresee Navigation Tabs */}
+        <div className="relative z-50 mx-2 sm:mx-4 mt-4 sm:mt-6 mb-6 sm:mb-8">
+          <div className="foresee-card bg-black/30 backdrop-blur-xl border-white/10 rounded-2xl p-3 sm:p-4">
             <div className="flex space-x-1 sm:space-x-2">
               {[
                 { id: 'dashboard', label: 'Home', icon: BarChart3, shortLabel: 'Home' },
@@ -229,10 +222,10 @@ export default function Dashboard() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`relative flex-1 flex flex-col items-center py-2 sm:py-4 px-1 sm:px-2 rounded-xl sm:rounded-2xl transition-all duration-300 transform touch-manipulation ${
+                  className={`relative flex-1 flex flex-col items-center py-3 sm:py-4 px-2 sm:px-3 rounded-xl transition-all duration-300 transform touch-manipulation ${
                     activeTab === tab.id
-                      ? 'bg-gradient-to-br from-orange-500/35 to-orange-600/45 text-white scale-105 shadow-xl border-2 border-orange-300/60'
-                      : 'text-white/75 hover:text-white hover:bg-white/15 hover:scale-102 active:scale-95'
+                      ? 'bg-accent-coral text-white scale-105 shadow-xl border border-white/20'
+                      : 'text-white/75 hover:text-white hover:bg-white/10 hover:scale-102'
                   }`}
                   style={{
                     minHeight: window.innerWidth < 640 ? '56px' : '72px',
@@ -250,10 +243,7 @@ export default function Dashboard() {
                     <span className="hidden sm:inline">{tab.label}</span>
                   </span>
                   {activeTab === tab.id && (
-                    <div className="absolute -bottom-0.5 sm:-bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 sm:w-3 sm:h-3 bg-orange-300 rounded-full animate-pulse shadow-lg"></div>
-                  )}
-                  {activeTab === tab.id && (
-                    <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-orange-400/20 to-orange-600/30 animate-pulse"></div>
+                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rounded-full animate-pulse"></div>
                   )}
                 </button>
               ))}
@@ -261,39 +251,35 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Hero Content - Only show on Home tab */}
+        {/* Foresee Hero Section - Only show on Home tab */}
         {activeTab === 'dashboard' && (
-          <div className="relative z-40 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-16 pb-12 lg:pb-24">
+          <div className="relative z-40 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
             <div className="text-center">
               <div 
-                className={`text-2xl sm:text-4xl lg:text-6xl font-bold mb-4 lg:mb-6 fade-in interactive-3d-title ${titleSpinning ? 'spinning' : ''}`}
+                className={`headline text-white mb-6 fade-in ${titleSpinning ? 'spinning' : ''}`}
                 onClick={handleTitleClick}
               >
-                <div className="title-content">
-                  <div className="text-white">Smart Financial</div>
-                  <div className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent pb-2 leading-tight">
-                    Intelligence
-                  </div>
-                </div>
+                Financial Foresight<br/>
+                <span className="accent-coral">in Real Time</span>
               </div>
-              <p className="text-sm sm:text-lg lg:text-xl text-white/80 max-w-3xl mx-auto mb-6 lg:mb-8 slide-up px-4">
-                Harness the power of AI to make smarter purchase decisions with real-time economic data and predictive analytics.
+              <p className="subheading text-white/80 max-w-3xl mx-auto mb-8 slide-up">
+                AI-powered predictions for your local economy. Make smarter decisions with real-time intelligence.
               </p>
             </div>
 
-            {/* Mobile-Optimized Hero Stats Cards */}
-            <div className="grid grid-cols-3 sm:grid-cols-3 gap-2 sm:gap-4 lg:gap-6 mt-6 sm:mt-8 lg:mt-12 px-2 sm:px-2">
-              <div className="glass-card p-3 sm:p-4 lg:p-6 text-center scale-in pulse-orange touch-manipulation">
-                <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-white number-glow">94%</div>
-                <div className="text-white/70 text-xs sm:text-xs lg:text-sm leading-tight">Prediction<br className="sm:hidden" /><span className="hidden sm:inline"> </span>Accuracy</div>
+            {/* Foresee Stats Cards */}
+            <div className="grid grid-cols-3 gap-4 sm:gap-6 mt-8">
+              <div className="foresee-card bg-black/40 backdrop-blur-md border-white/10 p-4 sm:p-6 text-center">
+                <div className="text-2xl sm:text-3xl font-bold text-white mb-2">94%</div>
+                <div className="text-white/70 text-sm">AI Prediction Accuracy</div>
               </div>
-              <div className="glass-card p-3 sm:p-4 lg:p-6 text-center scale-in pulse-orange touch-manipulation" style={{ animationDelay: '0.2s' }}>
-                <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-white number-glow">$2,340</div>
-                <div className="text-white/70 text-xs sm:text-xs lg:text-sm leading-tight">Monthly<br className="sm:hidden" /><span className="hidden sm:inline"> </span>Savings</div>
+              <div className="foresee-card bg-black/40 backdrop-blur-md border-white/10 p-4 sm:p-6 text-center">
+                <div className="text-2xl sm:text-3xl font-bold accent-coral mb-2">$2,340</div>
+                <div className="text-white/70 text-sm">Monthly Savings</div>
               </div>
-              <div className="glass-card p-3 sm:p-4 lg:p-6 text-center scale-in pulse-orange touch-manipulation" style={{ animationDelay: '0.4s' }}>
-                <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-white number-glow">8.7/10</div>
-                <div className="text-white/70 text-xs sm:text-xs lg:text-sm leading-tight">Smart Buy<br className="sm:hidden" /><span className="hidden sm:inline"> </span>Score</div>
+              <div className="foresee-card bg-black/40 backdrop-blur-md border-white/10 p-4 sm:p-6 text-center">
+                <div className="text-2xl sm:text-3xl font-bold text-white mb-2">8.7/10</div>
+                <div className="text-white/70 text-sm">Smart Buy Score</div>
               </div>
             </div>
           </div>
