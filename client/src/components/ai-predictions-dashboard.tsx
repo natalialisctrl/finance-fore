@@ -202,9 +202,6 @@ export function AIPredictionsDashboard() {
     <div className="w-full px-2 sm:px-4 mb-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div className="flex items-center space-x-2 sm:space-x-3 fade-in flex-1">
-          <div className="w-10 h-10 bg-gradient-to-br from-accent-coral to-gold rounded-xl flex items-center justify-center glow-pulse">
-            <Brain className="w-5 h-5 text-white" />
-          </div>
           <div>
             <h2 className="headline text-white text-center ml-[10px] mr-[10px] mt-[-7px] mb-[-7px] pl-[-5px] pr-[-5px] pt-[6px] pb-[6px]">
               AI Predictions & Smart Buy Scores
