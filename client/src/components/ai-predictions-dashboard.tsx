@@ -199,17 +199,17 @@ export function AIPredictionsDashboard() {
   }
 
   return (
-    <div className="mb-8">
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center space-x-4 fade-in">
-          <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-blue-600 rounded-2xl flex items-center justify-center glow-pulse icon-container cursor-pointer">
-            <Brain className="w-6 h-6 text-white" />
+    <div className="max-w-7xl mx-auto px-4 mb-8">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center space-x-3 fade-in">
+          <div className="w-10 h-10 bg-gradient-to-br from-accent-coral to-gold rounded-xl flex items-center justify-center glow-pulse">
+            <Brain className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="headline text-white mb-2">
               AI Predictions & Smart Buy Scores
             </h2>
-            <p className="text-white">
+            <p className="subheading text-white/70">
               {isAIActive ? "30-day price forecasts powered by OpenAI GPT-4o" : "Economic analysis with algorithmic predictions"}
             </p>
             <div className="mt-2">
@@ -256,8 +256,8 @@ export function AIPredictionsDashboard() {
             </div>
           </div>
         </div>
-        <Button className="btn-premium ripple">
-          <Settings className="w-4 h-4 mr-2" />
+        <Button className="btn-coral text-sm px-3 py-2">
+          <Settings className="w-3 h-3 mr-2" />
           Preferences
         </Button>
       </div>
