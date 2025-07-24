@@ -318,6 +318,31 @@ export function BudgetTracker() {
                         <stop offset="50%" stopColor="#2dd4bf" />
                         <stop offset="100%" stopColor="#14b8a6" />
                       </linearGradient>
+                      <linearGradient id="purple3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#a855f7" />
+                        <stop offset="50%" stopColor="#9333ea" />
+                        <stop offset="100%" stopColor="#7c3aed" />
+                      </linearGradient>
+                      <linearGradient id="orange3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#fb923c" />
+                        <stop offset="50%" stopColor="#f97316" />
+                        <stop offset="100%" stopColor="#ea580c" />
+                      </linearGradient>
+                      <linearGradient id="blue3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#60a5fa" />
+                        <stop offset="50%" stopColor="#3b82f6" />
+                        <stop offset="100%" stopColor="#2563eb" />
+                      </linearGradient>
+                      <linearGradient id="pink3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#f472b6" />
+                        <stop offset="50%" stopColor="#ec4899" />
+                        <stop offset="100%" stopColor="#db2777" />
+                      </linearGradient>
+                      <linearGradient id="cyan3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#22d3ee" />
+                        <stop offset="50%" stopColor="#06b6d4" />
+                        <stop offset="100%" stopColor="#0891b2" />
+                      </linearGradient>
                       
                       {/* 3D Shadow Effects */}
                       <filter id="shadow3D">
@@ -340,8 +365,8 @@ export function BudgetTracker() {
                         remaining: budget.budgetAmount - budget.spentAmount,
                         fill: [
                           'url(#coral3D)', 'url(#champagne3D)', 'url(#navy3D)', 'url(#gold3D)', 'url(#emerald3D)',
-                          'url(#coral3D)', 'url(#champagne3D)', 'url(#navy3D)', 'url(#gold3D)', 'url(#emerald3D)'
-                        ][index % 5]
+                          'url(#purple3D)', 'url(#orange3D)', 'url(#blue3D)', 'url(#pink3D)', 'url(#cyan3D)'
+                        ][index % 10]
                       }))}
                       cx="50%"
                       cy="45%"
@@ -361,8 +386,9 @@ export function BudgetTracker() {
                         <Cell 
                           key={`cell-${index}`} 
                           fill={[
-                            'url(#coral3D)', 'url(#champagne3D)', 'url(#navy3D)', 'url(#gold3D)', 'url(#emerald3D)'
-                          ][index % 5]}
+                            'url(#coral3D)', 'url(#champagne3D)', 'url(#navy3D)', 'url(#gold3D)', 'url(#emerald3D)',
+                            'url(#purple3D)', 'url(#orange3D)', 'url(#blue3D)', 'url(#pink3D)', 'url(#cyan3D)'
+                          ][index % 10]}
                           stroke="rgba(255, 255, 255, 0.1)"
                           strokeWidth={2}
                           filter="url(#shadow3D)"
@@ -417,8 +443,13 @@ export function BudgetTracker() {
                   { bg: '#d4c4a0', name: 'Champagne', glow: 'shadow-champagne' },
                   { bg: '#051421', name: 'Navy', glow: 'shadow-navy' },
                   { bg: '#f1c40f', name: 'Gold', glow: 'shadow-gold' },
-                  { bg: '#2dd4bf', name: 'Emerald', glow: 'shadow-emerald' }
-                ][index % 5];
+                  { bg: '#2dd4bf', name: 'Emerald', glow: 'shadow-emerald' },
+                  { bg: '#9333ea', name: 'Purple', glow: 'shadow-purple' },
+                  { bg: '#f97316', name: 'Orange', glow: 'shadow-orange' },
+                  { bg: '#3b82f6', name: 'Blue', glow: 'shadow-blue' },
+                  { bg: '#ec4899', name: 'Pink', glow: 'shadow-pink' },
+                  { bg: '#06b6d4', name: 'Cyan', glow: 'shadow-cyan' }
+                ][index % 10];
                 
                 return (
                   <div key={budget.id} className="group relative">
