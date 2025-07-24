@@ -27,6 +27,7 @@ import { CreditCard, User, LogOut, TrendingUp, ShoppingCart, DollarSign, PiggyBa
 import { ForeseeLogo } from "@/components/foresee-logo";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+import foreseeVideo from "@/assets/foresee-blinking-logo.mov";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -278,18 +279,36 @@ export default function Dashboard() {
 
         {/* Quantum Hero Matrix - AI Core Tab */}
         {activeTab === 'dashboard' && (
-          <div className="relative z-40 max-w-7xl mx-auto px-6 py-8 pl-[24px] pr-[24px] pt-[17px] pb-[17px]">
-            <div className="text-center">
+          <div className="relative z-40 max-w-7xl mx-auto px-6 py-8 pl-[24px] pr-[24px] pt-[17px] pb-[17px] overflow-hidden">
+            {/* Video Background */}
+            <div className="absolute inset-0 z-0">
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover opacity-20"
+                style={{
+                  filter: 'blur(1px) brightness(0.6)',
+                  objectPosition: 'center'
+                }}
+                src={foreseeVideo}
+              />
+              {/* Video overlay gradient */}
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#051421]/30 to-[#051421]/60"></div>
+            </div>
+
+            <div className="relative z-10 text-center">
               <div 
                 className={`relative group inline-block ${titleSpinning ? 'spinning' : ''}`}
                 onClick={handleTitleClick}
               >
                 <h1 className="text-4xl md:text-6xl font-light tracking-tight text-white mb-6 fade-in leading-tight">
-                  <span className="bg-gradient-to-r from-white via-slate-200 to-white bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-white via-slate-200 to-white bg-clip-text text-transparent drop-shadow-lg">
                     Know what's coming.
                   </span>
                   <br/>
-                  <span className="bg-gradient-to-r from-[#fc304ed6] via-[#d4c4a0] to-[#fc304ed6] bg-clip-text text-transparent animate-pulse">
+                  <span className="bg-gradient-to-r from-[#fc304ed6] via-[#d4c4a0] to-[#fc304ed6] bg-clip-text text-transparent animate-pulse drop-shadow-lg">
                     Spend with clarity.
                   </span>
                 </h1>
@@ -303,15 +322,13 @@ export default function Dashboard() {
                 </div>
               </div>
               
-              <p className="text-[#d4c4a0] max-w-3xl mx-auto mb-8 slide-up opacity-90 text-[17px] font-light text-center">
+              <p className="text-[#d4c4a0] max-w-3xl mx-auto mb-8 slide-up opacity-90 text-[17px] font-light text-center drop-shadow-md">
                 Welcome to Foresee — your intelligent dashboard for tracking economic shifts, forecasting personal impact, and making smarter financial decisions in real time.
               </p>
-              
-              
             </div>
 
             {/* Foresee Stats Cards with Futuristic Effects */}
-            <div className="grid grid-cols-2 gap-2 sm:gap-3 mt-6">
+            <div className="relative z-10 grid grid-cols-2 gap-2 sm:gap-3 mt-6">
               <div className="foresee-card bg-black/40 backdrop-blur-md glow-border p-2 sm:p-4 text-center fade-in-stagger min-w-0">
                 <div className="text-base sm:text-lg font-bold gradient-coral-gold mb-1 pulse-metric overflow-visible whitespace-nowrap">$2,340</div>
                 <div className="text-white/70 text-xs leading-tight">Monthly Savings</div>
