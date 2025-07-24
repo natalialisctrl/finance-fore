@@ -173,6 +173,7 @@ The app prioritizes transparency about data sources:
 
 ### July 24, 2025 - Dashboard Title Update & Complete Neural Terminology Removal
 - **Updated Main Dashboard Title**: Changed "Advanced Financial Intelligence Matrix" to "Know what's coming. Spend with clarity." for clearer user messaging
+- **Updated Dashboard Description**: Changed technical AI description to "Welcome to Foresee — your intelligent dashboard for tracking economic shifts, forecasting personal impact, and making smarter financial decisions in real time."
 - **Clean Typography System & Complete Neural Terminology Removal**:
 - **Comprehensive Neural Text Removal**: Systematically removed ALL "neural" references throughout application
   - Updated dashboard.tsx, budget-tracker.tsx, ai-predictions-dashboard.tsx, mobile-scene-builder.tsx

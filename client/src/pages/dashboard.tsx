@@ -319,9 +319,7 @@ export default function Dashboard() {
               </div>
               
               <p className="text-lg text-[#d4c4a0] max-w-3xl mx-auto mb-8 slide-up font-light leading-relaxed opacity-90">
-                Advanced AI algorithms processing real-time economic data streams. 
-                <br className="hidden md:block" />
-                AI-powered predictions for intelligent financial decision making.
+                Welcome to Foresee — your intelligent dashboard for tracking economic shifts, forecasting personal impact, and making smarter financial decisions in real time.
               </p>
               
               {/* AI connection indicators */}
