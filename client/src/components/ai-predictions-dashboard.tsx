@@ -199,9 +199,9 @@ export function AIPredictionsDashboard() {
   }
 
   return (
-    <div className="w-full px-4 mb-8">
+    <div className="w-full px-2 sm:px-4 mb-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-        <div className="flex items-center space-x-3 fade-in flex-1">
+        <div className="flex items-center space-x-2 sm:space-x-3 fade-in flex-1">
           <div className="w-10 h-10 bg-gradient-to-br from-accent-coral to-gold rounded-xl flex items-center justify-center glow-pulse">
             <Brain className="w-5 h-5 text-white" />
           </div>
@@ -256,7 +256,7 @@ export function AIPredictionsDashboard() {
             </div>
           </div>
         </div>
-        <div className="flex justify-center sm:justify-end">
+        <div className="flex justify-end sm:justify-end">
           <Button className="btn-coral text-sm px-3 py-2">
             <Settings className="w-3 h-3 mr-2" />
             Preferences
@@ -270,9 +270,9 @@ export function AIPredictionsDashboard() {
       </div>
 
       {/* Top Recommendations & Insights */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-6 mb-6">
         {/* Smart Recommendations */}
-        <div className="foresee-card bg-black/40 backdrop-blur-md glow-border p-4 sm:p-6 scale-in">
+        <div className="foresee-card bg-black/40 backdrop-blur-md glow-border p-3 sm:p-6 scale-in">
           <div className="flex items-center space-x-3 mb-4">
             <div className="w-8 h-8 bg-gradient-to-br from-accent-coral to-gold rounded-lg flex items-center justify-center glow-pulse">
               <Lightbulb className="w-4 h-4 text-white" />
@@ -328,7 +328,7 @@ export function AIPredictionsDashboard() {
         </div>
 
         {/* Budget Optimization */}
-        <div className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold p-4 sm:p-6 scale-in" style={{ animationDelay: '0.2s' }}>
+        <div className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold p-3 sm:p-6 scale-in" style={{ animationDelay: '0.2s' }}>
           <div className="flex items-center space-x-3 mb-4">
             <div className="w-8 h-8 bg-gradient-to-br from-gold to-accent-coral rounded-lg flex items-center justify-center glow-pulse">
               <DollarSign className="w-4 h-4 text-white" />
@@ -384,7 +384,7 @@ export function AIPredictionsDashboard() {
       </div>
 
       {/* Enhanced Predictions Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 lg:gap-8">
         {predictions.map((prediction, index) => (
           <EnhancedPricePredictionCard
             key={prediction.itemName}
