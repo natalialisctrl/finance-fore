@@ -266,18 +266,18 @@ export default function Dashboard() {
             </div>
 
             {/* Foresee Stats Cards with Futuristic Effects */}
-            <div className="grid grid-cols-3 gap-3 mt-6">
-              <div className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold p-4 text-center fade-in-stagger">
-                <div className="text-lg font-bold gradient-gold mb-1 pulse-metric overflow-visible">94%</div>
-                <div className="text-white/70 text-xs">AI Accuracy</div>
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 mt-6">
+              <div className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold p-2 sm:p-4 text-center fade-in-stagger min-w-0">
+                <div className="text-sm sm:text-lg font-bold gradient-gold mb-1 pulse-metric overflow-visible whitespace-nowrap">94%</div>
+                <div className="text-white/70 text-xs leading-tight">AI Accuracy</div>
               </div>
-              <div className="foresee-card bg-black/40 backdrop-blur-md glow-border p-4 text-center fade-in-stagger">
-                <div className="text-lg font-bold gradient-coral-gold mb-1 pulse-metric overflow-visible">$2,340</div>
-                <div className="text-white/70 text-xs">Monthly Savings</div>
+              <div className="foresee-card bg-black/40 backdrop-blur-md glow-border p-2 sm:p-4 text-center fade-in-stagger min-w-0">
+                <div className="text-sm sm:text-lg font-bold gradient-coral-gold mb-1 pulse-metric overflow-visible whitespace-nowrap">$2,340</div>
+                <div className="text-white/70 text-xs leading-tight">Monthly Savings</div>
               </div>
-              <div className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold p-4 text-center fade-in-stagger">
-                <div className="text-lg font-bold gradient-gold mb-1 pulse-metric overflow-visible">8.7/10</div>
-                <div className="text-white/70 text-xs">Smart Buy Score</div>
+              <div className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold p-2 sm:p-4 text-center fade-in-stagger min-w-0">
+                <div className="text-sm sm:text-lg font-bold gradient-gold mb-1 pulse-metric overflow-visible whitespace-nowrap">8.7/10</div>
+                <div className="text-white/70 text-xs leading-tight">Smart Buy Score</div>
               </div>
             </div>
           </div>
