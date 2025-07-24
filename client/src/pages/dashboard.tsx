@@ -267,18 +267,18 @@ export default function Dashboard() {
               </p>
             </div>
 
-            {/* Foresee Stats Cards */}
+            {/* Foresee Stats Cards with Futuristic Effects */}
             <div className="grid grid-cols-3 gap-4 sm:gap-6 mt-8">
-              <div className="foresee-card bg-black/40 backdrop-blur-md border-white/10 p-4 sm:p-6 text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-white mb-2">94%</div>
+              <div className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold p-4 sm:p-6 text-center fade-in-stagger">
+                <div className="text-2xl sm:text-3xl font-bold gradient-gold mb-2 pulse-metric">94%</div>
                 <div className="text-white/70 text-sm">AI Prediction Accuracy</div>
               </div>
-              <div className="foresee-card bg-black/40 backdrop-blur-md border-white/10 p-4 sm:p-6 text-center">
-                <div className="text-2xl sm:text-3xl font-bold accent-coral mb-2">$2,340</div>
+              <div className="foresee-card bg-black/40 backdrop-blur-md glow-border p-4 sm:p-6 text-center fade-in-stagger">
+                <div className="text-2xl sm:text-3xl font-bold gradient-coral-gold mb-2 pulse-metric">$2,340</div>
                 <div className="text-white/70 text-sm">Monthly Savings</div>
               </div>
-              <div className="foresee-card bg-black/40 backdrop-blur-md border-white/10 p-4 sm:p-6 text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-white mb-2">8.7/10</div>
+              <div className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold p-4 sm:p-6 text-center fade-in-stagger">
+                <div className="text-2xl sm:text-3xl font-bold gradient-gold mb-2 pulse-metric">8.7/10</div>
                 <div className="text-white/70 text-sm">Smart Buy Score</div>
               </div>
             </div>
@@ -292,19 +292,19 @@ export default function Dashboard() {
         <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-2 sm:py-4 lg:py-8">
           {activeTab === 'dashboard' && (
             <>
-              <div className="fade-in">
+              <div className="fade-in-up">
                 <EconomicDashboard />
               </div>
-              <div className="slide-up" style={{ animationDelay: '0.2s' }}>
+              <div className="fade-in-up" style={{ animationDelay: '0.2s' }}>
                 <ChartsAndAnalytics />
               </div>
-              <div className="slide-up" style={{ animationDelay: '0.4s' }}>
+              <div className="fade-in-up" style={{ animationDelay: '0.4s' }}>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   <BudgetTracker />
                   <AISpendingCoach />
                 </div>
               </div>
-              <div className="slide-up" style={{ animationDelay: '0.6s' }}>
+              <div className="fade-in-up" style={{ animationDelay: '0.6s' }}>
                 <ShoppingList />
               </div>
             </>
@@ -312,10 +312,10 @@ export default function Dashboard() {
           
           {activeTab === 'ai-predictions' && (
             <div className="space-y-8">
-              <div className="fade-in">
+              <div className="fade-in-up">
                 <AIPredictionsDashboard />
               </div>
-              <div className="slide-up" style={{ animationDelay: '0.2s' }}>
+              <div className="fade-in-up" style={{ animationDelay: '0.2s' }}>
                 <PriceTrackingGrid />
               </div>
             </div>

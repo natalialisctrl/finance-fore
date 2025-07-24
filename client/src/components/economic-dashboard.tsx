@@ -160,32 +160,32 @@ export function EconomicDashboard() {
     <div className="mb-8 mt-12">
       <div className="flex items-center justify-between mb-6 mt-8">
         <div>
-          <h2 className="text-2xl font-bold dark:text-white text-[#ffffff] bg-[#72747d00]">Economic Dashboard</h2>
-          <p className="text-sm text-white mt-1">
-            Data sources: Federal Reserve Economic Data (FRED) API - Official US economic indicators
+          <h2 className="headline-sm text-white">Economic Intelligence</h2>
+          <p className="body-text text-white/70 mt-1">
+            Real-time data from Federal Reserve Economic Data (FRED) API
           </p>
         </div>
         <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2 text-sm text-white">
+          <div className="flex items-center space-x-2 text-sm text-white/60">
             <Clock className="w-4 h-4" />
-            <span>Last updated: {formatTimestamp(economicData.lastUpdated)}</span>
+            <span>Updated {formatTimestamp(new Date(economicData.lastUpdated))}</span>
           </div>
           <Button
-            variant="outline"
-            size="sm"
             onClick={handleRefreshData}
             disabled={isRefreshing}
+            size="sm"
+            className="btn-coral"
           >
             {isRefreshing ? "Updating..." : "Refresh"}
           </Button>
         </div>
       </div>
-      {/* Financial Health Summary */}
-      <Card className="glass-card mb-6 pulse-orange">
+      {/* Financial Health Summary with Futuristic Styling */}
+      <Card className="foresee-card bg-black/40 backdrop-blur-md glow-border mb-6">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className={`text-2xl font-bold ${healthSummary.color}`}>
+              <div className={`text-2xl font-bold gradient-coral-gold pulse-metric`}>
                 {healthSummary.score}/100
               </div>
               <div>
@@ -218,8 +218,8 @@ export function EconomicDashboard() {
       </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        {/* Enhanced Inflation Rate Card */}
-        <Card className="glass-card glow-continuous">
+        {/* Enhanced Inflation Rate Card with Futuristic Glow */}
+        <Card className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold fade-in-stagger">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-medium text-white">Inflation Rate</h3>
@@ -233,7 +233,7 @@ export function EconomicDashboard() {
             </div>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <div className="text-3xl font-bold text-slate-900 dark:text-white">
+                <div className="text-3xl font-bold gradient-gold pulse-metric">
                   {economicData.inflationRate.toFixed(1)}%
                 </div>
                 <div className="w-16 h-8">

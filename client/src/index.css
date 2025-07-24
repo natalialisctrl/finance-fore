@@ -64,6 +64,10 @@
     --chart-3: 213 50% 45%;  /* Darker blue */
     --chart-4: 6 65% 45%;    /* Darker coral */
     --chart-5: 213 30% 35%;  /* Very dark blue */
+    
+    /* Foresee Futuristic Colors */
+    --gold-gradient: linear-gradient(135deg, #ffd700 0%, #fff8dc 50%, #f0e68c 100%);
+    --champagne-gold: 45 100% 84%;      /* Champagne gold #f5deb3 */
   }
 }
 
@@ -100,19 +104,44 @@ body {
   line-height: 1.6;
 }
 
-/* Foresee Card Styles */
+/* Foresee Card Styles with Futuristic Glow */
 .foresee-card {
   background: hsl(var(--card));
   border: 1px solid hsl(var(--border));
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  transition: all 0.2s ease-in-out;
+  box-shadow: 
+    0 1px 3px 0 rgba(0, 0, 0, 0.1), 
+    0 1px 2px 0 rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.foresee-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+  transition: left 0.5s ease-in-out;
 }
 
 .foresee-card:hover {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  transform: translateY(-1px);
+  box-shadow: 
+    0 8px 25px -5px rgba(0, 0, 0, 0.2), 
+    0 4px 10px -2px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(231, 76, 60, 0.2),
+    0 0 20px rgba(231, 76, 60, 0.1);
+  transform: translateY(-2px);
+  border-color: rgba(231, 76, 60, 0.3);
+}
+
+.foresee-card:hover::before {
+  left: 100%;
 }
 
 /* Foresee Accent Colors */
@@ -128,21 +157,44 @@ body {
   border-color: hsl(var(--accent));
 }
 
-/* Foresee Button Styles */
+/* Foresee Button Styles with Futuristic Effects */
 .btn-coral {
-  background-color: hsl(var(--accent));
+  background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(6 65% 45%) 100%);
   color: hsl(var(--accent-foreground));
   border: 1px solid hsl(var(--accent));
   border-radius: 8px;
   padding: 0.75rem 1.5rem;
   font-weight: 600;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 4px 14px 0 rgba(231, 76, 60, 0.2),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-coral::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease-in-out;
 }
 
 .btn-coral:hover {
-  background-color: hsl(6 65% 45%);
-  border-color: hsl(6 65% 45%);
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, hsl(6 65% 45%) 0%, hsl(6 55% 35%) 100%);
+  box-shadow: 
+    0 8px 25px 0 rgba(231, 76, 60, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 0 20px rgba(231, 76, 60, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-coral:hover::before {
+  left: 100%;
 }
 
 /* Foresee Chart Styling */
@@ -245,11 +297,119 @@ body {
   color: hsl(var(--muted-foreground));
 }
 
-/* Success/warning/error states */
-.text-success { color: hsl(142 76% 36%); }
-.text-warning { color: hsl(45 100% 50%); }
-.text-error { color: hsl(var(--destructive)); }
+/* Success/warning/error states with glow effects */
+.text-success { 
+  color: hsl(142 76% 36%); 
+  text-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+}
+.text-warning { 
+  color: hsl(45 100% 84%); 
+  text-shadow: 0 0 10px rgba(245, 222, 179, 0.4);
+}
+.text-error { 
+  color: hsl(var(--destructive)); 
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+}
 
-.bg-success { background-color: hsl(142 76% 36% / 0.1); }
-.bg-warning { background-color: hsl(45 100% 50% / 0.1); }
-.bg-error { background-color: hsl(var(--destructive) / 0.1); }
+.bg-success { 
+  background-color: hsl(142 76% 36% / 0.1); 
+  box-shadow: inset 0 0 20px rgba(34, 197, 94, 0.1);
+}
+.bg-warning { 
+  background-color: hsl(45 100% 84% / 0.1); 
+  box-shadow: inset 0 0 20px rgba(245, 222, 179, 0.2);
+}
+.bg-error { 
+  background-color: hsl(var(--destructive) / 0.1); 
+  box-shadow: inset 0 0 20px rgba(239, 68, 68, 0.1);
+}
+
+/* Futuristic Gradient Text Effects */
+.gradient-gold {
+  background: linear-gradient(135deg, #ffd700 0%, #fff8dc 50%, #f0e68c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.gradient-coral-gold {
+  background: linear-gradient(135deg, hsl(var(--accent)) 0%, #ffd700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Pulse animations for metrics */
+.pulse-metric {
+  animation: pulseMetric 2s ease-in-out infinite;
+}
+
+@keyframes pulseMetric {
+  0%, 100% { 
+    transform: scale(1); 
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  }
+  50% { 
+    transform: scale(1.05); 
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  }
+}
+
+/* Glow border for key elements */
+.glow-border {
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  box-shadow: 
+    0 0 20px rgba(231, 76, 60, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glow-border-gold {
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  box-shadow: 
+    0 0 20px rgba(255, 215, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Chart line animations */
+.chart-line-grow {
+  animation: chartLineGrow 1.5s ease-out forwards;
+}
+
+@keyframes chartLineGrow {
+  0% {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Fade-in animations */
+.fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered fade-in for lists */
+.fade-in-stagger {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+.fade-in-stagger:nth-child(1) { animation-delay: 0.1s; }
+.fade-in-stagger:nth-child(2) { animation-delay: 0.2s; }
+.fade-in-stagger:nth-child(3) { animation-delay: 0.3s; }
+.fade-in-stagger:nth-child(4) { animation-delay: 0.4s; }
+.fade-in-stagger:nth-child(5) { animation-delay: 0.5s; }
