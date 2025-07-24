@@ -10,7 +10,11 @@ export default function Landing() {
   useEffect(() => {
     const autoLogin = async () => {
       try {
-        await apiRequest("/api/demo-login", "POST", { username: "natalia", password: "1234" });
+        await apiRequest("/api/demo-login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: "natalia", password: "1234" }),
+        });
         // Reload to trigger authentication check
         setTimeout(() => window.location.reload(), 500);
       } catch (error) {
@@ -21,12 +25,12 @@ export default function Landing() {
   }, []);
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-black overflow-hidden">
-      {/* Advanced Glassmorphism Background */}
+      {/* Advanced Neural Network Background */}
       <div className="fixed inset-0 z-0">
-        {/* Primary gradient field */}
+        {/* Primary quantum field */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#fc304ed6]/5 via-transparent to-[#d4c4a0]/5 animate-pulse"></div>
         
-        {/* Floating particles */}
+        {/* Floating quantum particles */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-[#fc304ed6] rounded-full animate-ping opacity-20"></div>
           <div className="absolute top-3/4 right-1/3 w-1 h-1 bg-[#d4c4a0] rounded-full animate-pulse opacity-30 delay-500"></div>
@@ -43,7 +47,7 @@ export default function Landing() {
       </div>
 
       <div className="relative z-10">
-        {/* Modern Navigation Header */}
+        {/* Quantum Navigation Header */}
         <header className="relative border-b border-white/10 backdrop-blur-3xl bg-gradient-to-r from-black/40 via-slate-900/20 to-black/40 overflow-hidden">
           {/* Header particle effects */}
           <div className="absolute inset-0 opacity-30">
@@ -56,7 +60,7 @@ export default function Landing() {
               <ForeseeLogo size="md" className="text-white" />
               <div className="w-[1px] h-8 bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
               <div className="text-sm text-[#d4c4a0] font-mono opacity-80">
-                Smart Financial Intelligence
+                Neural Financial Intelligence
               </div>
             </div>
             
@@ -66,34 +70,34 @@ export default function Landing() {
                 className="group relative bg-gradient-to-r from-[#fc304ed6]/80 via-[#d4c4a0]/60 to-[#fc304ed6]/80 text-white font-medium px-6 py-2 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_30px_rgba(252,48,77,0.3)] border border-white/20"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                <div className="relative">Sign In</div>
+                <div className="relative">Neural Connect</div>
               </Button>
               <Button 
                 onClick={() => window.location.href = '/demo-login'}
                 className="group relative glass-morphism text-white font-medium px-6 py-2 rounded-xl transition-all duration-300 hover:scale-105 hover:neo-brutalism-card border border-white/20"
               >
-                Demo Login
+                Demo Matrix
               </Button>
             </div>
           </div>
         </header>
 
-        {/* Hero Section */}
+        {/* Quantum Hero Matrix */}
         <section className="py-24">
           <div className="container mx-auto px-6 text-center">
             <div className="max-w-6xl mx-auto">
               <div className="relative group inline-block mb-8">
                 <h1 className="text-5xl md:text-7xl font-light tracking-tight text-white mb-6 leading-tight">
                   <span className="bg-gradient-to-r from-white via-slate-200 to-white bg-clip-text text-transparent">
-                    Smart Financial
+                    Neural Financial
                   </span>
                   <br/>
                   <span className="bg-gradient-to-r from-[#fc304ed6] via-[#d4c4a0] to-[#fc304ed6] bg-clip-text text-transparent animate-pulse">
-                    Forecasting
+                    Intelligence Matrix
                   </span>
                 </h1>
                 
-                {/* Animated field around title */}
+                {/* Quantum field around title */}
                 <div className="absolute -inset-6 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
                   <div className="absolute top-0 left-0 w-2 h-2 bg-[#fc304ed6] rounded-full animate-ping"></div>
                   <div className="absolute top-0 right-0 w-1 h-1 bg-[#d4c4a0] rounded-full animate-pulse delay-300"></div>
@@ -103,20 +107,20 @@ export default function Landing() {
               </div>
               
               <p className="text-xl text-[#d4c4a0] max-w-4xl mx-auto mb-12 font-light leading-relaxed opacity-90">
-                AI-powered price predictions and smart budgeting for intelligent financial decision making.
+                Advanced AI algorithms processing real-time economic data streams for intelligent financial decision making.
                 <br className="hidden md:block" />
-                Real-time economic insights for your local economy, from gas prices to groceries.
+                Quantum-powered predictions for your local economy, from gas prices to groceries.
               </p>
               
-              {/* Connection indicators */}
+              {/* Neural connection indicators */}
               <div className="flex flex-col sm:flex-row justify-center items-center gap-8 mb-12">
                 <div className="flex items-center gap-2 glass-morphism px-6 py-3 rounded-full">
                   <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-                  <span className="text-sm text-white/80 font-mono">AI ACTIVE</span>
+                  <span className="text-sm text-white/80 font-mono">AI NEURAL ACTIVE</span>
                 </div>
                 <div className="flex items-center gap-2 glass-morphism px-6 py-3 rounded-full">
                   <div className="w-2 h-2 bg-[#fc304ed6] rounded-full animate-ping"></div>
-                  <span className="text-sm text-white/80 font-mono">LIVE DATA</span>
+                  <span className="text-sm text-white/80 font-mono">DATA STREAMING</span>
                 </div>
               </div>
               
@@ -129,10 +133,10 @@ export default function Landing() {
                     </div>
                   </div>
                   <p className="text-lg text-white font-light mb-2">
-                    Loading Dashboard...
+                    Initializing Neural Matrix...
                   </p>
                   <p className="text-sm text-[#d4c4a0] opacity-80">
-                    Preparing personalized insights for Natalia
+                    Preparing quantum financial insights for Natalia
                   </p>
                 </div>
               </div>
@@ -140,7 +144,7 @@ export default function Landing() {
           </div>
         </section>
 
-        {/* Features Overview */}
+        {/* Quantum Neural Features Matrix */}
         <section className="py-24">
           <div className="container mx-auto px-6">
             <div className="text-center mb-16">
@@ -150,11 +154,11 @@ export default function Landing() {
                 </span>
                 <br/>
                 <span className="bg-gradient-to-r from-[#fc304ed6] via-[#d4c4a0] to-[#fc304ed6] bg-clip-text text-transparent">
-                  Smart Economic Intelligence
+                  Neural Economic Intelligence
                 </span>
               </h3>
               <p className="text-lg text-[#d4c4a0] max-w-3xl mx-auto opacity-90 font-light">
-                AI-powered systems processing real-time economic data for intelligent financial decision making
+                Advanced AI systems processing real-time economic data for intelligent financial decision making
               </p>
             </div>
             

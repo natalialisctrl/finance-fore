@@ -253,7 +253,7 @@ export function AIPredictionsDashboard() {
             
             <h4 className="text-lg font-light bg-gradient-to-r from-white via-slate-200 to-[#d4c4a0] bg-clip-text text-transparent mb-4 flex items-center justify-center gap-3">
               <div className="w-2 h-6 bg-gradient-to-b from-[#fc304ed6] to-[#d4c4a0] rounded-full animate-pulse"></div>
-              Smart Data Stream Sources
+              Neural Data Stream Sources
             </h4>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -285,9 +285,9 @@ export function AIPredictionsDashboard() {
       <div className="mb-8">
         <MonthlySavingsSummary predictions={predictions} />
       </div>
-      {/* AI Intelligence Grid */}
+      {/* Neural Intelligence Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        {/* Smart Recommendations Engine */}
+        {/* Quantum Recommendations Engine */}
         <div className="relative glass-morphism p-6 rounded-2xl overflow-hidden group hover:neo-brutalism-card transition-all duration-500 animate-[fadeInUp_0.8s_ease-out]">
           {/* Holographic effects */}
           <div className="absolute inset-0 opacity-20">
@@ -300,7 +300,7 @@ export function AIPredictionsDashboard() {
               <Lightbulb className="w-5 h-5 text-white" />
             </div>
             <h3 className="text-xl font-light bg-gradient-to-r from-white via-slate-200 to-[#d4c4a0] bg-clip-text text-transparent">
-              Smart Recommendations
+              Neural Recommendations
             </h3>
           </div>
             
@@ -349,7 +349,7 @@ export function AIPredictionsDashboard() {
           </div>
         </div>
 
-        {/* Smart Budget Optimization Engine */}
+        {/* Quantum Budget Optimization Engine */}
         <div className="relative glass-morphism p-6 rounded-2xl overflow-hidden group hover:neo-brutalism-card transition-all duration-500 animate-[fadeInUp_0.8s_ease-out_200ms]">
           {/* Holographic effects */}
           <div className="absolute inset-0 opacity-20">
@@ -362,7 +362,7 @@ export function AIPredictionsDashboard() {
               <DollarSign className="w-5 h-5 text-white" />
             </div>
             <h3 className="text-xl font-light bg-gradient-to-r from-white via-slate-200 to-[#d4c4a0] bg-clip-text text-transparent">
-              Smart Budget Engine
+              Quantum Budget Engine
             </h3>
           </div>
             
@@ -396,7 +396,7 @@ export function AIPredictionsDashboard() {
               <div className="w-8 h-8 bg-gradient-to-br from-[#fc304ed6] to-[#d4c4a0] rounded-xl flex items-center justify-center animate-pulse shadow-lg shadow-[#fc304ed6]/30">
                 <Calendar className="w-4 h-4 text-white" />
               </div>
-              <span className="text-lg font-light bg-gradient-to-r from-white to-[#d4c4a0] bg-clip-text text-transparent">Smart Timing System</span>
+              <span className="text-lg font-light bg-gradient-to-r from-white to-[#d4c4a0] bg-clip-text text-transparent">Neural Timing Matrix</span>
             </div>
             <div className="space-y-3">
               {personalizedRecs?.timingAdvice && personalizedRecs.timingAdvice.length > 0 ? 
