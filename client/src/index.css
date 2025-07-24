@@ -38,14 +38,14 @@
 
   .dark {
     /* Three-Color Navy Theme from Image */
-    --background: 213 35% 12%;          /* Deep navy background #1a1f2e */
+    --background: 213 35% 12%;          /* Deep navy background #051421 */
     --foreground: 0 0% 98%;             /* Pure white text */
     --card: 213 30% 16%;                /* Card navy #252b3a */
     --card-foreground: 0 0% 98%;        /* White text on cards */
     --popover: 213 30% 16%;
     --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%;                /* White primary */
-    --primary-foreground: 213 35% 12%;  /* Navy on primary */
+    --primary-foreground: 213 35% 12%;  /* Navy on primary #051421 */
     --secondary: 213 25% 22%;           /* Medium navy accent #353c4a */
     --secondary-foreground: 0 0% 98%;   /* White on secondary */
     --muted: 213 25% 22%;               /* Medium navy for muted */
@@ -60,14 +60,14 @@
     
     /* Three-Color Chart Theme */
     --chart-1: 6 78% 57%;     /* Coral primary #fc304ed6 */
-    --chart-2: 213 35% 12%;   /* Deep navy #1a1f2e */
+    --chart-2: 213 35% 12%;   /* Deep navy #051421 */
     --chart-3: 213 25% 22%;   /* Medium navy #353c4a */
     --chart-4: 6 65% 45%;     /* Darker coral */
     --chart-5: 213 30% 16%;   /* Card navy */
     
     /* Simplified Futuristic Colors */
     --coral-primary: 6 78% 57%;         /* Coral #fc304ed6 */
-    --navy-deep: 213 35% 12%;           /* Deep navy #1a1f2e */
+    --navy-deep: 213 35% 12%;           /* Deep navy #051421 */
     --navy-medium: 213 25% 22%;         /* Medium navy #353c4a */
     --champagne: 45 40% 78%;            /* Champagne #d4c4a0 */
   }
@@ -289,7 +289,7 @@ body {
 }
 
 .gradient-navy {
-  background: linear-gradient(135deg, #353c4a 0%, #1a1f2e 100%);
+  background: linear-gradient(135deg, #353c4a 0%, #051421 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

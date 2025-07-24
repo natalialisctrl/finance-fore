@@ -24,7 +24,7 @@ export default function Landing() {
     autoLogin();
   }, []);
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1a2332] via-[#243447] to-[#2e4057]">
+    <div className="min-h-screen bg-gradient-to-br from-[#051421] via-[#051421] to-[#051421]">
       {/* Foresee Background Pattern */}
       <div className="fixed inset-0 z-0 opacity-10">
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#fc304ed6]/20 to-transparent animate-pulse"></div>

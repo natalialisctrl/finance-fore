@@ -109,7 +109,7 @@ export function MobileSceneBuilder() {
           </div>
           
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-gradient-to-br from-[#353c4a]/20 to-[#1a1f2e]/20 backdrop-blur-md border border-[#d4c4a0]/30 p-4 rounded-2xl text-center relative overflow-hidden">
+            <div className="bg-gradient-to-br from-[#353c4a]/20 to-[#051421]/20 backdrop-blur-md border border-[#d4c4a0]/30 p-4 rounded-2xl text-center relative overflow-hidden">
               <div className="absolute top-1 right-1">
                 <Cpu className="w-3 h-3 text-[#d4c4a0] animate-spin" />
               </div>
@@ -117,7 +117,7 @@ export function MobileSceneBuilder() {
               <div className="text-[#d4c4a0] text-xs">Neural Target</div>
               <div className="text-xs text-[#d4c4a0] mt-1">● AI Optimized</div>
             </div>
-            <div className="bg-gradient-to-br from-[#353c4a]/20 to-[#1a1f2e]/20 backdrop-blur-md border border-[#d4c4a0]/30 p-4 rounded-2xl text-center relative overflow-hidden">
+            <div className="bg-gradient-to-br from-[#353c4a]/20 to-[#051421]/20 backdrop-blur-md border border-[#d4c4a0]/30 p-4 rounded-2xl text-center relative overflow-hidden">
               <div className="absolute top-1 right-1">
                 <Waves className="w-3 h-3 text-[#d4c4a0] animate-bounce" />
               </div>
@@ -176,7 +176,7 @@ export function MobileSceneBuilder() {
           </div>
           
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-gradient-to-br from-[#353c4a]/20 to-[#1a1f2e]/20 backdrop-blur-md border border-[#d4c4a0]/30 p-4 rounded-2xl text-center relative overflow-hidden">
+            <div className="bg-gradient-to-br from-[#353c4a]/20 to-[#051421]/20 backdrop-blur-md border border-[#d4c4a0]/30 p-4 rounded-2xl text-center relative overflow-hidden">
               <div className="absolute top-1 right-1">
                 <Cpu className="w-3 h-3 text-[#d4c4a0] animate-spin" />
               </div>
@@ -184,7 +184,7 @@ export function MobileSceneBuilder() {
               <div className="text-[#d4c4a0] text-xs">Quantum Goal</div>
               <div className="text-xs text-[#d4c4a0] mt-1">● Accelerated</div>
             </div>
-            <div className="bg-gradient-to-br from-[#353c4a]/20 to-[#1a1f2e]/20 backdrop-blur-md border border-[#d4c4a0]/30 p-4 rounded-2xl text-center relative overflow-hidden">
+            <div className="bg-gradient-to-br from-[#353c4a]/20 to-[#051421]/20 backdrop-blur-md border border-[#d4c4a0]/30 p-4 rounded-2xl text-center relative overflow-hidden">
               <div className="absolute top-1 right-1">
                 <Waves className="w-3 h-3 text-[#d4c4a0] animate-bounce" />
               </div>
