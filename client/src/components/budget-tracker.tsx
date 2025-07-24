@@ -169,15 +169,32 @@ export function BudgetTracker() {
   }
 
   return (
-    <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 mb-8" style={{boxShadow: 'none', filter: 'drop-shadow(0 4px 8px rgba(255, 140, 66, 0.1))'}}>
-      <CardContent className="p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Budget Tracker</h3>
+    <Card className="relative group bg-gradient-to-br from-black/20 via-slate-900/10 to-black/30 backdrop-blur-3xl border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] hover:shadow-[0_35px_80px_-15px_rgba(252,48,77,0.3)] transition-all duration-700 overflow-hidden mb-8 animate-[fadeInUp_1s_ease-out]">
+      {/* Futuristic Ambient Glow */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#fc304ed6]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+      <div className="absolute -inset-1 bg-gradient-to-r from-[#fc304ed6]/20 via-transparent to-[#d4c4a0]/20 opacity-0 group-hover:opacity-100 blur-xl transition-all duration-1000"></div>
+      
+      {/* Floating Particle System */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-[#fc304ed6] rounded-full animate-ping opacity-20"></div>
+        <div className="absolute top-3/4 right-1/3 w-1 h-1 bg-[#d4c4a0] rounded-full animate-pulse opacity-30 delay-500"></div>
+        <div className="absolute bottom-1/4 left-1/2 w-1 h-1 bg-white rounded-full animate-ping opacity-10 delay-1000"></div>
+      </div>
+      
+      <CardContent className="relative p-8 space-y-8">
+        <div className="flex items-center justify-between">
+          <h3 className="text-2xl font-light tracking-wide bg-gradient-to-r from-white via-slate-200 to-[#d4c4a0] bg-clip-text text-transparent flex items-center gap-4">
+            <div className="w-3 h-10 bg-gradient-to-b from-[#fc304ed6] to-[#d4c4a0] rounded-full animate-pulse shadow-lg shadow-[#fc304ed6]/50"></div>
+            Budget Intelligence
+          </h3>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-gradient-to-r from-orange-500 to-blue-500 hover:from-orange-600 hover:to-blue-600 text-white">
-                <Plus className="w-4 h-4 mr-2" />
-                Set Up Budget
+              <Button className="group relative bg-gradient-to-r from-[#fc304ed6] via-[#d4c4a0]/80 to-[#fc304ed6] text-white font-medium px-6 py-3 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_30px_rgba(252,48,77,0.4)] border border-white/20">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                <div className="relative flex items-center">
+                  <Plus className="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-300" />
+                  Initialize Budget
+                </div>
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto mx-2 sm:mx-auto w-[calc(100vw-16px)] sm:w-full">
@@ -281,10 +298,19 @@ export function BudgetTracker() {
                 Touch & Drag to Rotate
               </div>
             </div>
-            <div className="h-96 bg-gradient-to-br from-[#051421]/90 to-[#051421]/70 backdrop-blur-xl rounded-xl p-6 relative overflow-hidden">
-              {/* Subtle Ambient Glow */}
-              <div className="absolute inset-0 opacity-10">
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#fc304ed6]/20 to-transparent animate-pulse"></div>
+            <div className="h-96 bg-gradient-to-br from-black/40 via-slate-900/20 to-black/60 backdrop-blur-2xl rounded-2xl p-8 relative overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.6)] group hover:shadow-[0_25px_60px_rgba(252,48,77,0.2)] transition-all duration-500">
+              {/* Advanced Holographic Effects */}
+              <div className="absolute inset-0 opacity-20">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#fc304ed6]/10 to-transparent animate-pulse"></div>
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#d4c4a0]/50 to-transparent animate-[shimmer_3s_ease-in-out_infinite]"></div>
+                <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-l from-transparent via-[#fc304ed6]/50 to-transparent animate-[shimmer_3s_ease-in-out_infinite_reverse]"></div>
+              </div>
+              
+              {/* Floating Data Points */}
+              <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-4 right-4 w-2 h-2 bg-[#fc304ed6] rounded-full animate-ping opacity-30"></div>
+                <div className="absolute bottom-4 left-4 w-1 h-1 bg-[#d4c4a0] rounded-full animate-pulse opacity-40 delay-700"></div>
+                <div className="absolute top-1/2 left-8 w-1 h-1 bg-white rounded-full animate-ping opacity-20 delay-1500"></div>
               </div>
               
               {/* 3D Interactive Chart Container */}
@@ -442,8 +468,8 @@ export function BudgetTracker() {
 
             </div>
             
-            {/* 3D Budget Legend with Holographic Effects */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-48 overflow-y-auto">
+            {/* Advanced Neural Network Data Matrix */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-52 overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[#fc304ed6]/30">
               {budgetData?.map((budget, index) => {
                 const progress = getBudgetProgress(budget.spentAmount, budget.budgetAmount);
                 const colorInfo = [
@@ -460,45 +486,58 @@ export function BudgetTracker() {
                 ][index % 10];
                 
                 return (
-                  <div key={budget.id} className="group relative">
-                    {/* Holographic Background */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#051421]/30 via-[#051421]/20 to-[#051421]/30 rounded-lg blur-sm group-hover:blur-none transition-all duration-300"></div>
+                  <div key={budget.id} className="group relative animate-[fadeInUp_0.8s_ease-out] hover:scale-[1.02] transition-all duration-300" style={{animationDelay: `${index * 100}ms`}}>
+                    {/* Neural Data Streams */}
+                    <div className="absolute -inset-3 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                      <div className="absolute top-1/2 -left-3 w-6 h-[1px] bg-gradient-to-r from-transparent via-[#fc304ed6]/60 to-transparent animate-pulse"></div>
+                      <div className="absolute top-1/2 -right-3 w-6 h-[1px] bg-gradient-to-l from-transparent via-[#d4c4a0]/60 to-transparent animate-pulse delay-300"></div>
+                      <div className="absolute -top-3 left-1/2 w-[1px] h-6 bg-gradient-to-b from-transparent via-white/40 to-transparent animate-pulse delay-500"></div>
+                    </div>
                     
-                    <div className="relative flex items-center space-x-3 p-3 rounded-lg bg-gradient-to-r from-black/20 via-black/10 to-black/20 backdrop-blur-sm border border-[#d4c4a0]/20 hover:border-[#fc304ed6]/40 transition-all duration-300">
-                      {/* 3D Color Indicator */}
+                    {/* Advanced Holographic Container */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-slate-900/15 to-black/50 rounded-xl blur-sm group-hover:blur-none transition-all duration-500 animate-[hologramFlicker_4s_ease-in-out_infinite]"></div>
+                    
+                    <div className="relative flex items-center space-x-4 p-4 rounded-xl glass-morphism hover:neo-brutalism-card transition-all duration-500 group-hover:animate-[glowPulse_2s_ease-in-out_infinite]">
+                      {/* Quantum Data Orb */}
                       <div className="relative flex-shrink-0">
                         <div 
-                          className="w-4 h-4 rounded-full shadow-lg relative overflow-hidden"
+                          className="w-5 h-5 rounded-full shadow-2xl relative overflow-hidden border border-white/20 animate-[glowPulse_3s_ease-in-out_infinite]"
                           style={{ 
                             backgroundColor: colorInfo.bg,
-                            boxShadow: `0 0 12px ${colorInfo.bg}40, inset 0 1px 2px rgba(255,255,255,0.3)`
+                            boxShadow: `0 0 20px ${colorInfo.bg}60, inset 0 2px 4px rgba(255,255,255,0.2), 0 0 40px ${colorInfo.bg}30`
                           }}
                         >
-                          <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-black/20 rounded-full"></div>
+                          <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-black/30 rounded-full"></div>
+                          <div className="absolute inset-1 rounded-full bg-gradient-to-br from-white/20 to-transparent"></div>
                         </div>
-                        <div className="absolute -inset-1 rounded-full animate-ping opacity-20" style={{ backgroundColor: colorInfo.bg }}></div>
+                        <div className="absolute -inset-2 rounded-full animate-ping opacity-20" style={{ backgroundColor: colorInfo.bg }}></div>
+                        <div className="absolute -inset-3 rounded-full border border-white/10 animate-pulse opacity-30"></div>
                       </div>
                       
                       <div className="flex-1 min-w-0">
-                        <div className="text-sm font-medium text-white truncate flex items-center gap-2">
-                          {budget.category}
-                          <div className="text-xs text-[#d4c4a0] font-mono bg-black/30 px-1 rounded">
+                        <div className="text-sm font-light text-white truncate flex items-center gap-3 mb-1">
+                          <span className="bg-gradient-to-r from-white to-slate-200 bg-clip-text text-transparent font-medium">
+                            {budget.category}
+                          </span>
+                          <div className="text-xs text-[#d4c4a0] font-mono bg-black/40 px-2 py-1 rounded-full border border-[#d4c4a0]/20 backdrop-blur-sm">
                             {colorInfo.name}
                           </div>
                         </div>
-                        <div className="text-xs text-[#d4c4a0] font-mono">
+                        <div className="text-xs text-[#d4c4a0] font-mono opacity-80 flex items-center gap-2">
+                          <span className="bg-gradient-to-r from-[#fc304ed6] to-[#d4c4a0] w-2 h-[1px] rounded-full animate-pulse"></span>
                           {formatCurrency(budget.spentAmount)} of {formatCurrency(budget.budgetAmount)}
                         </div>
                       </div>
                       
-                      {/* 3D Progress Badge */}
-                      <div className={`relative text-xs px-3 py-1 rounded-full font-bold transition-all duration-300 ${
-                        progress > 90 ? 'bg-gradient-to-r from-red-600 to-red-500 text-white shadow-lg shadow-red-500/30' :
-                        progress > 75 ? 'bg-gradient-to-r from-yellow-600 to-yellow-500 text-white shadow-lg shadow-yellow-500/30' :
-                        'bg-gradient-to-r from-emerald-600 to-emerald-500 text-white shadow-lg shadow-emerald-500/30'
-                      }`}>
-                        <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-black/20 rounded-full"></div>
-                        <span className="relative">{progress.toFixed(0)}%</span>
+                      {/* Quantum Progress Indicator */}
+                      <div className={`relative text-xs px-4 py-2 rounded-xl font-medium transition-all duration-500 backdrop-blur-sm border ${
+                        progress > 90 ? 'bg-gradient-to-r from-red-600/80 to-red-500/80 text-white shadow-[0_0_20px_rgba(239,68,68,0.4)] border-red-400/30' :
+                        progress > 75 ? 'bg-gradient-to-r from-yellow-600/80 to-yellow-500/80 text-white shadow-[0_0_20px_rgba(245,158,11,0.4)] border-yellow-400/30' :
+                        'bg-gradient-to-r from-emerald-600/80 to-emerald-500/80 text-white shadow-[0_0_20px_rgba(34,197,94,0.4)] border-emerald-400/30'
+                      } hover:scale-110 group-hover:animate-pulse`}>
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-black/20 rounded-xl"></div>
+                        <div className="absolute -inset-[1px] rounded-xl bg-gradient-to-r from-white/20 to-transparent opacity-50"></div>
+                        <span className="relative font-mono">{progress.toFixed(0)}%</span>
                       </div>
                       
                       {/* Hover Glow Effect */}
@@ -510,81 +549,119 @@ export function BudgetTracker() {
             </div>
           </div>
 
-          {/* Spending Analytics & Insights */}
-          <div className="space-y-4 text-justify bg-[#04050a00]">
-            {/* Spending Insights */}
+          {/* Advanced AI Analytics Matrix */}
+          <div className="space-y-6">
+            {/* Neural Insights Panel */}
             <div className="space-y-4">
-              <h4 className="font-medium text-slate-900 dark:text-white">Spending Insights</h4>
-              <div className="space-y-3">
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-amber-500 rounded-full mt-2"></div>
-                  <div>
-                    <div className="text-sm font-medium text-slate-900 dark:text-white">
-                      Budget pressure detected
-                    </div>
-                    <div className="text-xs text-white">
-                      Inflation making it harder to stay within limits
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-amber-500 rounded-full mt-2"></div>
-                  <div>
-                    <div className="text-sm font-medium text-slate-900 dark:text-white">
-                      Gas budget alert
-                    </div>
-                    <div className="text-xs text-white">
-                      Consider bulk buying when prices drop
+              <h4 className="font-light text-xl bg-gradient-to-r from-white via-slate-200 to-[#d4c4a0] bg-clip-text text-transparent flex items-center gap-3">
+                <div className="w-2 h-6 bg-gradient-to-b from-[#fc304ed6] to-[#d4c4a0] rounded-full animate-pulse"></div>
+                AI Intelligence Feed
+              </h4>
+              <div className="space-y-4">
+                <div className="group relative glass-morphism p-4 rounded-xl hover:neo-brutalism-card transition-all duration-500 animate-[fadeInUp_0.8s_ease-out]">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-3 h-3 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full mt-1 animate-pulse shadow-lg shadow-amber-500/50"></div>
+                    <div className="flex-1">
+                      <div className="text-sm font-medium bg-gradient-to-r from-white to-slate-200 bg-clip-text text-transparent mb-1">
+                        Economic Pressure Detected
+                      </div>
+                      <div className="text-xs text-[#d4c4a0] opacity-90 flex items-center gap-2">
+                        <span className="bg-gradient-to-r from-[#fc304ed6] to-[#d4c4a0] w-3 h-[1px] rounded-full animate-pulse"></span>
+                        Inflation trends affecting budget stability
+                      </div>
                     </div>
                   </div>
                 </div>
                 
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                  <div>
-                    <div className="text-sm font-medium text-slate-900 dark:text-white">
-                      Optimal buying window
+                <div className="group relative glass-morphism p-4 rounded-xl hover:neo-brutalism-card transition-all duration-500 animate-[fadeInUp_0.8s_ease-out]" style={{animationDelay: '100ms'}}>
+                  <div className="flex items-start space-x-4">
+                    <div className="w-3 h-3 bg-gradient-to-r from-red-400 to-red-600 rounded-full mt-1 animate-ping shadow-lg shadow-red-500/50"></div>
+                    <div className="flex-1">
+                      <div className="text-sm font-medium bg-gradient-to-r from-white to-slate-200 bg-clip-text text-transparent mb-1">
+                        Energy Cost Spike Alert
+                      </div>
+                      <div className="text-xs text-[#d4c4a0] opacity-90 flex items-center gap-2">
+                        <span className="bg-gradient-to-r from-[#fc304ed6] to-[#d4c4a0] w-3 h-[1px] rounded-full animate-pulse"></span>
+                        Strategic bulk purchasing recommended
+                      </div>
                     </div>
-                    <div className="text-xs text-white">
-                      Next week ideal for grocery stock-up
+                  </div>
+                </div>
+                
+                <div className="group relative glass-morphism p-4 rounded-xl hover:neo-brutalism-card transition-all duration-500 animate-[fadeInUp_0.8s_ease-out]" style={{animationDelay: '200ms'}}>
+                  <div className="flex items-start space-x-4">
+                    <div className="w-3 h-3 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full mt-1 animate-pulse shadow-lg shadow-blue-500/50"></div>
+                    <div className="flex-1">
+                      <div className="text-sm font-medium bg-gradient-to-r from-white to-slate-200 bg-clip-text text-transparent mb-1">
+                        Optimal Purchase Window
+                      </div>
+                      <div className="text-xs text-[#d4c4a0] opacity-90 flex items-center gap-2">
+                        <span className="bg-gradient-to-r from-[#fc304ed6] to-[#d4c4a0] w-3 h-[1px] rounded-full animate-pulse"></span>
+                        Market analysis suggests next week optimal
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Smart Recommendations */}
+            {/* AI Strategic Recommendations */}
             <div className="space-y-4">
-              <h4 className="font-medium text-slate-900 dark:text-white">Smart Recommendations</h4>
-              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-                <div className="flex items-start space-x-2">
-                  <AlertCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
-                  <div>
-                    <div className="text-sm font-medium text-blue-900 dark:text-blue-300">
-                      Inflation Adjustment
+              <h4 className="font-light text-xl bg-gradient-to-r from-white via-slate-200 to-[#d4c4a0] bg-clip-text text-transparent flex items-center gap-3">
+                <div className="w-2 h-6 bg-gradient-to-b from-[#fc304ed6] to-[#d4c4a0] rounded-full animate-pulse"></div>
+                Strategic Optimization
+              </h4>
+              <div className="relative glass-morphism p-6 rounded-xl hover:neo-brutalism-card transition-all duration-500 overflow-hidden group animate-[fadeInUp_0.8s_ease-out]" style={{animationDelay: '300ms'}}>
+                {/* Background Data Stream */}
+                <div className="absolute top-0 right-0 w-20 h-full bg-gradient-to-l from-[#fc304ed6]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                  <div className="absolute top-2 right-2 w-1 h-1 bg-[#fc304ed6] rounded-full animate-ping"></div>
+                  <div className="absolute top-6 right-4 w-1 h-1 bg-[#d4c4a0] rounded-full animate-pulse delay-300"></div>
+                </div>
+                
+                <div className="flex items-start space-x-4">
+                  <div className="relative">
+                    <AlertCircle className="w-6 h-6 text-[#fc304ed6] animate-pulse" />
+                    <div className="absolute -inset-1 border border-[#fc304ed6]/30 rounded-full animate-ping"></div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-sm font-medium bg-gradient-to-r from-[#fc304ed6] to-[#d4c4a0] bg-clip-text text-transparent mb-2">
+                      Economic Adjustment Protocol
                     </div>
-                    <div className="text-xs text-blue-700 dark:text-blue-400 mt-1">
-                      With current inflation at 3.2%, consider increasing your grocery budget by $50/month and prioritize essential purchases over discretionary spending.
+                    <div className="text-xs text-[#d4c4a0] opacity-90 leading-relaxed">
+                      Current inflation rate at 3.2% suggests budget optimization: increase grocery allocation by $50/month, prioritize essential spending categories, and implement strategic purchase timing for maximum efficiency.
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Budget Summary Stats */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-gradient-to-br from-orange-500/10 to-blue-500/10 p-4 rounded-lg">
-                <div className="text-lg font-bold text-slate-900 dark:text-white">
+            {/* Quantum Financial Dashboard */}
+            <div className="grid grid-cols-2 gap-6">
+              <div className="relative group glass-morphism p-6 rounded-xl hover:neo-brutalism-card transition-all duration-500 overflow-hidden animate-[fadeInUp_0.8s_ease-out]" style={{animationDelay: '400ms'}}>
+                {/* Floating Data Points */}
+                <div className="absolute top-2 right-2 w-2 h-2 bg-[#fc304ed6] rounded-full animate-ping opacity-30"></div>
+                <div className="absolute bottom-2 left-2 w-1 h-1 bg-[#d4c4a0] rounded-full animate-pulse opacity-40"></div>
+                
+                <div className="text-2xl font-light bg-gradient-to-r from-[#fc304ed6] to-[#d4c4a0] bg-clip-text text-transparent mb-2">
                   {formatCurrency(budgetData?.reduce((sum, b) => sum + b.spentAmount, 0) || 0)}
                 </div>
-                <div className="text-xs text-white">Total Spent</div>
+                <div className="text-xs text-[#d4c4a0] font-mono opacity-80 flex items-center gap-2">
+                  <span className="bg-gradient-to-r from-[#fc304ed6] to-[#d4c4a0] w-4 h-[1px] rounded-full animate-pulse"></span>
+                  Total Expenditure
+                </div>
               </div>
-              <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 p-4 rounded-lg">
-                <div className="text-lg font-bold text-slate-900 dark:text-white">
+              <div className="relative group glass-morphism p-6 rounded-xl hover:neo-brutalism-card transition-all duration-500 overflow-hidden animate-[fadeInUp_0.8s_ease-out]" style={{animationDelay: '500ms'}}>
+                {/* Floating Data Points */}
+                <div className="absolute top-2 right-2 w-2 h-2 bg-emerald-400 rounded-full animate-ping opacity-30"></div>
+                <div className="absolute bottom-2 left-2 w-1 h-1 bg-[#d4c4a0] rounded-full animate-pulse opacity-40"></div>
+                
+                <div className="text-2xl font-light bg-gradient-to-r from-emerald-400 to-[#d4c4a0] bg-clip-text text-transparent mb-2">
                   {formatCurrency(budgetData?.reduce((sum, b) => sum + (b.budgetAmount - b.spentAmount), 0) || 0)}
                 </div>
-                <div className="text-xs text-white">Remaining</div>
+                <div className="text-xs text-[#d4c4a0] font-mono opacity-80 flex items-center gap-2">
+                  <span className="bg-gradient-to-r from-emerald-400 to-[#d4c4a0] w-4 h-[1px] rounded-full animate-pulse"></span>
+                  Available Balance
+                </div>
               </div>
             </div>
           </div>
