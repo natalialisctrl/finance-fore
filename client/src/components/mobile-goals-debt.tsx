@@ -14,7 +14,7 @@ export function MobileGoalsDebt() {
         </div>
         <div className="flex items-center justify-between mb-6 relative z-10">
           <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-[#353c4a] via-[#d4c4a0] to-[#e74c3c] rounded-2xl flex items-center justify-center shadow-2xl border border-white/20 relative">
+            <div className="w-12 h-12 bg-gradient-to-br from-[#353c4a] via-[#d4c4a0] to-[#fc304ed6] rounded-2xl flex items-center justify-center shadow-2xl border border-white/20 relative">
               <Brain className="w-6 h-6 text-white" />
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-[#d4c4a0] to-[#c9b892] rounded-full animate-pulse border border-white/50"></div>
             </div>
@@ -51,7 +51,7 @@ export function MobileGoalsDebt() {
               </div>
             </div>
             <div className="w-full bg-black/50 rounded-full h-4 border border-white/20 mb-3 relative overflow-hidden">
-              <div className="bg-gradient-to-r from-[#e74c3c] via-[#d4c4a0] to-[#353c4a] h-4 rounded-full shadow-2xl relative" style={{width: '35%'}}>
+              <div className="bg-gradient-to-r from-[#fc304ed6] via-[#d4c4a0] to-[#353c4a] h-4 rounded-full shadow-2xl relative" style={{width: '35%'}}>
                 <div className="absolute inset-0 bg-white/20 animate-pulse rounded-full"></div>
               </div>
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse"></div>
@@ -84,7 +84,7 @@ export function MobileGoalsDebt() {
               </div>
             </div>
             <div className="w-full bg-black/50 rounded-full h-4 border border-white/20 mb-3 relative overflow-hidden">
-              <div className="bg-gradient-to-r from-[#e74c3c] via-[#d4c4a0] to-[#353c4a] h-4 rounded-full shadow-2xl relative" style={{width: '24%'}}>
+              <div className="bg-gradient-to-r from-[#fc304ed6] via-[#d4c4a0] to-[#353c4a] h-4 rounded-full shadow-2xl relative" style={{width: '24%'}}>
                 <div className="absolute inset-0 bg-white/20 animate-pulse rounded-full"></div>
               </div>
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse"></div>
@@ -106,9 +106,9 @@ export function MobileGoalsDebt() {
       <div className="foresee-card bg-black/40 backdrop-blur-xl border-white/10 p-6 glow-border-gold relative overflow-hidden">
         {/* Quantum Elimination Field */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-4 left-8 w-1 h-1 bg-[#e74c3c] rounded-full animate-ping"></div>
+          <div className="absolute top-4 left-8 w-1 h-1 bg-[#fc304ed6] rounded-full animate-ping"></div>
           <div className="absolute top-10 right-12 w-1 h-1 bg-[#d4c4a0] rounded-full animate-pulse delay-700"></div>
-          <div className="absolute bottom-8 left-20 w-1 h-1 bg-[#e74c3c] rounded-full animate-ping delay-1500"></div>
+          <div className="absolute bottom-8 left-20 w-1 h-1 bg-[#fc304ed6] rounded-full animate-ping delay-1500"></div>
         </div>
         
         <div className="flex items-center justify-between mb-6 relative z-10">

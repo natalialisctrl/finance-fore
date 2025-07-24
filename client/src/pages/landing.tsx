@@ -27,13 +27,13 @@ export default function Landing() {
     <div className="min-h-screen bg-gradient-to-br from-[#1a2332] via-[#243447] to-[#2e4057]">
       {/* Foresee Background Pattern */}
       <div className="fixed inset-0 z-0 opacity-10">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#e74c3c]/20 to-transparent animate-pulse"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#fc304ed6]/20 to-transparent animate-pulse"></div>
         <div className="absolute top-0 left-0 w-full h-full">
           {/* Floating geometric shapes */}
-          <div className="absolute top-20 left-10 w-4 h-4 bg-[#e74c3c]/20 rounded-full float-1"></div>
-          <div className="absolute top-40 right-20 w-6 h-6 border border-[#e74c3c]/30 rounded-sm float-2"></div>
-          <div className="absolute bottom-40 left-1/4 w-3 h-3 bg-[#e74c3c]/25 rotate-45 float-3"></div>
-          <div className="absolute bottom-20 right-1/3 w-5 h-5 border border-[#e74c3c]/20 rounded-full float-4"></div>
+          <div className="absolute top-20 left-10 w-4 h-4 bg-[#fc304ed6]/20 rounded-full float-1"></div>
+          <div className="absolute top-40 right-20 w-6 h-6 border border-[#fc304ed6]/30 rounded-sm float-2"></div>
+          <div className="absolute bottom-40 left-1/4 w-3 h-3 bg-[#fc304ed6]/25 rotate-45 float-3"></div>
+          <div className="absolute bottom-20 right-1/3 w-5 h-5 border border-[#fc304ed6]/20 rounded-full float-4"></div>
         </div>
       </div>
 
@@ -74,7 +74,7 @@ export default function Landing() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <div className="text-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#e74c3c] mx-auto mb-4"></div>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#fc304ed6] mx-auto mb-4"></div>
                   <p className="text-lg text-white/90">
                     Preparing your economic dashboard...
                   </p>

@@ -50,7 +50,7 @@
     --secondary-foreground: 0 0% 98%;   /* White on secondary */
     --muted: 213 25% 22%;               /* Medium navy for muted */
     --muted-foreground: 213 10% 65%;    /* Light gray text */
-    --accent: 6 78% 57%;                /* Coral accent #e74c3c */
+    --accent: 6 78% 57%;                /* Coral accent #fc304ed6 */
     --accent-foreground: 0 0% 98%;      /* White on coral */
     --destructive: 6 78% 57%;           /* Coral for destructive */
     --destructive-foreground: 0 0% 98%;
@@ -59,14 +59,14 @@
     --ring: 6 78% 57%;                  /* Coral focus rings */
     
     /* Three-Color Chart Theme */
-    --chart-1: 6 78% 57%;     /* Coral primary #e74c3c */
+    --chart-1: 6 78% 57%;     /* Coral primary #fc304ed6 */
     --chart-2: 213 35% 12%;   /* Deep navy #1a1f2e */
     --chart-3: 213 25% 22%;   /* Medium navy #353c4a */
     --chart-4: 6 65% 45%;     /* Darker coral */
     --chart-5: 213 30% 16%;   /* Card navy */
     
     /* Simplified Futuristic Colors */
-    --coral-primary: 6 78% 57%;         /* Coral #e74c3c */
+    --coral-primary: 6 78% 57%;         /* Coral #fc304ed6 */
     --navy-deep: 213 35% 12%;           /* Deep navy #1a1f2e */
     --navy-medium: 213 25% 22%;         /* Medium navy #353c4a */
     --champagne: 45 40% 78%;            /* Champagne #d4c4a0 */
@@ -275,14 +275,14 @@ body {
 
 /* Three-Color Gradient Effects */
 .gradient-coral {
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  background: linear-gradient(135deg, #fc304ed6 0%, #c0392b 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-coral-navy {
-  background: linear-gradient(135deg, #e74c3c 0%, #353c4a 100%);
+  background: linear-gradient(135deg, #fc304ed6 0%, #353c4a 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -303,7 +303,7 @@ body {
 }
 
 .gradient-coral-champagne {
-  background: linear-gradient(135deg, #e74c3c 0%, #d4c4a0 100%);
+  background: linear-gradient(135deg, #fc304ed6 0%, #d4c4a0 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -316,8 +316,8 @@ body {
 }
 
 .glow-border-coral {
-  border: 1px solid rgba(231, 76, 60, 0.3);
-  box-shadow: 0 0 20px rgba(231, 76, 60, 0.1);
+  border: 1px solid rgba(252, 48, 78, 0.25);
+  box-shadow: 0 0 20px rgba(252, 48, 78, 0.21);
 }
 
 /* Glass Card Effects */
@@ -335,10 +335,10 @@ body {
 
 @keyframes pulse-glow {
   0%, 100% { 
-    text-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
+    text-shadow: 0 0 5px rgba(252, 48, 78, 0.84);
   }
   50% { 
-    text-shadow: 0 0 20px rgba(231, 76, 60, 0.8), 0 0 30px rgba(231, 76, 60, 0.4);
+    text-shadow: 0 0 20px rgba(252, 48, 78, 0.84), 0 0 30px rgba(252, 48, 78, 0.64);
   }
 }
 
