@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { fetchBudgetData } from "@/lib/economic-api";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircle, TrendingUp, Target, Plus, Settings, DollarSign } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { formatCurrency } from "@/lib/utils";
@@ -18,12 +18,6 @@ export function BudgetTracker() {
   const currentMonth = new Date().toISOString().slice(0, 7);
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  
-  // 3D Chart Rotation State
-  const [rotation, setRotation] = useState({ x: -10, y: 0, z: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [lastTouch, setLastTouch] = useState({ x: 0, y: 0 });
-  const chartRef = useRef<HTMLDivElement>(null);
   
   // State for budget setup dialog
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -45,72 +39,6 @@ export function BudgetTracker() {
     queryKey: ["/api/budgets/demo-natalia", currentMonth],
     queryFn: () => fetchBudgetData("demo-natalia", currentMonth),
   });
-
-  // 3D Touch Interaction Handlers
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true);
-    const touch = e.touches[0];
-    setLastTouch({ x: touch.clientX, y: touch.clientY });
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging) return;
-    
-    const touch = e.touches[0];
-    const deltaX = touch.clientX - lastTouch.x;
-    const deltaY = touch.clientY - lastTouch.y;
-    
-    setRotation(prev => ({
-      x: Math.max(-90, Math.min(90, prev.x - deltaY * 0.5)),
-      y: prev.y + deltaX * 0.5,
-      z: prev.z
-    }));
-    
-    setLastTouch({ x: touch.clientX, y: touch.clientY });
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-  };
-
-  // Mouse interaction for desktop
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    setLastTouch({ x: e.clientX, y: e.clientY });
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return;
-    
-    const deltaX = e.clientX - lastTouch.x;
-    const deltaY = e.clientY - lastTouch.y;
-    
-    setRotation(prev => ({
-      x: Math.max(-90, Math.min(90, prev.x - deltaY * 0.5)),
-      y: prev.y + deltaX * 0.5,
-      z: prev.z
-    }));
-    
-    setLastTouch({ x: e.clientX, y: e.clientY });
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  // Auto-rotation when not interacting
-  useEffect(() => {
-    if (isDragging) return;
-    
-    const interval = setInterval(() => {
-      setRotation(prev => ({
-        ...prev,
-        y: prev.y + 0.2
-      }));
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, [isDragging]);
 
   // Mutation to update budget
   const updateBudgetMutation = useMutation({
@@ -353,110 +281,166 @@ export function BudgetTracker() {
                 Touch & Drag to Rotate
               </div>
             </div>
-            <div 
-              ref={chartRef}
-              className="h-96 bg-gradient-to-br from-[#051421]/90 to-[#051421]/70 backdrop-blur-xl rounded-xl p-6 relative overflow-hidden cursor-grab active:cursor-grabbing"
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseUp}
-              style={{ perspective: '1000px' }}
-            >
+            <div className="h-96 bg-gradient-to-br from-[#051421]/90 to-[#051421]/70 backdrop-blur-xl rounded-xl p-6 relative overflow-hidden">
               {/* Subtle Ambient Glow */}
               <div className="absolute inset-0 opacity-10">
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#fc304ed6]/20 to-transparent animate-pulse"></div>
               </div>
               
-              {/* True 3D Chart Container */}
-              <div 
-                className="relative z-10 h-full flex items-center justify-center transform-gpu transition-transform duration-75"
-                style={{
-                  transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) rotateZ(${rotation.z}deg)`,
-                  transformStyle: 'preserve-3d'
-                }}
-              >
-                {/* 3D Pie Chart - Pure CSS Implementation */}
-                <div className="relative w-64 h-64">
-                  {budgetData?.map((budget, index) => {
-                    const totalBudget = budgetData.reduce((sum, b) => sum + b.budgetAmount, 0);
-                    const percentage = (budget.budgetAmount / totalBudget) * 100;
-                    let cumulativePercentage = 0;
+              {/* 3D Interactive Chart Container */}
+              <div className="relative z-10 h-full perspective-1000">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <defs>
+                      {/* 3D Gradient Definitions */}
+                      <linearGradient id="champagne3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#f4e9d1" />
+                        <stop offset="50%" stopColor="#d4c4a0" />
+                        <stop offset="100%" stopColor="#b8a882" />
+                      </linearGradient>
+                      <linearGradient id="coral3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#ff5a4a" />
+                        <stop offset="50%" stopColor="#fc304ed6" />
+                        <stop offset="100%" stopColor="#e02d42" />
+                      </linearGradient>
+                      <linearGradient id="navy3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#1a2536" />
+                        <stop offset="50%" stopColor="#051421" />
+                        <stop offset="100%" stopColor="#030b12" />
+                      </linearGradient>
+                      <linearGradient id="gold3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#ffd700" />
+                        <stop offset="50%" stopColor="#f1c40f" />
+                        <stop offset="100%" stopColor="#d4af37" />
+                      </linearGradient>
+                      <linearGradient id="emerald3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#50e3c2" />
+                        <stop offset="50%" stopColor="#2dd4bf" />
+                        <stop offset="100%" stopColor="#14b8a6" />
+                      </linearGradient>
+                      <linearGradient id="purple3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#a855f7" />
+                        <stop offset="50%" stopColor="#9333ea" />
+                        <stop offset="100%" stopColor="#7c3aed" />
+                      </linearGradient>
+                      <linearGradient id="orange3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#fb923c" />
+                        <stop offset="50%" stopColor="#f97316" />
+                        <stop offset="100%" stopColor="#ea580c" />
+                      </linearGradient>
+                      <linearGradient id="blue3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#60a5fa" />
+                        <stop offset="50%" stopColor="#3b82f6" />
+                        <stop offset="100%" stopColor="#2563eb" />
+                      </linearGradient>
+                      <linearGradient id="pink3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#f472b6" />
+                        <stop offset="50%" stopColor="#ec4899" />
+                        <stop offset="100%" stopColor="#db2777" />
+                      </linearGradient>
+                      <linearGradient id="cyan3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#22d3ee" />
+                        <stop offset="50%" stopColor="#06b6d4" />
+                        <stop offset="100%" stopColor="#0891b2" />
+                      </linearGradient>
+                      
+                      {/* 3D Shadow Effects */}
+                      <filter id="shadow3D">
+                        <feDropShadow dx="3" dy="6" stdDeviation="4" floodColor="#000000" floodOpacity="0.6"/>
+                      </filter>
+                      <filter id="glow3D">
+                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                        <feMerge>
+                          <feMergeNode in="coloredBlur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                    </defs>
                     
-                    for (let i = 0; i < index; i++) {
-                      cumulativePercentage += (budgetData[i].budgetAmount / totalBudget) * 100;
-                    }
+                    <Pie
+                      data={budgetData?.map((budget, index) => ({
+                        name: budget.category,
+                        value: budget.budgetAmount,
+                        spent: budget.spentAmount,
+                        remaining: budget.budgetAmount - budget.spentAmount,
+                        fill: [
+                          'url(#coral3D)', 'url(#champagne3D)', 'url(#navy3D)', 'url(#gold3D)', 'url(#emerald3D)',
+                          'url(#purple3D)', 'url(#orange3D)', 'url(#blue3D)', 'url(#pink3D)', 'url(#cyan3D)'
+                        ][index % 10]
+                      }))}
+                      cx="50%"
+                      cy="45%"
+                      startAngle={90}
+                      endAngle={450}
+                      innerRadius={60}
+                      outerRadius={130}
+                      paddingAngle={3}
+                      dataKey="value"
+                      className="transform-gpu transition-transform duration-300 hover:scale-105"
+                      style={{
+                        filter: 'drop-shadow(0 8px 16px rgba(252, 48, 77, 0.3))',
+                        transformStyle: 'preserve-3d'
+                      }}
+                    >
+                      {budgetData?.map((entry, index) => (
+                        <Cell 
+                          key={`cell-${index}`} 
+                          fill={[
+                            'url(#coral3D)', 'url(#champagne3D)', 'url(#navy3D)', 'url(#gold3D)', 'url(#emerald3D)',
+                            'url(#purple3D)', 'url(#orange3D)', 'url(#blue3D)', 'url(#pink3D)', 'url(#cyan3D)'
+                          ][index % 10]}
+                          stroke="rgba(255, 255, 255, 0.1)"
+                          strokeWidth={2}
+                          filter="url(#shadow3D)"
+                          className="transition-all duration-300 hover:brightness-110"
+                        />
+                      ))}
+                    </Pie>
                     
-                    const colors = [
-                      '#fc304ed6', '#d4c4a0', '#3b5998', '#f1c40f', '#2dd4bf', 
-                      '#9333ea', '#f97316', '#3b82f6', '#ec4899', '#06b6d4'
-                    ];
-                    
-                    const color = colors[index % 10];
-                    const startAngle = cumulativePercentage * 3.6; // Convert to degrees
-                    const endAngle = (cumulativePercentage + percentage) * 3.6;
-                    
-                    return (
-                      <div
-                        key={budget.id}
-                        className="absolute inset-0 rounded-full"
-                        style={{
-                          background: `conic-gradient(from 0deg, transparent ${startAngle}deg, ${color} ${startAngle}deg, ${color} ${endAngle}deg, transparent ${endAngle}deg)`,
-                          transformStyle: 'preserve-3d',
-                          transform: `translateZ(${10 + index * 4}px)`,
-                          boxShadow: `0 0 20px ${color}40, inset 0 2px 4px rgba(255,255,255,0.2)`,
-                          border: `1px solid ${color}aa`,
-                          filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.4))'
-                        }}
-                      >
-                        {/* Category Label */}
-                        <div 
-                          className="absolute text-xs font-bold text-white drop-shadow-lg pointer-events-none"
-                          style={{
-                            left: `${50 + 35 * Math.cos(((startAngle + endAngle) / 2 - 90) * Math.PI / 180)}%`,
-                            top: `${50 + 35 * Math.sin(((startAngle + endAngle) / 2 - 90) * Math.PI / 180)}%`,
-                            transform: 'translate(-50%, -50%) translateZ(30px)',
-                            textShadow: '0 2px 4px rgba(0,0,0,0.8)'
-                          }}
-                        >
-                          {budget.category}
-                        </div>
-                      </div>
-                    );
-                  })}
-                  
-                  {/* 3D Center Hub */}
-                  <div 
-                    className="absolute inset-1/3 bg-gradient-to-br from-[#051421] to-[#051421]/80 rounded-full border-2 border-[#fc304ed6]/60 flex items-center justify-center"
-                    style={{
-                      transform: 'translateZ(60px)',
-                      boxShadow: '0 0 30px rgba(252, 48, 77, 0.4), inset 0 2px 8px rgba(255,255,255,0.1)'
-                    }}
-                  >
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-[#fc304ed6]">
-                        {formatCurrency(budgetData?.reduce((sum, b) => sum + b.budgetAmount, 0) || 0)}
-                      </div>
-                      <div className="text-xs text-[#d4c4a0]">Total Budget</div>
-                    </div>
-                  </div>
-                </div>
-              
-                {/* Interactive 3D Controls */}
-                <div className="absolute bottom-2 right-2 flex space-x-1">
-                  <div className="w-2 h-2 bg-[#fc304ed6] rounded-full animate-pulse"></div>
-                  <div className="w-2 h-2 bg-[#d4c4a0] rounded-full animate-pulse delay-100"></div>
-                  <div className="w-2 h-2 bg-[#051421] border border-[#d4c4a0]/50 rounded-full animate-pulse delay-200"></div>
-                </div>
+                    {/* Clean, Readable Tooltip */}
+                    <Tooltip 
+                      formatter={(value: any, name: any, props: any) => [
+                        `Budget: ${formatCurrency(value)}`,
+                        `Spent: ${formatCurrency(props.payload.spent)}`,
+                        `Remaining: ${formatCurrency(props.payload.remaining)}`
+                      ]}
+                      labelFormatter={(label: any, payload: any) => {
+                        if (payload && payload.length > 0) {
+                          return payload[0].payload.name;
+                        }
+                        return label;
+                      }}
+                      labelStyle={{ 
+                        color: '#e5e7eb', 
+                        fontWeight: '600',
+                        fontSize: '15px',
+                        marginBottom: '8px'
+                      }}
+                      contentStyle={{
+                        backgroundColor: 'rgba(0, 0, 0, 0.92)',
+                        border: '1px solid rgba(252, 48, 77, 0.6)',
+                        borderRadius: '10px',
+                        boxShadow: '0 6px 20px rgba(0, 0, 0, 0.7)',
+                        color: '#d1d5db',
+                        fontSize: '13px',
+                        fontWeight: '500',
+                        padding: '10px'
+                      }}
+                      itemStyle={{
+                        color: '#d1d5db',
+                        fontSize: '13px',
+                        fontWeight: '500',
+                        padding: '2px 0'
+                      }}
+                      cursor={{ fill: 'rgba(252, 48, 77, 0.1)' }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
                 
-                {/* Touch Instructions */}
-                <div className="absolute top-2 left-2 text-xs text-[#d4c4a0]/70">
-                  {isDragging ? '🔄 Rotating...' : '👆 Touch & drag to rotate'}
-                </div>
-            </div>
-            
+                
+              </div>
+              
+
             </div>
             
             {/* 3D Budget Legend with Holographic Effects */}
