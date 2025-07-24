@@ -314,17 +314,9 @@ export default function Dashboard() {
                 </h1>
                 
                 {/* Quantum field around title */}
-                <div className="absolute -inset-16 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                <div className="absolute -inset-4 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
                   <div className="absolute top-0 left-0 w-2 h-2 bg-[#fc304ed6] rounded-full animate-ping"></div>
                   <div className="absolute top-0 right-0 w-1 h-1 bg-[#d4c4a0] rounded-full animate-pulse delay-300"></div>
-                  <div className="absolute top-4 left-4 w-1 h-1 bg-white rounded-full animate-ping delay-150"></div>
-                  <div className="absolute top-4 right-4 w-1 h-1 bg-[#fc304ed6] rounded-full animate-pulse delay-450"></div>
-                  <div className="absolute top-8 left-8 w-2 h-2 bg-[#d4c4a0] rounded-full animate-ping delay-600"></div>
-                  <div className="absolute top-8 right-8 w-1 h-1 bg-white rounded-full animate-pulse delay-200"></div>
-                  <div className="absolute bottom-8 left-8 w-1 h-1 bg-[#fc304ed6] rounded-full animate-ping delay-800"></div>
-                  <div className="absolute bottom-8 right-8 w-2 h-2 bg-[#d4c4a0] rounded-full animate-pulse delay-100"></div>
-                  <div className="absolute bottom-4 left-4 w-1 h-1 bg-white rounded-full animate-ping delay-350"></div>
-                  <div className="absolute bottom-4 right-4 w-1 h-1 bg-[#fc304ed6] rounded-full animate-pulse delay-550"></div>
                   <div className="absolute bottom-0 left-0 w-1 h-1 bg-white rounded-full animate-ping delay-500"></div>
                   <div className="absolute bottom-0 right-0 w-2 h-2 bg-[#fc304ed6] rounded-full animate-pulse delay-700"></div>
                 </div>
