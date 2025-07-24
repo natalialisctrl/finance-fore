@@ -279,7 +279,7 @@ export default function Dashboard() {
 
         {/* Quantum Hero Matrix - AI Core Tab */}
         {activeTab === 'dashboard' && (
-          <div className="relative z-40 max-w-7xl mx-auto px-6 py-8 pl-[24px] pr-[24px] pt-[17px] pb-[17px] overflow-hidden">
+          <div className="relative z-40 max-w-7xl mx-auto px-6 py-16 pl-[24px] pr-[24px] pt-[32px] pb-[32px] overflow-hidden min-h-[60vh]">
             {/* Video Background */}
             <div className="absolute inset-0 z-0">
               <video
