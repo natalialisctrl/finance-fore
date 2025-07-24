@@ -197,7 +197,7 @@ export default function Dashboard() {
               <Button 
                 onClick={() => window.location.href = '/api/logout'}
                 variant="outline"
-                className="border-white/30 text-white hover:bg-white/10"
+                className="border-white/30 text-white hover:bg-white/10 pl-[0px] pr-[0px]"
               >
                 <LogOut className="w-4 h-4 mr-2" />
                 Logout
