@@ -181,19 +181,19 @@ export function EconomicDashboard() {
         </div>
       </div>
       {/* Financial Health Summary with Futuristic Styling */}
-      <Card className="foresee-card bg-black/40 backdrop-blur-md glow-border mb-6">
-        <CardContent className="p-6">
+      <Card className="foresee-card bg-black/40 backdrop-blur-md glow-border mb-4">
+        <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className={`text-2xl font-bold gradient-coral-gold pulse-metric`}>
+              <div className={`text-xl font-bold gradient-coral-gold pulse-metric`}>
                 {healthSummary.score}/100
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+                <h3 className="text-sm font-semibold text-white">
                   Financial Health: {healthSummary.status}
                 </h3>
-                <p className="text-sm text-white">
-                  Overall economic environment assessment
+                <p className="text-xs text-white/70">
+                  Economic environment assessment
                 </p>
               </div>
             </div>
@@ -217,12 +217,12 @@ export function EconomicDashboard() {
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         {/* Enhanced Inflation Rate Card with Futuristic Glow */}
         <Card className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold fade-in-stagger">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-medium text-white">Inflation Rate</h3>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-xs font-medium text-white">Inflation Rate</h3>
               <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                 inflationTrend.color === 'text-red-500' ? 'bg-red-100 dark:bg-red-900/20' :
                 inflationTrend.color === 'text-amber-500' ? 'bg-amber-100 dark:bg-amber-900/20' :
@@ -233,7 +233,7 @@ export function EconomicDashboard() {
             </div>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <div className="text-3xl font-bold gradient-gold pulse-metric">
+                <div className="text-lg font-bold gradient-gold pulse-metric">
                   {economicData.inflationRate.toFixed(1)}%
                 </div>
                 <div className="w-16 h-8">
@@ -254,17 +254,17 @@ export function EconomicDashboard() {
                 <span className={`text-sm ${inflationTrend.color}`}>
                   {inflationTrend.trend === 'up' ? '+0.2%' : inflationTrend.trend === 'down' ? '-0.1%' : '±0.0%'}
                 </span>
-                <span className="text-xs text-slate-500 dark:text-slate-400">from last month</span>
+                <span className="text-xs text-white/60">from last month</span>
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Enhanced GDP Growth Card */}
-        <Card className="glass-card glow-continuous">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-medium text-slate-600 dark:text-slate-400">GDP Growth</h3>
+        <Card className="foresee-card bg-black/40 backdrop-blur-md glow-border fade-in-stagger">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-xs font-medium text-white">GDP Growth</h3>
               <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                 gdpTrend.color === 'text-red-500' ? 'bg-red-100 dark:bg-red-900/20' :
                 gdpTrend.color === 'text-amber-500' ? 'bg-amber-100 dark:bg-amber-900/20' :
@@ -275,7 +275,7 @@ export function EconomicDashboard() {
             </div>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <div className="text-3xl font-bold text-slate-900 dark:text-white">
+                <div className="text-lg font-bold gradient-gold pulse-metric">
                   {economicData.gdpGrowth.toFixed(1)}%
                 </div>
                 <div className="w-16 h-8">
@@ -296,17 +296,17 @@ export function EconomicDashboard() {
                 <span className={`text-sm ${gdpTrend.color}`}>
                   {gdpTrend.trend === 'up' ? '+0.3%' : gdpTrend.trend === 'down' ? '-0.2%' : '±0.1%'}
                 </span>
-                <span className="text-xs text-slate-500 dark:text-slate-400">quarterly growth</span>
+                <span className="text-xs text-white/60">quarterly growth</span>
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Enhanced Consumer Price Index Card */}
-        <Card className="glass-card glow-continuous">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-medium text-slate-600 dark:text-slate-400">Consumer Price Index</h3>
+        <Card className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold fade-in-stagger">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-xs font-medium text-white">Consumer Price Index</h3>
               <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                 cpiTrend.color === 'text-red-500' ? 'bg-red-100 dark:bg-red-900/20' :
                 cpiTrend.color === 'text-amber-500' ? 'bg-amber-100 dark:bg-amber-900/20' :
@@ -317,7 +317,7 @@ export function EconomicDashboard() {
             </div>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <div className="text-3xl font-bold text-slate-900 dark:text-white">
+                <div className="text-lg font-bold gradient-gold pulse-metric">
                   {economicData.consumerPriceIndex.toFixed(1)}
                 </div>
                 <div className="w-16 h-8">
@@ -338,7 +338,7 @@ export function EconomicDashboard() {
                 <span className={`text-sm ${cpiTrend.color}`}>
                   {cpiTrend.trend === 'up' ? '+2.8' : cpiTrend.trend === 'down' ? '-1.2' : '±0.5'}
                 </span>
-                <span className="text-xs text-slate-500 dark:text-slate-400">year over year</span>
+                <span className="text-xs text-white/60">year over year</span>
               </div>
             </div>
           </CardContent>

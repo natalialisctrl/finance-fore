@@ -81,27 +81,35 @@ body {
   color: hsl(var(--foreground));
 }
 
-/* Foresee Typography System */
+/* Foresee Typography System - Clean & Minimal */
 .headline {
   font-family: 'Inter', sans-serif;
-  font-weight: 800;
-  font-size: 2.5rem;
+  font-weight: 700;
+  font-size: 1.75rem;
   line-height: 1.2;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
+}
+
+.headline-sm {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 1.125rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
 }
 
 .subheading {
   font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 1.25rem;
+  font-weight: 500;
+  font-size: 0.875rem;
   line-height: 1.4;
 }
 
 .body-text {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 0.8125rem;
+  line-height: 1.5;
 }
 
 /* Foresee Card Styles with Futuristic Glow */

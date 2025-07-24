@@ -209,9 +209,9 @@ export default function Dashboard() {
 
 
         {/* Foresee Navigation Tabs */}
-        <div className="relative z-50 mx-2 sm:mx-4 mt-4 sm:mt-6 mb-6 sm:mb-8">
-          <div className="foresee-card bg-black/30 backdrop-blur-xl border-white/10 rounded-2xl p-3 sm:p-4">
-            <div className="flex space-x-1 sm:space-x-2">
+        <div className="relative z-50 mx-4 mt-4 mb-6">
+          <div className="foresee-card bg-black/30 backdrop-blur-xl border-white/10 rounded-xl p-2">
+            <div className="flex space-x-1">
               {[
                 { id: 'dashboard', label: 'Home', icon: BarChart3, shortLabel: 'Home' },
                 { id: 'ai-predictions', label: 'AI Insights', icon: Brain, shortLabel: 'AI' },
@@ -222,25 +222,24 @@ export default function Dashboard() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`relative flex-1 flex flex-col items-center py-3 sm:py-4 px-2 sm:px-3 rounded-xl transition-all duration-300 transform touch-manipulation ${
+                  className={`relative flex-1 flex flex-col items-center py-2 px-2 rounded-lg transition-all duration-300 transform touch-manipulation ${
                     activeTab === tab.id
-                      ? 'bg-accent-coral text-white scale-105 shadow-xl border border-white/20'
-                      : 'text-white/75 hover:text-white hover:bg-white/10 hover:scale-102'
+                      ? 'bg-accent-coral text-white scale-105 shadow-lg border border-white/20'
+                      : 'text-white/75 hover:text-white hover:bg-white/10'
                   }`}
                   style={{
-                    minHeight: window.innerWidth < 640 ? '56px' : '72px',
+                    minHeight: '48px',
                     touchAction: 'manipulation',
                     WebkitTapHighlightColor: 'transparent'
                   }}
                 >
-                  <tab.icon className={`mb-1 sm:mb-2 transition-all duration-200 ${
-                    activeTab === tab.id ? 'w-5 h-5 sm:w-7 sm:h-7 text-white' : 'w-4 h-4 sm:w-6 sm:h-6 text-white/80'
+                  <tab.icon className={`mb-1 transition-all duration-200 ${
+                    activeTab === tab.id ? 'w-4 h-4 text-white' : 'w-4 h-4 text-white/80'
                   }`} />
-                  <span className={`text-xs sm:text-xs font-bold leading-tight transition-all duration-200 ${
+                  <span className={`text-xs font-medium leading-tight transition-all duration-200 ${
                     activeTab === tab.id ? 'text-white' : 'text-white/85'
                   }`}>
-                    <span className="sm:hidden">{tab.shortLabel}</span>
-                    <span className="hidden sm:inline">{tab.label}</span>
+                    {tab.shortLabel}
                   </span>
                   {activeTab === tab.id && (
                     <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rounded-full animate-pulse"></div>
@@ -253,33 +252,33 @@ export default function Dashboard() {
 
         {/* Foresee Hero Section - Only show on Home tab */}
         {activeTab === 'dashboard' && (
-          <div className="relative z-40 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+          <div className="relative z-40 max-w-6xl mx-auto px-4 py-6">
             <div className="text-center">
               <div 
-                className={`headline text-white mb-6 fade-in ${titleSpinning ? 'spinning' : ''}`}
+                className={`headline text-white mb-4 fade-in ${titleSpinning ? 'spinning' : ''}`}
                 onClick={handleTitleClick}
               >
                 Financial Foresight<br/>
                 <span className="accent-coral">in Real Time</span>
               </div>
-              <p className="subheading text-white/80 max-w-3xl mx-auto mb-8 slide-up">
+              <p className="subheading text-white/80 max-w-2xl mx-auto mb-6 slide-up">
                 AI-powered predictions for your local economy. Make smarter decisions with real-time intelligence.
               </p>
             </div>
 
             {/* Foresee Stats Cards with Futuristic Effects */}
-            <div className="grid grid-cols-3 gap-4 sm:gap-6 mt-8">
-              <div className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold p-4 sm:p-6 text-center fade-in-stagger">
-                <div className="text-2xl sm:text-3xl font-bold gradient-gold mb-2 pulse-metric">94%</div>
-                <div className="text-white/70 text-sm">AI Prediction Accuracy</div>
+            <div className="grid grid-cols-3 gap-3 mt-6">
+              <div className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold p-3 text-center fade-in-stagger">
+                <div className="text-lg font-bold gradient-gold mb-1 pulse-metric">94%</div>
+                <div className="text-white/70 text-xs">AI Accuracy</div>
               </div>
-              <div className="foresee-card bg-black/40 backdrop-blur-md glow-border p-4 sm:p-6 text-center fade-in-stagger">
-                <div className="text-2xl sm:text-3xl font-bold gradient-coral-gold mb-2 pulse-metric">$2,340</div>
-                <div className="text-white/70 text-sm">Monthly Savings</div>
+              <div className="foresee-card bg-black/40 backdrop-blur-md glow-border p-3 text-center fade-in-stagger">
+                <div className="text-lg font-bold gradient-coral-gold mb-1 pulse-metric">$2,340</div>
+                <div className="text-white/70 text-xs">Monthly Savings</div>
               </div>
-              <div className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold p-4 sm:p-6 text-center fade-in-stagger">
-                <div className="text-2xl sm:text-3xl font-bold gradient-gold mb-2 pulse-metric">8.7/10</div>
-                <div className="text-white/70 text-sm">Smart Buy Score</div>
+              <div className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold p-3 text-center fade-in-stagger">
+                <div className="text-lg font-bold gradient-gold mb-1 pulse-metric">8.7/10</div>
+                <div className="text-white/70 text-xs">Smart Buy Score</div>
               </div>
             </div>
           </div>
@@ -287,9 +286,9 @@ export default function Dashboard() {
 
 
       </div>
-      {/* Mobile-Optimized Main Content */}
-      <div className={`relative z-30 ${activeTab === 'dashboard' ? 'mt-2 sm:mt-4 lg:mt-8' : 'mt-4 sm:mt-6 lg:mt-12'}`}>
-        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-2 sm:py-4 lg:py-8">
+      {/* Main Content */}
+      <div className={`relative z-30 ${activeTab === 'dashboard' ? 'mt-4' : 'mt-6'}`}>
+        <div className="max-w-6xl mx-auto px-4 py-4">
           {activeTab === 'dashboard' && (
             <>
               <div className="fade-in-up">
