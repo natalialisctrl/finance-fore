@@ -69,6 +69,7 @@
     --coral-primary: 6 78% 57%;         /* Coral #e74c3c */
     --navy-deep: 213 35% 12%;           /* Deep navy #1a1f2e */
     --navy-medium: 213 25% 22%;         /* Medium navy #353c4a */
+    --champagne: 45 40% 78%;            /* Champagne #d4c4a0 */
   }
 }
 
@@ -289,6 +290,20 @@ body {
 
 .gradient-navy {
   background: linear-gradient(135deg, #353c4a 0%, #1a1f2e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-champagne {
+  background: linear-gradient(135deg, #d4c4a0 0%, #c9b892 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-coral-champagne {
+  background: linear-gradient(135deg, #e74c3c 0%, #d4c4a0 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
