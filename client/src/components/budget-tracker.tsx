@@ -281,7 +281,7 @@ export function BudgetTracker() {
                 Touch & Drag to Rotate
               </div>
             </div>
-            <div className="h-80 bg-gradient-to-br from-[#051421]/90 to-[#051421]/70 backdrop-blur-xl rounded-xl p-4 relative overflow-hidden">
+            <div className="h-96 bg-gradient-to-br from-[#051421]/90 to-[#051421]/70 backdrop-blur-xl rounded-xl p-6 relative overflow-hidden">
               {/* Subtle Ambient Glow */}
               <div className="absolute inset-0 opacity-10">
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#fc304ed6]/20 to-transparent animate-pulse"></div>
@@ -347,8 +347,8 @@ export function BudgetTracker() {
                       cy="45%"
                       startAngle={90}
                       endAngle={450}
-                      innerRadius={45}
-                      outerRadius={100}
+                      innerRadius={60}
+                      outerRadius={130}
                       paddingAngle={3}
                       dataKey="value"
                       className="transform-gpu transition-transform duration-300 hover:scale-105"
@@ -379,17 +379,19 @@ export function BudgetTracker() {
                       ]}
                       labelStyle={{ 
                         color: '#ffffff', 
-                        fontWeight: '600',
-                        fontSize: '14px'
+                        fontWeight: '700',
+                        fontSize: '16px',
+                        textShadow: 'none'
                       }}
                       contentStyle={{
-                        backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                        border: '1px solid rgba(252, 48, 77, 0.5)',
-                        borderRadius: '8px',
-                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.6)',
+                        backgroundColor: 'rgba(0, 0, 0, 0.95)',
+                        border: '2px solid rgba(252, 48, 77, 0.8)',
+                        borderRadius: '12px',
+                        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.8)',
                         color: '#ffffff',
-                        fontSize: '13px',
-                        fontWeight: '500'
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        padding: '12px'
                       }}
                     />
                   </PieChart>
