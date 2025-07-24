@@ -166,10 +166,6 @@ export function EconomicDashboard() {
           </p>
         </div>
         <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2 text-sm text-white/60">
-            <Clock className="w-4 h-4" />
-            <span>Updated {formatTimestamp(new Date(economicData.lastUpdated))}</span>
-          </div>
           <Button
             onClick={handleRefreshData}
             disabled={isRefreshing}
