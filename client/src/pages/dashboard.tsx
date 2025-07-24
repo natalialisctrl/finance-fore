@@ -185,7 +185,6 @@ export default function Dashboard() {
           <div className="absolute bottom-20 right-1/3 w-5 h-5 border border-[#e74c3c]/20 rounded-full float-4"></div>
         </div>
       </div>
-      
       {/* Main Dashboard Content */}
       <div className="relative z-10">
         {/* Dashboard Header */}
@@ -193,7 +192,7 @@ export default function Dashboard() {
           <div className="container mx-auto px-4 py-4 flex justify-between items-center">
             <ForeseeLogo size="md" className="text-white" />
             <div className="flex items-center space-x-4">
-              <span className="text-white/80 body-text">Welcome back, {user.firstName}</span>
+              <span className="text-white/80 body-text pl-[1px] pr-[1px] mt-[-9px] mb-[-9px] ml-[-15px] mr-[-15px] text-justify pt-[5px] pb-[5px]">Welcome back, {user.firstName}</span>
               <Button 
                 onClick={() => window.location.href = '/api/logout'}
                 variant="outline"
