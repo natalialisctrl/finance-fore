@@ -343,7 +343,7 @@ export default function Dashboard() {
       </div>
       {/* Main Content */}
       <div className={`relative z-30 ${activeTab === 'dashboard' ? 'mt-4' : 'mt-6'}`}>
-        <div className="max-w-6xl mx-auto px-4 py-4">
+        <div className="max-w-6xl mx-auto px-4 py-4 pl-[15px] pr-[15px] pt-[0px] pb-[0px]">
           {activeTab === 'dashboard' && (
             <>
               <div className="fade-in-up">
