@@ -209,7 +209,7 @@ export function AIPredictionsDashboard() {
             <p className="subheading text-white/70 text-center">
               {isAIActive ? "30-day price forecasts powered by OpenAI GPT-4o" : "Economic analysis with algorithmic predictions"}
             </p>
-            <div className="mt-2">
+            <div className="mt-2 flex items-center gap-3">
               <div className={`inline-flex items-center px-3 py-1 rounded-full ${
                 isAIActive 
                   ? 'bg-emerald-500/20 border border-emerald-500/30' 
@@ -224,6 +224,10 @@ export function AIPredictionsDashboard() {
                   {isAIActive ? 'AI Mode Active' : 'Economic Mode Active'}
                 </span>
               </div>
+              <Button className="btn-coral text-xs px-2 py-1">
+                <Settings className="w-3 h-3 mr-1" />
+                Preferences
+              </Button>
             </div>
             
             {/* AI Transparency Section - Futuristic Glass Style */}
@@ -252,12 +256,6 @@ export function AIPredictionsDashboard() {
               </div>
             </div>
           </div>
-        </div>
-        <div className="flex justify-end sm:justify-end">
-          <Button className="btn-coral text-sm px-3 py-2">
-            <Settings className="w-3 h-3 mr-2" />
-            Preferences
-          </Button>
         </div>
       </div>
       {/* Monthly Savings Summary */}
