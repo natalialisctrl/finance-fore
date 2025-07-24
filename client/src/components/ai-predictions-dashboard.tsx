@@ -209,7 +209,7 @@ export function AIPredictionsDashboard() {
             <h2 className="headline text-white text-center ml-[10px] mr-[10px] mt-[-7px] mb-[-7px] pl-[-5px] pr-[-5px] pt-[6px] pb-[6px]">
               AI Predictions & Smart Buy Scores
             </h2>
-            <p className="subheading text-white/70">
+            <p className="subheading text-white/70 text-center">
               {isAIActive ? "30-day price forecasts powered by OpenAI GPT-4o" : "Economic analysis with algorithmic predictions"}
             </p>
             <div className="mt-2">
