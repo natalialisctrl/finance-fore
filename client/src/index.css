@@ -37,37 +37,38 @@
   }
 
   .dark {
-    /* Foresee Brand Colors - Dark Navy Theme */
-    --background: 213 27% 15%;          /* Deep navy #1a2332 */
+    /* Three-Color Navy Theme from Image */
+    --background: 213 35% 12%;          /* Deep navy background #1a1f2e */
     --foreground: 0 0% 98%;             /* Pure white text */
-    --card: 213 25% 18%;                /* Slightly lighter navy for cards */
+    --card: 213 30% 16%;                /* Card navy #252b3a */
     --card-foreground: 0 0% 98%;        /* White text on cards */
-    --popover: 213 25% 18%;
+    --popover: 213 30% 16%;
     --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%;                /* White primary */
-    --primary-foreground: 213 27% 15%;  /* Navy on primary */
-    --secondary: 213 20% 25%;           /* Medium navy */
+    --primary-foreground: 213 35% 12%;  /* Navy on primary */
+    --secondary: 213 25% 22%;           /* Medium navy accent #353c4a */
     --secondary-foreground: 0 0% 98%;   /* White on secondary */
-    --muted: 213 20% 25%;               /* Medium navy for muted */
+    --muted: 213 25% 22%;               /* Medium navy for muted */
     --muted-foreground: 213 10% 65%;    /* Light gray text */
     --accent: 6 78% 57%;                /* Coral accent #e74c3c */
     --accent-foreground: 0 0% 98%;      /* White on coral */
-    --destructive: 0 84.2% 60.2%;       /* Red for destructive */
+    --destructive: 6 78% 57%;           /* Coral for destructive */
     --destructive-foreground: 0 0% 98%;
-    --border: 213 20% 25%;              /* Medium navy borders */
-    --input: 213 20% 25%;               /* Medium navy inputs */
+    --border: 213 25% 22%;              /* Medium navy borders */
+    --input: 213 25% 22%;               /* Medium navy inputs */
     --ring: 6 78% 57%;                  /* Coral focus rings */
     
-    /* Foresee Chart Colors - Dark Theme */
-    --chart-1: 6 78% 57%;    /* Coral primary */
-    --chart-2: 213 70% 60%;  /* Medium blue */
-    --chart-3: 213 50% 45%;  /* Darker blue */
-    --chart-4: 6 65% 45%;    /* Darker coral */
-    --chart-5: 213 30% 35%;  /* Very dark blue */
+    /* Three-Color Chart Theme */
+    --chart-1: 6 78% 57%;     /* Coral primary #e74c3c */
+    --chart-2: 213 35% 12%;   /* Deep navy #1a1f2e */
+    --chart-3: 213 25% 22%;   /* Medium navy #353c4a */
+    --chart-4: 6 65% 45%;     /* Darker coral */
+    --chart-5: 213 30% 16%;   /* Card navy */
     
-    /* Foresee Futuristic Colors */
-    --gold-gradient: linear-gradient(135deg, #ffd700 0%, #fff8dc 50%, #f0e68c 100%);
-    --champagne-gold: 45 100% 84%;      /* Champagne gold #f5deb3 */
+    /* Simplified Futuristic Colors */
+    --coral-primary: 6 78% 57%;         /* Coral #e74c3c */
+    --navy-deep: 213 35% 12%;           /* Deep navy #1a1f2e */
+    --navy-medium: 213 25% 22%;         /* Medium navy #353c4a */
   }
 }
 
@@ -271,6 +272,61 @@ body {
   animation: spin 1s linear infinite;
 }
 
+/* Three-Color Gradient Effects */
+.gradient-coral {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-coral-navy {
+  background: linear-gradient(135deg, #e74c3c 0%, #353c4a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-navy {
+  background: linear-gradient(135deg, #353c4a 0%, #1a1f2e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Simplified Glow Effects */
+.glow-border {
+  border: 1px solid rgba(53, 60, 74, 0.3);
+  box-shadow: 0 0 20px rgba(53, 60, 74, 0.1);
+}
+
+.glow-border-coral {
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  box-shadow: 0 0 20px rgba(231, 76, 60, 0.1);
+}
+
+/* Glass Card Effects */
+.glass-card {
+  background: rgba(37, 43, 58, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+}
+
+/* Pulse Metrics Animation */
+.pulse-metric {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    text-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
+  }
+  50% { 
+    text-shadow: 0 0 20px rgba(231, 76, 60, 0.8), 0 0 30px rgba(231, 76, 60, 0.4);
+  }
+}
+
 /* Gradient text effect */
 .gradient-text {
   background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--primary)) 100%);
@@ -332,40 +388,8 @@ body {
   box-shadow: inset 0 0 20px rgba(239, 68, 68, 0.1);
 }
 
-/* Futuristic Gradient Text Effects */
-.gradient-gold {
-  background: linear-gradient(135deg, #ffd700 0%, #fff8dc 50%, #f0e68c 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-}
-
-.gradient-coral-gold {
-  background: linear-gradient(135deg, hsl(var(--accent)) 0%, #ffd700 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Pulse animations for metrics */
-.pulse-metric {
-  animation: pulseMetric 2s ease-in-out infinite;
-}
-
-@keyframes pulseMetric {
-  0%, 100% { 
-    transform: scale(1); 
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-  }
-  50% { 
-    transform: scale(1.05); 
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
-  }
-}
-
-/* Glow border for key elements */
-.glow-border {
+/* Updated Glow Border */
+.glow-border-gold {
   border: 1px solid rgba(231, 76, 60, 0.3);
   box-shadow: 
     0 0 20px rgba(231, 76, 60, 0.2),

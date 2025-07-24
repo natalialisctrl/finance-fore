@@ -46,7 +46,7 @@ export function MobileGoalsDebt() {
                 <span className="subheading text-white text-lg">Emergency Vault</span>
               </div>
               <div className="flex items-center space-x-3">
-                <div className="text-base font-bold gradient-gold font-mono">35.0%</div>
+                <div className="text-base font-bold gradient-coral font-mono">35.0%</div>
                 <Activity className="w-4 h-4 text-green-400 animate-pulse" />
               </div>
             </div>
@@ -79,7 +79,7 @@ export function MobileGoalsDebt() {
                 <span className="subheading text-white text-lg">Adventure Fund</span>
               </div>
               <div className="flex items-center space-x-3">
-                <div className="text-base font-bold gradient-coral-gold font-mono">24.0%</div>
+                <div className="text-base font-bold gradient-coral-navy font-mono">24.0%</div>
                 <Waves className="w-4 h-4 text-blue-400 animate-bounce" />
               </div>
             </div>

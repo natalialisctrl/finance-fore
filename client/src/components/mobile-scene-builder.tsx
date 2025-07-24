@@ -38,7 +38,7 @@ export function MobileSceneBuilder() {
             <div className="absolute top-1 right-1">
               <Activity className="w-3 h-3 text-[#e74c3c] animate-pulse" />
             </div>
-            <div className="text-lg font-bold gradient-gold pulse-metric">2</div>
+            <div className="text-lg font-bold gradient-coral pulse-metric">2</div>
             <div className="text-xs text-white/70">Neural Scenes</div>
             <div className="text-xs text-green-400 mt-1">●  Processing</div>
           </div>
@@ -46,7 +46,7 @@ export function MobileSceneBuilder() {
             <div className="absolute top-1 right-1">
               <Waves className="w-3 h-3 text-[#f39c12] animate-bounce" />
             </div>
-            <div className="text-lg font-bold gradient-coral-gold pulse-metric">$23.7K</div>
+            <div className="text-lg font-bold gradient-coral-navy pulse-metric">$23.7K</div>
             <div className="text-xs text-white/70">Quantum Saved</div>
             <div className="text-xs text-blue-400 mt-1">● +2.3% today</div>
           </div>
@@ -54,7 +54,7 @@ export function MobileSceneBuilder() {
             <div className="absolute top-1 right-1">
               <Zap className="w-3 h-3 text-[#e74c3c] animate-pulse" />
             </div>
-            <div className="text-lg font-bold gradient-gold pulse-metric">$740</div>
+            <div className="text-lg font-bold gradient-coral pulse-metric">$740</div>
             <div className="text-xs text-white/70">AI Target</div>
             <div className="text-xs text-yellow-400 mt-1">● Optimized</div>
           </div>
@@ -113,7 +113,7 @@ export function MobileSceneBuilder() {
               <div className="absolute top-1 right-1">
                 <Cpu className="w-3 h-3 text-cyan-400 animate-spin" />
               </div>
-              <div className="font-bold gradient-gold text-base">$290</div>
+              <div className="font-bold gradient-coral text-base">$290</div>
               <div className="text-blue-200 text-xs">Neural Target</div>
               <div className="text-xs text-cyan-300 mt-1">● AI Optimized</div>
             </div>
@@ -121,7 +121,7 @@ export function MobileSceneBuilder() {
               <div className="absolute top-1 right-1">
                 <Waves className="w-3 h-3 text-pink-400 animate-bounce" />
               </div>
-              <div className="font-bold gradient-coral-gold text-base">22mo</div>
+              <div className="font-bold gradient-coral-navy text-base">22mo</div>
               <div className="text-purple-200 text-xs">Quantum Time</div>
               <div className="text-xs text-pink-300 mt-1">● Accelerating</div>
             </div>
@@ -180,7 +180,7 @@ export function MobileSceneBuilder() {
               <div className="absolute top-1 right-1">
                 <Cpu className="w-3 h-3 text-emerald-400 animate-spin" />
               </div>
-              <div className="font-bold gradient-gold text-base">$450</div>
+              <div className="font-bold gradient-coral text-base">$450</div>
               <div className="text-green-200 text-xs">Quantum Goal</div>
               <div className="text-xs text-emerald-300 mt-1">● Accelerated</div>
             </div>
@@ -188,7 +188,7 @@ export function MobileSceneBuilder() {
               <div className="absolute top-1 right-1">
                 <Waves className="w-3 h-3 text-orange-400 animate-bounce" />
               </div>
-              <div className="font-bold gradient-coral-gold text-base">36mo</div>
+              <div className="font-bold gradient-coral-navy text-base">36mo</div>
               <div className="text-orange-200 text-xs">Neural Time</div>
               <div className="text-xs text-orange-300 mt-1">● Optimizing</div>
             </div>
