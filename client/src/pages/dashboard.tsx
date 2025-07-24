@@ -173,33 +173,56 @@ export default function Dashboard() {
   }, [isAuthenticated, isLoading, toast]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#051421] via-[#051421] to-[#051421]">
-      {/* Foresee Background Pattern */}
-      <div className="fixed inset-0 z-0 opacity-10">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#fc304ed6]/20 to-transparent animate-pulse"></div>
-        <div className="absolute top-0 left-0 w-full h-full">
-          {/* Floating geometric shapes */}
-          <div className="absolute top-20 left-10 w-4 h-4 bg-[#fc304ed6]/20 rounded-full float-1"></div>
-          <div className="absolute top-40 right-20 w-6 h-6 border border-[#fc304ed6]/30 rounded-sm float-2"></div>
-          <div className="absolute bottom-40 left-1/4 w-3 h-3 bg-[#fc304ed6]/25 rotate-45 float-3"></div>
-          <div className="absolute bottom-20 right-1/3 w-5 h-5 border border-[#fc304ed6]/20 rounded-full float-4"></div>
+    <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-black overflow-hidden">
+      {/* Advanced Neural Network Background */}
+      <div className="fixed inset-0 z-0">
+        {/* Primary quantum field */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#fc304ed6]/5 via-transparent to-[#d4c4a0]/5 animate-pulse"></div>
+        
+        {/* Floating quantum particles */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-[#fc304ed6] rounded-full animate-ping opacity-20"></div>
+          <div className="absolute top-3/4 right-1/3 w-1 h-1 bg-[#d4c4a0] rounded-full animate-pulse opacity-30 delay-500"></div>
+          <div className="absolute bottom-1/4 left-1/2 w-1 h-1 bg-white rounded-full animate-ping opacity-10 delay-1000"></div>
+          <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-[#fc304ed6]/40 rounded-full animate-pulse opacity-25 delay-1500"></div>
+          <div className="absolute bottom-1/3 left-1/3 w-1 h-1 bg-[#d4c4a0] rounded-full animate-ping opacity-20 delay-2000"></div>
+        </div>
+        
+        {/* Data stream lines */}
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-1/4 w-[1px] h-full bg-gradient-to-b from-transparent via-[#fc304ed6]/20 to-transparent animate-pulse"></div>
+          <div className="absolute top-0 right-1/3 w-[1px] h-full bg-gradient-to-b from-transparent via-[#d4c4a0]/15 to-transparent animate-pulse delay-700"></div>
         </div>
       </div>
       {/* Main Dashboard Content */}
       <div className="relative z-10">
-        {/* Dashboard Header */}
-        <header className="border-b border-white/10 backdrop-blur-md bg-black/20 sticky top-0 z-40">
-          <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-            <ForeseeLogo size="md" className="text-white" />
+        {/* Quantum Navigation Header */}
+        <header className="relative border-b border-white/10 backdrop-blur-3xl bg-gradient-to-r from-black/40 via-slate-900/20 to-black/40 sticky top-0 z-40 overflow-hidden">
+          {/* Header particle effects */}
+          <div className="absolute inset-0 opacity-30">
+            <div className="absolute top-1/2 left-10 w-1 h-1 bg-[#fc304ed6] rounded-full animate-ping"></div>
+            <div className="absolute top-1/2 right-10 w-1 h-1 bg-[#d4c4a0] rounded-full animate-pulse delay-500"></div>
+          </div>
+          
+          <div className="relative container mx-auto px-6 py-5 flex justify-between items-center">
+            <div className="flex items-center gap-4">
+              <ForeseeLogo size="md" className="text-white" />
+              <div className="w-[1px] h-8 bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
+              <div className="text-sm text-[#d4c4a0] font-mono opacity-80">
+                Neural Financial Intelligence
+              </div>
+            </div>
+            
             <div className="flex items-center space-x-4">
-              
               <Button 
                 onClick={() => window.location.href = '/api/logout'}
-                variant="outline"
-                className="border-white/30 text-white hover:bg-white/10 pl-[0px] pr-[0px]"
+                className="group relative bg-gradient-to-r from-[#fc304ed6]/80 via-[#d4c4a0]/60 to-[#fc304ed6]/80 text-white font-medium px-6 py-2 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_30px_rgba(252,48,77,0.3)] border border-white/20"
               >
-                <LogOut className="w-4 h-4 mr-2" />
-                Logout
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                <div className="relative flex items-center">
+                  <LogOut className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
+                  Neural Disconnect
+                </div>
               </Button>
             </div>
           </div>
@@ -207,41 +230,60 @@ export default function Dashboard() {
 
 
 
-        {/* Foresee Navigation Tabs */}
-        <div className="relative z-50 mx-4 mt-4 mb-6">
-          <div className="foresee-card bg-black/30 backdrop-blur-xl border-white/10 rounded-xl p-2">
-            <div className="flex space-x-1">
+        {/* Quantum Intelligence Navigation */}
+        <div className="relative z-50 mx-6 mt-6 mb-8">
+          <div className="relative glass-morphism p-3 rounded-2xl overflow-hidden group hover:neo-brutalism-card transition-all duration-500 border border-white/10">
+            {/* Navigation ambient glow */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#fc304ed6]/5 via-transparent to-[#d4c4a0]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+            
+            {/* Data stream indicators */}
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#fc304ed6]/50 to-transparent animate-[shimmer_3s_ease-in-out_infinite]"></div>
+            <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-l from-transparent via-[#d4c4a0]/50 to-transparent animate-[shimmer_3s_ease-in-out_infinite_reverse]"></div>
+            
+            <div className="relative flex space-x-2">
               {[
-                { id: 'dashboard', label: 'Home', icon: BarChart3, shortLabel: 'Home' },
-                { id: 'ai-predictions', label: 'AI Insights', icon: Brain, shortLabel: 'AI' },
-                { id: 'budget-goals', label: 'Budget & Goals', icon: Target, shortLabel: 'Goals' },
-                { id: 'planning', label: 'Smart Planning', icon: Calculator, shortLabel: 'Plan' },
-                { id: 'settings', label: 'Settings', icon: Bell, shortLabel: 'Set' }
-              ].map((tab) => (
+                { id: 'dashboard', label: 'Neural Core', icon: BarChart3, shortLabel: 'Core' },
+                { id: 'ai-predictions', label: 'AI Matrix', icon: Brain, shortLabel: 'AI' },
+                { id: 'budget-goals', label: 'Quantum Goals', icon: Target, shortLabel: 'Goals' },
+                { id: 'planning', label: 'Future Sync', icon: Calculator, shortLabel: 'Sync' },
+                { id: 'settings', label: 'Control Hub', icon: Bell, shortLabel: 'Hub' }
+              ].map((tab, index) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`relative flex-1 flex flex-col items-center py-2 px-2 rounded-lg transition-all duration-300 transform touch-manipulation ${
+                  className={`group relative flex-1 flex flex-col items-center py-3 px-3 rounded-xl transition-all duration-500 transform touch-manipulation animate-[fadeInUp_0.8s_ease-out] ${
                     activeTab === tab.id
-                      ? 'bg-accent-coral text-white scale-105 shadow-lg border border-white/20'
-                      : 'text-white/75 hover:text-white hover:bg-white/10'
+                      ? 'bg-gradient-to-br from-[#fc304ed6] via-[#d4c4a0]/80 to-[#fc304ed6] text-white scale-105 shadow-[0_10px_30px_rgba(252,48,77,0.4)] border border-white/30'
+                      : 'text-white/75 hover:text-white hover:bg-white/10 hover:scale-102 hover:shadow-[0_5px_20px_rgba(255,255,255,0.1)]'
                   }`}
                   style={{
-                    minHeight: '48px',
+                    minHeight: '56px',
                     touchAction: 'manipulation',
-                    WebkitTapHighlightColor: 'transparent'
+                    WebkitTapHighlightColor: 'transparent',
+                    animationDelay: `${index * 100}ms`
                   }}
                 >
-                  <tab.icon className={`mb-1 transition-all duration-200 ${
-                    activeTab === tab.id ? 'w-4 h-4 text-white' : 'w-4 h-4 text-white/80'
+                  {/* Active state shimmer effect */}
+                  {activeTab === tab.id && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 rounded-xl"></div>
+                  )}
+                  
+                  <tab.icon className={`mb-1 transition-all duration-300 ${
+                    activeTab === tab.id ? 'w-5 h-5 text-white animate-pulse' : 'w-4 h-4 text-white/80 group-hover:scale-110'
                   }`} />
-                  <span className={`text-xs font-medium leading-tight transition-all duration-200 ${
-                    activeTab === tab.id ? 'text-white' : 'text-white/85'
+                  <span className={`text-xs font-medium leading-tight transition-all duration-300 ${
+                    activeTab === tab.id ? 'text-white font-semibold' : 'text-white/85'
                   }`}>
                     {tab.shortLabel}
                   </span>
+                  
+                  {/* Quantum indicator for active tab */}
                   {activeTab === tab.id && (
-                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 flex items-center gap-1">
+                      <div className="w-1 h-1 bg-white rounded-full animate-ping"></div>
+                      <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                      <div className="w-1 h-1 bg-white rounded-full animate-ping delay-300"></div>
+                    </div>
                   )}
                 </button>
               ))}
@@ -249,20 +291,50 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Foresee Hero Section - Only show on Home tab */}
+        {/* Quantum Hero Matrix - Neural Core Tab */}
         {activeTab === 'dashboard' && (
-          <div className="relative z-40 max-w-6xl mx-auto px-4 py-6">
+          <div className="relative z-40 max-w-7xl mx-auto px-6 py-8">
             <div className="text-center">
               <div 
-                className={`headline text-white mb-4 fade-in ${titleSpinning ? 'spinning' : ''}`}
+                className={`relative group inline-block ${titleSpinning ? 'spinning' : ''}`}
                 onClick={handleTitleClick}
               >
-                Financial Foresight<br/>
-                <span className="accent-coral">in Real Time</span>
+                <h1 className="text-4xl md:text-6xl font-light tracking-tight text-white mb-6 fade-in leading-tight">
+                  <span className="bg-gradient-to-r from-white via-slate-200 to-white bg-clip-text text-transparent">
+                    Neural Financial
+                  </span>
+                  <br/>
+                  <span className="bg-gradient-to-r from-[#fc304ed6] via-[#d4c4a0] to-[#fc304ed6] bg-clip-text text-transparent animate-pulse">
+                    Intelligence Matrix
+                  </span>
+                </h1>
+                
+                {/* Quantum field around title */}
+                <div className="absolute -inset-4 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                  <div className="absolute top-0 left-0 w-2 h-2 bg-[#fc304ed6] rounded-full animate-ping"></div>
+                  <div className="absolute top-0 right-0 w-1 h-1 bg-[#d4c4a0] rounded-full animate-pulse delay-300"></div>
+                  <div className="absolute bottom-0 left-0 w-1 h-1 bg-white rounded-full animate-ping delay-500"></div>
+                  <div className="absolute bottom-0 right-0 w-2 h-2 bg-[#fc304ed6] rounded-full animate-pulse delay-700"></div>
+                </div>
               </div>
-              <p className="subheading text-white/80 max-w-2xl mx-auto mb-6 slide-up">
-                AI-powered predictions for your local economy. Make smarter decisions with real-time intelligence.
+              
+              <p className="text-lg text-[#d4c4a0] max-w-3xl mx-auto mb-8 slide-up font-light leading-relaxed opacity-90">
+                Advanced AI algorithms processing real-time economic data streams. 
+                <br className="hidden md:block" />
+                Quantum-powered predictions for intelligent financial decision making.
               </p>
+              
+              {/* Neural connection indicators */}
+              <div className="flex justify-center items-center gap-8 mb-8">
+                <div className="flex items-center gap-2 glass-morphism px-4 py-2 rounded-full">
+                  <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                  <span className="text-xs text-white/80 font-mono">NEURAL LINK ACTIVE</span>
+                </div>
+                <div className="flex items-center gap-2 glass-morphism px-4 py-2 rounded-full">
+                  <div className="w-2 h-2 bg-[#fc304ed6] rounded-full animate-ping"></div>
+                  <span className="text-xs text-white/80 font-mono">DATA STREAMING</span>
+                </div>
+              </div>
             </div>
 
             {/* Foresee Stats Cards with Futuristic Effects */}

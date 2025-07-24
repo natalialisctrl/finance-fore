@@ -199,47 +199,84 @@ export function AIPredictionsDashboard() {
   }
 
   return (
-    <div className="w-full px-2 sm:px-4 mb-8">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-        <div className="flex items-center space-x-2 sm:space-x-3 fade-in flex-1">
-          <div>
-            <h2 className="headline text-white text-center ml-[10px] mr-[10px] mt-[-7px] mb-[-7px] pl-[-5px] pr-[-5px] pt-[6px] pb-[6px]">
-              AI Predictions & Smart Buy Scores
+    <div className="w-full px-6 mb-12">
+      <div className="relative z-40 mb-8">
+        <div className="text-center">
+          <div className="relative group inline-block mb-6">
+            <h2 className="text-3xl md:text-4xl font-light tracking-tight text-white mb-4 leading-tight">
+              <span className="bg-gradient-to-r from-white via-slate-200 to-white bg-clip-text text-transparent">
+                AI Neural
+              </span>
+              <br/>
+              <span className="bg-gradient-to-r from-[#fc304ed6] via-[#d4c4a0] to-[#fc304ed6] bg-clip-text text-transparent animate-pulse">
+                Prediction Matrix
+              </span>
             </h2>
-            <p className="subheading text-white/70 text-center">
-              {isAIActive ? "30-day price forecasts powered by OpenAI GPT-4o" : "Economic analysis with algorithmic predictions"}
-            </p>
-            <div className="mt-2 flex items-center justify-center">
-              <Button className="btn-coral text-xs px-2 py-1">
-                <Settings className="w-3 h-3 mr-1" />
-                Preferences
-              </Button>
+            
+            {/* Quantum field indicators */}
+            <div className="absolute -inset-2 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+              <div className="absolute top-0 left-0 w-1 h-1 bg-[#fc304ed6] rounded-full animate-ping"></div>
+              <div className="absolute top-0 right-0 w-1 h-1 bg-[#d4c4a0] rounded-full animate-pulse delay-300"></div>
+              <div className="absolute bottom-0 left-0 w-1 h-1 bg-white rounded-full animate-ping delay-500"></div>
+              <div className="absolute bottom-0 right-0 w-1 h-1 bg-[#fc304ed6] rounded-full animate-pulse delay-700"></div>
+            </div>
+          </div>
+          
+          <p className="text-base text-[#d4c4a0] max-w-2xl mx-auto mb-6 font-light leading-relaxed opacity-90">
+            {isAIActive ? "Neural networks processing 30-day forecasts via OpenAI GPT-4o architecture" : "Quantum algorithms analyzing economic data patterns and market trends"}
+          </p>
+          
+          {/* Neural interface controls */}
+          <div className="flex justify-center items-center gap-6 mb-8">
+            <div className="flex items-center gap-2 glass-morphism px-4 py-2 rounded-full">
+              <div className={`w-2 h-2 rounded-full animate-pulse ${isAIActive ? 'bg-emerald-400' : 'bg-amber-400'}`}></div>
+              <span className="text-xs text-white/80 font-mono">
+                {isAIActive ? 'AI NEURAL ACTIVE' : 'QUANTUM PROCESSING'}
+              </span>
+            </div>
+            <Button className="group relative bg-gradient-to-r from-[#fc304ed6]/80 via-[#d4c4a0]/60 to-[#fc304ed6]/80 text-white font-medium px-4 py-2 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_30px_rgba(252,48,77,0.3)] border border-white/20">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+              <div className="relative flex items-center">
+                <Settings className="w-4 h-4 mr-2 group-hover:rotate-90 transition-transform duration-300" />
+                Neural Config
+              </div>
+            </Button>
+          </div>
+            
+          {/* Quantum Data Source Matrix */}
+          <div className="relative glass-morphism p-6 rounded-2xl overflow-hidden group hover:neo-brutalism-card transition-all duration-500 max-w-4xl mx-auto animate-[fadeInUp_0.8s_ease-out]">
+            {/* Background data streams */}
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#fc304ed6]/50 to-transparent animate-[shimmer_3s_ease-in-out_infinite]"></div>
+              <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-l from-transparent via-[#d4c4a0]/50 to-transparent animate-[shimmer_3s_ease-in-out_infinite_reverse]"></div>
             </div>
             
-            {/* AI Transparency Section - Futuristic Glass Style */}
-            <div className="mt-4 foresee-card bg-black/30 backdrop-blur-md border-white/10 glow-border-subtle p-3">
-              <h4 className="subheading text-white mb-2 flex items-center">
-                <div className="w-2 h-2 bg-gradient-to-r from-accent-coral to-gold rounded-full mr-2 pulse-glow"></div>
-                Data Sources & Transparency
-              </h4>
-              <div className="space-y-2">
-                <div className="flex items-center text-xs text-white/80">
-                  <div className="w-1.5 h-1.5 bg-accent-coral rounded-full mr-2 opacity-70"></div>
-                  <span>Economic data from Federal Reserve (FRED) API</span>
+            <h4 className="text-lg font-light bg-gradient-to-r from-white via-slate-200 to-[#d4c4a0] bg-clip-text text-transparent mb-4 flex items-center justify-center gap-3">
+              <div className="w-2 h-6 bg-gradient-to-b from-[#fc304ed6] to-[#d4c4a0] rounded-full animate-pulse"></div>
+              Neural Data Stream Sources
+            </h4>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                { label: "Economic Intelligence", value: "Federal Reserve (FRED) API", icon: "🏦" },
+                { label: "AI Processing Core", value: isAIActive ? 'OpenAI GPT-4o Neural Network' : 'Quantum Economic Algorithm', icon: "🧠" },
+                { label: "Market Data Points", value: "Ground Beef • Eggs • Milk • Bread • Gas • Rice", icon: "📊" },
+                { label: "Prediction Accuracy", value: "Algorithmic estimates for strategic planning", icon: "⚡" }
+              ].map((item, index) => (
+                <div key={index} className="group relative glass-morphism p-4 rounded-xl hover:neo-brutalism-card transition-all duration-300 animate-[fadeInUp_0.8s_ease-out]" style={{animationDelay: `${index * 100}ms`}}>
+                  <div className="flex items-start gap-3">
+                    <div className="text-lg">{item.icon}</div>
+                    <div className="flex-1">
+                      <div className="text-sm font-medium bg-gradient-to-r from-white to-slate-200 bg-clip-text text-transparent mb-1">
+                        {item.label}
+                      </div>
+                      <div className="text-xs text-[#d4c4a0] opacity-80 leading-relaxed">
+                        {item.value}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center text-xs text-white/80">
-                  <div className="w-1.5 h-1.5 bg-accent-coral rounded-full mr-2 opacity-70"></div>
-                  <span>{isAIActive ? 'AI predictions powered by OpenAI GPT-4o' : 'Algorithmic predictions from economic indicators'}</span>
-                </div>
-                <div className="flex items-center text-xs text-white/80">
-                  <div className="w-1.5 h-1.5 bg-accent-coral rounded-full mr-2 opacity-70"></div>
-                  <span>Price data: Ground Beef, Eggs, Milk, Bread, Gas, Rice</span>
-                </div>
-                <div className="flex items-center text-xs text-white/80">
-                  <div className="w-1.5 h-1.5 bg-accent-coral rounded-full mr-2 opacity-70"></div>
-                  <span>Predictions are estimates for planning purposes</span>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
@@ -248,16 +285,22 @@ export function AIPredictionsDashboard() {
       <div className="mb-8">
         <MonthlySavingsSummary predictions={predictions} />
       </div>
-      {/* Top Recommendations & Insights */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-6 mb-6">
-        {/* Smart Recommendations */}
-        <div className="foresee-card bg-black/40 backdrop-blur-md glow-border p-3 sm:p-6 scale-in">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="w-8 h-8 bg-gradient-to-br from-accent-coral to-gold rounded-lg flex items-center justify-center glow-pulse">
-              <Lightbulb className="w-4 h-4 text-white" />
+      {/* Neural Intelligence Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        {/* Quantum Recommendations Engine */}
+        <div className="relative glass-morphism p-6 rounded-2xl overflow-hidden group hover:neo-brutalism-card transition-all duration-500 animate-[fadeInUp_0.8s_ease-out]">
+          {/* Holographic effects */}
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute top-2 right-2 w-2 h-2 bg-[#fc304ed6] rounded-full animate-ping"></div>
+            <div className="absolute bottom-2 left-2 w-1 h-1 bg-[#d4c4a0] rounded-full animate-pulse delay-500"></div>
+          </div>
+          
+          <div className="relative flex items-center space-x-4 mb-6">
+            <div className="w-10 h-10 bg-gradient-to-br from-[#fc304ed6] via-[#d4c4a0] to-[#fc304ed6] rounded-xl flex items-center justify-center animate-[glowPulse_3s_ease-in-out_infinite] shadow-lg shadow-[#fc304ed6]/30">
+              <Lightbulb className="w-5 h-5 text-white" />
             </div>
-            <h3 className="headline-sm text-white">
-              Smart Recommendations
+            <h3 className="text-xl font-light bg-gradient-to-r from-white via-slate-200 to-[#d4c4a0] bg-clip-text text-transparent">
+              Neural Recommendations
             </h3>
           </div>
             
@@ -306,23 +349,31 @@ export function AIPredictionsDashboard() {
           </div>
         </div>
 
-        {/* Budget Optimization */}
-        <div className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold p-3 sm:p-6 scale-in" style={{ animationDelay: '0.2s' }}>
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="w-8 h-8 bg-gradient-to-br from-gold to-accent-coral rounded-lg flex items-center justify-center glow-pulse">
-              <DollarSign className="w-4 h-4 text-white" />
+        {/* Quantum Budget Optimization Engine */}
+        <div className="relative glass-morphism p-6 rounded-2xl overflow-hidden group hover:neo-brutalism-card transition-all duration-500 animate-[fadeInUp_0.8s_ease-out_200ms]">
+          {/* Holographic effects */}
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute top-2 left-2 w-1 h-1 bg-[#d4c4a0] rounded-full animate-pulse"></div>
+            <div className="absolute bottom-2 right-2 w-2 h-2 bg-[#fc304ed6] rounded-full animate-ping delay-300"></div>
+          </div>
+          
+          <div className="relative flex items-center space-x-4 mb-6">
+            <div className="w-10 h-10 bg-gradient-to-br from-[#d4c4a0] via-[#fc304ed6] to-[#d4c4a0] rounded-xl flex items-center justify-center animate-[glowPulse_3s_ease-in-out_infinite] shadow-lg shadow-[#d4c4a0]/30">
+              <DollarSign className="w-5 h-5 text-white" />
             </div>
-            <h3 className="headline-sm text-white">
-              Budget Optimization
+            <h3 className="text-xl font-light bg-gradient-to-r from-white via-slate-200 to-[#d4c4a0] bg-clip-text text-transparent">
+              Quantum Budget Engine
             </h3>
           </div>
             
-          <div className="space-y-4">
+          <div className="relative space-y-4">
             {personalizedRecs?.budgetOptimization && personalizedRecs.budgetOptimization.length > 0 ? 
               personalizedRecs.budgetOptimization.map((tip, index) => (
-                <div key={index} className="flex items-start space-x-3 foresee-card bg-black/20 border-white/10 p-3">
-                  <div className="w-2 h-2 bg-accent-coral rounded-full mt-2 pulse-glow"></div>
-                  <p className="text-xs text-white/90">{tip}</p>
+                <div key={index} className="group relative glass-morphism p-4 rounded-xl hover:neo-brutalism-card transition-all duration-300 animate-[fadeInUp_0.8s_ease-out]" style={{animationDelay: `${index * 100}ms`}}>
+                  <div className="flex items-start space-x-4">
+                    <div className="w-3 h-3 bg-gradient-to-br from-[#fc304ed6] to-[#d4c4a0] rounded-full mt-1 animate-pulse shadow-lg shadow-[#fc304ed6]/30"></div>
+                    <p className="text-sm text-white/90 leading-relaxed font-light">{tip}</p>
+                  </div>
                 </div>
               )) :
               // Fallback budget tips
@@ -331,31 +382,37 @@ export function AIPredictionsDashboard() {
                 "Stock up on eggs now - prices rising due to seasonal demand",
                 "Consider bulk buying rice - stable prices with good value"
               ].map((tip, index) => (
-                <div key={index} className="flex items-start space-x-3 foresee-card bg-black/20 border-white/10 p-3">
-                  <div className="w-2 h-2 bg-accent-coral rounded-full mt-2 pulse-glow"></div>
-                  <p className="text-xs text-white/90">{tip}</p>
+                <div key={index} className="group relative glass-morphism p-4 rounded-xl hover:neo-brutalism-card transition-all duration-300 animate-[fadeInUp_0.8s_ease-out]" style={{animationDelay: `${index * 100}ms`}}>
+                  <div className="flex items-start space-x-4">
+                    <div className="w-3 h-3 bg-gradient-to-br from-[#fc304ed6] to-[#d4c4a0] rounded-full mt-1 animate-pulse shadow-lg shadow-[#fc304ed6]/30"></div>
+                    <p className="text-sm text-white/90 leading-relaxed font-light">{tip}</p>
+                  </div>
                 </div>
               ))}
           </div>
 
-          <div className="mt-4 pt-4 border-t border-white/10">
-            <div className="flex items-center space-x-2 mb-3">
-              <div className="w-6 h-6 bg-gradient-to-br from-accent-coral to-gold rounded-lg flex items-center justify-center">
-                <Calendar className="w-3 h-3 text-white" />
+          <div className="mt-6 pt-6 border-t border-white/10">
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="w-8 h-8 bg-gradient-to-br from-[#fc304ed6] to-[#d4c4a0] rounded-xl flex items-center justify-center animate-pulse shadow-lg shadow-[#fc304ed6]/30">
+                <Calendar className="w-4 h-4 text-white" />
               </div>
-              <span className="subheading text-white">Timing Advice</span>
+              <span className="text-lg font-light bg-gradient-to-r from-white to-[#d4c4a0] bg-clip-text text-transparent">Neural Timing Matrix</span>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-3">
               {personalizedRecs?.timingAdvice && personalizedRecs.timingAdvice.length > 0 ? 
                 personalizedRecs.timingAdvice.slice(0, 2).map((advice, index) => (
-                  <p key={index} className="text-xs text-white/90 foresee-card bg-black/10 border-white/10 p-2">{advice}</p>
+                  <div key={index} className="group relative glass-morphism p-3 rounded-xl hover:neo-brutalism-card transition-all duration-300 animate-[fadeInUp_0.8s_ease-out]" style={{animationDelay: `${index * 100}ms`}}>
+                    <p className="text-sm text-white/90 leading-relaxed font-light">{advice}</p>
+                  </div>
                 )) :
                 // Fallback timing advice
                 [
                   "Best shopping day this week: Tuesday - avoid weekend price premiums",
                   "Gas prices peak in 7-10 days - fill up early if needed"
                 ].map((advice, index) => (
-                  <p key={index} className="text-xs text-white/90 foresee-card bg-black/10 border-white/10 p-2">{advice}</p>
+                  <div key={index} className="group relative glass-morphism p-3 rounded-xl hover:neo-brutalism-card transition-all duration-300 animate-[fadeInUp_0.8s_ease-out]" style={{animationDelay: `${index * 100}ms`}}>
+                    <p className="text-sm text-white/90 leading-relaxed font-light">{advice}</p>
+                  </div>
                 ))}
             </div>
           </div>

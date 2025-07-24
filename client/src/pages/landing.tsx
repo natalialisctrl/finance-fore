@@ -24,62 +24,119 @@ export default function Landing() {
     autoLogin();
   }, []);
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#051421] via-[#051421] to-[#051421]">
-      {/* Foresee Background Pattern */}
-      <div className="fixed inset-0 z-0 opacity-10">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#fc304ed6]/20 to-transparent animate-pulse"></div>
-        <div className="absolute top-0 left-0 w-full h-full">
-          {/* Floating geometric shapes */}
-          <div className="absolute top-20 left-10 w-4 h-4 bg-[#fc304ed6]/20 rounded-full float-1"></div>
-          <div className="absolute top-40 right-20 w-6 h-6 border border-[#fc304ed6]/30 rounded-sm float-2"></div>
-          <div className="absolute bottom-40 left-1/4 w-3 h-3 bg-[#fc304ed6]/25 rotate-45 float-3"></div>
-          <div className="absolute bottom-20 right-1/3 w-5 h-5 border border-[#fc304ed6]/20 rounded-full float-4"></div>
+    <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-black overflow-hidden">
+      {/* Advanced Neural Network Background */}
+      <div className="fixed inset-0 z-0">
+        {/* Primary quantum field */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#fc304ed6]/5 via-transparent to-[#d4c4a0]/5 animate-pulse"></div>
+        
+        {/* Floating quantum particles */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-[#fc304ed6] rounded-full animate-ping opacity-20"></div>
+          <div className="absolute top-3/4 right-1/3 w-1 h-1 bg-[#d4c4a0] rounded-full animate-pulse opacity-30 delay-500"></div>
+          <div className="absolute bottom-1/4 left-1/2 w-1 h-1 bg-white rounded-full animate-ping opacity-10 delay-1000"></div>
+          <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-[#fc304ed6]/40 rounded-full animate-pulse opacity-25 delay-1500"></div>
+          <div className="absolute bottom-1/3 left-1/3 w-1 h-1 bg-[#d4c4a0] rounded-full animate-ping opacity-20 delay-2000"></div>
+        </div>
+        
+        {/* Data stream lines */}
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-1/4 w-[1px] h-full bg-gradient-to-b from-transparent via-[#fc304ed6]/20 to-transparent animate-pulse"></div>
+          <div className="absolute top-0 right-1/3 w-[1px] h-full bg-gradient-to-b from-transparent via-[#d4c4a0]/15 to-transparent animate-pulse delay-700"></div>
         </div>
       </div>
 
       <div className="relative z-10">
-        {/* Header */}
-        <header className="border-b border-white/20 backdrop-blur-md bg-black/40 dark:bg-black/60">
-          <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-            <ForeseeLogo size="md" className="text-white" />
-            <div className="flex space-x-3">
+        {/* Quantum Navigation Header */}
+        <header className="relative border-b border-white/10 backdrop-blur-3xl bg-gradient-to-r from-black/40 via-slate-900/20 to-black/40 overflow-hidden">
+          {/* Header particle effects */}
+          <div className="absolute inset-0 opacity-30">
+            <div className="absolute top-1/2 left-10 w-1 h-1 bg-[#fc304ed6] rounded-full animate-ping"></div>
+            <div className="absolute top-1/2 right-10 w-1 h-1 bg-[#d4c4a0] rounded-full animate-pulse delay-500"></div>
+          </div>
+          
+          <div className="relative container mx-auto px-6 py-5 flex justify-between items-center">
+            <div className="flex items-center gap-4">
+              <ForeseeLogo size="md" className="text-white" />
+              <div className="w-[1px] h-8 bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
+              <div className="text-sm text-[#d4c4a0] font-mono opacity-80">
+                Neural Financial Intelligence
+              </div>
+            </div>
+            
+            <div className="flex space-x-4">
               <Button 
                 onClick={() => window.location.href = '/api/login'}
-                className="btn-coral shadow-lg hover:shadow-xl transition-all duration-300"
+                className="group relative bg-gradient-to-r from-[#fc304ed6]/80 via-[#d4c4a0]/60 to-[#fc304ed6]/80 text-white font-medium px-6 py-2 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_30px_rgba(252,48,77,0.3)] border border-white/20"
               >
-                Sign In
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                <div className="relative">Neural Connect</div>
               </Button>
               <Button 
-                variant="outline"
                 onClick={() => window.location.href = '/demo-login'}
-                className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
+                className="group relative glass-morphism text-white font-medium px-6 py-2 rounded-xl transition-all duration-300 hover:scale-105 hover:neo-brutalism-card border border-white/20"
               >
-                Demo Login
+                Demo Matrix
               </Button>
             </div>
           </div>
         </header>
 
-        {/* Hero Section */}
-        <section className="py-20">
-          <div className="container mx-auto px-4 text-center">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="headline text-white mb-6">
-                Financial Foresight<br/>
-                <span className="accent-coral">in an Uncertain Economy</span>
-              </h2>
-              <p className="subheading text-white/80 mb-8 leading-relaxed">
-                AI-powered predictions for your local economy, from gas prices to groceries.
-                Make smarter purchasing decisions with real-time economic intelligence.
+        {/* Quantum Hero Matrix */}
+        <section className="py-24">
+          <div className="container mx-auto px-6 text-center">
+            <div className="max-w-6xl mx-auto">
+              <div className="relative group inline-block mb-8">
+                <h1 className="text-5xl md:text-7xl font-light tracking-tight text-white mb-6 leading-tight">
+                  <span className="bg-gradient-to-r from-white via-slate-200 to-white bg-clip-text text-transparent">
+                    Neural Financial
+                  </span>
+                  <br/>
+                  <span className="bg-gradient-to-r from-[#fc304ed6] via-[#d4c4a0] to-[#fc304ed6] bg-clip-text text-transparent animate-pulse">
+                    Intelligence Matrix
+                  </span>
+                </h1>
+                
+                {/* Quantum field around title */}
+                <div className="absolute -inset-6 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                  <div className="absolute top-0 left-0 w-2 h-2 bg-[#fc304ed6] rounded-full animate-ping"></div>
+                  <div className="absolute top-0 right-0 w-1 h-1 bg-[#d4c4a0] rounded-full animate-pulse delay-300"></div>
+                  <div className="absolute bottom-0 left-0 w-1 h-1 bg-white rounded-full animate-ping delay-500"></div>
+                  <div className="absolute bottom-0 right-0 w-2 h-2 bg-[#fc304ed6] rounded-full animate-pulse delay-700"></div>
+                </div>
+              </div>
+              
+              <p className="text-xl text-[#d4c4a0] max-w-4xl mx-auto mb-12 font-light leading-relaxed opacity-90">
+                Advanced AI algorithms processing real-time economic data streams for intelligent financial decision making.
+                <br className="hidden md:block" />
+                Quantum-powered predictions for your local economy, from gas prices to groceries.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <div className="text-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#fc304ed6] mx-auto mb-4"></div>
-                  <p className="text-lg text-white/90">
-                    Preparing your economic dashboard...
+              
+              {/* Neural connection indicators */}
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-8 mb-12">
+                <div className="flex items-center gap-2 glass-morphism px-6 py-3 rounded-full">
+                  <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                  <span className="text-sm text-white/80 font-mono">AI NEURAL ACTIVE</span>
+                </div>
+                <div className="flex items-center gap-2 glass-morphism px-6 py-3 rounded-full">
+                  <div className="w-2 h-2 bg-[#fc304ed6] rounded-full animate-ping"></div>
+                  <span className="text-sm text-white/80 font-mono">DATA STREAMING</span>
+                </div>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                <div className="text-center relative glass-morphism p-8 rounded-2xl max-w-md mx-auto">
+                  <div className="relative">
+                    <div className="animate-spin rounded-full h-12 w-12 border-2 border-transparent border-t-[#fc304ed6] border-r-[#d4c4a0] mx-auto mb-6"></div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-6 h-6 bg-gradient-to-br from-[#fc304ed6] to-[#d4c4a0] rounded-full animate-pulse"></div>
+                    </div>
+                  </div>
+                  <p className="text-lg text-white font-light mb-2">
+                    Initializing Neural Matrix...
                   </p>
-                  <p className="text-sm text-white/60 mt-2">
-                    Loading personalized insights for Natalia
+                  <p className="text-sm text-[#d4c4a0] opacity-80">
+                    Preparing quantum financial insights for Natalia
                   </p>
                 </div>
               </div>
@@ -87,84 +144,83 @@ export default function Landing() {
           </div>
         </section>
 
-        {/* Features Grid */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <h3 className="subheading text-center mb-12 text-white">
-              Beyond Budgeting — Economic Intelligence for Your Daily Life
-            </h3>
+        {/* Quantum Neural Features Matrix */}
+        <section className="py-24">
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-16">
+              <h3 className="text-3xl md:text-4xl font-light text-white mb-6">
+                <span className="bg-gradient-to-r from-white via-slate-200 to-white bg-clip-text text-transparent">
+                  Beyond Traditional Budgeting
+                </span>
+                <br/>
+                <span className="bg-gradient-to-r from-[#fc304ed6] via-[#d4c4a0] to-[#fc304ed6] bg-clip-text text-transparent">
+                  Neural Economic Intelligence
+                </span>
+              </h3>
+              <p className="text-lg text-[#d4c4a0] max-w-3xl mx-auto opacity-90 font-light">
+                Advanced AI systems processing real-time economic data for intelligent financial decision making
+              </p>
+            </div>
+            
             <div className="grid md:grid-cols-3 gap-8">
-              <Card className="foresee-card bg-black/40 backdrop-blur-md border-white/10 text-white">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-lg bg-accent-coral flex items-center justify-center mb-4">
-                    <Brain className="w-6 h-6 text-white" />
+              {[
+                {
+                  icon: Brain,
+                  title: "AI Neural Predictions",
+                  description: "Quantum algorithms analyzing inflation, GDP, and consumer price index to forecast local market trends with unprecedented accuracy",
+                  gradient: "from-[#fc304ed6] to-[#d4c4a0]"
+                },
+                {
+                  icon: TrendingUp,
+                  title: "Economic Intelligence Matrix",
+                  description: "Real-time processing of Federal Reserve data streams combined with neural network analysis for hyper-local price predictions",
+                  gradient: "from-[#d4c4a0] to-[#fc304ed6]"
+                },
+                {
+                  icon: Calculator,
+                  title: "Quantum Budget Engine",
+                  description: "Advanced budget optimization with velocity tracking and category-based neural recommendations for maximum efficiency",
+                  gradient: "from-purple-500 to-indigo-600"
+                },
+                {
+                  icon: ShoppingCart,
+                  title: "Neural Shopping Matrix",
+                  description: "Optimal purchase timing algorithms with automated price alerts and market volatility predictions",
+                  gradient: "from-emerald-500 to-teal-600"
+                },
+                {
+                  icon: Target,
+                  title: "Personalized AI Insights",
+                  description: "Hyper-personalized recommendations powered by machine learning analysis of spending patterns and financial behavior",
+                  gradient: "from-indigo-500 to-purple-600"
+                },
+                {
+                  icon: DollarSign,
+                  title: "Savings Intelligence Hub",
+                  description: "Advanced analytics tracking with predictive monthly projections and quantum financial optimization strategies",
+                  gradient: "from-pink-500 to-rose-600"
+                }
+              ].map((feature, index) => (
+                <div key={index} className="group relative glass-morphism p-8 rounded-2xl overflow-hidden hover:neo-brutalism-card transition-all duration-500 animate-[fadeInUp_0.8s_ease-out]" style={{animationDelay: `${index * 100}ms`}}>
+                  {/* Holographic effects */}
+                  <div className="absolute inset-0 opacity-10">
+                    <div className="absolute top-2 right-2 w-1 h-1 bg-[#fc304ed6] rounded-full animate-ping"></div>
+                    <div className="absolute bottom-2 left-2 w-1 h-1 bg-[#d4c4a0] rounded-full animate-pulse delay-500"></div>
                   </div>
-                  <CardTitle className="text-xl text-white">AI Price Predictions</CardTitle>
-                  <CardDescription className="text-white/70">
-                    Using data on inflation, GDP, and the consumer price index, the app forecasts grocery and gas prices in your area.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-
-              <Card className="foresee-card bg-black/40 backdrop-blur-md border-white/10 text-white">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-lg bg-[#4a90e2] flex items-center justify-center mb-4">
-                    <TrendingUp className="w-6 h-6 text-white" />
+                  
+                  <div className="relative">
+                    <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-[#fc304ed6]/20`}>
+                      <feature.icon className="w-7 h-7 text-white" />
+                    </div>
+                    <h4 className="text-xl font-light text-white mb-4 bg-gradient-to-r from-white to-slate-200 bg-clip-text text-transparent">
+                      {feature.title}
+                    </h4>
+                    <p className="text-sm text-[#d4c4a0] opacity-80 leading-relaxed font-light">
+                      {feature.description}
+                    </p>
                   </div>
-                  <CardTitle className="text-xl text-white">Local Economic Intelligence</CardTitle>
-                  <CardDescription className="text-white/70">
-                    Utilizing inflation data, GDP, consumer price index, and AI, our app predicts local prices.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-
-              <Card className="bg-white/70 dark:bg-black/30 backdrop-blur-md border-white/20 hover:shadow-xl transition-all duration-300 hover:scale-105">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center mb-4">
-                    <Calculator className="w-6 h-6 text-white" />
-                  </div>
-                  <CardTitle className="text-xl">Smart Budgeting</CardTitle>
-                  <CardDescription>
-                    Intelligent budget tracking with spending velocity and category-based recommendations
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-
-              <Card className="bg-white/70 dark:bg-black/30 backdrop-blur-md border-white/20 hover:shadow-xl transition-all duration-300 hover:scale-105">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center mb-4">
-                    <ShoppingCart className="w-6 h-6 text-white" />
-                  </div>
-                  <CardTitle className="text-xl">Smart Shopping</CardTitle>
-                  <CardDescription>
-                    Optimal purchase timing recommendations and automated price alerts
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-
-              <Card className="bg-white/70 dark:bg-black/30 backdrop-blur-md border-white/20 hover:shadow-xl transition-all duration-300 hover:scale-105">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-indigo-500 to-indigo-600 flex items-center justify-center mb-4">
-                    <Target className="w-6 h-6 text-white" />
-                  </div>
-                  <CardTitle className="text-xl">Personalized Insights</CardTitle>
-                  <CardDescription>
-                    Tailored recommendations based on your spending patterns and financial goals
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-
-              <Card className="bg-white/70 dark:bg-black/30 backdrop-blur-md border-white/20 hover:shadow-xl transition-all duration-300 hover:scale-105">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-pink-500 to-pink-600 flex items-center justify-center mb-4">
-                    <DollarSign className="w-6 h-6 text-white" />
-                  </div>
-                  <CardTitle className="text-xl">Savings Tracking</CardTitle>
-                  <CardDescription>
-                    Track your savings with detailed analytics and projected monthly totals
-                  </CardDescription>
-                </CardHeader>
-              </Card>
+                </div>
+              ))}
             </div>
           </div>
         </section>
