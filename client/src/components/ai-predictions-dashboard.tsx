@@ -210,20 +210,6 @@ export function AIPredictionsDashboard() {
               {isAIActive ? "30-day price forecasts powered by OpenAI GPT-4o" : "Economic analysis with algorithmic predictions"}
             </p>
             <div className="mt-2 flex items-center gap-3">
-              <div className={`inline-flex items-center px-3 py-1 rounded-full ${
-                isAIActive 
-                  ? 'bg-emerald-500/20 border border-emerald-500/30' 
-                  : 'bg-amber-500/20 border border-amber-500/30'
-              }`}>
-                <Brain className="w-3 h-3 mr-1" />
-                <span className={`text-xs font-medium ${
-                  isAIActive 
-                    ? 'text-emerald-600 dark:text-emerald-400' 
-                    : 'text-amber-600 dark:text-amber-400'
-                }`}>
-                  {isAIActive ? 'AI Mode Active' : 'Economic Mode Active'}
-                </span>
-              </div>
               <Button className="btn-coral text-xs px-2 py-1">
                 <Settings className="w-3 h-3 mr-1" />
                 Preferences
