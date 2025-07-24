@@ -333,10 +333,10 @@ export function BudgetTracker() {
                         <stop offset="50%" stopColor="#3b82f6" />
                         <stop offset="100%" stopColor="#2563eb" />
                       </linearGradient>
-                      <linearGradient id="pink3D" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#f472b6" />
-                        <stop offset="50%" stopColor="#ec4899" />
-                        <stop offset="100%" stopColor="#db2777" />
+                      <linearGradient id="darkgreen3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#22c55e" />
+                        <stop offset="50%" stopColor="#166534" />
+                        <stop offset="100%" stopColor="#14532d" />
                       </linearGradient>
                       <linearGradient id="cyan3D" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stopColor="#22d3ee" />
@@ -365,7 +365,7 @@ export function BudgetTracker() {
                         remaining: budget.budgetAmount - budget.spentAmount,
                         fill: [
                           'url(#coral3D)', 'url(#champagne3D)', 'url(#navy3D)', 'url(#gold3D)', 'url(#emerald3D)',
-                          'url(#purple3D)', 'url(#orange3D)', 'url(#blue3D)', 'url(#pink3D)', 'url(#cyan3D)'
+                          'url(#purple3D)', 'url(#orange3D)', 'url(#blue3D)', 'url(#darkgreen3D)', 'url(#cyan3D)'
                         ][index % 10]
                       }))}
                       cx="50%"
@@ -387,7 +387,7 @@ export function BudgetTracker() {
                           key={`cell-${index}`} 
                           fill={[
                             'url(#coral3D)', 'url(#champagne3D)', 'url(#navy3D)', 'url(#gold3D)', 'url(#emerald3D)',
-                            'url(#purple3D)', 'url(#orange3D)', 'url(#blue3D)', 'url(#pink3D)', 'url(#cyan3D)'
+                            'url(#purple3D)', 'url(#orange3D)', 'url(#blue3D)', 'url(#darkgreen3D)', 'url(#cyan3D)'
                           ][index % 10]}
                           stroke="rgba(255, 255, 255, 0.1)"
                           strokeWidth={2}
