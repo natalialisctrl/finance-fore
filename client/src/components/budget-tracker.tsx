@@ -429,8 +429,7 @@ export function BudgetTracker() {
                       itemStyle={{
                         color: '#d1d5db',
                         fontSize: '13px',
-                        fontWeight: '500',
-                        padding: '2px 0'
+                        fontWeight: '500'
                       }}
                       cursor={{ fill: 'rgba(252, 48, 77, 0.1)' }}
                     />
@@ -456,7 +455,7 @@ export function BudgetTracker() {
                   { bg: '#9333ea', name: 'Purple', glow: 'shadow-purple' },
                   { bg: '#f97316', name: 'Orange', glow: 'shadow-orange' },
                   { bg: '#3b82f6', name: 'Blue', glow: 'shadow-blue' },
-                  { bg: '#ec4899', name: 'Pink', glow: 'shadow-pink' },
+                  { bg: '#166534', name: 'Dark Green', glow: 'shadow-green' },
                   { bg: '#06b6d4', name: 'Cyan', glow: 'shadow-cyan' }
                 ][index % 10];
                 
