@@ -229,25 +229,28 @@ export function AIPredictionsDashboard() {
               </div>
             </div>
             
-            {/* AI Transparency Section */}
-            <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
-              <h4 className="text-sm font-medium text-blue-900 dark:text-blue-100 mb-2">Data Sources & Transparency</h4>
-              <div className="space-y-1 text-xs text-blue-800 dark:text-blue-200">
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-                  <span>Economic data sourced from Federal Reserve (FRED) API</span>
+            {/* AI Transparency Section - Futuristic Glass Style */}
+            <div className="mt-4 foresee-card bg-black/30 backdrop-blur-md border-white/10 glow-border-subtle p-3">
+              <h4 className="subheading text-white mb-2 flex items-center">
+                <div className="w-2 h-2 bg-gradient-to-r from-accent-coral to-gold rounded-full mr-2 pulse-glow"></div>
+                Data Sources & Transparency
+              </h4>
+              <div className="space-y-2">
+                <div className="flex items-center text-xs text-white/80">
+                  <div className="w-1.5 h-1.5 bg-accent-coral rounded-full mr-2 opacity-70"></div>
+                  <span>Economic data from Federal Reserve (FRED) API</span>
                 </div>
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-                  <span>{isAIActive ? 'AI predictions powered by OpenAI GPT-4o' : 'Algorithmic predictions based on economic indicators'}</span>
+                <div className="flex items-center text-xs text-white/80">
+                  <div className="w-1.5 h-1.5 bg-accent-coral rounded-full mr-2 opacity-70"></div>
+                  <span>{isAIActive ? 'AI predictions powered by OpenAI GPT-4o' : 'Algorithmic predictions from economic indicators'}</span>
                 </div>
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-                  <span>Price data includes Ground Beef, Eggs, Milk, Bread, Gas, Rice</span>
+                <div className="flex items-center text-xs text-white/80">
+                  <div className="w-1.5 h-1.5 bg-accent-coral rounded-full mr-2 opacity-70"></div>
+                  <span>Price data: Ground Beef, Eggs, Milk, Bread, Gas, Rice</span>
                 </div>
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-                  <span>Predictions are estimates for planning - actual prices may vary</span>
+                <div className="flex items-center text-xs text-white/80">
+                  <div className="w-1.5 h-1.5 bg-accent-coral rounded-full mr-2 opacity-70"></div>
+                  <span>Predictions are estimates for planning purposes</span>
                 </div>
               </div>
             </div>
@@ -267,12 +270,12 @@ export function AIPredictionsDashboard() {
       {/* Top Recommendations & Insights */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* Smart Recommendations */}
-        <div className="glass-card p-8 scale-in">
-          <div className="flex items-center space-x-3 mb-6">
-            <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center glow-pulse icon-container cursor-pointer">
-              <Lightbulb className="w-5 h-5 text-white" />
+        <div className="foresee-card bg-black/40 backdrop-blur-md glow-border p-6 scale-in">
+          <div className="flex items-center space-x-3 mb-4">
+            <div className="w-8 h-8 bg-gradient-to-br from-accent-coral to-gold rounded-lg flex items-center justify-center glow-pulse">
+              <Lightbulb className="w-4 h-4 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+            <h3 className="headline-sm text-white">
               Smart Recommendations
             </h3>
           </div>
@@ -280,42 +283,42 @@ export function AIPredictionsDashboard() {
           <div className="space-y-4">
             {(personalizedRecs?.topRecommendations && personalizedRecs.topRecommendations.length > 0) ? 
               personalizedRecs.topRecommendations.slice(0, 3).map((rec, index) => (
-                <div key={index} className="glass-card p-4 bg-white/50 dark:bg-white/5">
+                <div key={index} className="foresee-card bg-black/20 backdrop-blur-sm border-white/10 p-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold ${getScoreBg(rec.smartBuyScore)} ${getScoreColor(rec.smartBuyScore)} glow-pulse`}>
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold gradient-gold pulse-metric">
                         {rec.smartBuyScore}
                       </div>
                       <div>
-                        <div className="font-semibold text-slate-900 dark:text-white">{rec.itemName}</div>
-                        <div className="text-sm text-white">
+                        <div className="font-semibold text-white text-sm">{rec.itemName}</div>
+                        <div className="text-xs text-white/70">
                           {rec.confidence > 0.8 ? "High confidence" : "Moderate confidence"}
                         </div>
                       </div>
                     </div>
-                    <Badge className={`px-3 py-1.5 text-xs font-semibold ${getActionBadgeStyle(rec.recommendedAction)}`}>
+                    <div className="px-2 py-1 text-xs font-medium bg-accent-coral text-white rounded">
                       {rec.recommendedAction.replace("_", " ")}
-                    </Badge>
+                    </div>
                   </div>
                 </div>
               )) : 
               predictions.slice(0, 3).map((prediction, index) => (
-                <div key={index} className="glass-card p-4 bg-white/50 dark:bg-white/5">
+                <div key={index} className="foresee-card bg-black/20 backdrop-blur-sm border-white/10 p-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold ${getScoreBg(prediction.smartBuyScore)} ${getScoreColor(prediction.smartBuyScore)} glow-pulse`}>
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold gradient-gold pulse-metric">
                         {prediction.smartBuyScore}
                       </div>
                       <div>
-                        <div className="font-semibold text-slate-900 dark:text-white">{prediction.itemName}</div>
-                        <div className="text-sm text-slate-500 dark:text-slate-400">
+                        <div className="font-semibold text-white text-sm">{prediction.itemName}</div>
+                        <div className="text-xs text-white/70">
                           {prediction.confidence > 0.8 ? "High confidence" : "Moderate confidence"}
                         </div>
                       </div>
                     </div>
-                    <Badge className={`px-3 py-1.5 text-xs font-semibold ${getActionBadgeStyle(prediction.recommendedAction)}`}>
+                    <div className="px-2 py-1 text-xs font-medium bg-accent-coral text-white rounded">
                       {prediction.recommendedAction.replace("_", " ")}
-                    </Badge>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -323,12 +326,12 @@ export function AIPredictionsDashboard() {
         </div>
 
         {/* Budget Optimization */}
-        <div className="glass-card p-8 scale-in" style={{ animationDelay: '0.2s' }}>
-          <div className="flex items-center space-x-3 mb-6">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center glow-pulse icon-container cursor-pointer">
-              <DollarSign className="w-5 h-5 text-white" />
+        <div className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold p-6 scale-in" style={{ animationDelay: '0.2s' }}>
+          <div className="flex items-center space-x-3 mb-4">
+            <div className="w-8 h-8 bg-gradient-to-br from-gold to-accent-coral rounded-lg flex items-center justify-center glow-pulse">
+              <DollarSign className="w-4 h-4 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+            <h3 className="headline-sm text-white">
               Budget Optimization
             </h3>
           </div>
@@ -336,9 +339,9 @@ export function AIPredictionsDashboard() {
           <div className="space-y-4">
             {personalizedRecs?.budgetOptimization && personalizedRecs.budgetOptimization.length > 0 ? 
               personalizedRecs.budgetOptimization.map((tip, index) => (
-                <div key={index} className="flex items-start space-x-3 glass-card p-3 bg-white/30 dark:bg-white/5">
-                  <div className="w-3 h-3 bg-emerald-500 rounded-full mt-1.5 glow-pulse"></div>
-                  <p className="text-sm text-white">{tip}</p>
+                <div key={index} className="flex items-start space-x-3 foresee-card bg-black/20 border-white/10 p-3">
+                  <div className="w-2 h-2 bg-accent-coral rounded-full mt-2 pulse-glow"></div>
+                  <p className="text-xs text-white/90">{tip}</p>
                 </div>
               )) :
               // Fallback budget tips
@@ -347,31 +350,31 @@ export function AIPredictionsDashboard() {
                 "Stock up on eggs now - prices rising due to seasonal demand",
                 "Consider bulk buying rice - stable prices with good value"
               ].map((tip, index) => (
-                <div key={index} className="flex items-start space-x-3 glass-card p-3 bg-white/30 dark:bg-white/5">
-                  <div className="w-3 h-3 bg-emerald-500 rounded-full mt-1.5 glow-pulse"></div>
-                  <p className="text-sm text-white">{tip}</p>
+                <div key={index} className="flex items-start space-x-3 foresee-card bg-black/20 border-white/10 p-3">
+                  <div className="w-2 h-2 bg-accent-coral rounded-full mt-2 pulse-glow"></div>
+                  <p className="text-xs text-white/90">{tip}</p>
                 </div>
               ))}
           </div>
 
-          <div className="mt-6 pt-6 border-t border-white/20 dark:border-white/10">
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-blue-500 rounded-lg flex items-center justify-center icon-container cursor-pointer">
-                <Calendar className="w-4 h-4 text-white" />
+          <div className="mt-4 pt-4 border-t border-white/10">
+            <div className="flex items-center space-x-2 mb-3">
+              <div className="w-6 h-6 bg-gradient-to-br from-accent-coral to-gold rounded-lg flex items-center justify-center">
+                <Calendar className="w-3 h-3 text-white" />
               </div>
-              <span className="text-lg font-semibold text-slate-900 dark:text-white">Timing Advice</span>
+              <span className="subheading text-white">Timing Advice</span>
             </div>
             <div className="space-y-2">
               {personalizedRecs?.timingAdvice && personalizedRecs.timingAdvice.length > 0 ? 
                 personalizedRecs.timingAdvice.slice(0, 2).map((advice, index) => (
-                  <p key={index} className="text-sm text-white glass-card p-2 bg-white/20 dark:bg-white/5">{advice}</p>
+                  <p key={index} className="text-xs text-white/90 foresee-card bg-black/10 border-white/10 p-2">{advice}</p>
                 )) :
                 // Fallback timing advice
                 [
                   "Best shopping day this week: Tuesday - avoid weekend price premiums",
                   "Gas prices peak in 7-10 days - fill up early if needed"
                 ].map((advice, index) => (
-                  <p key={index} className="text-sm text-white glass-card p-2 bg-white/20 dark:bg-white/5">{advice}</p>
+                  <p key={index} className="text-xs text-white/90 foresee-card bg-black/10 border-white/10 p-2">{advice}</p>
                 ))}
             </div>
           </div>
