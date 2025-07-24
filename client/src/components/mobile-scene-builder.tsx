@@ -6,7 +6,7 @@ export function MobileSceneBuilder() {
     <div className="space-y-8">
       {/* Advanced AI Header */}
       <div className="foresee-card bg-black/40 backdrop-blur-xl border-white/10 p-6 glow-border-gold relative overflow-hidden">
-        {/* Neural Network Background Pattern */}
+        {/* AI Network Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-2 left-4 w-1 h-1 bg-[#fc304ed6] rounded-full animate-ping"></div>
           <div className="absolute top-6 right-8 w-1 h-1 bg-[#f39c12] rounded-full animate-pulse"></div>
@@ -19,10 +19,10 @@ export function MobileSceneBuilder() {
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse border border-white/50"></div>
             </div>
             <div>
-              <h3 className="headline text-white text-xl">Neural Scene Builder™</h3>
+              <h3 className="headline text-white text-xl">AI Scene Builder™</h3>
               <div className="flex items-center space-x-2 text-white/60 text-xs">
                 <Cpu className="w-3 h-3" />
-                <span>Quantum-AI Vision Engine v3.2</span>
+                <span>Advanced AI Vision Engine v3.2</span>
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
               </div>
             </div>
@@ -39,7 +39,7 @@ export function MobileSceneBuilder() {
               <Activity className="w-3 h-3 text-[#fc304ed6] animate-pulse" />
             </div>
             <div className="text-lg font-bold gradient-coral pulse-metric">2</div>
-            <div className="text-xs text-white/70">Neural Scenes</div>
+            <div className="text-xs text-white/70">AI Scenes</div>
             <div className="text-xs text-[#d4c4a0] mt-1">●  Processing</div>
           </div>
           <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-2xl p-4 relative overflow-hidden">
@@ -114,7 +114,7 @@ export function MobileSceneBuilder() {
                 <Cpu className="w-3 h-3 text-[#d4c4a0] animate-spin" />
               </div>
               <div className="font-bold gradient-coral text-base">$290</div>
-              <div className="text-[#d4c4a0] text-xs">Neural Target</div>
+              <div className="text-[#d4c4a0] text-xs">AI Target</div>
               <div className="text-xs text-[#d4c4a0] mt-1">● AI Optimized</div>
             </div>
             <div className="bg-gradient-to-br from-[#353c4a]/20 to-[#051421]/20 backdrop-blur-md border border-[#d4c4a0]/30 p-4 rounded-2xl text-center relative overflow-hidden">
@@ -170,7 +170,7 @@ export function MobileSceneBuilder() {
             </div>
             <div className="text-sm text-white/70 text-center mt-3 flex items-center justify-center gap-2">
               <Activity className="w-4 h-4 text-[#f1c40f] animate-pulse" />
-              <span>Neural Analysis • Next AR Frame: 30%</span>
+              <span>AI Analysis • Next AR Frame: 30%</span>
               <div className="w-2 h-2 bg-[#d4c4a0] rounded-full animate-ping"></div>
             </div>
           </div>
@@ -189,7 +189,7 @@ export function MobileSceneBuilder() {
                 <Waves className="w-3 h-3 text-[#d4c4a0] animate-bounce" />
               </div>
               <div className="font-bold gradient-coral-navy text-base">36mo</div>
-              <div className="text-[#d4c4a0] text-xs">Neural Time</div>
+              <div className="text-[#d4c4a0] text-xs">AI Time</div>
               <div className="text-xs text-[#d4c4a0] mt-1">● Optimizing</div>
             </div>
           </div>

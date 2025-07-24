@@ -174,7 +174,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-black overflow-hidden">
-      {/* Advanced Neural Network Background */}
+      {/* Advanced AI Network Background */}
       <div className="fixed inset-0 z-0">
         {/* Primary quantum field */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#fc304ed6]/5 via-transparent to-[#d4c4a0]/5 animate-pulse"></div>
@@ -209,7 +209,7 @@ export default function Dashboard() {
               <ForeseeLogo size="md" className="text-white" />
               <div className="w-[1px] h-8 bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
               <div className="text-sm text-[#d4c4a0] font-mono opacity-80">
-                Neural Financial Intelligence
+                Advanced Financial Intelligence
               </div>
             </div>
             
@@ -221,7 +221,7 @@ export default function Dashboard() {
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
                 <div className="relative flex items-center">
                   <LogOut className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
-                  Neural Disconnect
+                  AI Disconnect
                 </div>
               </Button>
             </div>
@@ -242,7 +242,7 @@ export default function Dashboard() {
             
             <div className="relative flex space-x-2">
               {[
-                { id: 'dashboard', label: 'Neural Core', icon: BarChart3, shortLabel: 'Core' },
+                { id: 'dashboard', label: 'AI Core', icon: BarChart3, shortLabel: 'Core' },
                 { id: 'ai-predictions', label: 'AI Matrix', icon: Brain, shortLabel: 'AI' },
                 { id: 'budget-goals', label: 'Quantum Goals', icon: Target, shortLabel: 'Goals' },
                 { id: 'planning', label: 'Future Sync', icon: Calculator, shortLabel: 'Sync' },
@@ -291,7 +291,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Quantum Hero Matrix - Neural Core Tab */}
+        {/* Quantum Hero Matrix - AI Core Tab */}
         {activeTab === 'dashboard' && (
           <div className="relative z-40 max-w-7xl mx-auto px-6 py-8">
             <div className="text-center">
@@ -301,7 +301,7 @@ export default function Dashboard() {
               >
                 <h1 className="text-4xl md:text-6xl font-light tracking-tight text-white mb-6 fade-in leading-tight">
                   <span className="bg-gradient-to-r from-white via-slate-200 to-white bg-clip-text text-transparent">
-                    Neural Financial
+                    Advanced Financial
                   </span>
                   <br/>
                   <span className="bg-gradient-to-r from-[#fc304ed6] via-[#d4c4a0] to-[#fc304ed6] bg-clip-text text-transparent animate-pulse">
@@ -321,14 +321,14 @@ export default function Dashboard() {
               <p className="text-lg text-[#d4c4a0] max-w-3xl mx-auto mb-8 slide-up font-light leading-relaxed opacity-90">
                 Advanced AI algorithms processing real-time economic data streams. 
                 <br className="hidden md:block" />
-                Quantum-powered predictions for intelligent financial decision making.
+                AI-powered predictions for intelligent financial decision making.
               </p>
               
-              {/* Neural connection indicators */}
+              {/* AI connection indicators */}
               <div className="flex justify-center items-center gap-8 mb-8">
                 <div className="flex items-center gap-2 glass-morphism px-4 py-2 rounded-full">
                   <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-                  <span className="text-xs text-white/80 font-mono">NEURAL LINK ACTIVE</span>
+                  <span className="text-xs text-white/80 font-mono">AI LINK ACTIVE</span>
                 </div>
                 <div className="flex items-center gap-2 glass-morphism px-4 py-2 rounded-full">
                   <div className="w-2 h-2 bg-[#fc304ed6] rounded-full animate-ping"></div>

@@ -4,7 +4,7 @@ import { Target, TrendingDown, Plus, Shield, Zap, AlertTriangle, Trophy, Brain, 
 export function MobileGoalsDebt() {
   return (
     <div className="space-y-8">
-      {/* Advanced Neural Goals Section */}
+      {/* Advanced AI Goals Section */}
       <div className="foresee-card bg-black/40 backdrop-blur-xl border-white/10 p-6 glow-border relative overflow-hidden">
         {/* Quantum Field Background */}
         <div className="absolute inset-0 opacity-10">
@@ -19,7 +19,7 @@ export function MobileGoalsDebt() {
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-[#d4c4a0] to-[#c9b892] rounded-full animate-pulse border border-white/50"></div>
             </div>
             <div>
-              <h3 className="headline text-white text-xl">Neural Goal System™</h3>
+              <h3 className="headline text-white text-xl">AI Goal System™</h3>
               <div className="flex items-center space-x-2 text-white/60 text-xs">
                 <Radar className="w-3 h-3" />
                 <span>Quantum Target Intelligence v2.8</span>
@@ -29,7 +29,7 @@ export function MobileGoalsDebt() {
           </div>
           <Button className="btn-coral text-xs px-4 py-2 rounded-2xl shadow-lg border border-white/20">
             <Plus className="w-3 h-3 mr-1" />
-            Neural Goal
+            Smart Goal
           </Button>
         </div>
         
@@ -62,7 +62,7 @@ export function MobileGoalsDebt() {
             </div>
             <div className="flex items-center justify-center gap-2 text-sm text-[#d4c4a0]">
               <Cpu className="w-3 h-3 animate-spin" />
-              <span>Neural Tracking • $180/week optimized</span>
+              <span>AI Tracking • $180/week optimized</span>
               <div className="w-2 h-2 bg-[#d4c4a0] rounded-full animate-ping"></div>
             </div>
           </div>
@@ -121,7 +121,7 @@ export function MobileGoalsDebt() {
               <h3 className="headline text-white text-xl">Debt Elimination AI™</h3>
               <div className="flex items-center space-x-2 text-white/60 text-xs">
                 <Zap className="w-3 h-3" />
-                <span>Strategic Neural Engine v4.1</span>
+                <span>Strategic AI Engine v4.1</span>
                 <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
               </div>
             </div>
@@ -186,7 +186,7 @@ export function MobileGoalsDebt() {
                   <span className="subheading text-white text-lg">Student Loan</span>
                   <div className="text-xs text-white/60 flex items-center gap-1 mt-1">
                     <Waves className="w-3 h-3" />
-                    <span>Long-term Neural Strategy</span>
+                    <span>Long-term AI Strategy</span>
                   </div>
                 </div>
               </div>

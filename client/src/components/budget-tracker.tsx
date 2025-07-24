@@ -468,7 +468,7 @@ export function BudgetTracker() {
 
             </div>
             
-            {/* Advanced Neural Network Data Matrix */}
+            {/* Advanced AI Network Data Matrix */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-52 overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[#fc304ed6]/30">
               {budgetData?.map((budget, index) => {
                 const progress = getBudgetProgress(budget.spentAmount, budget.budgetAmount);
@@ -487,7 +487,7 @@ export function BudgetTracker() {
                 
                 return (
                   <div key={budget.id} className="group relative animate-[fadeInUp_0.8s_ease-out] hover:scale-[1.02] transition-all duration-300" style={{animationDelay: `${index * 100}ms`}}>
-                    {/* Neural Data Streams */}
+                    {/* AI Data Streams */}
                     <div className="absolute -inset-3 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
                       <div className="absolute top-1/2 -left-3 w-6 h-[1px] bg-gradient-to-r from-transparent via-[#fc304ed6]/60 to-transparent animate-pulse"></div>
                       <div className="absolute top-1/2 -right-3 w-6 h-[1px] bg-gradient-to-l from-transparent via-[#d4c4a0]/60 to-transparent animate-pulse delay-300"></div>
@@ -551,7 +551,7 @@ export function BudgetTracker() {
 
           {/* Advanced AI Analytics Matrix */}
           <div className="space-y-6">
-            {/* Neural Insights Panel */}
+            {/* AI Insights Panel */}
             <div className="space-y-4">
               <h4 className="font-light text-xl bg-gradient-to-r from-white via-slate-200 to-[#d4c4a0] bg-clip-text text-transparent flex items-center gap-3">
                 <div className="w-2 h-6 bg-gradient-to-b from-[#fc304ed6] to-[#d4c4a0] rounded-full animate-pulse"></div>

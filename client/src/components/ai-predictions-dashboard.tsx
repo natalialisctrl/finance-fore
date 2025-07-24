@@ -205,7 +205,7 @@ export function AIPredictionsDashboard() {
           <div className="relative group inline-block mb-6">
             <h2 className="text-3xl md:text-4xl font-light tracking-tight text-white mb-4 leading-tight">
               <span className="bg-gradient-to-r from-white via-slate-200 to-white bg-clip-text text-transparent">
-                AI Neural
+                AI Smart
               </span>
               <br/>
               <span className="bg-gradient-to-r from-[#fc304ed6] via-[#d4c4a0] to-[#fc304ed6] bg-clip-text text-transparent animate-pulse">
@@ -226,7 +226,7 @@ export function AIPredictionsDashboard() {
 {isAIActive ? "AI systems processing 30-day forecasts via OpenAI GPT-4o architecture" : "Advanced algorithms analyzing economic data patterns and market trends"}
           </p>
           
-          {/* Neural interface controls */}
+          {/* AI interface controls */}
           <div className="flex justify-center items-center gap-6 mb-8">
             <div className="flex items-center gap-2 glass-morphism px-4 py-2 rounded-full">
               <div className={`w-2 h-2 rounded-full animate-pulse ${isAIActive ? 'bg-emerald-400' : 'bg-amber-400'}`}></div>
@@ -243,7 +243,7 @@ AI Config
             </Button>
           </div>
             
-          {/* Quantum Data Source Matrix */}
+          {/* Advanced Data Source Matrix */}
           <div className="relative glass-morphism p-6 rounded-2xl overflow-hidden group hover:neo-brutalism-card transition-all duration-500 max-w-4xl mx-auto animate-[fadeInUp_0.8s_ease-out]">
             {/* Background data streams */}
             <div className="absolute inset-0 opacity-10">

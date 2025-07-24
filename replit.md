@@ -171,7 +171,13 @@ The app prioritizes transparency about data sources:
 
 ## Recent Changes
 
-### July 24, 2025 - Clean Typography System & AI Dashboard Redesign
+### July 24, 2025 - Clean Typography System & Complete Neural Terminology Removal
+- **Comprehensive Neural Text Removal**: Systematically removed ALL "neural" references throughout application
+  - Updated dashboard.tsx, budget-tracker.tsx, ai-predictions-dashboard.tsx, mobile-scene-builder.tsx
+  - Replaced "neural" terminology with appropriate alternatives: "AI", "Advanced", "Smart"
+  - Fixed landing page, prediction components, and scene builder references
+  - Maintained functionality while improving terminology accuracy and user clarity
+- **Clean Typography System & AI Dashboard Redesign**:
 - **Complete Typography Overhaul**: Redesigned entire typography system for ultra-clean appearance
   - Reduced headline sizes from 2.5rem to 1.75rem for better visual hierarchy
   - Optimized card text sizes (xl instead of 3xl for metrics) throughout app
