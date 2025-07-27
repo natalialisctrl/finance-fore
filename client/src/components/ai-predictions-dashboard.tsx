@@ -381,12 +381,27 @@ AI Data Stream Sources
                   </div>
                 </div>
               )) :
-              // Fallback budget tips
-              [
-                "Monitor gas prices - expect 5-8% increase next week",
-                "Stock up on eggs now - prices rising due to seasonal demand",
-                "Consider bulk buying rice - stable prices with good value"
-              ].map((tip, index) => (
+              // Generate real budget tips from actual predictions
+              (() => {
+                const tips = [];
+                const highScoreItems = predictions.filter(p => p.smartBuyScore >= 8);
+                const waitItems = predictions.filter(p => p.recommendedAction?.includes('WAIT'));
+                const risingPrices = predictions.filter(p => p.priceDirection === 'up');
+                
+                if (highScoreItems.length > 0) {
+                  tips.push(`Strong buy signal on ${highScoreItems[0].itemName} - Smart Buy Score ${highScoreItems[0].smartBuyScore}/10`);
+                }
+                if (waitItems.length > 0) {
+                  const savings = waitItems[0].expectedSavings;
+                  tips.push(`Wait on ${waitItems[0].itemName} - potential $${savings.toFixed(2)} savings by waiting`);
+                }
+                if (risingPrices.length > 0) {
+                  const priceIncrease = ((risingPrices[0].predicted30DayPrice - risingPrices[0].currentPrice) / risingPrices[0].currentPrice * 100).toFixed(1);
+                  tips.push(`${risingPrices[0].itemName} prices rising ${priceIncrease}% over 30 days - consider buying soon`);
+                }
+                
+                return tips.length > 0 ? tips : ["Analyzing current market conditions for personalized recommendations"];
+              })().map((tip, index) => (
                 <div key={index} className="group relative glass-morphism p-4 rounded-xl hover:neo-brutalism-card transition-all duration-300 animate-[fadeInUp_0.8s_ease-out]" style={{animationDelay: `${index * 100}ms`}}>
                   <div className="flex items-start space-x-4">
                     <div className="w-3 h-3 bg-gradient-to-br from-[#fc304ed6] to-[#d4c4a0] rounded-full mt-1 animate-pulse shadow-lg shadow-[#fc304ed6]/30"></div>
@@ -410,11 +425,22 @@ AI Data Stream Sources
                     <p className="text-sm text-white/90 leading-relaxed font-light">{advice}</p>
                   </div>
                 )) :
-                // Fallback timing advice
-                [
-                  "Best shopping day this week: Tuesday - avoid weekend price premiums",
-                  "Gas prices peak in 7-10 days - fill up early if needed"
-                ].map((advice, index) => (
+                // Generate real timing advice from actual predictions
+                (() => {
+                  const advice = [];
+                  const buyNowItems = predictions.filter(p => p.recommendedAction === 'BUY_NOW');
+                  const waitItems = predictions.filter(p => p.recommendedAction?.includes('WAIT'));
+                  
+                  if (buyNowItems.length > 0) {
+                    advice.push(`Buy ${buyNowItems[0].itemName} now - ${(buyNowItems[0].confidence * 100).toFixed(0)}% confidence in current good price`);
+                  }
+                  if (waitItems.length > 0) {
+                    const waitType = waitItems[0].recommendedAction === 'WAIT_1_WEEK' ? '1 week' : '2 weeks';
+                    advice.push(`Wait ${waitType} for ${waitItems[0].itemName} - prices expected to drop`);
+                  }
+                  
+                  return advice.length > 0 ? advice : ["Analyzing optimal timing for your shopping list"];
+                })().map((advice, index) => (
                   <div key={index} className="group relative glass-morphism p-3 rounded-xl hover:neo-brutalism-card transition-all duration-300 animate-[fadeInUp_0.8s_ease-out]" style={{animationDelay: `${index * 100}ms`}}>
                     <p className="text-sm text-white/90 leading-relaxed font-light">{advice}</p>
                   </div>
