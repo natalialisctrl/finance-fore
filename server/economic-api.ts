@@ -1,6 +1,16 @@
 import { storage } from "./storage";
 
 // Multiple data sources for comprehensive economic data
+interface OilPriceData {
+  wtiPrice: number;
+  brentPrice: number;
+  lastUpdated: string;
+}
+
+interface CurrencyData {
+  dollarIndex: number;
+  lastUpdated: string;
+}
 interface EconomicDataSources {
   fred?: {
     inflationRate: number;
@@ -19,26 +29,31 @@ interface EconomicDataSources {
 // Free APIs that don't require keys for basic data
 export class EconomicDataService {
   
-  // Fetch real economic data from FRED API
+  // Fetch comprehensive real economic data for gas price predictions
   async fetchRealEconomicData(): Promise<any> {
     try {
-      console.log("Fetching real economic data from FRED API...");
+      console.log("Fetching comprehensive economic data for price predictions...");
       
-      // Try FRED API with parallel requests
-      const [inflationData, gdpData, cpiData] = await Promise.allSettled([
+      // Parallel requests for all economic indicators
+      const [inflationData, gdpData, cpiData, oilData, currencyData] = await Promise.allSettled([
         this.fetchInflationFromFRED(),
         this.fetchGDPFromFRED(),
-        this.fetchCPIFromFRED()
+        this.fetchCPIFromFRED(),
+        this.fetchOilPrices(),
+        this.fetchDollarIndex()
       ]);
 
       const economicData = {
         inflationRate: this.extractValue(inflationData, 3.2), 
         gdpGrowth: this.extractValue(gdpData, 2.8), 
-        consumerPriceIndex: this.extractValue(cpiData, 309.7), 
+        consumerPriceIndex: this.extractValue(cpiData, 309.7),
+        unemploymentRate: 3.8, // Would fetch from BLS API
+        oilPrices: this.extractValue(oilData, 75.5),
+        dollarStrength: this.extractValue(currencyData, 102.3),
         lastUpdated: new Date()
       };
 
-      console.log("FRED API data retrieved:", economicData);
+      console.log("Comprehensive economic data retrieved:", economicData);
       
       // Store in database
       await storage.updateEconomicData(economicData);
@@ -127,6 +142,46 @@ export class EconomicDataService {
       throw new Error('No FRED CPI data available');
     } catch (error) {
       console.error('FRED CPI fetch failed:', error);
+      throw error;
+    }
+  }
+
+  // Fetch WTI Oil Prices from FRED API
+  private async fetchOilPrices(): Promise<number> {
+    try {
+      const response = await fetch(
+        `https://api.stlouisfed.org/fred/series/observations?series_id=DCOILWTICO&api_key=${process.env.FRED_API_KEY}&file_type=json&limit=1&sort_order=desc`
+      );
+      const data = await response.json();
+      
+      if (data.observations && data.observations.length > 0) {
+        const oilPrice = parseFloat(data.observations[0].value);
+        console.log(`FRED WTI Oil Price: $${oilPrice}`);
+        return Math.round(oilPrice * 100) / 100; // Round to 2 decimals
+      }
+      throw new Error('No FRED oil price data available');
+    } catch (error) {
+      console.error('FRED oil price fetch failed:', error);
+      throw error;
+    }
+  }
+
+  // Fetch US Dollar Index from FRED API
+  private async fetchDollarIndex(): Promise<number> {
+    try {
+      const response = await fetch(
+        `https://api.stlouisfed.org/fred/series/observations?series_id=DTWEXBGS&api_key=${process.env.FRED_API_KEY}&file_type=json&limit=1&sort_order=desc`
+      );
+      const data = await response.json();
+      
+      if (data.observations && data.observations.length > 0) {
+        const dollarIndex = parseFloat(data.observations[0].value);
+        console.log(`FRED Dollar Index: ${dollarIndex}`);
+        return Math.round(dollarIndex * 100) / 100; // Round to 2 decimals
+      }
+      throw new Error('No FRED dollar index data available');
+    } catch (error) {
+      console.error('FRED dollar index fetch failed:', error);
       throw error;
     }
   }

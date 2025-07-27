@@ -196,7 +196,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/savings/:userId/:weekOf", async (req, res) => {
     try {
       const { userId, weekOf } = req.params;
-      const data = await storage.getUserSavings(parseInt(userId), weekOf);
+      const data = await storage.getUserSavings(userId, weekOf);
       if (!data) {
         return res.status(404).json({ message: "Savings data not found" });
       }
@@ -225,7 +225,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/shopping-list/:userId", async (req, res) => {
     try {
       const { userId } = req.params;
-      const data = await storage.getShoppingListItems(parseInt(userId));
+      const data = await storage.getShoppingListItems(userId);
       res.json(data);
     } catch (error) {
       console.error("Error fetching shopping list:", error);
@@ -339,6 +339,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
     };
     return categories[itemName] || "General";
   }
+
+  // Gas price prediction endpoint
+  app.post("/api/gas-predictions", async (req, res) => {
+    try {
+      const { location } = req.body;
+      if (!location) {
+        return res.status(400).json({ message: "Location data required" });
+      }
+
+      // Get current economic data
+      const economicData = await storage.getEconomicData();
+      if (!economicData) {
+        return res.status(500).json({ message: "Economic data not available" });
+      }
+
+      // Transform economic data to match gas predictor interface
+      const economicIndicators = {
+        inflationRate: economicData.inflationRate || 3.2,
+        gdpGrowth: economicData.gdpGrowth || 2.8,
+        consumerPriceIndex: economicData.consumerPriceIndex || 309.7,
+        unemploymentRate: economicData.unemploymentRate || 3.8,
+        oilPrices: economicData.oilPrices || 75.0,
+        dollarStrength: economicData.dollarStrength || 102.0
+      };
+
+      // Import gas price predictor
+      const { gasPricePredictor } = await import('./gas-price-predictor');
+      const prediction = await gasPricePredictor.predictGasPrices(location, economicIndicators);
+      
+      res.json(prediction);
+    } catch (error) {
+      console.error("Gas prediction error:", error);
+      res.status(500).json({ message: "Gas prediction service failed" });
+    }
+  });
 
   // FRED API integration endpoint
   app.get("/api/fred-data", async (req, res) => {
