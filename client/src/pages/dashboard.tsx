@@ -210,6 +210,20 @@ export default function Dashboard() {
               <ForeseeLogo size="md" className="text-white" />
             </div>
             
+            {/* Welcome Back Section */}
+            <div className="flex items-center gap-3">
+              <div className="text-right">
+                <div className="text-white/60 text-xs font-mono tracking-wide">
+                  Welcome back,
+                </div>
+                <div className="text-white text-sm font-medium">
+                  {user.firstName} {user.lastName}
+                </div>
+              </div>
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#fc304ed6] to-[#d4c4a0] flex items-center justify-center">
+                <User className="w-4 h-4 text-white" />
+              </div>
+            </div>
             
           </div>
         </header>
