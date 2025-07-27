@@ -32,7 +32,7 @@ import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import foreseeVideo from "@/assets/foresee-blinking-logo.mov";
 import { isUnauthorizedError } from "@/lib/authUtils";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
@@ -293,6 +293,9 @@ export default function Dashboard() {
                                   }`} />
                                   Alert Data Insights - {alert.type}
                                 </DialogTitle>
+                                <DialogDescription className="text-white/60">
+                                  View the underlying economic data and analysis methodology behind this alert prediction.
+                                </DialogDescription>
                               </DialogHeader>
                               <div className="space-y-6 text-white">
                                 {/* Alert Details */}
