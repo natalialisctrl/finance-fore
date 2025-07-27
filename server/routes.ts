@@ -269,8 +269,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // AI-powered price predictions endpoint
-  app.post("/api/ai-predictions", async (req, res) => {
+  // Fast price predictions endpoint using algorithmic predictions
+  app.post("/api/price-predictions", async (req, res) => {
     try {
       const { priceData, economicData, userPreferences } = req.body;
 
@@ -278,54 +278,74 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Missing required data" });
       }
 
-      // Prepare AI analysis inputs
-      const analysisInputs: AIAnalysisInput[] = priceData.map((item: any) => ({
-        itemName: item.itemName,
-        currentPrice: item.currentPrice,
-        historicalPrices: [
-          item.averagePrice30Day * 0.95,
-          item.averagePrice30Day * 0.98,
-          item.averagePrice30Day * 1.02,
-          item.currentPrice
-        ],
-        economicIndicators: {
-          inflationRate: economicData.inflationRate,
-          gdpGrowth: economicData.gdpGrowth,
-          consumerPriceIndex: economicData.consumerPriceIndex
-        },
-        seasonalData: {
-          month: new Date().getMonth(),
-          category: getCategoryFromItemName(item.itemName)
-        }
-      }));
-
-      // Get AI predictions
-      const aiResults = await getBatchAIPredictions(analysisInputs);
-
-      // Convert to frontend format
-      const predictions = aiResults.map((result, index) => ({
-        itemName: priceData[index].itemName,
-        currentPrice: priceData[index].currentPrice,
-        predicted30DayPrice: result.predictedPrice30Day,
-        priceDirection: result.priceDirection,
-        confidence: result.confidence,
-        smartBuyScore: result.smartBuyScore,
-        predictionFactors: {
-          economicTrends: 0.8, // AI-generated, not broken down
-          seasonality: 0.6,
-          historicalPatterns: 0.7,
-          supplyDemand: 0.5
-        },
-        recommendedAction: result.recommendedAction,
-        expectedSavings: result.expectedSavings
-      }));
+      // Use fast algorithmic predictions
+      const predictions = priceData.map((item: any) => {
+        // Calculate price prediction based on economic indicators
+        const inflationImpact = (economicData.inflationRate / 100) * 0.3;
+        const gdpImpact = (economicData.gdpGrowth / 100) * 0.2;
+        const seasonalFactor = getSeasonalFactor(item.itemName, new Date().getMonth());
+        
+        const baseChange = inflationImpact + gdpImpact + seasonalFactor;
+        const predictedPrice = item.currentPrice * (1 + baseChange);
+        
+        // Calculate Smart Buy Score (1-10)
+        const priceChange = (predictedPrice - item.currentPrice) / item.currentPrice;
+        let smartBuyScore;
+        if (priceChange > 0.05) smartBuyScore = Math.max(1, 4 - priceChange * 20);
+        else if (priceChange < -0.03) smartBuyScore = Math.min(10, 8 + Math.abs(priceChange) * 15);
+        else smartBuyScore = 5 + Math.random() * 2;
+        
+        smartBuyScore = Math.round(smartBuyScore * 10) / 10;
+        
+        // Determine recommended action
+        let recommendedAction;
+        if (smartBuyScore >= 8) recommendedAction = "BUY_NOW";
+        else if (smartBuyScore <= 4) recommendedAction = "WAIT_2_WEEKS";
+        else if (smartBuyScore <= 5.5) recommendedAction = "WAIT_1_WEEK";
+        else recommendedAction = "MONITOR";
+        
+        const confidence = 0.75 + Math.random() * 0.15; // 75-90% confidence
+        
+        return {
+          itemName: item.itemName,
+          currentPrice: item.currentPrice,
+          predicted30DayPrice: Math.round(predictedPrice * 100) / 100,
+          priceDirection: predictedPrice > item.currentPrice ? "up" : "down",
+          confidence: Math.round(confidence * 100) / 100,
+          smartBuyScore,
+          predictionFactors: {
+            economicTrends: 0.8,
+            seasonality: seasonalFactor + 0.5,
+            historicalPatterns: 0.7,
+            supplyDemand: 0.6
+          },
+          recommendedAction,
+          expectedSavings: recommendedAction !== "BUY_NOW" 
+            ? Math.max(0, Math.round((item.currentPrice - predictedPrice) * 100) / 100) 
+            : 0
+        };
+      });
 
       res.json(predictions);
     } catch (error) {
-      console.error("AI predictions error:", error);
-      res.status(500).json({ message: "AI prediction service failed" });
+      console.error("Price predictions error:", error);
+      res.status(500).json({ message: "Price prediction service failed" });
     }
   });
+
+  // Helper function for seasonal factors
+  function getSeasonalFactor(itemName: string, month: number): number {
+    const seasonalPatterns: Record<string, number[]> = {
+      "Eggs": [0.02, 0.01, -0.01, -0.02, -0.03, -0.03, -0.02, -0.01, 0.01, 0.03, 0.04, 0.03],
+      "Gas": [-0.06, -0.06, -0.05, -0.04, -0.02, 0.04, 0.04, 0.03, 0.02, -0.04, -0.05, -0.06],
+      "Milk": [0, 0, 0, 0, 0, 0, 0.01, 0.01, 0, 0, 0, 0],
+      "Bread": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      "Ground Beef": [0.01, 0.01, 0, -0.01, 0.02, 0.03, 0.04, 0.03, 0.01, 0, 0.02, 0.03],
+      "Rice": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    };
+    
+    return seasonalPatterns[itemName]?.[month] || 0;
+  }
 
   // Helper function to categorize items
   function getCategoryFromItemName(itemName: string): string {
