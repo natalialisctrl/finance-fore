@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Brain, MessageCircle, TrendingUp, TrendingDown, Target, Coffee, Car, Home, ShoppingBag, Heart, MapPin, Clock } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { useLocationAlerts } from './geo-location-service';
+import { useToast } from '@/hooks/use-toast';
 
 interface SpendingInsight {
   category: string;
@@ -34,6 +35,7 @@ export function AISpendingCoach() {
   const [insights, setInsights] = useState<SpendingInsight[]>([]);
   const [coachMessages, setCoachMessages] = useState<AICoachMessage[]>([]);
   const { location, locationAlerts, isLoading: locationLoading } = useLocationAlerts();
+  const { toast } = useToast();
 
   const { data: budgetData } = useQuery({
     queryKey: ['/api/budgets/demo-natalia/2025-07'],
@@ -75,6 +77,29 @@ export function AISpendingCoach() {
     setInsights(newInsights);
   };
 
+  // Action handlers for coach suggestions
+  const handleSetBudgetCap = () => {
+    toast({
+      title: "Budget Cap Set",
+      description: "Coffee budget capped at $150/month. You'll get alerts when approaching the limit.",
+    });
+  };
+
+  const handleTransferToSavings = () => {
+    toast({
+      title: "Transfer Initiated",
+      description: "$85 has been transferred to your emergency fund. Great job on saving!",
+    });
+  };
+
+  const handleViewLocationAlerts = () => {
+    toast({
+      title: "Location Alerts",
+      description: "Viewing location alerts",
+    });
+    console.log("Viewing location alerts");
+  };
+
   const generateCoachMessages = () => {
     const messages: AICoachMessage[] = [
       {
@@ -83,7 +108,7 @@ export function AISpendingCoach() {
         category: "Coffee & Drinks",
         actionSuggestion: {
           text: "Set coffee budget cap",
-          action: () => console.log("Setting coffee budget cap")
+          action: handleSetBudgetCap
         },
         timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
       },
@@ -93,7 +118,7 @@ export function AISpendingCoach() {
         category: "Groceries",
         actionSuggestion: {
           text: "Transfer to savings",
-          action: () => console.log("Transferring to savings")
+          action: handleTransferToSavings
         },
         timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000)
       }
@@ -109,7 +134,7 @@ export function AISpendingCoach() {
           category: urgentAlert.type,
           actionSuggestion: urgentAlert.actionSuggestion ? {
             text: "View location alerts",
-            action: () => console.log("Viewing location alerts")
+            action: handleViewLocationAlerts
           } : undefined,
           timestamp: new Date()
         });
