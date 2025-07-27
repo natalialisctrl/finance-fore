@@ -84,7 +84,7 @@ export function AIPredictionsDashboard() {
       // Try AI predictions first
       const generateAndSetPredictions = async () => {
         try {
-          const aiPredictions = await fetch("/api/ai-predictions", {
+          const aiPredictions = await fetch("/api/price-predictions", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ 
