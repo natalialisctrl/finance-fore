@@ -325,9 +325,23 @@ AI Data Stream Sources
                         </div>
                       </div>
                     </div>
-                    <div className="px-2 py-1 text-xs font-medium bg-accent-coral text-white rounded">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (rec.recommendedAction === "BUY_NOW") {
+                          handleAddToCart(rec.itemName);
+                        } else if (rec.recommendedAction.includes("WAIT")) {
+                          handleSetAlert(rec.itemName);
+                        } else {
+                          handleTrackItem(rec.itemName);
+                        }
+                      }}
+                      className="px-3 py-1 text-xs font-medium bg-accent-coral hover:bg-accent-coral/80 text-white border-accent-coral hover:border-accent-coral/80 transition-colors"
+                    >
                       {rec.recommendedAction.replace("_", " ")}
-                    </div>
+                    </Button>
                   </div>
                 </div>
               )) : 
@@ -345,9 +359,23 @@ AI Data Stream Sources
                         </div>
                       </div>
                     </div>
-                    <div className="px-2 py-1 text-xs font-medium bg-accent-coral text-white rounded">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (prediction.recommendedAction === "BUY_NOW") {
+                          handleAddToCart(prediction.itemName);
+                        } else if (prediction.recommendedAction.includes("WAIT")) {
+                          handleSetAlert(prediction.itemName);
+                        } else {
+                          handleTrackItem(prediction.itemName);
+                        }
+                      }}
+                      className="px-3 py-1 text-xs font-medium bg-accent-coral hover:bg-accent-coral/80 text-white border-accent-coral hover:border-accent-coral/80 transition-colors"
+                    >
                       {prediction.recommendedAction.replace("_", " ")}
-                    </div>
+                    </Button>
                   </div>
                 </div>
               ))}
