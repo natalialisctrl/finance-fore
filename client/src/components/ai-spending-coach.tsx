@@ -80,24 +80,29 @@ export function AISpendingCoach() {
   // Action handlers for coach suggestions
   const handleSetBudgetCap = () => {
     toast({
-      title: "Budget Cap Set",
+      title: "✅ Budget Cap Set",
       description: "Coffee budget capped at $150/month. You'll get alerts when approaching the limit.",
+      duration: 4000,
     });
   };
 
   const handleTransferToSavings = () => {
     toast({
-      title: "Transfer Initiated",
+      title: "💰 Transfer Completed",
       description: "$85 has been transferred to your emergency fund. Great job on saving!",
+      duration: 4000,
     });
   };
 
   const handleViewLocationAlerts = () => {
+    const alertCount = locationAlerts.length;
+    const urgentCount = locationAlerts.filter(alert => alert.daysOut <= 3).length;
+    
     toast({
-      title: "Location Alerts",
-      description: "Viewing location alerts",
+      title: `${alertCount} Location Alerts`,
+      description: `Found ${urgentCount} urgent alerts for ${location?.city || 'your area'}. Check Settings tab for full details.`,
+      duration: 5000,
     });
-    console.log("Viewing location alerts");
   };
 
   const generateCoachMessages = () => {
