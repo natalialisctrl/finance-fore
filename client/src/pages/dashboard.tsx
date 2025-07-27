@@ -15,6 +15,7 @@ import { AISpendingCoach } from "@/components/ai-spending-coach";
 import { LifeModeSettings } from "@/components/life-mode-settings";
 import { LocationAlerts } from "@/components/location-alerts";
 import { LocationSettings } from "@/components/location-settings";
+import { TrackedItemsList } from "@/components/tracked-items-list";
 import { SmartSceneBuilder } from "@/components/smart-scene-builder";
 import { MobileSafeWrapper } from "@/components/mobile-safe-wrapper";
 import { MobileGoalsDebt } from "@/components/mobile-goals-debt";

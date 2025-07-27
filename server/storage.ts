@@ -5,6 +5,7 @@ import {
   userBudgets, 
   userSavings, 
   shoppingListItems,
+  trackedItems,
   type User, 
   type InsertUser,
   type UpsertUser,
@@ -19,6 +20,9 @@ import {
   type ShoppingListItem,
   type InsertShoppingListItem
 } from "@shared/schema";
+
+export type TrackedItem = typeof trackedItems.$inferSelect;
+export type InsertTrackedItem = typeof trackedItems.$inferInsert;
 import { db } from "./db";
 import { eq, and } from "drizzle-orm";
 
@@ -49,6 +53,12 @@ export interface IStorage {
   addShoppingListItem(item: InsertShoppingListItem): Promise<ShoppingListItem>;
   updateShoppingListItem(id: number, updates: Partial<ShoppingListItem>): Promise<ShoppingListItem>;
   deleteShoppingListItem(id: number): Promise<void>;
+  
+  // Tracked items methods
+  getTrackedItems(userId: string): Promise<TrackedItem[]>;
+  addTrackedItem(item: InsertTrackedItem): Promise<TrackedItem>;
+  updateTrackedItem(id: number, updates: Partial<TrackedItem>): Promise<TrackedItem>;
+  deleteTrackedItem(id: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -215,6 +225,51 @@ export class DatabaseStorage implements IStorage {
 
   async deleteShoppingListItem(id: number): Promise<void> {
     await db.delete(shoppingListItems).where(eq(shoppingListItems.id, id));
+  }
+
+  // Tracked Items Methods
+  async getTrackedItems(userId: string): Promise<TrackedItem[]> {
+    return await db.select().from(trackedItems).where(eq(trackedItems.userId, userId));
+  }
+
+  async addTrackedItem(item: InsertTrackedItem): Promise<TrackedItem> {
+    // Check if item already being tracked
+    const existing = await db.select().from(trackedItems)
+      .where(and(
+        eq(trackedItems.userId, item.userId),
+        eq(trackedItems.itemName, item.itemName)
+      ));
+    
+    if (existing.length > 0) {
+      // Update existing tracked item
+      const [updated] = await db.update(trackedItems)
+        .set({
+          ...item,
+          lastUpdated: new Date()
+        })
+        .where(eq(trackedItems.id, existing[0].id))
+        .returning();
+      return updated;
+    }
+    
+    // Add new tracked item
+    const [newItem] = await db.insert(trackedItems).values(item).returning();
+    return newItem;
+  }
+
+  async updateTrackedItem(id: number, updates: Partial<TrackedItem>): Promise<TrackedItem> {
+    const [updated] = await db.update(trackedItems)
+      .set({
+        ...updates,
+        lastUpdated: new Date()
+      })
+      .where(eq(trackedItems.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteTrackedItem(id: number): Promise<void> {
+    await db.delete(trackedItems).where(eq(trackedItems.id, id));
   }
 }
 

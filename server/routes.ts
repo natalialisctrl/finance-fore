@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertEconomicDataSchema, insertPriceDataSchema, insertUserBudgetSchema, insertUserSavingsSchema, insertShoppingListItemSchema } from "@shared/schema";
+import { insertEconomicDataSchema, insertPriceDataSchema, insertUserBudgetSchema, insertUserSavingsSchema, insertShoppingListItemSchema, insertTrackedItemSchema } from "@shared/schema";
 import { z } from "zod";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { getAIPricePrediction, getBatchAIPredictions, type AIAnalysisInput } from "./ai-service";
@@ -404,6 +404,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Gas prediction error:", error);
       res.status(500).json({ message: "Gas prediction service failed" });
+    }
+  });
+
+  // Tracked Items endpoints
+  app.get("/api/tracked-items/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const trackedItems = await storage.getTrackedItems(userId);
+      res.json(trackedItems);
+    } catch (error) {
+      console.error("Error fetching tracked items:", error);
+      res.status(500).json({ message: "Failed to fetch tracked items" });
+    }
+  });
+
+  app.post("/api/tracked-items", async (req, res) => {
+    try {
+      const parsed = insertTrackedItemSchema.parse(req.body);
+      const trackedItem = await storage.addTrackedItem(parsed);
+      res.json(trackedItem);
+    } catch (error) {
+      console.error("Error adding tracked item:", error);
+      res.status(400).json({ message: error.message || "Failed to add tracked item" });
+    }
+  });
+
+  app.delete("/api/tracked-items/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      await storage.deleteTrackedItem(id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting tracked item:", error);
+      res.status(500).json({ message: "Failed to delete tracked item" });
     }
   });
 

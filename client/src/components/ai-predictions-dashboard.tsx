@@ -1,4 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,9 +25,11 @@ import {
 import { useState, useEffect } from "react";
 import { usePullToRefresh, useDeviceType, useMobileToast } from "./mobile-enhancements";
 import { formatCurrency } from "@/lib/utils";
+import { TrackedItemsList } from "./tracked-items-list";
 
 export function AIPredictionsDashboard() {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [userPreferences] = useState<UserPreferences>({
     location: "US-National",
     shoppingFrequency: "weekly",
@@ -48,11 +51,45 @@ export function AIPredictionsDashboard() {
     });
   };
 
+  const trackItemMutation = useMutation({
+    mutationFn: async (itemData: { itemName: string; prediction: any }) => {
+      const trackedItem = {
+        userId: "demo-natalia", // Use actual user ID in real app
+        itemName: itemData.itemName,
+        currentPrice: itemData.prediction.currentPrice,
+        smartBuyScore: itemData.prediction.smartBuyScore,
+        recommendedAction: itemData.prediction.recommendedAction,
+        confidence: itemData.prediction.confidence,
+        priceAlerts: 1,
+      };
+      return await apiRequest("/api/tracked-items", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(trackedItem),
+      });
+    },
+    onSuccess: (data, variables) => {
+      toast({
+        title: "Now Tracking",
+        description: `${variables.itemName} has been added to your tracking list`,
+      });
+      // Invalidate tracked items query to refresh the list
+      queryClient.invalidateQueries({ queryKey: ["/api/tracked-items/demo-natalia"] });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to add item to tracking list",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleTrackItem = (itemName: string) => {
-    toast({
-      title: "Now Tracking",
-      description: `${itemName} is now being tracked for price changes.`,
-    });
+    const prediction = predictions.find(p => p.itemName === itemName);
+    if (prediction) {
+      trackItemMutation.mutate({ itemName, prediction });
+    }
   };
 
   const handleViewDetails = (itemName: string) => {
@@ -489,6 +526,11 @@ AI Data Stream Sources
             onViewDetails={() => handleViewDetails(prediction.itemName)}
           />
         ))}
+      </div>
+      
+      {/* Tracked Items Section */}
+      <div className="mt-8">
+        <TrackedItemsList userId="demo-natalia" />
       </div>
     </div>
   );

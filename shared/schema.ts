@@ -76,6 +76,20 @@ export const shoppingListItems = pgTable("shopping_list_items", {
   createdAt: timestamp("created_at").notNull(),
 });
 
+export const trackedItems = pgTable("tracked_items", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull(),
+  itemName: text("item_name").notNull(),
+  currentPrice: real("current_price").notNull(),
+  targetPrice: real("target_price"),
+  smartBuyScore: real("smart_buy_score").notNull(),
+  recommendedAction: text("recommended_action").notNull(),
+  confidence: real("confidence").notNull(),
+  priceAlerts: integer("price_alerts").notNull().default(1), // 0 = false, 1 = true
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  lastUpdated: timestamp("last_updated").notNull().defaultNow(),
+});
+
 // Insert schemas
 export const insertUserSchema = createInsertSchema(users).omit({
   createdAt: true,
@@ -102,6 +116,12 @@ export const insertUserSavingsSchema = createInsertSchema(userSavings).omit({
 
 export const insertShoppingListItemSchema = createInsertSchema(shoppingListItems).omit({
   id: true,
+});
+
+export const insertTrackedItemSchema = createInsertSchema(trackedItems).omit({
+  id: true,
+  createdAt: true,
+  lastUpdated: true,
 });
 
 // Financial Goals and Debt Management Tables
