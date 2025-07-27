@@ -53,6 +53,7 @@ export function AIPredictionsDashboard() {
 
   const trackItemMutation = useMutation({
     mutationFn: async (itemData: { itemName: string; prediction: any }) => {
+      console.log('Starting to track item:', itemData);
       const trackedItem = {
         userId: "demo-natalia", // Use actual user ID in real app
         itemName: itemData.itemName,
@@ -62,21 +63,26 @@ export function AIPredictionsDashboard() {
         confidence: itemData.prediction.confidence,
         priceAlerts: 1,
       };
-      return await apiRequest("/api/tracked-items", {
+      console.log('Tracked item payload:', trackedItem);
+      const response = await apiRequest("/api/tracked-items", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(trackedItem),
       });
+      console.log('Track item response:', response);
+      return response;
     },
     onSuccess: (data, variables) => {
+      console.log('Track item success:', data);
       toast({
         title: "Now Tracking",
         description: `${variables.itemName} has been added to your tracking list`,
       });
       // Invalidate tracked items query to refresh the list
-      queryClient.invalidateQueries({ queryKey: ["/api/tracked-items/demo-natalia"] });
+      queryClient.invalidateQueries({ queryKey: [`/api/tracked-items/demo-natalia`] });
     },
     onError: (error) => {
+      console.error('Track item error:', error);
       toast({
         title: "Error",
         description: "Failed to add item to tracking list",
@@ -86,9 +92,13 @@ export function AIPredictionsDashboard() {
   });
 
   const handleTrackItem = (itemName: string) => {
+    console.log('handleTrackItem called for:', itemName);
     const prediction = predictions.find(p => p.itemName === itemName);
+    console.log('Found prediction:', prediction);
     if (prediction) {
       trackItemMutation.mutate({ itemName, prediction });
+    } else {
+      console.error('No prediction found for item:', itemName);
     }
   };
 

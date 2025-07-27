@@ -251,6 +251,35 @@ export function EnhancedPricePredictionCard({
             </Badge>
           </div>
 
+          {/* Direct Action Buttons */}
+          <div className="mb-4 flex space-x-2">
+            <Button 
+              size="sm" 
+              variant="outline" 
+              className="flex-1" 
+              onClick={(e) => { 
+                e.stopPropagation(); 
+                console.log('MONITOR clicked for:', prediction.itemName);
+                onTrackItem?.(); 
+              }}
+            >
+              <Eye className="w-3 h-3 mr-1" />
+              MONITOR
+            </Button>
+            <Button 
+              size="sm" 
+              variant="outline" 
+              className="flex-1" 
+              onClick={(e) => { 
+                e.stopPropagation(); 
+                onAddToCart?.(); 
+              }}
+            >
+              <ShoppingCart className="w-3 h-3 mr-1" />
+              BUY
+            </Button>
+          </div>
+
           {/* Hover Details */}
           {isHovered && (
             <div className="space-y-3 animate-fadeIn">
