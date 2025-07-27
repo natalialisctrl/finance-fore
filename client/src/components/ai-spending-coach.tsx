@@ -99,8 +99,8 @@ export function AISpendingCoach() {
     const urgentCount = locationAlerts.filter(alert => alert.daysOut <= 3).length;
     
     toast({
-      title: `${alertCount} Location Alerts`,
-      description: `Found ${urgentCount} urgent alerts for ${location?.city || 'your area'}. Check Settings tab for full details.`,
+      title: `📍 ${alertCount} Location Alerts`,
+      description: `Found ${urgentCount} urgent alerts for ${location?.city || 'your area'}. Click the bell icon next to your name to view details.`,
       duration: 5000,
     });
   };

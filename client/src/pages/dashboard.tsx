@@ -24,6 +24,9 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 // import { useAuth } from "@/hooks/useAuth"; // Auto-login mode
 import { CreditCard, User, LogOut, TrendingUp, ShoppingCart, DollarSign, PiggyBank, AlertTriangle, CheckCircle, Clock, MapPin, MoreVertical, X, BarChart3, Brain, Wallet, Target, Calculator, Bell, Shield } from "lucide-react";
+import { useLocationAlerts } from "@/components/geo-location-service";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Badge } from "@/components/ui/badge";
 import { ForeseeLogo } from "@/components/foresee-logo";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -56,6 +59,7 @@ export default function Dashboard() {
   const [videoInteracted, setVideoInteracted] = useState(false);
   const [titleSpinning, setTitleSpinning] = useState(false);
   const queryClient = useQueryClient();
+  const { location, locationAlerts, isLoading: locationLoading } = useLocationAlerts();
 
   // Handle title 3D interaction
   const handleTitleClick = () => {
@@ -210,8 +214,76 @@ export default function Dashboard() {
               <ForeseeLogo size="md" className="text-white" />
             </div>
             
-            {/* Welcome Back Section */}
+            {/* Welcome Back Section with Notifications */}
             <div className="flex items-center gap-3">
+              {/* Notification Bell */}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="relative p-2 hover:bg-white/10 rounded-full"
+                  >
+                    <Bell className="w-5 h-5 text-white/80 hover:text-white" />
+                    {locationAlerts.length > 0 && (
+                      <Badge 
+                        className="absolute -top-1 -right-1 px-1.5 py-0.5 min-w-[20px] h-5 text-xs bg-red-500 hover:bg-red-600 text-white border-0 rounded-full"
+                      >
+                        {locationAlerts.length}
+                      </Badge>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-80 p-0 bg-slate-900/95 border-white/20 backdrop-blur-lg">
+                  <div className="p-4 border-b border-white/10">
+                    <h3 className="font-semibold text-white flex items-center gap-2">
+                      <Bell className="w-4 h-4" />
+                      Location Alerts
+                    </h3>
+                    <p className="text-sm text-white/60 mt-1">
+                      {location?.city}, {location?.state}
+                    </p>
+                  </div>
+                  <div className="max-h-96 overflow-y-auto">
+                    {locationAlerts.length > 0 ? (
+                      <div className="space-y-3 p-4">
+                        {locationAlerts.slice(0, 5).map((alert, index) => (
+                          <div key={index} className="glass-card p-3 bg-white/5 rounded-lg">
+                            <div className="flex items-start gap-3">
+                              <div className={`w-2 h-2 rounded-full mt-2 ${
+                                alert.severity === 'high' ? 'bg-red-500' : 
+                                alert.severity === 'medium' ? 'bg-yellow-500' : 'bg-green-500'
+                              }`} />
+                              <div className="flex-1">
+                                <div className="text-sm font-medium text-white">
+                                  {alert.message}
+                                </div>
+                                <div className="text-xs text-white/60 mt-1">
+                                  {alert.prediction}
+                                </div>
+                                <div className="flex items-center gap-2 mt-2">
+                                  <Badge variant="secondary" className="text-xs">
+                                    {alert.type}
+                                  </Badge>
+                                  <span className="text-xs text-white/50">
+                                    {alert.daysOut} days out
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="p-4 text-center text-white/60">
+                        <Bell className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                        <p className="text-sm">No active alerts</p>
+                      </div>
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
+              
               <div className="text-right">
                 <div className="text-white/60 text-xs font-mono tracking-wide">
                   Welcome back,
