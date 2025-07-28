@@ -171,6 +171,15 @@ The app prioritizes transparency about data sources:
 
 ## Recent Changes
 
+### July 28, 2025 - Mobile Video Play Button Fix & Complete Item Tracking Implementation
+- **Mobile Video Removal**: Completely removed video background on mobile devices to eliminate play button overlay issues
+- **Mobile-Optimized Background**: Replaced video with elegant animated gradient background for mobile devices
+- **Complete Item Tracking System**: Successfully implemented full tracking functionality with database persistence
+- **Enhanced MONITOR Buttons**: Added prominent, directly accessible MONITOR buttons on each prediction card
+- **Tracked Items Display**: Integrated TrackedItemsList component in AI Insights tab showing all monitored items
+- **Database Integration**: Full CRUD operations for tracked items with proper API endpoints and error handling
+- **Mobile-First Design**: Ensured tracking functionality works seamlessly across all device types
+
 ### July 27, 2025 - AI Tab Performance Optimization & Fast Algorithmic Predictions
 - **Instant Loading AI Tab**: Completely optimized AI Predictions Dashboard for millisecond loading times
 - **Fast Algorithmic Engine**: Replaced slow OpenAI API calls with instant algorithmic predictions using economic indicators
