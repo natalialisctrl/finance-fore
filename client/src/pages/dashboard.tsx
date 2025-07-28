@@ -482,28 +482,32 @@ export default function Dashboard() {
         {/* Quantum Hero Matrix - AI Core Tab */}
         {activeTab === 'dashboard' && (
           <div className="relative z-40 max-w-7xl mx-auto px-6 py-16 pl-[24px] pr-[24px] pt-[32px] pb-[32px] overflow-hidden min-h-[60vh]">
-            {/* Video Background - Hidden on Mobile */}
-            <div className="absolute inset-0 z-0 hidden md:block">
+            {/* Video Background - Mobile Optimized */}
+            <div className="absolute inset-0 z-0">
               <video
                 autoPlay
                 loop
                 muted
                 playsInline
+                controls={false}
+                preload="metadata"
                 className="w-full h-full object-cover opacity-60"
                 style={{
                   filter: 'brightness(0.8) contrast(1.1)',
-                  objectPosition: 'center'
+                  objectPosition: 'center',
+                  pointerEvents: 'none'
                 }}
                 src={foreseeVideo}
+                onLoadedData={(e) => {
+                  const video = e.target as HTMLVideoElement;
+                  video.play().catch(() => {
+                    // If autoplay fails, hide controls and try again
+                    video.controls = false;
+                  });
+                }}
               />
               {/* Video overlay gradient */}
               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#051421]/10 to-[#051421]/40"></div>
-            </div>
-
-            {/* Mobile Background - Gradient Only */}
-            <div className="absolute inset-0 z-0 block md:hidden bg-gradient-to-br from-[#051421] via-[#0a1929] to-[#051421]">
-              {/* Animated gradient background for mobile */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#fc304ed6]/5 via-transparent to-[#d4c4a0]/5 animate-pulse"></div>
             </div>
 
             <div className="relative z-10 text-center">
