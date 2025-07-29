@@ -610,23 +610,16 @@ export default function Dashboard() {
           
           {activeTab === 'planning' && (
             <div className="space-y-4 sm:space-y-8">
-              {/* Mobile-First Approach */}
-              <div className="block sm:hidden">
-                <MobileScenarioPlanning />
+              {/* Full Featured Scenario Planning for All Devices */}
+              <div className="fade-in">
+                <MobileSafeWrapper fallbackTitle="Scenario Planning Error" componentName="ScenarioPlanning">
+                  <ScenarioPlanning />
+                </MobileSafeWrapper>
               </div>
-              
-              {/* Desktop Components */}
-              <div className="hidden sm:block">
-                <div className="fade-in">
-                  <MobileSafeWrapper fallbackTitle="Scenario Planning Error" componentName="ScenarioPlanning">
-                    <ScenarioPlanning />
-                  </MobileSafeWrapper>
-                </div>
-                <div className="slide-up" style={{ animationDelay: '0.2s' }}>
-                  <MobileSafeWrapper fallbackTitle="Economic Trends Error" componentName="EconomicTrendPrediction">
-                    <EconomicTrendPrediction />
-                  </MobileSafeWrapper>
-                </div>
+              <div className="slide-up" style={{ animationDelay: '0.2s' }}>
+                <MobileSafeWrapper fallbackTitle="Economic Trends Error" componentName="EconomicTrendPrediction">
+                  <EconomicTrendPrediction />
+                </MobileSafeWrapper>
               </div>
             </div>
           )}
