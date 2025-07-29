@@ -32,11 +32,15 @@ export function MobileSceneBuilder() {
   // Create video goal mutation
   const createGoalMutation = useMutation({
     mutationFn: async (goalData: InsertVideoGoal) => {
-      return await apiRequest("/api/video-goals", {
+      const response = await fetch("/api/video-goals", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(goalData),
       });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
     },
     onSuccess: () => {
       toast({
@@ -60,11 +64,15 @@ export function MobileSceneBuilder() {
   // Update video goal progress mutation
   const updateProgressMutation = useMutation({
     mutationFn: async ({ goalId, newAmount }: { goalId: number; newAmount: number }) => {
-      return await apiRequest(`/api/video-goals/${goalId}`, {
-        method: "PUT",
+      const response = await fetch(`/api/video-goals/${goalId}`, {
+        method: "PUT", 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ currentAmount: newAmount }),
       });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/video-goals/${userId}`] });
