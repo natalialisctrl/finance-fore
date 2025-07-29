@@ -171,14 +171,23 @@ The app prioritizes transparency about data sources:
 
 ## Recent Changes
 
-### July 28, 2025 - Mobile Video Play Button Fix & Complete Item Tracking Implementation
-- **Mobile Video Optimization**: Fixed mobile video play button overlay by disabling controls and pointer events
-- **Enhanced Video Playback**: Added proper autoplay handling with fallback for mobile browsers
-- **Complete Item Tracking System**: Successfully implemented full tracking functionality with database persistence
-- **Enhanced MONITOR Buttons**: Added prominent, directly accessible MONITOR buttons on each prediction card
-- **Tracked Items Display**: Integrated TrackedItemsList component in AI Insights tab showing all monitored items
-- **Database Integration**: Full CRUD operations for tracked items with proper API endpoints and error handling
-- **Mobile-First Design**: Ensured tracking functionality works seamlessly across all device types
+### July 29, 2025 - AI Budget Redistribution & Enhanced Scenario Planning Implementation
+- **AI-Powered Budget Redistribution**: Created comprehensive budget redistribution service using GPT-4o for intelligent budget reallocation based on financial scenarios
+- **Smart Scenario Analysis**: Built full-featured AI budget analysis component with tabbed interface showing redistributed budgets, strategies, risks, and action plans
+- **Dynamic Budget Categories**: Implemented priority-based budget categorization (essential/important/optional) with detailed reasoning for each adjustment
+- **Comprehensive Financial Planning**: Added emergency fund targets, debt payoff strategies, investment recommendations, and risk assessments for each scenario
+- **Interactive Budget Visualization**: Created visual budget comparison with progress bars, change indicators, and confidence scoring
+- **Scenario Integration**: Enhanced existing scenario planning component with "AI Budget Analysis" buttons for instant budget redistribution
+- **Algorithmic Fallback System**: Implemented robust fallback logic when AI quota is exceeded, ensuring continuous functionality
+
+### July 28, 2025 - Functional AI Scene Builder & Video Goals System Implementation  
+- **Complete Scene Builder Functionality**: Successfully implemented full AI video generation system with database persistence and progressive unlock mechanics
+- **Video Goals Database**: Created comprehensive video goals schema and API endpoints for storing and managing AI-generated dream visualizations
+- **Progressive Video Unlocks**: Built sophisticated video segment system where users unlock portions of their dream video as they reach savings milestones
+- **Dream Goal Creation**: Added interactive form for creating personalized video goals with different types (car, house, vacation, gadget) and target amounts
+- **Savings Milestone Tracking**: Implemented real-time progress tracking with video unlock predictions and "Add $100" demo functionality
+- **Mobile-Optimized Video Player**: Created custom video modal with progressive unlock overlay showing locked vs unlocked video segments
+- **AI Video Generation Ready**: Prepared infrastructure for actual AI video generation with placeholder URLs and segment management
 
 ### July 27, 2025 - AI Tab Performance Optimization & Fast Algorithmic Predictions
 - **Instant Loading AI Tab**: Completely optimized AI Predictions Dashboard for millisecond loading times

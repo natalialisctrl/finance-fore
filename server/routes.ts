@@ -485,6 +485,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // AI Budget Redistribution Route
+  app.post("/api/budget-redistribution", async (req, res) => {
+    try {
+      const { budgetRedistributor } = await import("./ai-budget-redistribution");
+      const scenarioInput = req.body;
+      
+      const redistributionResult = await budgetRedistributor.redistributeBudget(scenarioInput);
+      res.json(redistributionResult);
+    } catch (error) {
+      console.error("Error redistributing budget:", error);
+      res.status(500).json({ message: "Failed to redistribute budget" });
+    }
+  });
+
   // FRED API integration endpoint
   app.get("/api/fred-data", async (req, res) => {
     try {

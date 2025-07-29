@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calculator, TrendingUp, TrendingDown, AlertTriangle, DollarSign, Calendar } from 'lucide-react';
+import { Calculator, TrendingUp, TrendingDown, AlertTriangle, DollarSign, Calendar, Brain } from 'lucide-react';
+import { AIBudgetRedistribution } from '@/components/ai-budget-redistribution';
 
 interface Scenario {
   id: string;
@@ -69,6 +70,7 @@ export function ScenarioPlanning() {
   ]);
 
   const [selectedScenario, setSelectedScenario] = useState<string | null>(null);
+  const [showBudgetAnalysis, setShowBudgetAnalysis] = useState<string | null>(null);
 
   const getScenarioTypeInfo = (type: string) => {
     return SCENARIO_TYPES.find(t => t.value === type) || SCENARIO_TYPES[0];
@@ -204,8 +206,13 @@ export function ScenarioPlanning() {
                       ))}
                     </div>
                     <div className="flex space-x-2 mt-3">
-                      <Button size="sm" className="flex-1 touch-manipulation text-xs">
-                        Apply Scenario
+                      <Button 
+                        size="sm" 
+                        className="flex-1 touch-manipulation text-xs"
+                        onClick={() => setShowBudgetAnalysis(scenario.id)}
+                      >
+                        <Brain className="w-3 h-3 mr-1" />
+                        AI Budget Analysis
                       </Button>
                       <Button size="sm" variant="outline" className="touch-manipulation text-xs">
                         Details
@@ -251,6 +258,16 @@ export function ScenarioPlanning() {
           </div>
         </CardContent>
       </Card>
+
+      {/* AI Budget Redistribution Modal */}
+      {showBudgetAnalysis && (
+        <div className="mt-6">
+          <AIBudgetRedistribution
+            scenario={scenarios.find(s => s.id === showBudgetAnalysis)!}
+            onClose={() => setShowBudgetAnalysis(null)}
+          />
+        </div>
+      )}
     </div>
   );
 }
