@@ -24,9 +24,11 @@ export function MobileSceneBuilder() {
   const userId = "demo-natalia"; // Use actual user ID in real app
 
   // Fetch video goals
-  const { data: videoGoals = [], isLoading } = useQuery({
-    queryKey: [`/api/video-goals/${userId}`],
-    queryFn: () => apiRequest(`/api/video-goals/${userId}`) as Promise<VideoGoal[]>
+  const { data: videoGoals = [], isLoading, refetch } = useQuery({
+    queryKey: ['video-goals', userId],
+    queryFn: () => apiRequest(`/api/video-goals/${userId}`) as Promise<VideoGoal[]>,
+    refetchOnWindowFocus: true,
+    staleTime: 0 // Always refetch to show latest data
   });
 
   // Create video goal mutation
@@ -47,7 +49,9 @@ export function MobileSceneBuilder() {
         title: "Dream Scene Created",
         description: "Your AI video goal has been generated successfully!",
       });
-      queryClient.invalidateQueries({ queryKey: [`/api/video-goals/${userId}`] });
+      // Force immediate refresh
+      queryClient.invalidateQueries({ queryKey: ['video-goals', userId] });
+      refetch();
       setIsCreating(false);
       setNewGoal({ goalTitle: "", goalDescription: "", goalType: "car", targetAmount: 0 });
     },
@@ -75,7 +79,8 @@ export function MobileSceneBuilder() {
       return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [`/api/video-goals/${userId}`] });
+      queryClient.invalidateQueries({ queryKey: ['video-goals', userId] });
+      refetch();
       toast({
         title: "Progress Updated",
         description: "Your savings progress has been updated!",
