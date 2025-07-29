@@ -26,7 +26,11 @@ export function MobileSceneBuilder() {
   // Fetch video goals
   const { data: videoGoals = [], isLoading, refetch } = useQuery({
     queryKey: ['video-goals', userId],
-    queryFn: () => apiRequest(`/api/video-goals/${userId}`) as Promise<VideoGoal[]>,
+    queryFn: async () => {
+      const response = await fetch(`/api/video-goals/${userId}`);
+      if (!response.ok) throw new Error('Failed to fetch video goals');
+      return response.json() as Promise<VideoGoal[]>;
+    },
     refetchOnWindowFocus: true,
     staleTime: 0 // Always refetch to show latest data
   });
@@ -186,7 +190,7 @@ export function MobileSceneBuilder() {
               <Waves className="w-3 h-3 text-[#f39c12] animate-bounce" />
             </div>
             <div className="text-lg font-bold gradient-coral-navy pulse-metric">
-              ${videoGoals.reduce((sum, goal) => sum + goal.currentAmount, 0).toLocaleString()}
+              ${videoGoals.reduce((sum, goal) => sum + (goal.currentAmount || 0), 0).toLocaleString()}
             </div>
             <div className="text-xs text-white/70">Total Saved</div>
             <div className="text-xs text-[#d4c4a0] mt-1">● Growing</div>
@@ -292,6 +296,7 @@ export function MobileSceneBuilder() {
       )}
 
       {/* Video Goals List */}
+      {console.log("Rendering goals list. isLoading:", isLoading, "videoGoals.length:", videoGoals.length, "videoGoals:", videoGoals)}
       {isLoading ? (
         <div className="text-center text-white/60 py-8">
           <Brain className="w-8 h-8 mx-auto mb-4 animate-pulse" />
@@ -304,6 +309,7 @@ export function MobileSceneBuilder() {
         </div>
       ) : (
         <div className="space-y-6">
+          <p className="text-white text-sm mb-4">Found {videoGoals.length} video goals:</p>
           {videoGoals.map((goal) => (
             <VideoGoalCard
               key={goal.id}

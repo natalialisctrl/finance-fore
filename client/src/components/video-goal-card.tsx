@@ -12,13 +12,14 @@ interface VideoGoalCardProps {
 export function VideoGoalCard({ goal, onUpdateProgress }: VideoGoalCardProps) {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   
-  const progressPercentage = (goal.currentAmount / goal.targetAmount) * 100;
+  const currentAmount = goal.currentAmount || 0;
+  const progressPercentage = (currentAmount / goal.targetAmount) * 100;
   const segmentThreshold = goal.targetAmount / 5; // 5 segments
   
   // Calculate which segments are unlocked based on current amount
-  const unlockedSegments = Math.floor(goal.currentAmount / segmentThreshold);
+  const unlockedSegments = Math.floor(currentAmount / segmentThreshold);
   const nextUnlockAmount = (unlockedSegments + 1) * segmentThreshold;
-  const amountToNextUnlock = nextUnlockAmount - goal.currentAmount;
+  const amountToNextUnlock = nextUnlockAmount - currentAmount;
 
   const videoSegments = goal.videoSegments || [
     { segmentNumber: 1, unlockThreshold: segmentThreshold * 1, description: "Opening Scene", isUnlocked: unlockedSegments >= 1 },
@@ -30,7 +31,7 @@ export function VideoGoalCard({ goal, onUpdateProgress }: VideoGoalCardProps) {
 
   const handleAddToGoal = () => {
     // Add $100 to the goal for demo purposes
-    const newAmount = Math.min(goal.currentAmount + 100, goal.targetAmount);
+    const newAmount = Math.min(currentAmount + 100, goal.targetAmount);
     onUpdateProgress(goal.id, newAmount);
   };
 
