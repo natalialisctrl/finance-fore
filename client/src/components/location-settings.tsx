@@ -142,9 +142,13 @@ export function LocationSettings() {
     // In a real app, save to backend
     localStorage.setItem('locationPreferences', JSON.stringify(preferences));
     
+    const enabledAlerts = Object.entries(preferences.alertTypes)
+      .filter(([_, enabled]) => enabled)
+      .map(([type, _]) => type);
+    
     toast({
       title: "Location Settings Saved",
-      description: `Monitoring ${preferences.city}, ${preferences.state} for ${Object.entries(preferences.alertTypes).filter(([_, enabled]) => enabled).length} alert types`,
+      description: `Monitoring ${preferences.city}, ${preferences.state} for ${enabledAlerts.length} alert types: ${enabledAlerts.join(', ')}`,
     });
     
     setIsDialogOpen(false);
@@ -241,27 +245,73 @@ export function LocationSettings() {
 
                 {/* Alert Types */}
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-slate-900 dark:text-white">Alert Types</h4>
-                  <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-semibold text-slate-900 dark:text-white">Alert Types</h4>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">Choose which types of alerts you want to receive</p>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          const allEnabled = activeAlertsCount === 5;
+                          setPreferences(prev => ({
+                            ...prev,
+                            alertTypes: {
+                              gas: !allEnabled,
+                              grocery: !allEnabled,
+                              housing: !allEnabled,
+                              weather: !allEnabled,
+                              economic: !allEnabled
+                            }
+                          }));
+                        }}
+                        className="text-xs"
+                      >
+                        {activeAlertsCount === 5 ? 'Disable All' : 'Enable All'}
+                      </Button>
+                      <Badge variant={activeAlertsCount > 0 ? "default" : "outline"} className="text-xs">
+                        {activeAlertsCount} of 5 enabled
+                      </Badge>
+                    </div>
+                  </div>
+                  <div className="space-y-3 bg-slate-50/50 dark:bg-slate-800/50 rounded-lg p-4">
                     {Object.entries(preferences.alertTypes).map(([type, enabled]) => (
-                      <div key={type} className="flex items-center justify-between p-3 glass-card">
+                      <div key={type} className={`flex items-center justify-between p-4 rounded-lg border transition-all duration-200 ${
+                        enabled 
+                          ? 'bg-blue-50/50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800' 
+                          : 'bg-white/50 dark:bg-slate-700/50 border-slate-200 dark:border-slate-600'
+                      }`}>
                         <div className="flex items-center space-x-3">
-                          {getAlertTypeIcon(type)}
+                          <div className={`p-2 rounded-lg ${
+                            enabled 
+                              ? 'bg-blue-100 dark:bg-blue-800 text-blue-600 dark:text-blue-300' 
+                              : 'bg-slate-100 dark:bg-slate-600 text-slate-600 dark:text-slate-400'
+                          }`}>
+                            {getAlertTypeIcon(type)}
+                          </div>
                           <div>
-                            <div className="font-medium text-white capitalize">{type}</div>
-                            <div className="text-sm text-white">
-                              {type === 'gas' && 'Price changes at local gas stations'}
-                              {type === 'grocery' && 'Sales and price changes at grocery stores'}
-                              {type === 'housing' && 'Rental market trends and mortgage rates'}
-                              {type === 'weather' && 'Weather impacts on utility costs'}
-                              {type === 'economic' && 'Local economic trends and job market'}
+                            <div className="font-medium text-slate-900 dark:text-white capitalize flex items-center space-x-2">
+                              <span>{type === 'gas' ? 'Gas Prices' : type === 'grocery' ? 'Grocery Deals' : type === 'housing' ? 'Housing Market' : type === 'weather' ? 'Weather Impact' : 'Economic Trends'}</span>
+                              {enabled && <Badge variant="secondary" className="text-xs">Active</Badge>}
+                            </div>
+                            <div className="text-sm text-slate-600 dark:text-slate-300">
+                              {type === 'gas' && 'Get notified about price changes at nearby gas stations'}
+                              {type === 'grocery' && 'Receive alerts about sales and price drops at grocery stores'}
+                              {type === 'housing' && 'Stay updated on rental market trends and mortgage rates'}
+                              {type === 'weather' && 'Weather-related impacts on your utility costs'}
+                              {type === 'economic' && 'Local economic trends affecting your spending power'}
                             </div>
                           </div>
                         </div>
-                        <Switch
-                          checked={enabled}
-                          onCheckedChange={() => handleAlertTypeToggle(type as keyof LocationPreferences['alertTypes'])}
-                        />
+                        <div className="flex items-center space-x-2">
+                          <Switch
+                            checked={enabled}
+                            onCheckedChange={() => handleAlertTypeToggle(type as keyof LocationPreferences['alertTypes'])}
+                            className="data-[state=checked]:bg-blue-600"
+                          />
+                        </div>
                       </div>
                     ))}
                   </div>
