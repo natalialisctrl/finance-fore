@@ -296,7 +296,7 @@ export function MobileSceneBuilder() {
       )}
 
       {/* Video Goals List */}
-      {console.log("Rendering goals list. isLoading:", isLoading, "videoGoals.length:", videoGoals.length, "videoGoals:", videoGoals)}
+
       {isLoading ? (
         <div className="text-center text-white/60 py-8">
           <Brain className="w-8 h-8 mx-auto mb-4 animate-pulse" />

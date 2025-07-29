@@ -74,7 +74,7 @@ export function VideoGoalCard({ goal, onUpdateProgress }: VideoGoalCardProps) {
         <div className="space-y-6">
           <div className="relative">
             <div className="flex justify-between text-sm mb-3 font-mono">
-              <span className="text-white/90">${goal.currentAmount.toLocaleString()}</span>
+              <span className="text-white/90">${currentAmount.toLocaleString()}</span>
               <span className="text-[#fc304ed6]">{progressPercentage.toFixed(1)}%</span>
               <span className="text-white/90">${goal.targetAmount.toLocaleString()}</span>
             </div>
@@ -130,7 +130,7 @@ export function VideoGoalCard({ goal, onUpdateProgress }: VideoGoalCardProps) {
             <Button
               onClick={handleAddToGoal}
               className="btn-coral h-full flex flex-col items-center justify-center space-y-1"
-              disabled={goal.currentAmount >= goal.targetAmount}
+              disabled={currentAmount >= goal.targetAmount}
             >
               <Zap className="w-4 h-4" />
               <span className="text-xs">Add $100</span>
