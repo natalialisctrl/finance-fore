@@ -81,12 +81,16 @@ export function AIBudgetRedistribution({ scenario, onClose }: AIBudgetRedistribu
   };
 
   const redistributionMutation = useMutation({
-    mutationFn: async (input: ScenarioInput) => {
-      return await apiRequest("/api/budget-redistribution", {
+    mutationFn: async (input: ScenarioInput): Promise<BudgetRedistributionResult> => {
+      const response = await fetch("/api/budget-redistribution", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(input),
-      }) as BudgetRedistributionResult;
+      });
+      if (!response.ok) {
+        throw new Error("Failed to redistribute budget");
+      }
+      return response.json();
     },
     onError: (error) => {
       console.error("Error getting budget redistribution:", error);

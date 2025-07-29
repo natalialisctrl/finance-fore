@@ -106,7 +106,7 @@ export function MobileSceneBuilder() {
     const goalData: InsertVideoGoal = {
       userId,
       goalTitle: newGoal.goalTitle,
-      goalDescription: newGoal.goalDescription,
+      goalDescription: newGoal.goalDescription || "",
       goalType: newGoal.goalType,
       targetAmount: newGoal.targetAmount,
       currentAmount: 0,

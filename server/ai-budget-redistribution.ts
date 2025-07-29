@@ -104,7 +104,7 @@ Respond with JSON in this exact format:
       max_tokens: 2000
     });
 
-    const result = JSON.parse(response.choices[0].message.content);
+    const result = JSON.parse(response.choices[0].message.content || "{}");
     return result as BudgetRedistributionResult;
   }
 

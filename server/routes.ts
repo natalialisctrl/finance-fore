@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertEconomicDataSchema, insertPriceDataSchema, insertUserBudgetSchema, insertUserSavingsSchema, insertShoppingListItemSchema, insertTrackedItemSchema } from "@shared/schema";
+import { insertEconomicDataSchema, insertPriceDataSchema, insertUserBudgetSchema, insertUserSavingsSchema, insertShoppingListItemSchema, insertTrackedItemSchema, insertVideoGoalSchema } from "@shared/schema";
 import { z } from "zod";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { getAIPricePrediction, getBatchAIPredictions, type AIAnalysisInput } from "./ai-service";
@@ -455,11 +455,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/video-goals", async (req, res) => {
     try {
-      const goal = await storage.addVideoGoal(req.body);
+      const parsed = insertVideoGoalSchema.parse(req.body);
+      const goal = await storage.addVideoGoal(parsed);
       res.json(goal);
     } catch (error) {
       console.error("Error creating video goal:", error);
-      res.status(500).json({ message: "Failed to create video goal" });
+      res.status(400).json({ message: error.message || "Failed to create video goal" });
     }
   });
 
