@@ -171,6 +171,22 @@ The app prioritizes transparency about data sources:
 
 ## Recent Changes
 
+### July 29, 2025 - Video Goal Creation Bug Fixes & Budget Redistribution Visibility Implementation
+- **Fixed Video Goal Creation Errors**: Resolved form validation and input parsing issues that were preventing video goal creation
+  - Enhanced input validation with proper number parsing and minimum value checks
+  - Added detailed error logging and user-friendly error messages
+  - Fixed target amount input handling with proper parseInt conversion
+  - Improved form state management with proper data type validation
+- **Budget Redistribution Feature Visibility**: Made AI budget redistribution accessible on all devices
+  - Removed mobile-only restrictions that were hiding the full scenario planning component
+  - ScenarioPlanning component with AI Budget Analysis now displays on both mobile and desktop
+  - Users can now access "AI Budget Analysis" buttons in the Future Sync (planning) tab
+  - Fixed JSX syntax errors and component structure for proper rendering
+- **Enhanced User Experience**: Video goal system now fully functional with comprehensive error handling
+  - Console logging added for debugging video goal creation process
+  - Form reset functionality working properly after successful creation
+  - Better user feedback with specific error messages and validation prompts
+
 ### July 29, 2025 - AI Budget Redistribution & Enhanced Scenario Planning Implementation
 - **AI-Powered Budget Redistribution**: Created comprehensive budget redistribution service using GPT-4o for intelligent budget reallocation based on financial scenarios
 - **Smart Scenario Analysis**: Built full-featured AI budget analysis component with tabbed interface showing redistributed budgets, strategies, risks, and action plans

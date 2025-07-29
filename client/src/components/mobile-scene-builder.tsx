@@ -51,7 +51,7 @@ export function MobileSceneBuilder() {
       console.error("Error creating video goal:", error);
       toast({
         title: "Error",
-        description: "Failed to create video goal",
+        description: `Failed to create video goal: ${error instanceof Error ? error.message : 'Unknown error'}`,
         variant: "destructive",
       });
     },
@@ -84,17 +84,19 @@ export function MobileSceneBuilder() {
   });
 
   const handleCreateGoal = () => {
-    if (!newGoal.goalTitle || !newGoal.targetAmount) {
+    console.log("Creating goal with data:", newGoal);
+    
+    if (!newGoal.goalTitle || !newGoal.targetAmount || newGoal.targetAmount <= 0) {
       toast({
         title: "Missing Information",
-        description: "Please fill in all required fields",
+        description: "Please fill in all required fields with valid values",
         variant: "destructive",
       });
       return;
     }
 
     // Generate video segments based on target amount
-    const segmentThreshold = newGoal.targetAmount / 5;
+    const segmentThreshold = Math.floor(newGoal.targetAmount / 5);
     const videoSegments = [
       { segmentNumber: 1, unlockThreshold: segmentThreshold * 1, description: "Opening Scene", isUnlocked: false },
       { segmentNumber: 2, unlockThreshold: segmentThreshold * 2, description: "Main Subject", isUnlocked: false },
@@ -105,16 +107,17 @@ export function MobileSceneBuilder() {
 
     const goalData: InsertVideoGoal = {
       userId,
-      goalTitle: newGoal.goalTitle,
-      goalDescription: newGoal.goalDescription || "",
+      goalTitle: newGoal.goalTitle.trim(),
+      goalDescription: (newGoal.goalDescription || "").trim(),
       goalType: newGoal.goalType,
-      targetAmount: newGoal.targetAmount,
+      targetAmount: Number(newGoal.targetAmount),
       currentAmount: 0,
       videoUrl: `/videos/ai-generated-${newGoal.goalType}-${Date.now()}.mp4`, // Placeholder URL
       videoSegments,
       unlockedSegments: 0,
     };
 
+    console.log("Sending goal data to API:", goalData);
     createGoalMutation.mutate(goalData);
   };
 
@@ -230,8 +233,13 @@ export function MobileSceneBuilder() {
                 <Input
                   id="targetAmount"
                   type="number"
+                  min="1"
+                  step="1000"
                   value={newGoal.targetAmount || ""}
-                  onChange={(e) => setNewGoal(prev => ({ ...prev, targetAmount: parseFloat(e.target.value) || 0 }))}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value) || 0;
+                    setNewGoal(prev => ({ ...prev, targetAmount: value }));
+                  }}
                   placeholder="35000"
                   className="bg-black/30 border-white/20 text-white"
                 />
