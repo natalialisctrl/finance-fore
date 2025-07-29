@@ -6,6 +6,7 @@ import {
   userSavings, 
   shoppingListItems,
   trackedItems,
+  videoGoals,
   type User, 
   type InsertUser,
   type UpsertUser,
@@ -18,7 +19,9 @@ import {
   type UserSavings,
   type InsertUserSavings,
   type ShoppingListItem,
-  type InsertShoppingListItem
+  type InsertShoppingListItem,
+  type VideoGoal,
+  type InsertVideoGoal
 } from "@shared/schema";
 
 export type TrackedItem = typeof trackedItems.$inferSelect;
@@ -59,6 +62,12 @@ export interface IStorage {
   addTrackedItem(item: InsertTrackedItem): Promise<TrackedItem>;
   updateTrackedItem(id: number, updates: Partial<TrackedItem>): Promise<TrackedItem>;
   deleteTrackedItem(id: number): Promise<void>;
+
+  // Video Goals methods
+  getVideoGoals(userId: string): Promise<VideoGoal[]>;
+  addVideoGoal(goal: InsertVideoGoal): Promise<VideoGoal>;
+  updateVideoGoal(id: number, updates: Partial<VideoGoal>): Promise<VideoGoal>;
+  deleteVideoGoal(id: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -270,6 +279,31 @@ export class DatabaseStorage implements IStorage {
 
   async deleteTrackedItem(id: number): Promise<void> {
     await db.delete(trackedItems).where(eq(trackedItems.id, id));
+  }
+
+  // Video Goals Methods
+  async getVideoGoals(userId: string): Promise<VideoGoal[]> {
+    return await db.select().from(videoGoals).where(eq(videoGoals.userId, userId));
+  }
+
+  async addVideoGoal(goal: InsertVideoGoal): Promise<VideoGoal> {
+    const [newGoal] = await db.insert(videoGoals).values(goal).returning();
+    return newGoal;
+  }
+
+  async updateVideoGoal(id: number, updates: Partial<VideoGoal>): Promise<VideoGoal> {
+    const [updated] = await db.update(videoGoals)
+      .set({
+        ...updates,
+        updatedAt: new Date()
+      })
+      .where(eq(videoGoals.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteVideoGoal(id: number): Promise<void> {
+    await db.delete(videoGoals).where(eq(videoGoals.id, id));
   }
 }
 

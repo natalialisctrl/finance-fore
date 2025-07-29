@@ -441,6 +441,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Video Goals Routes
+  app.get("/api/video-goals/:userId", async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const goals = await storage.getVideoGoals(userId);
+      res.json(goals);
+    } catch (error) {
+      console.error("Error fetching video goals:", error);
+      res.status(500).json({ message: "Failed to fetch video goals" });
+    }
+  });
+
+  app.post("/api/video-goals", async (req, res) => {
+    try {
+      const goal = await storage.addVideoGoal(req.body);
+      res.json(goal);
+    } catch (error) {
+      console.error("Error creating video goal:", error);
+      res.status(500).json({ message: "Failed to create video goal" });
+    }
+  });
+
+  app.put("/api/video-goals/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const goal = await storage.updateVideoGoal(id, req.body);
+      res.json(goal);
+    } catch (error) {
+      console.error("Error updating video goal:", error);
+      res.status(500).json({ message: "Failed to update video goal" });
+    }
+  });
+
+  app.delete("/api/video-goals/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      await storage.deleteVideoGoal(id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting video goal:", error);
+      res.status(500).json({ message: "Failed to delete video goal" });
+    }
+  });
+
   // FRED API integration endpoint
   app.get("/api/fred-data", async (req, res) => {
     try {

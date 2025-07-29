@@ -1,7 +1,127 @@
+import { useState, useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Target, Plus, Camera, Sparkles, Eye, Zap, Brain, Cpu, Waves, Activity } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Target, Plus, Brain, Cpu, Waves, Activity, Zap } from "lucide-react";
+import { VideoGoalCard } from "@/components/video-goal-card";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
+import type { VideoGoal, InsertVideoGoal } from "@shared/schema";
 
 export function MobileSceneBuilder() {
+  const [isCreating, setIsCreating] = useState(false);
+  const [newGoal, setNewGoal] = useState({
+    goalTitle: "",
+    goalDescription: "",
+    goalType: "car" as "car" | "house" | "vacation" | "gadget",
+    targetAmount: 0
+  });
+  
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const userId = "demo-natalia"; // Use actual user ID in real app
+
+  // Fetch video goals
+  const { data: videoGoals = [], isLoading } = useQuery({
+    queryKey: [`/api/video-goals/${userId}`],
+    queryFn: () => apiRequest(`/api/video-goals/${userId}`) as Promise<VideoGoal[]>
+  });
+
+  // Create video goal mutation
+  const createGoalMutation = useMutation({
+    mutationFn: async (goalData: InsertVideoGoal) => {
+      return await apiRequest("/api/video-goals", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(goalData),
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Dream Scene Created",
+        description: "Your AI video goal has been generated successfully!",
+      });
+      queryClient.invalidateQueries({ queryKey: [`/api/video-goals/${userId}`] });
+      setIsCreating(false);
+      setNewGoal({ goalTitle: "", goalDescription: "", goalType: "car", targetAmount: 0 });
+    },
+    onError: (error) => {
+      console.error("Error creating video goal:", error);
+      toast({
+        title: "Error",
+        description: "Failed to create video goal",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Update video goal progress mutation
+  const updateProgressMutation = useMutation({
+    mutationFn: async ({ goalId, newAmount }: { goalId: number; newAmount: number }) => {
+      return await apiRequest(`/api/video-goals/${goalId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentAmount: newAmount }),
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`/api/video-goals/${userId}`] });
+      toast({
+        title: "Progress Updated",
+        description: "Your savings progress has been updated!",
+      });
+    },
+    onError: (error) => {
+      console.error("Error updating progress:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update progress",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleCreateGoal = () => {
+    if (!newGoal.goalTitle || !newGoal.targetAmount) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Generate video segments based on target amount
+    const segmentThreshold = newGoal.targetAmount / 5;
+    const videoSegments = [
+      { segmentNumber: 1, unlockThreshold: segmentThreshold * 1, description: "Opening Scene", isUnlocked: false },
+      { segmentNumber: 2, unlockThreshold: segmentThreshold * 2, description: "Main Subject", isUnlocked: false },
+      { segmentNumber: 3, unlockThreshold: segmentThreshold * 3, description: "Key Features", isUnlocked: false },
+      { segmentNumber: 4, unlockThreshold: segmentThreshold * 4, description: "Lifestyle Scene", isUnlocked: false },
+      { segmentNumber: 5, unlockThreshold: segmentThreshold * 5, description: "Complete Vision", isUnlocked: false },
+    ];
+
+    const goalData: InsertVideoGoal = {
+      userId,
+      goalTitle: newGoal.goalTitle,
+      goalDescription: newGoal.goalDescription,
+      goalType: newGoal.goalType,
+      targetAmount: newGoal.targetAmount,
+      currentAmount: 0,
+      videoUrl: `/videos/ai-generated-${newGoal.goalType}-${Date.now()}.mp4`, // Placeholder URL
+      videoSegments,
+      unlockedSegments: 0,
+    };
+
+    createGoalMutation.mutate(goalData);
+  };
+
+  const handleUpdateProgress = (goalId: number, newAmount: number) => {
+    updateProgressMutation.mutate({ goalId, newAmount });
+  };
+
   return (
     <div className="space-y-8">
       {/* Advanced AI Header */}
@@ -27,7 +147,10 @@ export function MobileSceneBuilder() {
               </div>
             </div>
           </div>
-          <Button className="btn-coral text-xs px-4 py-2 rounded-2xl shadow-lg border border-white/20">
+          <Button 
+            className="btn-coral text-xs px-4 py-2 rounded-2xl shadow-lg border border-white/20"
+            onClick={() => setIsCreating(!isCreating)}
+          >
             <Plus className="w-3 h-3 mr-1" />
             Generate Scene
           </Button>
@@ -38,163 +161,137 @@ export function MobileSceneBuilder() {
             <div className="absolute top-1 right-1">
               <Activity className="w-3 h-3 text-[#fc304ed6] animate-pulse" />
             </div>
-            <div className="text-lg font-bold gradient-coral pulse-metric">2</div>
+            <div className="text-lg font-bold gradient-coral pulse-metric">{videoGoals.length}</div>
             <div className="text-xs text-white/70">AI Scenes</div>
-            <div className="text-xs text-[#d4c4a0] mt-1">●  Processing</div>
+            <div className="text-xs text-[#d4c4a0] mt-1">● Active</div>
           </div>
           <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-2xl p-4 relative overflow-hidden">
             <div className="absolute top-1 right-1">
               <Waves className="w-3 h-3 text-[#f39c12] animate-bounce" />
             </div>
-            <div className="text-lg font-bold gradient-coral-navy pulse-metric">$23.7K</div>
-            <div className="text-xs text-white/70">Quantum Saved</div>
-            <div className="text-xs text-[#d4c4a0] mt-1">● +2.3% today</div>
+            <div className="text-lg font-bold gradient-coral-navy pulse-metric">
+              ${videoGoals.reduce((sum, goal) => sum + goal.currentAmount, 0).toLocaleString()}
+            </div>
+            <div className="text-xs text-white/70">Total Saved</div>
+            <div className="text-xs text-[#d4c4a0] mt-1">● Growing</div>
           </div>
           <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-2xl p-4 relative overflow-hidden">
             <div className="absolute top-1 right-1">
               <Zap className="w-3 h-3 text-[#fc304ed6] animate-pulse" />
             </div>
-            <div className="text-lg font-bold gradient-coral pulse-metric">$740</div>
-            <div className="text-xs text-white/70">AI Target</div>
+            <div className="text-lg font-bold gradient-coral pulse-metric">
+              ${videoGoals.reduce((sum, goal) => sum + goal.targetAmount, 0).toLocaleString()}
+            </div>
+            <div className="text-xs text-white/70">Total Target</div>
             <div className="text-xs text-[#d4c4a0] mt-1">● Optimized</div>
           </div>
         </div>
       </div>
 
-      {/* Advanced Dream Car Scene */}
-      <div className="foresee-card bg-black/40 backdrop-blur-xl border-white/10 p-6 glow-border relative overflow-hidden">
-        {/* Holographic Scan Lines */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#fc304ed6]/5 to-transparent animate-pulse"></div>
-        
-        <div className="flex items-center justify-between mb-6 relative z-10">
-          <div className="flex items-center space-x-4">
-            <div className="w-14 h-10 bg-gradient-to-r from-red-600 via-red-500 to-red-400 rounded-2xl flex items-center justify-center text-xl border border-red-300/20 shadow-2xl relative">
-              🚗
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-[#d4c4a0] to-[#c9b892] rounded-full animate-spin border border-white/50"></div>
-            </div>
-            <div>
-              <h4 className="subheading text-white text-lg">Tesla Model 3 Fund</h4>
-              <div className="text-xs text-white/60 flex items-center gap-1">
-                <Brain className="w-3 h-3" />
-                <span>HyperVision™ AI • Real-time Analysis</span>
-                <div className="w-2 h-2 bg-[#d4c4a0] rounded-full animate-pulse"></div>
+      {/* Create New Goal Form */}
+      {isCreating && (
+        <div className="foresee-card bg-black/40 backdrop-blur-xl border-white/10 p-6 glow-border relative overflow-hidden">
+          <div className="relative z-10">
+            <h4 className="text-white text-lg font-semibold mb-4">Create New Dream Scene</h4>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="goalTitle" className="text-white/80">Dream Title</Label>
+                <Input
+                  id="goalTitle"
+                  value={newGoal.goalTitle}
+                  onChange={(e) => setNewGoal(prev => ({ ...prev, goalTitle: e.target.value }))}
+                  placeholder="e.g., Tesla Model 3, Beach House, Europe Trip"
+                  className="bg-black/30 border-white/20 text-white"
+                />
               </div>
-            </div>
-          </div>
-          <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 text-xs px-3 py-2 rounded-2xl shadow-lg">
-            <Camera className="w-3 h-3 mr-1" />
-            Hologram View
-          </Button>
-        </div>
-        
-        <div className="space-y-6 relative z-10">
-          {/* Quantum Progress Scanner */}
-          <div className="relative">
-            <div className="flex justify-between text-sm mb-3 font-mono">
-              <span className="text-white/90">$8,750</span>
-              <span className="text-[#fc304ed6]">25.0%</span>
-              <span className="text-white/90">$35,000</span>
-            </div>
-            <div className="w-full bg-black/50 rounded-full h-4 border border-white/20 relative overflow-hidden">
-              <div className="bg-gradient-to-r from-[#fc304ed6] via-[#f39c12] to-[#f1c40f] h-4 rounded-full shadow-2xl relative" style={{width: '25%'}}>
-                <div className="absolute inset-0 bg-white/20 animate-pulse rounded-full"></div>
+              
+              <div>
+                <Label htmlFor="goalType" className="text-white/80">Dream Type</Label>
+                <Select
+                  value={newGoal.goalType}
+                  onValueChange={(value: "car" | "house" | "vacation" | "gadget") => 
+                    setNewGoal(prev => ({ ...prev, goalType: value }))
+                  }
+                >
+                  <SelectTrigger className="bg-black/30 border-white/20 text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="car">🚗 Car</SelectItem>
+                    <SelectItem value="house">🏠 House</SelectItem>
+                    <SelectItem value="vacation">✈️ Vacation</SelectItem>
+                    <SelectItem value="gadget">📱 Gadget</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse"></div>
-            </div>
-            <div className="text-sm text-white/70 text-center mt-3 flex items-center justify-center gap-2">
-              <Activity className="w-4 h-4 text-[#fc304ed6] animate-pulse" />
-              <span>Quantum Progress • Next Frame Unlock: 30%</span>
-              <div className="w-2 h-2 bg-[#d4c4a0] rounded-full animate-ping"></div>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-gradient-to-br from-[#353c4a]/20 to-[#051421]/20 backdrop-blur-md border border-[#d4c4a0]/30 p-4 rounded-2xl text-center relative overflow-hidden">
-              <div className="absolute top-1 right-1">
-                <Cpu className="w-3 h-3 text-[#d4c4a0] animate-spin" />
+
+              <div>
+                <Label htmlFor="targetAmount" className="text-white/80">Target Amount ($)</Label>
+                <Input
+                  id="targetAmount"
+                  type="number"
+                  value={newGoal.targetAmount || ""}
+                  onChange={(e) => setNewGoal(prev => ({ ...prev, targetAmount: parseFloat(e.target.value) || 0 }))}
+                  placeholder="35000"
+                  className="bg-black/30 border-white/20 text-white"
+                />
               </div>
-              <div className="font-bold gradient-coral text-base">$290</div>
-              <div className="text-[#d4c4a0] text-xs">AI Target</div>
-              <div className="text-xs text-[#d4c4a0] mt-1">● AI Optimized</div>
-            </div>
-            <div className="bg-gradient-to-br from-[#353c4a]/20 to-[#051421]/20 backdrop-blur-md border border-[#d4c4a0]/30 p-4 rounded-2xl text-center relative overflow-hidden">
-              <div className="absolute top-1 right-1">
-                <Waves className="w-3 h-3 text-[#d4c4a0] animate-bounce" />
+
+              <div>
+                <Label htmlFor="goalDescription" className="text-white/80">Description (Optional)</Label>
+                <Input
+                  id="goalDescription"
+                  value={newGoal.goalDescription}
+                  onChange={(e) => setNewGoal(prev => ({ ...prev, goalDescription: e.target.value }))}
+                  placeholder="Describe your dream in detail"
+                  className="bg-black/30 border-white/20 text-white"
+                />
               </div>
-              <div className="font-bold gradient-coral-navy text-base">22mo</div>
-              <div className="text-[#d4c4a0] text-xs">Quantum Time</div>
-              <div className="text-xs text-[#d4c4a0] mt-1">● Accelerating</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      {/* Advanced Dream Home Scene */}
-      <div className="foresee-card bg-black/40 backdrop-blur-xl border-white/10 p-6 glow-border-gold relative overflow-hidden">
-        {/* Advanced Holographic Grid */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#f1c40f]/5 to-transparent animate-pulse"></div>
-        
-        <div className="flex items-center justify-between mb-6 relative z-10">
-          <div className="flex items-center space-x-4">
-            <div className="w-14 h-10 bg-gradient-to-r from-green-600 via-emerald-500 to-emerald-400 rounded-2xl flex items-center justify-center text-xl border border-green-300/20 shadow-2xl relative">
-              🏠
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-[#d4c4a0] to-[#c9b892] rounded-full animate-pulse border border-white/50"></div>
-            </div>
-            <div>
-              <h4 className="subheading text-white text-lg">Dream Home Fund</h4>
-              <div className="text-xs text-white/60 flex items-center gap-1">
-                <Brain className="w-3 h-3" />
-                <span>QuantumSpace™ AI • 3D Modeling Ready</span>
-                <div className="w-2 h-2 bg-[#d4c4a0] rounded-full animate-pulse"></div>
+
+              <div className="flex gap-4 pt-4">
+                <Button
+                  onClick={handleCreateGoal}
+                  disabled={createGoalMutation.isPending}
+                  className="btn-coral flex-1"
+                >
+                  <Brain className="w-4 h-4 mr-2" />
+                  {createGoalMutation.isPending ? "Generating..." : "Generate AI Scene"}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsCreating(false)}
+                  className="border-white/30 text-white hover:bg-white/10"
+                >
+                  Cancel
+                </Button>
               </div>
-            </div>
-          </div>
-          <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 text-xs px-3 py-2 rounded-2xl shadow-lg">
-            <Camera className="w-3 h-3 mr-1" />
-            AR Preview
-          </Button>
-        </div>
-        
-        <div className="space-y-6 relative z-10">
-          <div className="relative">
-            <div className="flex justify-between text-sm mb-3 font-mono">
-              <span className="text-white/90">$15,000</span>
-              <span className="text-[#f1c40f]">25.0%</span>
-              <span className="text-white/90">$60,000</span>
-            </div>
-            <div className="w-full bg-black/50 rounded-full h-4 border border-white/20 relative overflow-hidden">
-              <div className="bg-gradient-to-r from-[#f1c40f] via-[#e67e22] to-[#fc304ed6] h-4 rounded-full shadow-2xl relative" style={{width: '25%'}}>
-                <div className="absolute inset-0 bg-white/20 animate-pulse rounded-full"></div>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse"></div>
-            </div>
-            <div className="text-sm text-white/70 text-center mt-3 flex items-center justify-center gap-2">
-              <Activity className="w-4 h-4 text-[#f1c40f] animate-pulse" />
-              <span>AI Analysis • Next AR Frame: 30%</span>
-              <div className="w-2 h-2 bg-[#d4c4a0] rounded-full animate-ping"></div>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-gradient-to-br from-[#353c4a]/20 to-[#051421]/20 backdrop-blur-md border border-[#d4c4a0]/30 p-4 rounded-2xl text-center relative overflow-hidden">
-              <div className="absolute top-1 right-1">
-                <Cpu className="w-3 h-3 text-[#d4c4a0] animate-spin" />
-              </div>
-              <div className="font-bold gradient-coral text-base">$450</div>
-              <div className="text-[#d4c4a0] text-xs">Quantum Goal</div>
-              <div className="text-xs text-[#d4c4a0] mt-1">● Accelerated</div>
-            </div>
-            <div className="bg-gradient-to-br from-[#353c4a]/20 to-[#051421]/20 backdrop-blur-md border border-[#d4c4a0]/30 p-4 rounded-2xl text-center relative overflow-hidden">
-              <div className="absolute top-1 right-1">
-                <Waves className="w-3 h-3 text-[#d4c4a0] animate-bounce" />
-              </div>
-              <div className="font-bold gradient-coral-navy text-base">36mo</div>
-              <div className="text-[#d4c4a0] text-xs">AI Time</div>
-              <div className="text-xs text-[#d4c4a0] mt-1">● Optimizing</div>
             </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* Video Goals List */}
+      {isLoading ? (
+        <div className="text-center text-white/60 py-8">
+          <Brain className="w-8 h-8 mx-auto mb-4 animate-pulse" />
+          <p>Loading your dream scenes...</p>
+        </div>
+      ) : videoGoals.length === 0 ? (
+        <div className="text-center text-white/60 py-8">
+          <Target className="w-12 h-12 mx-auto mb-4 opacity-40" />
+          <p>No dream scenes yet. Create your first AI-powered goal visualization!</p>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {videoGoals.map((goal) => (
+            <VideoGoalCard
+              key={goal.id}
+              goal={goal}
+              onUpdateProgress={handleUpdateProgress}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

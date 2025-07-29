@@ -90,6 +90,27 @@ export const trackedItems = pgTable("tracked_items", {
   lastUpdated: timestamp("last_updated").notNull().defaultNow(),
 });
 
+// Video Goals for Scene Builder
+export const videoGoals = pgTable("video_goals", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull(),
+  goalTitle: varchar("goal_title", { length: 255 }).notNull(),
+  goalDescription: text("goal_description"),
+  goalType: varchar("goal_type", { length: 50 }).notNull(), // 'car', 'house', 'vacation', 'gadget'
+  targetAmount: real("target_amount").notNull(),
+  currentAmount: real("current_amount").default(0),
+  videoUrl: varchar("video_url", { length: 500 }), // AI-generated video URL
+  videoSegments: jsonb("video_segments").$type<Array<{
+    segmentNumber: number;
+    unlockThreshold: number;
+    description: string;
+    isUnlocked: boolean;
+  }>>(),
+  unlockedSegments: integer("unlocked_segments").default(0), // 0-5 segments unlocked
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
 // Insert schemas
 export const insertUserSchema = createInsertSchema(users).omit({
   createdAt: true,
@@ -122,6 +143,12 @@ export const insertTrackedItemSchema = createInsertSchema(trackedItems).omit({
   id: true,
   createdAt: true,
   lastUpdated: true,
+});
+
+export const insertVideoGoalSchema = createInsertSchema(videoGoals).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
 });
 
 // Financial Goals and Debt Management Tables
@@ -254,3 +281,9 @@ export type InsertUserSavings = z.infer<typeof insertUserSavingsSchema>;
 
 export type ShoppingListItem = typeof shoppingListItems.$inferSelect;
 export type InsertShoppingListItem = z.infer<typeof insertShoppingListItemSchema>;
+
+export type TrackedItem = typeof trackedItems.$inferSelect;
+export type InsertTrackedItem = z.infer<typeof insertTrackedItemSchema>;
+
+export type VideoGoal = typeof videoGoals.$inferSelect;
+export type InsertVideoGoal = z.infer<typeof insertVideoGoalSchema>;
