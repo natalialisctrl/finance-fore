@@ -7,6 +7,9 @@ import {
   shoppingListItems,
   trackedItems,
   videoGoals,
+  bankAccounts,
+  transactions,
+  bankSyncLogs,
   type User, 
   type InsertUser,
   type UpsertUser,
@@ -21,7 +24,13 @@ import {
   type ShoppingListItem,
   type InsertShoppingListItem,
   type VideoGoal,
-  type InsertVideoGoal
+  type InsertVideoGoal,
+  type BankAccount,
+  type InsertBankAccount,
+  type Transaction,
+  type InsertTransaction,
+  type BankSyncLog,
+  type InsertBankSyncLog
 } from "@shared/schema";
 
 export type TrackedItem = typeof trackedItems.$inferSelect;
@@ -68,6 +77,26 @@ export interface IStorage {
   addVideoGoal(goal: InsertVideoGoal): Promise<VideoGoal>;
   updateVideoGoal(id: number, updates: Partial<VideoGoal>): Promise<VideoGoal>;
   deleteVideoGoal(id: number): Promise<void>;
+
+  // Bank Account methods
+  getBankAccounts(userId: string): Promise<BankAccount[]>;
+  addBankAccount(account: InsertBankAccount): Promise<BankAccount>;
+  updateBankAccount(id: number, updates: Partial<BankAccount>): Promise<BankAccount>;
+  deleteBankAccount(id: number): Promise<void>;
+  getBankAccountByPlaidId(plaidAccountId: string): Promise<BankAccount | undefined>;
+
+  // Transaction methods
+  getTransactions(userId: string, limit?: number): Promise<Transaction[]>;
+  getTransactionsByAccount(bankAccountId: number, limit?: number): Promise<Transaction[]>;
+  addTransaction(transaction: InsertTransaction): Promise<Transaction>;
+  addTransactions(transactions: InsertTransaction[]): Promise<Transaction[]>;
+  updateTransaction(id: number, updates: Partial<Transaction>): Promise<Transaction>;
+  deleteTransaction(id: number): Promise<void>;
+  getTransactionByPlaidId(plaidTransactionId: string): Promise<Transaction | undefined>;
+
+  // Bank Sync Log methods
+  addBankSyncLog(log: InsertBankSyncLog): Promise<BankSyncLog>;
+  getBankSyncLogs(userId: string, limit?: number): Promise<BankSyncLog[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -304,6 +333,88 @@ export class DatabaseStorage implements IStorage {
 
   async deleteVideoGoal(id: number): Promise<void> {
     await db.delete(videoGoals).where(eq(videoGoals.id, id));
+  }
+
+  // Bank Account methods
+  async getBankAccounts(userId: string): Promise<BankAccount[]> {
+    return await db.select().from(bankAccounts).where(eq(bankAccounts.userId, userId));
+  }
+
+  async addBankAccount(account: InsertBankAccount): Promise<BankAccount> {
+    const [newAccount] = await db.insert(bankAccounts).values(account).returning();
+    return newAccount;
+  }
+
+  async updateBankAccount(id: number, updates: Partial<BankAccount>): Promise<BankAccount> {
+    const [updatedAccount] = await db.update(bankAccounts)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(bankAccounts.id, id))
+      .returning();
+    return updatedAccount;
+  }
+
+  async deleteBankAccount(id: number): Promise<void> {
+    await db.delete(bankAccounts).where(eq(bankAccounts.id, id));
+  }
+
+  async getBankAccountByPlaidId(plaidAccountId: string): Promise<BankAccount | undefined> {
+    const [account] = await db.select().from(bankAccounts).where(eq(bankAccounts.plaidAccountId, plaidAccountId));
+    return account;
+  }
+
+  // Transaction methods
+  async getTransactions(userId: string, limit = 100): Promise<Transaction[]> {
+    return await db.select().from(transactions)
+      .where(eq(transactions.userId, userId))
+      .orderBy(transactions.date)
+      .limit(limit);
+  }
+
+  async getTransactionsByAccount(bankAccountId: number, limit = 100): Promise<Transaction[]> {
+    return await db.select().from(transactions)
+      .where(eq(transactions.bankAccountId, bankAccountId))
+      .orderBy(transactions.date)
+      .limit(limit);
+  }
+
+  async addTransaction(transaction: InsertTransaction): Promise<Transaction> {
+    const [newTransaction] = await db.insert(transactions).values(transaction).returning();
+    return newTransaction;
+  }
+
+  async addTransactions(transactionList: InsertTransaction[]): Promise<Transaction[]> {
+    const newTransactions = await db.insert(transactions).values(transactionList).returning();
+    return newTransactions;
+  }
+
+  async updateTransaction(id: number, updates: Partial<Transaction>): Promise<Transaction> {
+    const [updatedTransaction] = await db.update(transactions)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(transactions.id, id))
+      .returning();
+    return updatedTransaction;
+  }
+
+  async deleteTransaction(id: number): Promise<void> {
+    await db.delete(transactions).where(eq(transactions.id, id));
+  }
+
+  async getTransactionByPlaidId(plaidTransactionId: string): Promise<Transaction | undefined> {
+    const [transaction] = await db.select().from(transactions).where(eq(transactions.plaidTransactionId, plaidTransactionId));
+    return transaction;
+  }
+
+  // Bank Sync Log methods
+  async addBankSyncLog(log: InsertBankSyncLog): Promise<BankSyncLog> {
+    const [newLog] = await db.insert(bankSyncLogs).values(log).returning();
+    return newLog;
+  }
+
+  async getBankSyncLogs(userId: string, limit = 50): Promise<BankSyncLog[]> {
+    return await db.select().from(bankSyncLogs)
+      .where(eq(bankSyncLogs.userId, userId))
+      .orderBy(bankSyncLogs.createdAt)
+      .limit(limit);
   }
 }
 

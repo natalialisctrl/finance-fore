@@ -20,6 +20,7 @@ import { SmartSceneBuilder } from "@/components/smart-scene-builder";
 import { MobileSafeWrapper } from "@/components/mobile-safe-wrapper";
 import { MobileGoalsDebt } from "@/components/mobile-goals-debt";
 import { MobileSceneBuilder } from "@/components/mobile-scene-builder";
+import { BankConnection } from "@/components/bank-connection";
 import { MobileScenarioPlanning } from "@/components/mobile-scenario-planning";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
@@ -627,6 +628,9 @@ export default function Dashboard() {
           {activeTab === 'settings' && (
             <div className="space-y-8">
               <div className="fade-in">
+                <BankConnection />
+              </div>
+              <div className="slide-up" style={{ animationDelay: '0.1s' }}>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   <LocationSettings />
                   <LocationAlerts />

@@ -111,6 +111,74 @@ export const videoGoals = pgTable("video_goals", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
+// Bank accounts linked via Plaid
+export const bankAccounts = pgTable("bank_accounts", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull(),
+  plaidAccountId: varchar("plaid_account_id").notNull().unique(),
+  plaidAccessToken: varchar("plaid_access_token").notNull(),
+  institutionName: text("institution_name").notNull(),
+  accountName: text("account_name").notNull(),
+  accountType: text("account_type").$type<"checking" | "savings" | "credit" | "investment">().notNull(),
+  accountSubtype: text("account_subtype"),
+  currentBalance: real("current_balance"),
+  availableBalance: real("available_balance"),
+  isActive: integer("is_active").notNull().default(1), // 0 = false, 1 = true
+  lastSyncedAt: timestamp("last_synced_at"),
+  syncCursor: text("sync_cursor"), // For Plaid transaction sync
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Real-time transactions from bank APIs
+export const transactions = pgTable("transactions", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull(),
+  bankAccountId: integer("bank_account_id").notNull(),
+  plaidTransactionId: varchar("plaid_transaction_id").notNull().unique(),
+  amount: real("amount").notNull(), // Positive for income, negative for expenses
+  description: text("description").notNull(),
+  merchantName: text("merchant_name"),
+  category: jsonb("category").$type<string[]>().notNull(), // Plaid category hierarchy
+  subcategory: text("subcategory"),
+  date: timestamp("date").notNull(),
+  pending: integer("pending").notNull().default(0), // 0 = false, 1 = true
+  accountName: text("account_name"),
+  location: jsonb("location").$type<{
+    address?: string;
+    city?: string;
+    region?: string;
+    postal_code?: string;
+    country?: string;
+    lat?: number;
+    lon?: number;
+  }>(),
+  paymentMeta: jsonb("payment_meta").$type<{
+    reference_number?: string;
+    ppd_id?: string;
+    payee?: string;
+  }>(),
+  isRecurring: integer("is_recurring").notNull().default(0), // AI-detected recurring transactions
+  budgetCategory: text("budget_category"), // Mapped to user's budget categories
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Plaid webhook events tracking
+export const bankSyncLogs = pgTable("bank_sync_logs", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull(),
+  bankAccountId: integer("bank_account_id"),
+  eventType: text("event_type").notNull(), // 'sync', 'webhook', 'error'
+  status: text("status").$type<"success" | "error" | "pending">().notNull(),
+  transactionsAdded: integer("transactions_added").default(0),
+  transactionsModified: integer("transactions_modified").default(0),
+  transactionsRemoved: integer("transactions_removed").default(0),
+  errorMessage: text("error_message"),
+  syncCursor: text("sync_cursor"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Insert schemas
 export const insertUserSchema = createInsertSchema(users).omit({
   createdAt: true,
@@ -149,6 +217,23 @@ export const insertVideoGoalSchema = createInsertSchema(videoGoals).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
+});
+
+export const insertBankAccountSchema = createInsertSchema(bankAccounts).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertTransactionSchema = createInsertSchema(transactions).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertBankSyncLogSchema = createInsertSchema(bankSyncLogs).omit({
+  id: true,
+  createdAt: true,
 });
 
 // Financial Goals and Debt Management Tables
@@ -221,35 +306,7 @@ export const notifications = pgTable("notifications", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-// Account Integration Preparation (for Plaid/Banking APIs)
-export const connectedAccounts = pgTable("connected_accounts", {
-  id: serial("id").primaryKey(),
-  userId: varchar("user_id").notNull().references(() => users.id),
-  accountId: varchar("account_id").notNull(), // External account ID
-  institutionName: varchar("institution_name"),
-  accountType: varchar("account_type"), // 'checking', 'savings', 'credit_card', 'investment'
-  accountName: varchar("account_name"),
-  lastSyncAt: timestamp("last_sync_at"),
-  isActive: integer("is_active").default(1), // 0 = false, 1 = true
-  encryptedAccessToken: text("encrypted_access_token"), // Encrypted storage
-  createdAt: timestamp("created_at").defaultNow(),
-});
-
-export const transactions = pgTable("transactions", {
-  id: serial("id").primaryKey(),
-  userId: varchar("user_id").notNull().references(() => users.id),
-  accountId: integer("account_id").references(() => connectedAccounts.id),
-  transactionId: varchar("transaction_id"), // External transaction ID
-  amount: real("amount").notNull(),
-  description: varchar("description"),
-  category: varchar("category"),
-  subcategory: varchar("subcategory"),
-  merchantName: varchar("merchant_name"),
-  transactionDate: timestamp("transaction_date"),
-  isPending: integer("is_pending").default(0), // 0 = false, 1 = true
-  aiCategorized: integer("ai_categorized").default(0), // 0 = false, 1 = true
-  createdAt: timestamp("created_at").defaultNow(),
-});
+// Legacy - keeping this section for backwards compatibility but will use bankAccounts/transactions instead
 
 // Type exports for new tables
 export type FinancialGoal = typeof financialGoals.$inferSelect;
@@ -287,3 +344,12 @@ export type InsertTrackedItem = z.infer<typeof insertTrackedItemSchema>;
 
 export type VideoGoal = typeof videoGoals.$inferSelect;
 export type InsertVideoGoal = z.infer<typeof insertVideoGoalSchema>;
+
+export type BankAccount = typeof bankAccounts.$inferSelect;
+export type InsertBankAccount = z.infer<typeof insertBankAccountSchema>;
+
+export type Transaction = typeof transactions.$inferSelect;
+export type InsertTransaction = z.infer<typeof insertTransactionSchema>;
+
+export type BankSyncLog = typeof bankSyncLogs.$inferSelect;
+export type InsertBankSyncLog = z.infer<typeof insertBankSyncLogSchema>;

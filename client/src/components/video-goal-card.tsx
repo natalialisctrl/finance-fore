@@ -6,32 +6,39 @@ import type { VideoGoal } from "@shared/schema";
 
 // Video URL functions for different goal types
 const getDreamVideo = (goalType: string, goalTitle: string): string => {
+  // Use reliable, appropriate demo videos
   const videos = {
-    car: "https://cdn.pixabay.com/video/2023/04/25/158940-822992751_large.mp4", // Tesla/luxury car video
-    house: "https://cdn.pixabay.com/video/2022/12/11/142738-777837094_large.mp4", // Beautiful house video
-    vacation: "https://cdn.pixabay.com/video/2022/07/29/125288-734128915_large.mp4", // Travel/vacation video
-    gadget: "https://cdn.pixabay.com/video/2023/08/07/174829-854103419_large.mp4", // Tech/gadget video
+    car: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4", // Car/driving themed
+    house: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", // Lifestyle/home themed  
+    vacation: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", // Adventure/travel themed
+    gadget: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4", // Tech/entertainment themed
   };
+  
+  // For Tesla specifically, use the car-themed video
+  if (goalTitle.toLowerCase().includes('tesla') || goalTitle.toLowerCase().includes('model')) {
+    return videos.car;
+  }
+  
   return videos[goalType as keyof typeof videos] || videos.car;
 };
 
 const getGenericDreamVideo = (goalType: string): string => {
-  // Backup videos from different source
+  // High-quality backup videos that match themes
   const backupVideos = {
-    car: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-    house: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4", 
-    vacation: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-    gadget: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+    car: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4", // Car themed
+    house: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", // Lifestyle themed
+    vacation: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", // Adventure themed
+    gadget: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4", // Tech themed
   };
   return backupVideos[goalType as keyof typeof backupVideos] || backupVideos.car;
 };
 
 const getVideoPoster = (goalType: string): string => {
   const posters = {
-    car: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    house: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    vacation: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    gadget: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    car: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", // Tesla Model 3
+    house: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", // Modern house
+    vacation: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", // Beach vacation
+    gadget: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", // Latest iPhone
   };
   return posters[goalType as keyof typeof posters] || posters.car;
 };

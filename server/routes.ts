@@ -5,6 +5,7 @@ import { insertEconomicDataSchema, insertPriceDataSchema, insertUserBudgetSchema
 import { z } from "zod";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { getAIPricePrediction, getBatchAIPredictions, type AIAnalysisInput } from "./ai-service";
+import { PlaidService } from "./plaid-service";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
@@ -545,6 +546,99 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching FRED data:", error);
       res.status(500).json({ message: "Failed to fetch economic data from FRED API" });
+    }
+  });
+
+  // Initialize Plaid service
+  const plaidService = new PlaidService(storage);
+
+  // Bank integration routes
+  app.post("/api/plaid/link-token", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const linkToken = await plaidService.createLinkToken(userId);
+      res.json({ link_token: linkToken });
+    } catch (error) {
+      console.error("Error creating link token:", error);
+      res.status(500).json({ message: "Failed to create link token" });
+    }
+  });
+
+  app.post("/api/plaid/exchange-token", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { public_token, metadata } = req.body;
+      
+      const result = await plaidService.exchangePublicToken(userId, public_token, metadata);
+      res.json(result);
+    } catch (error) {
+      console.error("Error exchanging token:", error);
+      res.status(500).json({ message: "Failed to connect bank account" });
+    }
+  });
+
+  app.get("/api/bank-accounts", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const accounts = await storage.getBankAccounts(userId);
+      res.json(accounts);
+    } catch (error) {
+      console.error("Error fetching bank accounts:", error);
+      res.status(500).json({ message: "Failed to fetch bank accounts" });
+    }
+  });
+
+  app.get("/api/transactions", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const limit = parseInt(req.query.limit as string) || 100;
+      const transactions = await storage.getTransactions(userId, limit);
+      res.json(transactions);
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+      res.status(500).json({ message: "Failed to fetch transactions" });
+    }
+  });
+
+  app.post("/api/bank-accounts/:id/sync", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const accountId = parseInt(req.params.id);
+      
+      const accounts = await storage.getBankAccounts(userId);
+      const account = accounts.find(acc => acc.id === accountId);
+      
+      if (!account) {
+        return res.status(404).json({ message: "Bank account not found" });
+      }
+
+      const syncResult = await plaidService.syncTransactions(account);
+      res.json(syncResult);
+    } catch (error) {
+      console.error("Error syncing transactions:", error);
+      res.status(500).json({ message: "Failed to sync transactions" });
+    }
+  });
+
+  app.post("/api/plaid/webhook", async (req, res) => {
+    try {
+      await plaidService.handleWebhook(req.body);
+      res.json({ acknowledged: true });
+    } catch (error) {
+      console.error("Error handling webhook:", error);
+      res.status(500).json({ message: "Failed to handle webhook" });
+    }
+  });
+
+  app.get("/api/bank-sync-logs", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const limit = parseInt(req.query.limit as string) || 50;
+      const logs = await storage.getBankSyncLogs(userId, limit);
+      res.json(logs);
+    } catch (error) {
+      console.error("Error fetching sync logs:", error);
+      res.status(500).json({ message: "Failed to fetch sync logs" });
     }
   });
 
