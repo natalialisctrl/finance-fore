@@ -4,6 +4,38 @@ import { Progress } from "@/components/ui/progress";
 import { Play, Lock, Unlock, Zap, Target, TrendingUp } from "lucide-react";
 import type { VideoGoal } from "@shared/schema";
 
+// Video URL functions for different goal types
+const getDreamVideo = (goalType: string, goalTitle: string): string => {
+  const videos = {
+    car: "https://cdn.pixabay.com/video/2023/04/25/158940-822992751_large.mp4", // Tesla/luxury car video
+    house: "https://cdn.pixabay.com/video/2022/12/11/142738-777837094_large.mp4", // Beautiful house video
+    vacation: "https://cdn.pixabay.com/video/2022/07/29/125288-734128915_large.mp4", // Travel/vacation video
+    gadget: "https://cdn.pixabay.com/video/2023/08/07/174829-854103419_large.mp4", // Tech/gadget video
+  };
+  return videos[goalType as keyof typeof videos] || videos.car;
+};
+
+const getGenericDreamVideo = (goalType: string): string => {
+  // Backup videos from different source
+  const backupVideos = {
+    car: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    house: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4", 
+    vacation: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+    gadget: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+  };
+  return backupVideos[goalType as keyof typeof backupVideos] || backupVideos.car;
+};
+
+const getVideoPoster = (goalType: string): string => {
+  const posters = {
+    car: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    house: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    vacation: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    gadget: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+  };
+  return posters[goalType as keyof typeof posters] || posters.car;
+};
+
 interface VideoGoalCardProps {
   goal: VideoGoal;
   onUpdateProgress: (goalId: number, newAmount: number) => void;
@@ -138,13 +170,13 @@ export function VideoGoalCard({ goal, onUpdateProgress }: VideoGoalCardProps) {
           </div>
         </div>
 
-        {/* Video Modal */}
+        {/* Video Modal with Real Video Playback */}
         {isVideoOpen && (
           <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-black/90 backdrop-blur-xl border border-white/20 rounded-3xl p-6 max-w-2xl w-full relative">
+            <div className="bg-black/90 backdrop-blur-xl border border-white/20 rounded-3xl p-6 max-w-4xl w-full relative">
               <button
                 onClick={() => setIsVideoOpen(false)}
-                className="absolute top-4 right-4 text-white/60 hover:text-white text-2xl"
+                className="absolute top-4 right-4 text-white/60 hover:text-white text-2xl z-10"
               >
                 ×
               </button>
@@ -152,37 +184,110 @@ export function VideoGoalCard({ goal, onUpdateProgress }: VideoGoalCardProps) {
               <div className="text-center mb-6">
                 <h3 className="text-white text-xl font-semibold mb-2">{goal.goalTitle} Dream Vision</h3>
                 <p className="text-white/60 text-sm">
-                  {unlockedSegments} of 5 video segments unlocked
+                  {unlockedSegments} of 5 video segments unlocked • {progressPercentage.toFixed(1)}% complete
                 </p>
               </div>
 
-              {/* Video placeholder with progressive unlock effect */}
-              <div className="aspect-video bg-gradient-to-br from-black to-gray-900 rounded-2xl relative overflow-hidden mb-6">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-white/40 text-center">
-                    <Play className="w-16 h-16 mx-auto mb-4" />
-                    <p className="text-lg">AI Video Generation</p>
-                    <p className="text-sm">Your personalized {goal.goalTitle} experience</p>
+              {/* Real Video Player */}
+              <div className="aspect-video bg-black rounded-2xl relative overflow-hidden mb-6">
+                <video
+                  className="w-full h-full object-cover rounded-2xl"
+                  controls
+                  autoPlay
+                  muted
+                  loop
+                  poster={getVideoPoster(goal.goalType)}
+                >
+                  <source src={getDreamVideo(goal.goalType, goal.goalTitle)} type="video/mp4" />
+                  <source src={getGenericDreamVideo(goal.goalType)} type="video/mp4" />
+                  {/* Fallback for unsupported video */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
+                    <div className="text-white/40 text-center">
+                      <Play className="w-16 h-16 mx-auto mb-4" />
+                      <p className="text-lg">Loading Dream Video...</p>
+                      <p className="text-sm">{goal.goalTitle}</p>
+                    </div>
                   </div>
-                </div>
+                </video>
                 
-                {/* Progressive unlock overlay */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/50 to-black/80"
-                     style={{ width: `${100 - (unlockedSegments * 20)}%`, right: 0 }}>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-white/60 text-center">
-                      <Lock className="w-8 h-8 mx-auto mb-2" />
-                      <p className="text-sm">Save ${amountToNextUnlock.toLocaleString()} more</p>
-                      <p className="text-xs">to unlock next segment</p>
+                {/* Segment Progress Overlay */}
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-3">
+                    <div className="flex space-x-1 mb-2">
+                      {videoSegments.map((segment, index) => (
+                        <div
+                          key={segment.segmentNumber}
+                          className={`flex-1 h-2 rounded-full transition-all duration-500 ${
+                            segment.isUnlocked
+                              ? 'bg-green-500 shadow-green-500/50 shadow-sm'
+                              : 'bg-gray-600'
+                          }`}
+                          title={`${segment.description} - ${segment.isUnlocked ? 'Unlocked' : 'Locked'}`}
+                        />
+                      ))}
+                    </div>
+                    <div className="flex justify-between text-xs text-white/80">
+                      <span>Segments: {unlockedSegments}/5</span>
+                      <span>${currentAmount.toLocaleString()} / ${goal.targetAmount.toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
+
+                {/* Lock overlay for partially unlocked content */}
+                {unlockedSegments < 5 && (
+                  <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-sm rounded-lg p-3">
+                    <div className="flex items-center space-x-2 text-yellow-400">
+                      <Lock className="w-4 h-4" />
+                      <span className="text-sm font-medium">Preview Mode</span>
+                    </div>
+                    <p className="text-xs text-white/60 mt-1">
+                      Save ${amountToNextUnlock.toLocaleString()} more to unlock next segment
+                    </p>
+                  </div>
+                )}
               </div>
 
+              {/* Unlock Progress */}
+              <div className="grid grid-cols-5 gap-2 mb-6">
+                {videoSegments.map((segment, index) => (
+                  <div
+                    key={segment.segmentNumber}
+                    className={`p-3 rounded-lg border text-center transition-all duration-300 ${
+                      segment.isUnlocked
+                        ? 'bg-green-900/30 border-green-500/50 text-green-200'
+                        : 'bg-gray-900/30 border-gray-600/50 text-gray-400'
+                    }`}
+                  >
+                    <div className="mb-1">
+                      {segment.isUnlocked ? <Unlock className="w-4 h-4 mx-auto" /> : <Lock className="w-4 h-4 mx-auto" />}
+                    </div>
+                    <div className="text-xs font-medium">{segment.description}</div>
+                    <div className="text-xs">${(segment.unlockThreshold).toLocaleString()}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Action Section */}
               <div className="text-center">
-                <p className="text-white/80 text-sm">
-                  Keep saving to unlock your complete dream visualization!
-                </p>
+                {unlockedSegments >= 5 ? (
+                  <div className="text-green-400">
+                    <p className="text-lg font-bold mb-2">🎉 Complete Dream Video Unlocked!</p>
+                    <p className="text-sm text-white/60">Congratulations! You've saved enough to achieve your goal!</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <p className="text-white/80 text-sm">
+                      Keep saving to unlock your complete dream visualization!
+                    </p>
+                    <Button
+                      onClick={handleAddToGoal}
+                      className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white"
+                    >
+                      <Zap className="w-4 h-4 mr-2" />
+                      Add $100 (Demo)
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
