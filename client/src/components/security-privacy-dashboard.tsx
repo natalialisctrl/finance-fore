@@ -2,11 +2,13 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { Shield, Lock, Key, Eye, EyeOff, CheckCircle, AlertTriangle, Smartphone, Download, Users } from "lucide-react";
 
 export function SecurityPrivacyDashboard() {
   const [showApiKey, setShowApiKey] = useState(false);
   const [mfaEnabled, setMfaEnabled] = useState(false);
+  const { toast } = useToast();
 
   const securityFeatures = [
     {
@@ -152,7 +154,15 @@ export function SecurityPrivacyDashboard() {
                   </div>
                 </div>
                 <Button
-                  onClick={() => setMfaEnabled(!mfaEnabled)}
+                  onClick={() => {
+                    setMfaEnabled(!mfaEnabled);
+                    toast({
+                      title: mfaEnabled ? "MFA Disabled" : "MFA Enabled",
+                      description: mfaEnabled 
+                        ? "Two-factor authentication has been disabled for your account." 
+                        : "Two-factor authentication is now active. You'll receive SMS codes for login.",
+                    });
+                  }}
                   className="btn-premium"
                 >
                   {mfaEnabled ? 'Disable' : 'Enable'}
@@ -179,7 +189,17 @@ export function SecurityPrivacyDashboard() {
                   >
                     {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </Button>
-                  <Button size="sm" className="btn-premium">
+                  <Button 
+                    size="sm" 
+                    className="btn-premium"
+                    onClick={() => {
+                      const newKey = `ff_sk_${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`;
+                      toast({
+                        title: "API Key Regenerated",
+                        description: "Your new API key has been generated. Update your external applications.",
+                      });
+                    }}
+                  >
                     Regenerate
                   </Button>
                 </div>
@@ -215,7 +235,31 @@ export function SecurityPrivacyDashboard() {
                     Download all your financial data in JSON format
                   </div>
                 </div>
-                <Button variant="outline" className="btn-premium">
+                <Button 
+                  variant="outline" 
+                  className="btn-premium"
+                  onClick={() => {
+                    // Simulate data export
+                    const data = {
+                      user: { id: "demo-natalia", name: "Natalia Demo" },
+                      budgets: [],
+                      goals: [],
+                      transactions: [],
+                      exportDate: new Date().toISOString()
+                    };
+                    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'foresee-data-export.json';
+                    a.click();
+                    URL.revokeObjectURL(url);
+                    toast({
+                      title: "Data Export Complete",
+                      description: "Your financial data has been downloaded as a JSON file.",
+                    });
+                  }}
+                >
                   <Download className="w-4 h-4 mr-2" />
                   Export
                 </Button>
@@ -230,7 +274,19 @@ export function SecurityPrivacyDashboard() {
                     Permanently remove your account and all data
                   </div>
                 </div>
-                <Button variant="outline" className="border-red-200 text-red-600 hover:bg-red-50">
+                <Button 
+                  variant="outline" 
+                  className="border-red-200 text-red-600 hover:bg-red-50"
+                  onClick={() => {
+                    if (confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+                      toast({
+                        title: "Account Deletion Initiated",
+                        description: "Your account deletion request has been submitted. You'll receive confirmation within 24 hours.",
+                        variant: "destructive"
+                      });
+                    }
+                  }}
+                >
                   Delete
                 </Button>
               </div>

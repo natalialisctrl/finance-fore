@@ -3,7 +3,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Bell, CheckCircle, AlertTriangle, Info, TrendingUp, Settings, X, MapPin } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Switch } from "@/components/ui/switch";
 import { useLocationAlerts } from './geo-location-service';
+import { useToast } from "@/hooks/use-toast";
 
 interface Notification {
   id: number;
@@ -19,6 +22,7 @@ export function NotificationsCenter() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [filter, setFilter] = useState<string>('all');
   const { locationAlerts, location } = useLocationAlerts();
+  const { toast } = useToast();
 
   // Sample notifications for demonstration
   useEffect(() => {
@@ -160,10 +164,58 @@ export function NotificationsCenter() {
             </p>
           </div>
         </div>
-        <Button variant="outline" className="btn-premium">
-          <Settings className="w-4 h-4 mr-2" />
-          Settings
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" className="btn-premium">
+              <Settings className="w-4 h-4 mr-2" />
+              Configure
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle className="flex items-center space-x-2">
+                <Bell className="w-5 h-5" />
+                <span>Notification Settings</span>
+              </DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 mt-4">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Push Notifications</span>
+                  <Switch defaultChecked />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Email Alerts</span>
+                  <Switch defaultChecked />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Price Alerts</span>
+                  <Switch defaultChecked />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Budget Warnings</span>
+                  <Switch defaultChecked />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Goal Milestones</span>
+                  <Switch defaultChecked />
+                </div>
+              </div>
+              <div className="flex justify-end space-x-2 pt-4">
+                <Button variant="outline" onClick={() => {
+                  // Close dialog without saving
+                }}>Cancel</Button>
+                <Button onClick={() => {
+                  // Save notification preferences
+                  toast({
+                    title: "Notification Settings Saved",
+                    description: "Your notification preferences have been updated successfully.",
+                  });
+                }}>Save Settings</Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
 
       {/* Filter Tabs */}

@@ -202,7 +202,7 @@ export function LifeModeSettings() {
             <DialogTrigger asChild>
               <Button size="sm" className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white border-0">
                 <Settings className="w-4 h-4 mr-2" />
-                Change Mode
+                Configure
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
