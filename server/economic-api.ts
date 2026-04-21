@@ -1,5 +1,14 @@
 import { storage } from "./storage";
 
+const fallbackEconomicData = {
+  inflationRate: 3.2,
+  gdpGrowth: 2.8,
+  consumerPriceIndex: 309.7,
+  unemploymentRate: 3.8,
+  oilPrices: 75.5,
+  dollarStrength: 102.3,
+};
+
 // Multiple data sources for comprehensive economic data
 interface OilPriceData {
   wtiPrice: number;
@@ -33,6 +42,16 @@ export class EconomicDataService {
   async fetchRealEconomicData(): Promise<any> {
     try {
       console.log("Fetching comprehensive economic data for price predictions...");
+
+      if (!process.env.FRED_API_KEY) {
+        const economicData = {
+          ...fallbackEconomicData,
+          lastUpdated: new Date()
+        };
+
+        await storage.updateEconomicData(economicData);
+        return economicData;
+      }
       
       // Parallel requests for all economic indicators
       const [inflationData, gdpData, cpiData, oilData, currencyData] = await Promise.allSettled([
@@ -44,12 +63,12 @@ export class EconomicDataService {
       ]);
 
       const economicData = {
-        inflationRate: this.extractValue(inflationData, 3.2), 
-        gdpGrowth: this.extractValue(gdpData, 2.8), 
-        consumerPriceIndex: this.extractValue(cpiData, 309.7),
-        unemploymentRate: 3.8, // Would fetch from BLS API
-        oilPrices: this.extractValue(oilData, 75.5),
-        dollarStrength: this.extractValue(currencyData, 102.3),
+        inflationRate: this.extractValue(inflationData, fallbackEconomicData.inflationRate), 
+        gdpGrowth: this.extractValue(gdpData, fallbackEconomicData.gdpGrowth), 
+        consumerPriceIndex: this.extractValue(cpiData, fallbackEconomicData.consumerPriceIndex),
+        unemploymentRate: fallbackEconomicData.unemploymentRate,
+        oilPrices: this.extractValue(oilData, fallbackEconomicData.oilPrices),
+        dollarStrength: this.extractValue(currencyData, fallbackEconomicData.dollarStrength),
         lastUpdated: new Date()
       };
 
@@ -64,9 +83,7 @@ export class EconomicDataService {
       
       // Fallback to current estimates only if FRED fails
       const fallbackData = {
-        inflationRate: 3.2, // Latest available estimate
-        gdpGrowth: 2.8, // Q4 2024 actual 
-        consumerPriceIndex: 309.7, // Latest estimate
+        ...fallbackEconomicData,
         lastUpdated: new Date()
       };
 

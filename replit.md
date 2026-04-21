@@ -171,6 +171,12 @@ The app prioritizes transparency about data sources:
 
 ## Recent Changes
 
+### April 21, 2026 - Replit Migration Completion
+- Migrated the imported project to run in the Replit environment without rewriting the app.
+- Installed dependencies, applied the PostgreSQL schema, and configured the development workflow to run the existing Express/Vite application on port 5000.
+- Hardened optional external-service behavior so missing FRED/OpenAI credentials use existing fallback data instead of breaking startup requests.
+- Updated empty savings data handling so the dashboard loads a safe empty state when no weekly savings record exists yet.
+
 ### July 29, 2025 - Video Goal Creation Bug Fixes & Budget Redistribution Visibility Implementation
 - **Fixed Video Goal Creation Errors**: Resolved form validation and input parsing issues that were preventing video goal creation
   - Enhanced input validation with proper number parsing and minimum value checks

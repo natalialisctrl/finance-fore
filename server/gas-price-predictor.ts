@@ -37,14 +37,13 @@ interface GasPricePrediction {
 }
 
 export class GasPricePredictor {
-  private openai: OpenAI;
+  private openai?: OpenAI;
 
   constructor() {
     const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) {
-      throw new Error('OpenAI API key not configured');
+    if (apiKey) {
+      this.openai = new OpenAI({ apiKey });
     }
-    this.openai = new OpenAI({ apiKey });
   }
 
   async predictGasPrices(
@@ -53,6 +52,10 @@ export class GasPricePredictor {
   ): Promise<GasPricePrediction> {
     try {
       const currentGasPrice = await this.getCurrentGasPrice(location);
+
+      if (!this.openai) {
+        return this.getFallbackPrediction(location);
+      }
       
       const aiPrediction = await this.generateAIPrediction(
         location,
@@ -104,6 +107,10 @@ export class GasPricePredictor {
     economicData: EconomicIndicators,
     currentPrice: number
   ): Promise<GasPricePrediction> {
+    if (!this.openai) {
+      return this.getFallbackPrediction(location);
+    }
+
     const prompt = `You are an expert energy economist analyzing gas price forecasts. Provide a precise prediction based on current economic indicators.
 
 LOCATION: ${location.city}, ${location.state}

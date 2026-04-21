@@ -199,7 +199,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { userId, weekOf } = req.params;
       const data = await storage.getUserSavings(userId, weekOf);
       if (!data) {
-        return res.status(404).json({ message: "Savings data not found" });
+        return res.json({
+          id: 0,
+          userId,
+          weeklyTotal: 0,
+          projectedMonthly: 0,
+          bestPurchases: [],
+          weekOf
+        });
       }
       res.json(data);
     } catch (error) {
@@ -381,10 +388,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Location data required" });
       }
 
-      // Get current economic data
-      const economicData = await storage.getEconomicData();
+      let economicData = await storage.getEconomicData();
       if (!economicData) {
-        return res.status(500).json({ message: "Economic data not available" });
+        const { economicDataService } = await import('./economic-api');
+        economicData = await economicDataService.fetchRealEconomicData();
       }
 
       // Transform economic data to match gas predictor interface
