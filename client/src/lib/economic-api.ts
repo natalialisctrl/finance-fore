@@ -125,7 +125,8 @@ export const refreshFredData = async (): Promise<EconomicIndicators> => {
     method: 'POST',
   });
   if (!response.ok) {
-    throw new Error('Failed to refresh economic data');
+    const errorBody = await response.json().catch(() => null);
+    throw new Error(errorBody?.message || 'Failed to refresh economic data');
   }
   const data = await response.json();
   return {

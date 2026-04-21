@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { fetchEconomicData, refreshFredData } from "@/lib/economic-api";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -10,9 +10,10 @@ import { LineChart, Line, ResponsiveContainer } from "recharts";
 
 export function EconomicDashboard() {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const { data: economicData, isLoading, refetch } = useQuery({
+  const { data: economicData, isLoading } = useQuery({
     queryKey: ["/api/economic-data"],
     queryFn: fetchEconomicData,
     refetchInterval: 5 * 60 * 1000, // Refetch every 5 minutes
@@ -21,16 +22,16 @@ export function EconomicDashboard() {
   const handleRefreshData = async () => {
     setIsRefreshing(true);
     try {
-      await refreshFredData();
-      await refetch();
+      const updatedData = await refreshFredData();
+      queryClient.setQueryData(["/api/economic-data"], updatedData);
       toast({
-        title: "Data Updated",
-        description: "Economic indicators have been refreshed with current data",
+        title: "Live data updated",
+        description: `Refreshed from public sources at ${updatedData.lastUpdated.toLocaleTimeString()}.`,
       });
     } catch (error) {
       toast({
-        title: "Update Failed",
-        description: "Unable to refresh economic data. Please try again later.",
+        title: "Refresh source unavailable",
+        description: error instanceof Error ? error.message : "The app is still showing the latest stored economic data.",
         variant: "destructive",
       });
     } finally {
@@ -381,6 +382,8 @@ export function EconomicDashboard() {
         <CardContent className="p-4">
           <div className="text-xs text-slate-500 dark:text-slate-400 space-y-1">
             <div className="font-medium text-slate-600 dark:text-slate-300">Data Transparency</div>
+            <div>• Current data source status: {economicData.dataSource}</div>
+            <div>• Last refreshed: {economicData.lastUpdated.toLocaleString()}</div>
             <div>• CPI and unemployment data sourced from the public BLS API</div>
             <div>• Oil and dollar-index quotes sourced from Yahoo Finance market data</div>
             <div>• GDP uses the latest stored quarterly baseline until a live source is configured</div>

@@ -87,10 +87,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Check if data is stale (older than 1 hour) or doesn't exist
       const now = new Date();
-      const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+      const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000);
       
-      if (!data || new Date(data.lastUpdated) < oneHourAgo) {
-        // Import the economic data service
+      if (!data || new Date(data.lastUpdated) < fiveMinutesAgo) {
         const { economicDataService } = await import('./economic-api');
         data = await economicDataService.fetchRealEconomicData();
       }
@@ -110,6 +109,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(data);
     } catch (error) {
       console.error("Error refreshing economic data:", error);
+      const existingData = await storage.getEconomicData();
+      if (existingData) {
+        return res.json({
+          ...existingData,
+          dataSource: `${existingData.dataSource}; refresh service error, showing latest stored values`
+        });
+      }
       res.status(500).json({ message: "Failed to refresh economic data" });
     }
   });

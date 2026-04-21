@@ -70,6 +70,14 @@ export class EconomicDataService {
         ? Number(unemploymentSeries.find((point) => Number.isFinite(Number(point.value)))?.value)
         : fallbackEconomicData.unemploymentRate;
 
+      const sourceNotes = [
+        cpiData.status === "fulfilled" ? "BLS CPI live" : "BLS CPI unavailable, using stored fallback",
+        unemploymentData.status === "fulfilled" ? "BLS unemployment live" : "BLS unemployment unavailable, using stored fallback",
+        oilData.status === "fulfilled" ? "Yahoo Finance WTI crude live" : "Yahoo Finance WTI unavailable, using stored fallback",
+        dollarData.status === "fulfilled" ? "Yahoo Finance dollar index live" : "Yahoo Finance dollar index unavailable, using stored fallback",
+        "GDP baseline stored from latest quarterly estimate"
+      ];
+
       const economicData = {
         inflationRate: Math.round(inflationRate * 10) / 10,
         gdpGrowth: fallbackEconomicData.gdpGrowth,
@@ -78,14 +86,18 @@ export class EconomicDataService {
         oilPrices: this.extractValue(oilData, fallbackEconomicData.oilPrices),
         dollarStrength: this.extractValue(dollarData, fallbackEconomicData.dollarStrength),
         interestRate: fallbackEconomicData.interestRate,
-        dataSource: "BLS public CPI/unemployment data and Yahoo Finance WTI crude/dollar index quotes",
+        dataSource: sourceNotes.join("; "),
         lastUpdated: new Date()
       };
 
       console.log("Comprehensive economic data retrieved:", economicData);
-      
-      // Store in database
-      await storage.updateEconomicData(economicData);
+
+      try {
+        await storage.updateEconomicData(economicData);
+      } catch (storageError) {
+        console.error("Economic data persistence failed; returning live refresh data:", storageError);
+      }
+
       return economicData;
 
     } catch (error) {
@@ -96,7 +108,12 @@ export class EconomicDataService {
         lastUpdated: new Date()
       };
 
-      await storage.updateEconomicData(fallbackData);
+      try {
+        await storage.updateEconomicData(fallbackData);
+      } catch (storageError) {
+        console.error("Fallback economic data persistence failed:", storageError);
+      }
+
       return fallbackData;
     }
   }
