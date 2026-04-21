@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Target, TrendingDown, Calendar, Plus, DollarSign, AlertTriangle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface FinancialGoal {
   id: number;
@@ -31,6 +32,7 @@ interface DebtAccount {
 }
 
 export function GoalsDebtDashboard() {
+  const { toast } = useToast();
   const [goals, setGoals] = useState<FinancialGoal[]>([]);
   const [debts, setDebts] = useState<DebtAccount[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -119,6 +121,42 @@ export function GoalsDebtDashboard() {
     return Math.ceil(-Math.log(1 - (balance * monthlyRate) / payment) / Math.log(1 + monthlyRate));
   };
 
+  const handleAddGoal = () => {
+    const newGoal = {
+      id: Date.now(),
+      title: "Oil Price Buffer",
+      goalType: "savings",
+      targetAmount: 1200,
+      currentAmount: 0,
+      targetDate: "2026-12-31",
+      monthlyContribution: 100,
+      priority: 2,
+      status: "active"
+    };
+    setGoals(prev => [...prev, newGoal]);
+    toast({
+      title: "Goal added",
+      description: "Created a fuel-cost buffer goal.",
+    });
+  };
+
+  const handleAddDebt = () => {
+    const newDebt = {
+      id: Date.now(),
+      accountName: "New Debt Plan",
+      debtType: "credit_card",
+      currentBalance: 1000,
+      minimumPayment: 50,
+      interestRate: 19.99,
+      payoffStrategy: "avalanche"
+    };
+    setDebts(prev => [...prev, newDebt]);
+    toast({
+      title: "Debt added",
+      description: "Created a new debt payoff plan.",
+    });
+  };
+
   if (error) {
     return (
       <Card className="glass-card">
@@ -163,7 +201,7 @@ export function GoalsDebtDashboard() {
                 <p className="text-xs sm:text-sm text-white/70 hidden sm:block">Track your savings objectives</p>
               </div>
             </div>
-            <Button size="sm" className="touch-manipulation text-xs sm:text-sm">
+            <Button size="sm" className="touch-manipulation text-xs sm:text-sm" onClick={handleAddGoal}>
               <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
               <span className="hidden sm:inline">Add Goal</span>
               <span className="sm:hidden">Add</span>
@@ -228,7 +266,7 @@ export function GoalsDebtDashboard() {
                 <p className="text-xs sm:text-sm text-white/70 hidden sm:block">Payoff strategy tracking</p>
               </div>
             </div>
-            <Button size="sm" className="touch-manipulation text-xs sm:text-sm">
+            <Button size="sm" className="touch-manipulation text-xs sm:text-sm" onClick={handleAddDebt}>
               <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
               <span className="hidden sm:inline">Add Debt</span>
               <span className="sm:hidden">Add</span>

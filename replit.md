@@ -176,6 +176,10 @@ The app prioritizes transparency about data sources:
 - Installed dependencies, applied the PostgreSQL schema, and configured the development workflow to run the existing Express/Vite application on port 5000.
 - Hardened optional external-service behavior so missing FRED/OpenAI credentials use existing fallback data instead of breaking startup requests.
 - Updated empty savings data handling so the dashboard loads a safe empty state when no weekly savings record exists yet.
+- Updated economic data refresh to use public BLS CPI/unemployment data plus Yahoo Finance WTI crude oil and dollar-index quotes, with source labels shown in the app.
+- Added oil price visibility across the economic dashboard and alert details because fuel-linked costs are news-relevant.
+- Removed an unsupported MOV background from the main dashboard and replaced it with CSS/animation visuals to avoid browser playback errors.
+- Made visible dashboard actions either perform local state changes, open dialogs, or show a clear toast response.
 
 ### July 29, 2025 - Video Goal Creation Bug Fixes & Budget Redistribution Visibility Implementation
 - **Fixed Video Goal Creation Errors**: Resolved form validation and input parsing issues that were preventing video goal creation

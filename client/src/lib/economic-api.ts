@@ -2,6 +2,11 @@ export interface EconomicIndicators {
   inflationRate: number;
   gdpGrowth: number;
   consumerPriceIndex: number;
+  unemploymentRate: number;
+  oilPrices: number;
+  dollarStrength: number;
+  interestRate: number;
+  dataSource: string;
   lastUpdated: Date;
 }
 
@@ -116,9 +121,11 @@ export const updateShoppingListItem = async (id: number, updates: Partial<Shoppi
 };
 
 export const refreshFredData = async (): Promise<EconomicIndicators> => {
-  const response = await fetch('/api/fred-data');
+  const response = await fetch('/api/economic-data/refresh', {
+    method: 'POST',
+  });
   if (!response.ok) {
-    throw new Error('Failed to refresh FRED data');
+    throw new Error('Failed to refresh economic data');
   }
   const data = await response.json();
   return {

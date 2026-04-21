@@ -11,8 +11,11 @@ import { Plus, Calendar, TrendingUp, TrendingDown, History } from "lucide-react"
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 import { formatCurrency } from "@/lib/utils";
 import { useMemo, useState, useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 export function PriceTrackingGrid() {
+  const { toast } = useToast();
+  const [viewMode, setViewMode] = useState<"weekly" | "monthly">("weekly");
   const { data: priceData, isLoading: isPriceLoading } = useQuery({
     queryKey: ["/api/price-data"],
     queryFn: fetchPriceData,
@@ -101,6 +104,22 @@ export function PriceTrackingGrid() {
     return Math.min(Math.max((position / range) * 100, 0), 100);
   };
 
+  const handleToggleView = () => {
+    const nextMode = viewMode === "weekly" ? "monthly" : "weekly";
+    setViewMode(nextMode);
+    toast({
+      title: "View updated",
+      description: `Showing ${nextMode} price context.`,
+    });
+  };
+
+  const handleAddTrackedItem = () => {
+    toast({
+      title: "Tracking ready",
+      description: "Use Add Alert or the AI Smart Buy cards to track a specific item.",
+    });
+  };
+
   if (isLoading) {
     return (
       <div className="mb-8">
@@ -133,11 +152,11 @@ export function PriceTrackingGrid() {
           </div>
         </div>
         <div className="flex items-center space-x-2">
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={handleToggleView}>
             <Calendar className="w-4 h-4 mr-2" />
-            Weekly View
+            {viewMode === "weekly" ? "Weekly View" : "Monthly View"}
           </Button>
-          <Button className="bg-primary text-white hover:bg-blue-600">
+          <Button className="bg-primary text-white hover:bg-blue-600" onClick={handleAddTrackedItem}>
             <Plus className="w-4 h-4 mr-2" />
             Add Item to Track
           </Button>

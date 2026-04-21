@@ -21,6 +21,7 @@ interface Notification {
 export function NotificationsCenter() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [filter, setFilter] = useState<string>('all');
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const { locationAlerts, location } = useLocationAlerts();
   const { toast } = useToast();
 
@@ -132,6 +133,14 @@ export function NotificationsCenter() {
     setNotifications(prev => prev.filter(notif => notif.id !== id));
   };
 
+  const handleViewNotification = (notification: Notification) => {
+    markAsRead(notification.id);
+    toast({
+      title: notification.title,
+      description: notification.message,
+    });
+  };
+
   const filteredNotifications = notifications.filter(notif => {
     if (filter === 'unread') return !notif.isRead;
     if (filter === 'urgent') return notif.notificationType === 'urgent';
@@ -164,7 +173,7 @@ export function NotificationsCenter() {
             </p>
           </div>
         </div>
-        <Dialog>
+        <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
           <DialogTrigger asChild>
             <Button variant="outline" className="btn-premium">
               <Settings className="w-4 h-4 mr-2" />
@@ -202,15 +211,13 @@ export function NotificationsCenter() {
                 </div>
               </div>
               <div className="flex justify-end space-x-2 pt-4">
-                <Button variant="outline" onClick={() => {
-                  // Close dialog without saving
-                }}>Cancel</Button>
+                <Button variant="outline" onClick={() => setSettingsOpen(false)}>Cancel</Button>
                 <Button onClick={() => {
-                  // Save notification preferences
                   toast({
                     title: "Notification Settings Saved",
                     description: "Your notification preferences have been updated successfully.",
                   });
+                  setSettingsOpen(false);
                 }}>Save Settings</Button>
               </div>
             </div>
@@ -301,7 +308,15 @@ export function NotificationsCenter() {
                       
                       <div className="flex items-center space-x-2">
                         {notification.actionUrl && (
-                          <Button size="sm" variant="outline" className="text-xs">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="text-xs"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleViewNotification(notification);
+                            }}
+                          >
                             <TrendingUp className="w-3 h-3 mr-1" />
                             View Details
                           </Button>

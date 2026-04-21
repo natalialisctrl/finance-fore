@@ -30,7 +30,7 @@ export const generatePricePredictions = async (
 ): Promise<PricePrediction[]> => {
   try {
     // Call backend API for real AI predictions
-    const response = await fetch('/api/ai-predictions', {
+    const response = await fetch('/api/price-predictions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

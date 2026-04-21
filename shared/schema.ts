@@ -29,6 +29,11 @@ export const economicData = pgTable("economic_data", {
   inflationRate: real("inflation_rate").notNull(),
   gdpGrowth: real("gdp_growth").notNull(),
   consumerPriceIndex: real("consumer_price_index").notNull(),
+  unemploymentRate: real("unemployment_rate").notNull().default(3.8),
+  oilPrices: real("oil_prices").notNull().default(75.5),
+  dollarStrength: real("dollar_strength").notNull().default(102.3),
+  interestRate: real("interest_rate").notNull().default(4.33),
+  dataSource: text("data_source").notNull().default("Public BLS and Yahoo Finance market data"),
   lastUpdated: timestamp("last_updated").notNull(),
 });
 

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { fetchEconomicData, refreshFredData } from "@/lib/economic-api";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TrendingUp, TrendingDown, BarChart3, Clock, Activity, AlertTriangle } from "lucide-react";
+import { TrendingUp, TrendingDown, BarChart3, Droplets, Activity, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
@@ -162,7 +162,7 @@ export function EconomicDashboard() {
         <div>
           <h2 className="headline-sm text-white">Economic Intelligence</h2>
           <p className="body-text text-white/70 mt-1">
-            Real-time data from Federal Reserve Economic Data (FRED) API
+            Current public economic data with live oil-market context
           </p>
         </div>
         <div className="flex items-center space-x-4">
@@ -213,7 +213,7 @@ export function EconomicDashboard() {
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         {/* Enhanced Inflation Rate Card with Futuristic Glow */}
         <Card className="foresee-card bg-black/40 backdrop-blur-md glow-border-gold fade-in-stagger">
           <CardContent className="p-4">
@@ -339,6 +339,41 @@ export function EconomicDashboard() {
             </div>
           </CardContent>
         </Card>
+
+        <Card className="foresee-card bg-black/40 backdrop-blur-md glow-border fade-in-stagger">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-xs font-medium text-white">WTI Crude Oil</h3>
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-blue-100 dark:bg-blue-900/20">
+                <Droplets className="w-5 h-5 text-blue-400" />
+              </div>
+            </div>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="text-lg font-bold gradient-gold pulse-metric">
+                  ${economicData.oilPrices.toFixed(2)}
+                </div>
+                <div className="w-16 h-8">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={generateSparklineData(economicData.oilPrices, 'stable')}>
+                      <Line 
+                        type="monotone" 
+                        dataKey="value" 
+                        stroke="#60a5fa"
+                        strokeWidth={2}
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+              <div className="flex items-center space-x-1">
+                <span className="text-sm text-blue-400">live quote</span>
+                <span className="text-xs text-white/60">per barrel</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Data Transparency Section */}
@@ -346,8 +381,9 @@ export function EconomicDashboard() {
         <CardContent className="p-4">
           <div className="text-xs text-slate-500 dark:text-slate-400 space-y-1">
             <div className="font-medium text-slate-600 dark:text-slate-300">Data Transparency</div>
-            <div>• Economic data sourced from Federal Reserve Economic Data (FRED) API</div>
-            <div>• Real-time inflation, GDP, and CPI data from official government sources</div>
+            <div>• CPI and unemployment data sourced from the public BLS API</div>
+            <div>• Oil and dollar-index quotes sourced from Yahoo Finance market data</div>
+            <div>• GDP uses the latest stored quarterly baseline until a live source is configured</div>
             <div>• AI predictions are algorithmic estimates for planning purposes only</div>
             <div>• Actual prices and conditions may vary by location and market factors</div>
           </div>

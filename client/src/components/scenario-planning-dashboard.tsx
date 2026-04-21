@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BarChart3, TrendingUp, TrendingDown, DollarSign, Calculator, Lightbulb, AlertCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface BudgetScenario {
   id: number;
@@ -16,6 +17,7 @@ interface BudgetScenario {
 }
 
 export function ScenarioPlanningDashboard() {
+  const { toast } = useToast();
   const [scenarios, setScenarios] = useState<BudgetScenario[]>([]);
   const [activeScenario, setActiveScenario] = useState<BudgetScenario | null>(null);
   
@@ -123,6 +125,36 @@ export function ScenarioPlanningDashboard() {
     }).format(amount);
   };
 
+  const handleCreateScenario = () => {
+    const newScenario = {
+      id: Date.now(),
+      scenarioName: "Oil Price Shock",
+      scenarioType: "life_event",
+      baselineIncome: 75000,
+      adjustedIncome: 75000,
+      additionalExpenses: {
+        "Fuel and transportation": 180,
+        "Grocery delivery costs": 60
+      },
+      projectedOutcome: {
+        monthlyNetChange: -240,
+        recommendations: [
+          "Increase gas budget temporarily",
+          "Delay nonessential travel",
+          "Monitor oil-linked grocery costs"
+        ]
+      },
+      isActive: true
+    };
+
+    setScenarios(prev => prev.map(s => ({ ...s, isActive: false })).concat(newScenario));
+    setActiveScenario(newScenario);
+    toast({
+      title: "Scenario created",
+      description: "Added an oil price shock scenario for planning.",
+    });
+  };
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -140,7 +172,7 @@ export function ScenarioPlanningDashboard() {
             </p>
           </div>
         </div>
-        <Button className="btn-premium ripple">
+        <Button className="btn-premium ripple" onClick={handleCreateScenario}>
           <Calculator className="w-4 h-4 mr-2" />
           Create Scenario
         </Button>

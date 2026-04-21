@@ -1,12 +1,20 @@
 import { storage } from "./storage";
 
 const fallbackEconomicData = {
-  inflationRate: 3.2,
+  inflationRate: 2.7,
   gdpGrowth: 2.8,
-  consumerPriceIndex: 309.7,
-  unemploymentRate: 3.8,
+  consumerPriceIndex: 319.8,
+  unemploymentRate: 4.1,
   oilPrices: 75.5,
-  dollarStrength: 102.3,
+  dollarStrength: 99.5,
+  interestRate: 4.33,
+  dataSource: "Fallback estimates used when public data sources are unavailable",
+};
+
+type BlsSeries = {
+  year: string;
+  period: string;
+  value: string;
 };
 
 // Multiple data sources for comprehensive economic data
@@ -43,32 +51,34 @@ export class EconomicDataService {
     try {
       console.log("Fetching comprehensive economic data for price predictions...");
 
-      if (!process.env.FRED_API_KEY) {
-        const economicData = {
-          ...fallbackEconomicData,
-          lastUpdated: new Date()
-        };
-
-        await storage.updateEconomicData(economicData);
-        return economicData;
-      }
-      
-      // Parallel requests for all economic indicators
-      const [inflationData, gdpData, cpiData, oilData, currencyData] = await Promise.allSettled([
-        this.fetchInflationFromFRED(),
-        this.fetchGDPFromFRED(),
-        this.fetchCPIFromFRED(),
-        this.fetchOilPrices(),
-        this.fetchDollarIndex()
+      const [cpiData, unemploymentData, oilData, dollarData] = await Promise.allSettled([
+        this.fetchBlsSeries("CUUR0000SA0"),
+        this.fetchBlsSeries("LNS14000000"),
+        this.fetchYahooQuote("CL=F"),
+        this.fetchYahooQuote("DX-Y.NYB")
       ]);
 
+      const cpiSeries = cpiData.status === "fulfilled" ? cpiData.value : null;
+      const validCpiSeries = cpiSeries?.filter((point) => Number.isFinite(Number(point.value))) || [];
+      const currentCpi = validCpiSeries[0]?.value ? Number(validCpiSeries[0].value) : fallbackEconomicData.consumerPriceIndex;
+      const yearAgoCpi = validCpiSeries.find((point, index) => index > 0 && point.period === validCpiSeries[0]?.period)?.value
+        ? Number(validCpiSeries.find((point, index) => index > 0 && point.period === validCpiSeries[0]?.period)?.value)
+        : currentCpi / (1 + fallbackEconomicData.inflationRate / 100);
+      const inflationRate = ((currentCpi - yearAgoCpi) / yearAgoCpi) * 100;
+      const unemploymentSeries = unemploymentData.status === "fulfilled" ? unemploymentData.value : null;
+      const unemploymentRate = unemploymentSeries?.find((point) => Number.isFinite(Number(point.value)))?.value
+        ? Number(unemploymentSeries.find((point) => Number.isFinite(Number(point.value)))?.value)
+        : fallbackEconomicData.unemploymentRate;
+
       const economicData = {
-        inflationRate: this.extractValue(inflationData, fallbackEconomicData.inflationRate), 
-        gdpGrowth: this.extractValue(gdpData, fallbackEconomicData.gdpGrowth), 
-        consumerPriceIndex: this.extractValue(cpiData, fallbackEconomicData.consumerPriceIndex),
-        unemploymentRate: fallbackEconomicData.unemploymentRate,
+        inflationRate: Math.round(inflationRate * 10) / 10,
+        gdpGrowth: fallbackEconomicData.gdpGrowth,
+        consumerPriceIndex: Math.round(currentCpi * 10) / 10,
+        unemploymentRate: Math.round(unemploymentRate * 10) / 10,
         oilPrices: this.extractValue(oilData, fallbackEconomicData.oilPrices),
-        dollarStrength: this.extractValue(currencyData, fallbackEconomicData.dollarStrength),
+        dollarStrength: this.extractValue(dollarData, fallbackEconomicData.dollarStrength),
+        interestRate: fallbackEconomicData.interestRate,
+        dataSource: "BLS public CPI/unemployment data and Yahoo Finance WTI crude/dollar index quotes",
         lastUpdated: new Date()
       };
 
@@ -79,9 +89,8 @@ export class EconomicDataService {
       return economicData;
 
     } catch (error) {
-      console.error("FRED API error:", error);
-      
-      // Fallback to current estimates only if FRED fails
+      console.error("Economic data refresh failed:", error);
+
       const fallbackData = {
         ...fallbackEconomicData,
         lastUpdated: new Date()
@@ -97,6 +106,48 @@ export class EconomicDataService {
       return settledResult.value;
     }
     return fallback;
+  }
+
+  private async fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs = 8000): Promise<Response> {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      return await fetch(url, {
+        ...options,
+        signal: controller.signal,
+        headers: {
+          "User-Agent": "Mozilla/5.0",
+          ...(options.headers || {}),
+        },
+      });
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+
+  private async fetchBlsSeries(seriesId: string): Promise<BlsSeries[]> {
+    const response = await this.fetchWithTimeout(`https://api.bls.gov/publicAPI/v2/timeseries/data/${seriesId}`);
+    const data = await response.json();
+    const series = data?.Results?.series?.[0]?.data;
+
+    if (!Array.isArray(series) || series.length === 0) {
+      throw new Error(`No BLS data available for ${seriesId}`);
+    }
+
+    return series;
+  }
+
+  private async fetchYahooQuote(symbol: string): Promise<number> {
+    const response = await this.fetchWithTimeout(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}`);
+    const data = await response.json();
+    const meta = data?.chart?.result?.[0]?.meta;
+    const price = Number(meta?.regularMarketPrice ?? meta?.previousClose);
+
+    if (!Number.isFinite(price)) {
+      throw new Error(`No market quote available for ${symbol}`);
+    }
+
+    return Math.round(price * 100) / 100;
   }
 
   // FRED API integration for inflation (CPIAUCSL year-over-year)

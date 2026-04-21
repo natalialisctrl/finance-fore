@@ -32,7 +32,6 @@ import { Badge } from "@/components/ui/badge";
 import { ForeseeLogo } from "@/components/foresee-logo";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
-import foreseeVideo from "@/assets/foresee-blinking-logo.mov";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -58,7 +57,6 @@ export default function Dashboard() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [newItemName, setNewItemName] = useState("");
   const [newItemQuantity, setNewItemQuantity] = useState("");
-  const [videoInteracted, setVideoInteracted] = useState(false);
   const [titleSpinning, setTitleSpinning] = useState(false);
   const queryClient = useQueryClient();
   const { location, locationAlerts, isLoading: locationLoading } = useLocationAlerts();
@@ -102,33 +100,6 @@ export default function Dashboard() {
       window.removeEventListener('scroll', debouncedScroll);
       clearTimeout(scrollTimeout);
     };
-  }, []);
-
-  // Video interaction handler for mobile
-  const handleVideoInteraction = () => {
-    if (!videoInteracted) {
-      const video = document.querySelector('video');
-      if (video) {
-        video.muted = true; // Ensure muted for autoplay
-        video.play().catch(e => {
-          console.log('Video play failed:', e);
-          // Show fallback if video fails
-          const fallback = document.querySelector('.video-fallback');
-          if (fallback) {
-            (fallback as HTMLElement).style.display = 'block';
-          }
-        });
-        setVideoInteracted(true);
-      }
-    }
-  };
-
-  // Force video play on component mount
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      handleVideoInteraction();
-    }, 1000);
-    return () => clearTimeout(timer);
   }, []);
 
   // Mutation to add shopping list item
@@ -326,6 +297,7 @@ export default function Dashboard() {
                                       </div>
                                       <div className="space-y-2">
                                         <div><strong>Unemployment:</strong> {economicData.unemploymentRate}%</div>
+                                        <div><strong>WTI Oil:</strong> ${economicData.oilPrices?.toFixed?.(2) ?? economicData.oilPrices}/barrel</div>
                                         <div><strong>Interest Rate:</strong> {economicData.interestRate}%</div>
                                         <div><strong>Last Updated:</strong> {new Date(economicData.lastUpdated).toLocaleDateString()}</div>
                                       </div>
@@ -483,31 +455,9 @@ export default function Dashboard() {
         {/* Quantum Hero Matrix - AI Core Tab */}
         {activeTab === 'dashboard' && (
           <div className="relative z-40 max-w-7xl mx-auto px-6 py-16 pl-[24px] pr-[24px] pt-[32px] pb-[32px] overflow-hidden min-h-[60vh]">
-            {/* Video Background - Mobile Optimized */}
             <div className="absolute inset-0 z-0">
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                controls={false}
-                preload="metadata"
-                className="w-full h-full object-cover opacity-60"
-                style={{
-                  filter: 'brightness(0.8) contrast(1.1)',
-                  objectPosition: 'center',
-                  pointerEvents: 'none'
-                }}
-                src={foreseeVideo}
-                onLoadedData={(e) => {
-                  const video = e.target as HTMLVideoElement;
-                  video.play().catch(() => {
-                    // If autoplay fails, hide controls and try again
-                    video.controls = false;
-                  });
-                }}
-              />
-              {/* Video overlay gradient */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(252,48,78,0.16),transparent_34%),radial-gradient(circle_at_70%_55%,rgba(212,196,160,0.12),transparent_30%),linear-gradient(135deg,rgba(2,6,23,0.2),rgba(15,23,42,0.72))]" />
+              <MinimalistFloatingDollars />
               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#051421]/10 to-[#051421]/40"></div>
             </div>
 
