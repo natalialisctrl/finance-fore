@@ -159,7 +159,7 @@ export default function Dashboard() {
   }, [isAuthenticated, isLoading, toast]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-black overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-black overflow-x-hidden">
       {/* Advanced AI Network Background */}
       <div className="fixed inset-0 z-0">
         {/* Primary quantum field */}
@@ -498,7 +498,7 @@ export default function Dashboard() {
       </div>
       {/* Main Content */}
       <div className={`relative z-30 ${activeTab === 'dashboard' ? 'mt-4' : 'mt-6'}`}>
-        <div className="max-w-6xl mx-auto px-4 py-4 pl-[15px] pr-[15px] pt-[0px] pb-[0px]">
+        <div className="max-w-6xl mx-auto px-4 py-4 pl-[15px] pr-[15px] pt-[0px] pb-12">
           {activeTab === 'dashboard' && (
             <>
               <div className="fade-in-up">
@@ -533,26 +533,32 @@ export default function Dashboard() {
           {activeTab === 'budget-goals' && (
             <div className="space-y-4 sm:space-y-8">
               {/* Mobile-First Approach */}
-              <div className="block sm:hidden">
+              <div className="block sm:hidden space-y-4">
                 <MobileSceneBuilder />
-                <div className="mt-4">
-                  <MobileGoalsDebt />
-                </div>
+                <MobileGoalsDebt />
               </div>
               
               {/* Desktop Components */}
               <div className="hidden sm:block">
-                <div className="fade-in">
-                  <MobileSafeWrapper fallbackTitle="Scene Builder Error" componentName="MobileSceneBuilder">
-                    <MobileSceneBuilder />
-                  </MobileSafeWrapper>
+                <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.08fr)_minmax(360px,0.92fr)] gap-6 items-start">
+                  <div className="fade-in min-w-0">
+                    <div className="max-h-none xl:max-h-[calc(100vh-230px)] xl:overflow-y-auto xl:pr-2 xl:pb-2">
+                      <MobileSafeWrapper fallbackTitle="Scene Builder Error" componentName="MobileSceneBuilder">
+                        <MobileSceneBuilder />
+                      </MobileSafeWrapper>
+                    </div>
+                  </div>
+                  <div className="slide-up min-w-0 xl:sticky xl:top-36" style={{ animationDelay: '0.2s' }}>
+                    <div className="mb-3 rounded-2xl border border-[#d4c4a0]/25 bg-black/35 px-4 py-3 backdrop-blur-xl">
+                      <h2 className="text-lg font-semibold text-white">Budget Intelligence</h2>
+                      <p className="text-sm text-white/60">Always visible while reviewing your goal scenes.</p>
+                    </div>
+                    <MobileSafeWrapper fallbackTitle="Budget Tracker Error" componentName="EnhancedBudgetTracker">
+                      <EnhancedBudgetTracker />
+                    </MobileSafeWrapper>
+                  </div>
                 </div>
-                <div className="slide-up" style={{ animationDelay: '0.2s' }}>
-                  <MobileSafeWrapper fallbackTitle="Budget Tracker Error" componentName="EnhancedBudgetTracker">
-                    <EnhancedBudgetTracker />
-                  </MobileSafeWrapper>
-                </div>
-                <div className="slide-up" style={{ animationDelay: '0.4s' }}>
+                <div className="slide-up mt-8" style={{ animationDelay: '0.4s' }}>
                   <MobileSafeWrapper fallbackTitle="Goals & Debt Error" componentName="GoalsDebtDashboard">
                     <GoalsDebtDashboard />
                   </MobileSafeWrapper>

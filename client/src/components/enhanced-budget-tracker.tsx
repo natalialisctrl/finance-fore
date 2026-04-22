@@ -46,7 +46,7 @@ export function EnhancedBudgetTracker() {
               <PiggyBank className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-white">Budget Tracker</h3>
+              <h3 className="text-lg font-semibold text-white">Budget Intelligence</h3>
               <p className="text-sm text-white/70">Track your spending goals</p>
             </div>
           </div>
@@ -191,7 +191,7 @@ export function EnhancedBudgetTracker() {
               </div>
               <div>
                 <h3 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-white">
-                  Budget Tracker
+                  Budget Intelligence
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 hidden sm:block">
                   Advanced spending analysis and velocity tracking

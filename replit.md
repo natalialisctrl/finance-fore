@@ -187,6 +187,7 @@ The app prioritizes transparency about data sources:
 - Auto-seeded demo tracked items for gas, eggs, chicken breast, and WTI crude oil, and expanded budget-engine examples around groceries, gas, and oil-linked energy costs.
 - Reworked the Goals AI Scene Builder into a progressive generated scene film: demo video goals now auto-seed, the visible scene literally depicts the goal type, and unlocked runtime/chapters expand as savings progress grows.
 - Desktop and mobile Goals now use the same live video-goals data path, with a direct `?tab=budget-goals` view available for checking the Goals section.
+- Fixed the Goals tab layout so Budget Intelligence is visible beside the AI Scene Builder on desktop instead of being buried/cut off below long scene cards, and changed the main dashboard container to allow vertical page scrolling.
 
 ### July 29, 2025 - Video Goal Creation Bug Fixes & Budget Redistribution Visibility Implementation
 - **Fixed Video Goal Creation Errors**: Resolved form validation and input parsing issues that were preventing video goal creation
