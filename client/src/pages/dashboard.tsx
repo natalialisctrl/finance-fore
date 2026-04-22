@@ -7,6 +7,7 @@ import { EnhancedBudgetTracker } from "@/components/enhanced-budget-tracker";
 import { ShoppingList } from "@/components/shopping-list";
 import { EconomicTrendPrediction } from "@/components/economic-trend-prediction";
 import { MinimalistFloatingDollars } from "@/components/minimalist-floating-dollars";
+import foreseeVideo from "@/assets/foresee-blinking-logo.mov";
 import { GoalsDebtDashboard } from "@/components/goals-debt-dashboard";
 import { ScenarioPlanning } from "@/components/scenario-planning";
 import { NotificationsCenter } from "@/components/notifications-center";
@@ -458,9 +459,31 @@ export default function Dashboard() {
         {activeTab === 'dashboard' && (
           <div className="relative z-40 max-w-7xl mx-auto px-6 py-16 pl-[24px] pr-[24px] pt-[32px] pb-[32px] overflow-hidden min-h-[60vh]">
             <div className="absolute inset-0 z-0">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(252,48,78,0.16),transparent_34%),radial-gradient(circle_at_70%_55%,rgba(212,196,160,0.12),transparent_30%),linear-gradient(135deg,rgba(2,6,23,0.2),rgba(15,23,42,0.72))]" />
-              <MinimalistFloatingDollars />
+              {/* Background video */}
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                controls={false}
+                preload="metadata"
+                className="absolute inset-0 w-full h-full object-cover opacity-60"
+                style={{
+                  filter: 'brightness(0.8) contrast(1.1)',
+                  objectPosition: 'center',
+                  pointerEvents: 'none'
+                }}
+                src={foreseeVideo}
+                onLoadedData={(e) => {
+                  const video = e.target as HTMLVideoElement;
+                  video.play().catch(() => {
+                    video.controls = false;
+                  });
+                }}
+              />
+              {/* Overlay gradient to keep text readable */}
               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#051421]/10 to-[#051421]/40"></div>
+              <MinimalistFloatingDollars />
             </div>
 
             <div className="relative z-10 text-center">
