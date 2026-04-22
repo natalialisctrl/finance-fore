@@ -184,7 +184,7 @@ export function BudgetTracker() {
   }
 
   return (
-    <Card className="relative group bg-gradient-to-br from-black/20 via-slate-900/10 to-black/30 backdrop-blur-3xl border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] hover:shadow-[0_35px_80px_-15px_rgba(252,48,77,0.3)] transition-all duration-700 overflow-hidden mb-8 animate-[fadeInUp_1s_ease-out]">
+    <Card className="relative group bg-gradient-to-br from-black/20 via-slate-900/10 to-black/30 backdrop-blur-3xl border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] hover:shadow-[0_35px_80px_-15px_rgba(252,48,77,0.3)] transition-all duration-700 mb-8 animate-[fadeInUp_1s_ease-out] self-start">
       {/* Futuristic Ambient Glow */}
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#fc304ed6]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
       <div className="absolute -inset-1 bg-gradient-to-r from-[#fc304ed6]/20 via-transparent to-[#d4c4a0]/20 opacity-0 group-hover:opacity-100 blur-xl transition-all duration-1000"></div>
