@@ -912,6 +912,228 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ─── IP-based geolocation (no browser permission needed) ───────────────
+  // Server-side cache: key = IP, value = { result, expiresAt }
+  const geoCache = new Map<string, { result: any; expiresAt: number }>();
+
+  app.get("/api/geolocate", async (req, res) => {
+    try {
+      // Extract real client IP
+      const forwarded = req.headers["x-forwarded-for"];
+      const rawIp = Array.isArray(forwarded) ? forwarded[0] : (forwarded?.split(",")[0] ?? req.socket.remoteAddress ?? "");
+      const ip = rawIp.trim().replace(/^::ffff:/, "");
+      const cacheKey = ip || "auto";
+
+      // Return cached result if still fresh (1 hour)
+      const cached = geoCache.get(cacheKey);
+      if (cached && cached.expiresAt > Date.now()) {
+        return res.json(cached.result);
+      }
+
+      // Try ip-api.com first (free, 1000 req/min, no key needed)
+      let result: any = null;
+      try {
+        const ipApiUrl = ip && ip !== "127.0.0.1" && ip !== "::1"
+          ? `http://ip-api.com/json/${ip}?fields=status,city,regionName,region,countryCode,country,lat,lon,timezone,zip`
+          : `http://ip-api.com/json/?fields=status,city,regionName,region,countryCode,country,lat,lon,timezone,zip`;
+        const r = await fetch(ipApiUrl, { signal: AbortSignal.timeout(4000) });
+        if (r.ok) {
+          const d = await r.json() as any;
+          if (d.status === "success" && d.city) {
+            result = {
+              city: d.city,
+              state: d.regionName || d.region || "",
+              stateCode: d.region || "",
+              country: d.country || "United States",
+              countryCode: d.countryCode || "US",
+              lat: d.lat || 0,
+              lng: d.lon || 0,
+              timezone: d.timezone || "America/New_York",
+              postalCode: d.zip || "",
+            };
+          }
+        }
+      } catch { /* fallthrough to ipapi.co */ }
+
+      // Fallback: ipapi.co
+      if (!result) {
+        const url2 = ip && ip !== "127.0.0.1" && ip !== "::1"
+          ? `https://ipapi.co/${ip}/json/`
+          : `https://ipapi.co/json/`;
+        const r2 = await fetch(url2, {
+          headers: { "User-Agent": "Foresee-App/1.0" },
+          signal: AbortSignal.timeout(5000),
+        });
+        if (r2.ok) {
+          const d2 = await r2.json() as any;
+          if (!d2.error && d2.city) {
+            result = {
+              city: d2.city,
+              state: d2.region || d2.region_code || "",
+              stateCode: d2.region_code || "",
+              country: d2.country_name || "United States",
+              countryCode: d2.country_code || "US",
+              lat: d2.latitude || 0,
+              lng: d2.longitude || 0,
+              timezone: d2.timezone || "America/New_York",
+              postalCode: d2.postal || "",
+            };
+          }
+        }
+      }
+
+      if (!result) throw new Error("All geo providers failed");
+
+      // Cache for 1 hour
+      geoCache.set(cacheKey, { result, expiresAt: Date.now() + 3600_000 });
+      res.json(result);
+    } catch (err: any) {
+      console.error("Geolocate error:", err.message);
+      res.status(200).json({ city: null, state: null, error: err.message });
+    }
+  });
+
+  // ─── AI location-specific financial alerts ──────────────────────────────
+  app.post("/api/location-alerts", async (req, res) => {
+    try {
+      const { city, state, country } = req.body as { city: string; state: string; country?: string };
+      if (!city) return res.status(400).json({ message: "city required" });
+
+      // Pull live economic data to ground the AI
+      const eco = await storage.getEconomicData();
+      const gasRows = await storage.getAllPriceData();
+      const gasItem = gasRows.find(p => p.itemName.toLowerCase().includes("gas") || p.itemName.toLowerCase().includes("fuel"));
+      const gasPrice = gasItem?.currentPrice ?? 3.45;
+
+      const today = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+      const location = `${city}${state ? `, ${state}` : ""}${country && country !== "United States" ? `, ${country}` : ""}`;
+
+      const OpenAI = (await import("openai")).default;
+      const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
+
+      if (!openai) {
+        // Fallback algorithmic alerts without AI
+        return res.json(buildAlgorithmicAlerts(city, state, gasPrice, eco));
+      }
+
+      const prompt = `You are a hyper-accurate personal finance intelligence engine. Today is ${today}.
+
+The user is located in ${location}. Generate 4 genuinely specific, financially actionable alerts for this EXACT location right now.
+
+LIVE ECONOMIC DATA:
+- CPI Inflation: ${eco?.inflationRate ?? 3.3}%
+- GDP Growth: ${eco?.gdpGrowth ?? 2.8}%
+- Federal Funds Rate: ${eco?.interestRate ?? 4.33}%
+- Unemployment: ${eco?.unemploymentRate ?? 4.3}%
+- WTI Oil Price: $${eco?.oilPrices ?? 92.5}/barrel
+- Gas (national avg): $${gasPrice.toFixed(2)}/gallon
+
+REQUIREMENTS:
+- Each alert must reference REAL, CURRENT conditions specific to ${location} (e.g., local gas prices, local housing market, seasonal weather costs, state-specific taxes or policies)
+- Use REAL dollar amounts (e.g., gas prices in California are ~$0.50 higher than national avg due to state taxes)
+- Include a specific financial action (e.g., "fill up today, price will rise $0.12 this week")
+- Confidence must be honest (not all 95%)
+- For gas: adjust for state taxes (CA +$0.68, TX +$0.20, NY +$0.49, FL +$0.28, etc.)
+
+Return ONLY a JSON array, no markdown. Schema:
+[{
+  "id": "alert-1",
+  "type": "gas" | "grocery" | "housing" | "weather" | "economic",
+  "severity": "low" | "medium" | "high",
+  "title": "short title (6 words max)",
+  "message": "2-3 sentence specific factual explanation with dollar amounts",
+  "prediction": "concise prediction with specific $ or % number",
+  "confidence": 55-92,
+  "daysOut": 1-14,
+  "actionSuggestion": "specific actionable step with dollar impact",
+  "icon": "emoji"
+}]`;
+
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [{ role: "user", content: prompt }],
+        response_format: { type: "json_object" },
+        temperature: 0.3,
+      });
+
+      const raw = completion.choices[0].message.content ?? "{}";
+      let alerts: any[] = [];
+      try {
+        const parsed = JSON.parse(raw);
+        // Handle both {alerts:[]} and [] root shapes
+        alerts = Array.isArray(parsed) ? parsed : (parsed.alerts ?? parsed.data ?? Object.values(parsed)[0] ?? []);
+      } catch {
+        alerts = buildAlgorithmicAlerts(city, state, gasPrice, eco);
+      }
+
+      res.json(alerts.slice(0, 5));
+    } catch (err: any) {
+      console.error("Location alerts error:", err.message);
+      res.status(500).json({ message: "Failed to generate alerts" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
+}
+
+function buildAlgorithmicAlerts(city: string, state: string, gasPrice: number, eco: any) {
+  const stateGasSurcharge: Record<string, number> = {
+    CA: 0.68, NY: 0.49, PA: 0.59, IL: 0.54, WA: 0.52, HI: 0.16,
+    TX: 0.20, FL: 0.28, OH: 0.38, MI: 0.27, GA: 0.32, NC: 0.38,
+  };
+  const sc = stateGasSurcharge[state?.toUpperCase()] ?? 0.15;
+  const localGas = (gasPrice + sc).toFixed(2);
+  const inflation = eco?.inflationRate ?? 3.3;
+
+  return [
+    {
+      id: "alert-gas",
+      type: "gas",
+      severity: gasPrice > 3.8 ? "high" : "medium",
+      title: `Gas prices near ${city}`,
+      message: `National average is $${gasPrice.toFixed(2)}/gal. ${state} state taxes add ~$${sc.toFixed(2)}, putting local prices around $${localGas}/gal. Oil at $${eco?.oilPrices ?? 92}/barrel signals prices may rise within the week.`,
+      prediction: `+$0.08–0.15/gal increase likely in 5–7 days`,
+      confidence: 72,
+      daysOut: 7,
+      actionSuggestion: `Fill your tank today — waiting 7 days could cost $2–4 extra per fill-up.`,
+      icon: "⛽",
+    },
+    {
+      id: "alert-grocery",
+      type: "grocery",
+      severity: "medium",
+      title: `Grocery prices up ${inflation}% YoY`,
+      message: `CPI is running at ${inflation}% annually. Protein and dairy categories are seeing the steepest increases — averaging 5–7% above last year in most ${state} metros including ${city}.`,
+      prediction: `Grocery spend up ~$18–35/month vs. last year`,
+      confidence: 81,
+      daysOut: 30,
+      actionSuggestion: `Buy canned/frozen proteins in bulk this week to lock in current pricing before the next index update.`,
+      icon: "🛒",
+    },
+    {
+      id: "alert-housing",
+      type: "housing",
+      severity: eco?.interestRate > 5 ? "high" : "medium",
+      title: `Mortgage rates near ${eco?.interestRate ?? 4.3}%`,
+      message: `The 30-year fixed rate tracks near ${(eco?.interestRate ?? 4.33 + 1.5).toFixed(2)}% in the current environment. In the ${city} metro, that translates to roughly $${Math.round((250000 * 0.006))} more per month vs. two years ago on a $250k loan.`,
+      prediction: `Rates hold or rise slightly over next 30 days`,
+      confidence: 65,
+      daysOut: 30,
+      actionSuggestion: `If you plan to buy in ${city} this year, getting pre-approved now locks your rate before any Fed moves.`,
+      icon: "🏠",
+    },
+    {
+      id: "alert-economic",
+      type: "economic",
+      severity: "low",
+      title: `Local job market healthy`,
+      message: `National unemployment at ${eco?.unemploymentRate ?? 4.3}% with GDP growing at ${eco?.gdpGrowth ?? 2.8}%. Consumer spending remains strong but wage growth is moderating, which may soften discretionary spending in ${city} over the next quarter.`,
+      prediction: `No major local downturn expected in 60 days`,
+      confidence: 58,
+      daysOut: 60,
+      actionSuggestion: `Good window to negotiate raises or freelance rates while the labor market stays tight.`,
+      icon: "📊",
+    },
+  ];
 }
