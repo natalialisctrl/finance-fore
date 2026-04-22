@@ -29,6 +29,7 @@ export function useLocationAlerts() {
   const [location, setLocation] = useState<LocationData | null>(null);
   const [locationAlerts, setLocationAlerts] = useState<LocationAlert[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [permissionDenied, setPermissionDenied] = useState(false);
   const [userPreferences, setUserPreferences] = useState<any>(null);
   const { toast } = useToast();
 
@@ -60,11 +61,16 @@ export function useLocationAlerts() {
   };
 
   const detectLocation = async () => {
+    setPermissionDenied(false);
+    setIsLoading(true);
     try {
-      // Try to get user's actual location using geolocation
       const coords = await getCurrentPosition();
       await processUserLocation(coords.lat, coords.lng);
-    } catch (error) {
+    } catch (error: any) {
+      // Check specifically for permission denied
+      if (error?.code === 1) {
+        setPermissionDenied(true);
+      }
       console.warn('Location detection failed:', error);
       setDefaultLocation();
     }
@@ -337,7 +343,8 @@ export function useLocationAlerts() {
     location,
     locationAlerts,
     isLoading,
-    refreshAlerts: () => location && generateSpecificLocationAlerts(location)
+    permissionDenied,
+    refreshAlerts: detectLocation
   };
 }
 

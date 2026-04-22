@@ -283,52 +283,60 @@ export function VideoGoalCard({ goal, onUpdateProgress }: VideoGoalCardProps) {
         </div>
 
         {isVideoOpen && (
-          <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4" data-testid={`modal-ai-scene-${goal.id}`}>
-            <div className="bg-black/90 backdrop-blur-xl border border-white/20 rounded-3xl p-6 max-w-5xl w-full relative max-h-[92vh] overflow-y-auto">
-              <button
-                onClick={() => setIsVideoOpen(false)}
-                className="absolute top-4 right-4 text-white/60 hover:text-white z-10 rounded-full border border-white/15 bg-white/5 p-2"
-                data-testid={`button-close-scene-${goal.id}`}
-              >
-                <X className="h-5 w-5" />
-              </button>
-              <div className="mb-6 pr-10">
-                <h3 className="text-white text-xl font-semibold mb-2">{goal.goalTitle} generated scene</h3>
-                <p className="text-white/60 text-sm">
-                  This is the current unlocked film cut. Saving more extends the visible scene and unlocks more literal details.
-                </p>
+          <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-end sm:items-center justify-center" data-testid={`modal-ai-scene-${goal.id}`}>
+            <div className="bg-black/95 backdrop-blur-xl border border-white/20 rounded-t-3xl sm:rounded-3xl w-full sm:max-w-2xl relative max-h-[92vh] flex flex-col">
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 border-b border-white/10 flex-shrink-0">
+                <div>
+                  <h3 className="text-white text-base font-semibold leading-tight">{goal.goalTitle}</h3>
+                  <p className="text-white/50 text-xs mt-0.5">Save more to unlock more of the scene</p>
+                </div>
+                <button
+                  onClick={() => setIsVideoOpen(false)}
+                  className="w-8 h-8 text-white/60 hover:text-white rounded-full border border-white/15 bg-white/5 flex items-center justify-center flex-shrink-0"
+                  data-testid={`button-close-scene-${goal.id}`}
+                >
+                  <X className="h-4 w-4" />
+                </button>
               </div>
-              <AIProgressiveScene goal={goal} unlockedSegments={unlockedSegments} progressPercentage={progressPercentage} expanded />
-              <div className="mt-6 grid grid-cols-1 gap-2 md:grid-cols-5">
-                {videoSegments.map((segment) => (
-                  <div
-                    key={segment.segmentNumber}
-                    className={`p-3 rounded-lg border text-center transition-all duration-300 ${
-                      segment.isUnlocked
-                        ? "bg-green-900/30 border-green-500/50 text-green-200"
-                        : "bg-gray-900/30 border-gray-600/50 text-gray-400"
-                    }`}
-                  >
-                    <div className="mb-1">
-                      {segment.isUnlocked ? <Unlock className="w-4 h-4 mx-auto" /> : <Lock className="w-4 h-4 mx-auto" />}
+
+              {/* Scrollable content */}
+              <div className="overflow-y-auto flex-1 p-4 space-y-4">
+                {/* Scene — scrollable horizontally if needed */}
+                <div className="overflow-x-auto rounded-2xl">
+                  <AIProgressiveScene goal={goal} unlockedSegments={unlockedSegments} progressPercentage={progressPercentage} expanded />
+                </div>
+
+                {/* Chapter segments */}
+                <div className="grid grid-cols-5 gap-1.5">
+                  {videoSegments.map((segment) => (
+                    <div
+                      key={segment.segmentNumber}
+                      className={`p-2 rounded-xl border text-center transition-all duration-300 ${
+                        segment.isUnlocked
+                          ? "border-[#fc304e]/50 bg-[#fc304e]/10 text-white"
+                          : "border-white/10 bg-white/5 text-white/40"
+                      }`}
+                    >
+                      <div className="mb-1 flex justify-center">
+                        {segment.isUnlocked ? <Unlock className="w-3 h-3 text-[#d4c4a0]" /> : <Lock className="w-3 h-3" />}
+                      </div>
+                      <div className="text-[10px] leading-tight">{segment.description.split(' ').slice(0, 4).join(' ')}…</div>
                     </div>
-                    <div className="text-xs font-medium">{segment.description}</div>
-                    <div className="text-xs mt-1">${segment.unlockThreshold.toLocaleString()}</div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-6 text-center">
-                {unlockedSegments >= 5 ? (
-                  <div className="text-green-400">
-                    <p className="text-lg font-bold mb-2">Complete AI goal scene unlocked</p>
-                    <p className="text-sm text-white/60">The full visual story is now available because the savings goal is complete.</p>
-                  </div>
-                ) : (
-                  <Button onClick={handleAddToGoal} className="btn-coral" data-testid={`button-modal-add-progress-${goal.id}`}>
-                    <Zap className="w-4 h-4 mr-2" />
-                    Add ${addAmount.toLocaleString()} progress
-                  </Button>
-                )}
+                  ))}
+                </div>
+
+                {/* CTA */}
+                <div className="text-center pb-2">
+                  {unlockedSegments >= 5 ? (
+                    <p className="text-green-400 font-semibold text-sm">Full scene unlocked — goal complete!</p>
+                  ) : (
+                    <Button onClick={handleAddToGoal} className="btn-coral w-full" data-testid={`button-modal-add-progress-${goal.id}`}>
+                      <Zap className="w-4 h-4 mr-2" />
+                      Add ${addAmount.toLocaleString()} to unlock next chapter
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
           </div>

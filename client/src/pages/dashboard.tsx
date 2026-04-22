@@ -172,7 +172,7 @@ export default function Dashboard() {
             playsInline
             controls={false}
             preload="metadata"
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-contain"
             style={{
               opacity: 0.55,
               filter: 'brightness(0.75) contrast(1.05)',
