@@ -141,6 +141,7 @@ export function BudgetTracker() {
   };
 
   const getBudgetProgress = (spent: number, budget: number) => {
+    if (!budget || budget <= 0) return 0;
     return Math.min((spent / budget) * 100, 100);
   };
 
@@ -149,6 +150,20 @@ export function BudgetTracker() {
     if (progress >= 75) return { color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-500" };
     return { color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-500" };
   };
+
+  const hasBudgetData = Array.isArray(budgetData) && budgetData.length > 0;
+  const budgetChartData = hasBudgetData
+    ? budgetData.map((budget, index) => ({
+        name: budget.category,
+        value: budget.budgetAmount,
+        spent: budget.spentAmount,
+        remaining: budget.budgetAmount - budget.spentAmount,
+        fill: [
+          'url(#coral3D)', 'url(#champagne3D)', 'url(#navy3D)', 'url(#gold3D)', 'url(#emerald3D)',
+          'url(#purple3D)', 'url(#orange3D)', 'url(#blue3D)', 'url(#darkgreen3D)', 'url(#cyan3D)'
+        ][index % 10]
+      }))
+    : [];
 
   if (isLoading) {
     return (
@@ -315,7 +330,8 @@ export function BudgetTracker() {
               
               {/* 3D Interactive Chart Container */}
               <div className="relative z-10 h-full perspective-1000">
-                <ResponsiveContainer width="100%" height="100%">
+                {hasBudgetData ? (
+                  <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <defs>
                       {/* 3D Gradient Definitions */}
@@ -384,16 +400,7 @@ export function BudgetTracker() {
                     </defs>
                     
                     <Pie
-                      data={budgetData?.map((budget, index) => ({
-                        name: budget.category,
-                        value: budget.budgetAmount,
-                        spent: budget.spentAmount,
-                        remaining: budget.budgetAmount - budget.spentAmount,
-                        fill: [
-                          'url(#coral3D)', 'url(#champagne3D)', 'url(#navy3D)', 'url(#gold3D)', 'url(#emerald3D)',
-                          'url(#purple3D)', 'url(#orange3D)', 'url(#blue3D)', 'url(#darkgreen3D)', 'url(#cyan3D)'
-                        ][index % 10]
-                      }))}
+                      data={budgetChartData}
                       cx="50%"
                       cy="45%"
                       startAngle={90}
@@ -460,7 +467,24 @@ export function BudgetTracker() {
                       cursor={{ fill: 'rgba(252, 48, 77, 0.1)' }}
                     />
                   </PieChart>
-                </ResponsiveContainer>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="h-full flex flex-col items-center justify-center text-center">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#fc304ed6]/30 to-[#d4c4a0]/30 border border-white/10 flex items-center justify-center mb-4">
+                      <DollarSign className="w-8 h-8 text-[#d4c4a0]" />
+                    </div>
+                    <h5 className="text-lg font-medium text-white mb-2">No budget data yet</h5>
+                    <p className="text-sm text-white/70 max-w-sm mb-5">
+                      Add your monthly budget to unlock the AI budget overview and category insights.
+                    </p>
+                    <Button
+                      onClick={() => setIsDialogOpen(true)}
+                      className="bg-gradient-to-r from-[#fc304ed6] to-[#d4c4a0] text-white"
+                    >
+                      Initialize Budget
+                    </Button>
+                  </div>
+                )}
                 
                 
               </div>
@@ -470,7 +494,7 @@ export function BudgetTracker() {
             
             {/* Advanced AI Network Data Matrix */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-52 overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[#fc304ed6]/30">
-              {budgetData?.map((budget, index) => {
+              {hasBudgetData ? budgetData.map((budget, index) => {
                 const progress = getBudgetProgress(budget.spentAmount, budget.budgetAmount);
                 const colorInfo = [
                   { bg: '#fc304ed6', name: 'Coral', glow: 'shadow-coral' },
@@ -545,7 +569,12 @@ export function BudgetTracker() {
                     </div>
                   </div>
                 );
-              })}
+              }) : (
+                <div className="sm:col-span-2 glass-morphism p-5 rounded-xl text-center border border-white/10">
+                  <div className="text-sm font-medium text-white mb-1">Waiting for budget categories</div>
+                  <div className="text-xs text-[#d4c4a0]">Use Initialize Budget to create categories for this month.</div>
+                </div>
+              )}
             </div>
           </div>
 

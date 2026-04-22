@@ -177,7 +177,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/budgets/:userId/:month", async (req, res) => {
     try {
       const { userId, month } = req.params;
-      const data = await storage.getUserBudgets(userId, month);
+      let data = await storage.getUserBudgets(userId, month);
+      if (data.length === 0 && userId === "demo-natalia") {
+        const starterBudgets = [
+          { userId, category: "Groceries", budgetAmount: 520, spentAmount: 338, month },
+          { userId, category: "Gas", budgetAmount: 240, spentAmount: 166, month },
+          { userId, category: "Utilities", budgetAmount: 310, spentAmount: 244, month },
+          { userId, category: "Dining Out", budgetAmount: 260, spentAmount: 178, month },
+          { userId, category: "Emergency Fund", budgetAmount: 400, spentAmount: 400, month },
+          { userId, category: "Shopping", budgetAmount: 180, spentAmount: 93, month }
+        ];
+
+        data = await Promise.all(starterBudgets.map((budget) => storage.updateUserBudget(budget)));
+      }
       res.json(data);
     } catch (error) {
       console.error("Error fetching budget data:", error);
