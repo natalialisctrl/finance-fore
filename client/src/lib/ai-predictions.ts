@@ -13,6 +13,10 @@ export interface PricePrediction {
   };
   recommendedAction: "BUY_NOW" | "WAIT_1_WEEK" | "WAIT_2_WEEKS" | "MONITOR";
   expectedSavings: number;
+  reasoning?: string;
+  keyFactors?: string[];
+  riskLevel?: "LOW" | "MEDIUM" | "HIGH";
+  analysisSource?: "OpenAI GPT-4o" | "Public-data algorithm";
 }
 
 export interface UserPreferences {
@@ -130,6 +134,8 @@ const calculateSupplyDemandWeight = (itemName: string): number => {
     "Milk": 0.5, // Stable supply
     "Bread": 0.5, // Stable supply
     "Ground Beef": 0.6, // Feed cost pressures
+    "Chicken Breast": 0.58, // Feed and processing costs
+    "WTI Crude Oil": 0.8, // Energy market volatility
     "Rice": 0.4 // Global surplus
   };
   
@@ -204,11 +210,16 @@ export const generatePersonalizedRecommendations = (
       .slice(0, 3);
   }
   
+  const buyNowItems = predictions.filter((p) => p.recommendedAction === "BUY_NOW").slice(0, 2);
+  const waitItems = predictions.filter((p) => p.recommendedAction.includes("WAIT")).slice(0, 2);
+  const energyItems = predictions.filter((p) => p.itemName === "Gas" || p.itemName.includes("Oil"));
   const budgetOptimization = [
-    "Stock up on eggs and bread this week - prices expected to rise 8-12% next month",
-    "Delay milk purchases for 1-2 weeks - 15% price drop predicted",
-    "Consider bulk buying rice - stable prices with good current deals"
-  ];
+    ...buyNowItems.map((item) => `Move $${Math.max(10, Math.round(item.currentPrice * 4))} of flexible grocery budget toward ${item.itemName} this week; score ${item.smartBuyScore}/10 with ${(item.confidence * 100).toFixed(0)}% confidence.`),
+    ...waitItems.map((item) => `Delay non-urgent ${item.itemName} purchases; projected savings are about $${item.expectedSavings.toFixed(2)} per unit over the action window.`),
+    energyItems.length > 0
+      ? `Fuel watch: ${energyItems[0].itemName} is driving the transportation outlook, so keep a weekly gas cap and avoid unnecessary trips if the forecast rises.`
+      : "Keep pantry staples in a small bulk-buy bucket while preserving emergency savings."
+  ].slice(0, 3);
   
   const timingAdvice = [
     `Based on your ${userPreferences.shoppingFrequency} shopping pattern, optimal next trip: ${getOptimalShoppingDate(predictions)}`,

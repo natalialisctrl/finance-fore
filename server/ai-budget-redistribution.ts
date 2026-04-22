@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
 
 export interface BudgetCategory {
   name: string;
@@ -44,6 +44,10 @@ export class AIBudgetRedistributor {
   }
 
   private async generateAIRedistribution(scenario: ScenarioInput): Promise<BudgetRedistributionResult> {
+    if (!openai) {
+      throw new Error("OpenAI API key is not configured");
+    }
+
     const prompt = `You are a certified financial planner analyzing a budget redistribution scenario. 
 
 SCENARIO DETAILS:

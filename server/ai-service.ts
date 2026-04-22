@@ -1,8 +1,8 @@
 import OpenAI from "openai";
 
-const openai = new OpenAI({ 
-  apiKey: process.env.OPENAI_API_KEY 
-});
+const openai = process.env.OPENAI_API_KEY
+  ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+  : null;
 
 export interface AIAnalysisInput {
   itemName: string;
@@ -29,9 +29,14 @@ export interface AIPredictionResult {
   keyFactors: string[];
   expectedSavings: number;
   riskLevel: "LOW" | "MEDIUM" | "HIGH";
+  analysisSource: "OpenAI GPT-4o" | "Public-data algorithm";
 }
 
 export async function getAIPricePrediction(input: AIAnalysisInput): Promise<AIPredictionResult> {
+  if (!openai) {
+    return getAlgorithmicPricePrediction(input);
+  }
+
   try {
     const prompt = `
 You are a financial analyst AI specializing in consumer price predictions. Analyze the following data and provide price forecasting:
@@ -106,57 +111,63 @@ Guidelines:
       reasoning: String(analysis.reasoning || "AI analysis based on economic indicators"),
       keyFactors: Array.isArray(analysis.keyFactors) ? analysis.keyFactors.slice(0, 5) : ["Economic trends", "Historical data"],
       expectedSavings: Math.max(0, Number(analysis.expectedSavings) || 0),
-      riskLevel: ["LOW", "MEDIUM", "HIGH"].includes(analysis.riskLevel) ? analysis.riskLevel : "MEDIUM"
+      riskLevel: ["LOW", "MEDIUM", "HIGH"].includes(analysis.riskLevel) ? analysis.riskLevel : "MEDIUM",
+      analysisSource: "OpenAI GPT-4o"
     };
 
   } catch (error) {
-    console.error('OpenAI API Error:', error);
-    
-    // Enhanced fallback with better algorithmic predictions
-    const inflationRate = input.economicIndicators.inflationRate / 100;
-    const gdpGrowth = input.economicIndicators.gdpGrowth / 100;
-    
-    // Calculate more sophisticated fallback prediction
-    const economicWeight = Math.min(1, inflationRate / 0.05); // Normalize inflation impact
-    const gdpWeight = 1 - Math.min(1, Math.max(0, gdpGrowth / 0.05)); // GDP inverse impact
-    const seasonalWeight = getSeasonalWeight(input.itemName, input.seasonalData?.month || new Date().getMonth());
-    
-    const combinedWeight = (economicWeight * 0.4 + gdpWeight * 0.3 + seasonalWeight * 0.3);
-    const priceChangePercent = (combinedWeight - 0.5) * 0.25; // ±12.5% max change
-    const predictedPrice = Math.max(0.01, input.currentPrice * (1 + priceChangePercent));
-    
-    // Determine direction and confidence
-    const priceDirection = Math.abs(priceChangePercent) < 0.02 ? "STABLE" : 
-                          priceChangePercent > 0 ? "UP" : "DOWN";
-    const confidence = Math.min(0.85, Math.max(0.65, Math.abs(combinedWeight - 0.5) * 1.5 + 0.6));
-    
-    // Calculate Smart Buy Score based on algorithmic factors
-    let smartBuyScore = 5; // Default neutral
-    if (priceDirection === "DOWN" && Math.abs(priceChangePercent) > 0.05) smartBuyScore = 8;
-    else if (priceDirection === "UP" && Math.abs(priceChangePercent) > 0.05) smartBuyScore = 3;
-    else if (priceDirection === "STABLE") smartBuyScore = 6;
-    
-    // Determine action based on score and trend
-    let recommendedAction: "BUY_NOW" | "WAIT_1_WEEK" | "WAIT_2_WEEKS" | "MONITOR" = "MONITOR";
-    if (smartBuyScore >= 8) recommendedAction = "BUY_NOW";
-    else if (smartBuyScore <= 4) recommendedAction = "WAIT_2_WEEKS";
-    else if (smartBuyScore <= 6 && priceDirection === "DOWN") recommendedAction = "WAIT_1_WEEK";
-    
-    const expectedSavings = recommendedAction !== "BUY_NOW" 
-      ? Math.max(0, input.currentPrice - predictedPrice) : 0;
-    
-    return {
-      predictedPrice30Day: Math.round(predictedPrice * 100) / 100,
-      priceDirection,
-      confidence: Math.round(confidence * 100) / 100,
-      smartBuyScore,
-      recommendedAction,
-      reasoning: "Economic analysis using inflation trends and seasonal patterns",
-      keyFactors: ["Inflation rate", "GDP growth", "Seasonal patterns", "Historical trends"],
-      expectedSavings: Math.round(expectedSavings * 100) / 100,
-      riskLevel: confidence > 0.75 ? "LOW" : confidence > 0.65 ? "MEDIUM" : "HIGH"
-    };
+    console.warn(`OpenAI prediction unavailable for ${input.itemName}; using public-data algorithm.`);
+    return getAlgorithmicPricePrediction(input);
   }
+}
+
+function getAlgorithmicPricePrediction(input: AIAnalysisInput): AIPredictionResult {
+  const inflationRate = input.economicIndicators.inflationRate / 100;
+  const gdpGrowth = input.economicIndicators.gdpGrowth / 100;
+  const averagePrice = Number(input.historicalPrices[1]) || input.currentPrice;
+  const currentValueSignal = averagePrice > 0 ? (averagePrice - input.currentPrice) / averagePrice : 0;
+  const seasonalWeight = getSeasonalWeight(input.itemName, input.seasonalData?.month || new Date().getMonth());
+  const energyPressure = input.itemName === "Gas" || input.itemName.includes("Oil") ? 0.018 : 0;
+  const foodPressure = ["Eggs", "Chicken Breast", "Ground Beef", "Milk", "Bread"].includes(input.itemName) ? 0.01 : 0.004;
+  const seasonalPressure = (seasonalWeight - 0.5) * 0.08;
+  const macroPressure = inflationRate * 0.45 - gdpGrowth * 0.08;
+  const valueReversionPressure = -currentValueSignal * 0.25;
+  const priceChangePercent = Math.max(
+    -0.12,
+    Math.min(0.12, macroPressure + seasonalPressure + energyPressure + foodPressure + valueReversionPressure)
+  );
+  const predictedPrice = Math.max(0.01, input.currentPrice * (1 + priceChangePercent));
+  const priceDirection = Math.abs(priceChangePercent) < 0.02 ? "STABLE" : priceChangePercent > 0 ? "UP" : "DOWN";
+  const confidence = Math.min(0.88, Math.max(0.68, Math.abs(priceChangePercent) * 3.5 + Math.abs(currentValueSignal) * 1.8 + 0.68));
+  
+  let smartBuyScore = 5.5;
+  smartBuyScore += currentValueSignal * 28;
+  if (priceDirection === "UP") smartBuyScore += 1.4;
+  if (priceDirection === "DOWN") smartBuyScore -= 1.4;
+  if (input.itemName === "Eggs" || input.itemName === "Rice" || input.itemName === "Bread") smartBuyScore += 0.8;
+  if (input.itemName === "Chicken Breast" || input.itemName === "Ground Beef") smartBuyScore -= 0.4;
+  if (input.itemName === "Gas" || input.itemName.includes("Oil")) smartBuyScore += priceDirection === "UP" ? 0.8 : 0.2;
+  smartBuyScore = Math.round(Math.max(1, Math.min(10, smartBuyScore)) * 10) / 10;
+
+  let recommendedAction: "BUY_NOW" | "WAIT_1_WEEK" | "WAIT_2_WEEKS" | "MONITOR" = "MONITOR";
+  if (smartBuyScore >= 7.5) recommendedAction = "BUY_NOW";
+  else if (smartBuyScore <= 3.8) recommendedAction = "WAIT_2_WEEKS";
+  else if (smartBuyScore <= 5.2 || priceDirection === "DOWN") recommendedAction = "WAIT_1_WEEK";
+  
+  const expectedSavings = recommendedAction !== "BUY_NOW" ? Math.max(0, input.currentPrice - predictedPrice) : 0;
+  
+  return {
+    predictedPrice30Day: Math.round(predictedPrice * 100) / 100,
+    priceDirection,
+    confidence: Math.round(confidence * 100) / 100,
+    smartBuyScore,
+    recommendedAction,
+    reasoning: "Economic analysis using inflation trends, current public market data, seasonality, and current-vs-average price.",
+    keyFactors: ["Inflation rate", "GDP growth", "Seasonal patterns", "Current vs. 30-day average"],
+    expectedSavings: Math.round(expectedSavings * 100) / 100,
+    riskLevel: confidence > 0.75 ? "LOW" : confidence > 0.65 ? "MEDIUM" : "HIGH",
+    analysisSource: "Public-data algorithm"
+  };
 }
 
 function getSeasonalWeight(itemName: string, month: number): number {
@@ -166,6 +177,8 @@ function getSeasonalWeight(itemName: string, month: number): number {
     "Milk": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.6, 0.6, 0.5, 0.5, 0.5, 0.5], // Stable
     "Bread": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5], // Stable
     "Ground Beef": [0.6, 0.6, 0.5, 0.4, 0.7, 0.8, 0.9, 0.8, 0.6, 0.5, 0.7, 0.8], // Higher in grilling season
+    "Chicken Breast": [0.55, 0.55, 0.52, 0.5, 0.58, 0.62, 0.65, 0.63, 0.58, 0.55, 0.57, 0.6],
+    "WTI Crude Oil": [0.45, 0.48, 0.52, 0.58, 0.65, 0.72, 0.75, 0.72, 0.65, 0.55, 0.5, 0.47],
     "Rice": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5] // Stable
   };
   

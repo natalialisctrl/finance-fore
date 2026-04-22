@@ -181,6 +181,11 @@ The app prioritizes transparency about data sources:
 - Removed an unsupported MOV background from the main dashboard and replaced it with CSS/animation visuals to avoid browser playback errors.
 - Made visible dashboard actions either perform local state changes, open dialogs, or show a clear toast response.
 
+### April 22, 2026 - AI Recommendations and Tracked Essentials
+- Seeded core price-tracking data for gas, eggs, chicken breast, WTI crude oil, milk, bread, ground beef, and rice so the AI tab never starts blank.
+- Updated the prediction endpoint to use the OpenAI GPT-4o analysis service when available and clearly mark fallback recommendations as public-data algorithm forecasts.
+- Auto-seeded demo tracked items for gas, eggs, chicken breast, and WTI crude oil, and expanded budget-engine examples around groceries, gas, and oil-linked energy costs.
+
 ### July 29, 2025 - Video Goal Creation Bug Fixes & Budget Redistribution Visibility Implementation
 - **Fixed Video Goal Creation Errors**: Resolved form validation and input parsing issues that were preventing video goal creation
   - Enhanced input validation with proper number parsing and minimum value checks

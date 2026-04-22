@@ -135,9 +135,114 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Price data routes
+  async function ensureStarterPriceData() {
+    const existing = await storage.getAllPriceData();
+    const economic = await storage.getEconomicData();
+    const oilPrice = economic?.oilPrices && Number.isFinite(economic.oilPrices) ? economic.oilPrices : 75.5;
+    const existingNames = new Set(existing.map((item) => item.itemName));
+    const essentials = [
+      {
+        itemName: "Gas",
+        currentPrice: 3.45,
+        averagePrice30Day: 3.52,
+        priceRange: { min: 3.19, max: 3.89 },
+        recommendation: "CONSIDER" as const,
+        percentageChange: -2.0,
+        emoji: "⛽",
+        description: "National regular gasoline benchmark influenced by WTI crude, refining margins, and seasonal demand",
+        lastUpdated: new Date()
+      },
+      {
+        itemName: "Eggs",
+        currentPrice: 3.18,
+        averagePrice30Day: 3.31,
+        priceRange: { min: 2.89, max: 4.29 },
+        recommendation: "BUY_NOW" as const,
+        percentageChange: -3.9,
+        emoji: "🥚",
+        description: "Dozen large eggs; volatility tied to feed costs, flock health, and CPI food-at-home trends",
+        lastUpdated: new Date()
+      },
+      {
+        itemName: "Chicken Breast",
+        currentPrice: 4.29,
+        averagePrice30Day: 4.18,
+        priceRange: { min: 3.79, max: 5.19 },
+        recommendation: "CONSIDER" as const,
+        percentageChange: 2.6,
+        emoji: "🍗",
+        description: "Boneless chicken breast per pound; sensitive to feed, energy, and grocery demand",
+        lastUpdated: new Date()
+      },
+      {
+        itemName: "WTI Crude Oil",
+        currentPrice: oilPrice,
+        averagePrice30Day: Math.round(oilPrice * 0.98 * 100) / 100,
+        priceRange: { min: Math.round(oilPrice * 0.9 * 100) / 100, max: Math.round(oilPrice * 1.12 * 100) / 100 },
+        recommendation: "CONSIDER" as const,
+        percentageChange: 2.0,
+        emoji: "🛢️",
+        description: "Live WTI crude benchmark from public market data; included because oil drives gas, shipping, and food costs",
+        lastUpdated: new Date()
+      },
+      {
+        itemName: "Milk",
+        currentPrice: 4.04,
+        averagePrice30Day: 4.08,
+        priceRange: { min: 3.69, max: 4.59 },
+        recommendation: "CONSIDER" as const,
+        percentageChange: -1.0,
+        emoji: "🥛",
+        description: "Gallon of whole milk; usually steadier but affected by transport and dairy supply costs",
+        lastUpdated: new Date()
+      },
+      {
+        itemName: "Bread",
+        currentPrice: 2.02,
+        averagePrice30Day: 2.08,
+        priceRange: { min: 1.79, max: 2.49 },
+        recommendation: "BUY_NOW" as const,
+        percentageChange: -2.9,
+        emoji: "🍞",
+        description: "White bread loaf; wheat, labor, and delivery costs influence the forecast",
+        lastUpdated: new Date()
+      },
+      {
+        itemName: "Ground Beef",
+        currentPrice: 5.39,
+        averagePrice30Day: 5.22,
+        priceRange: { min: 4.69, max: 6.19 },
+        recommendation: "WAIT" as const,
+        percentageChange: 3.3,
+        emoji: "🥩",
+        description: "Ground beef per pound; grilling demand and cattle supply create seasonal pressure",
+        lastUpdated: new Date()
+      },
+      {
+        itemName: "Rice",
+        currentPrice: 1.72,
+        averagePrice30Day: 1.78,
+        priceRange: { min: 1.49, max: 2.09 },
+        recommendation: "BUY_NOW" as const,
+        percentageChange: -3.4,
+        emoji: "🍚",
+        description: "Long-grain white rice per pound; stable pantry staple for budget optimization",
+        lastUpdated: new Date()
+      }
+    ];
+
+    const missingEssentials = essentials.filter((item) => !existingNames.has(item.itemName));
+    if (missingEssentials.length > 0) {
+      await Promise.all(missingEssentials.map((item) => storage.updatePriceData(item)));
+      return await storage.getAllPriceData();
+    }
+
+    return existing;
+  }
+
   app.get("/api/price-data", async (req, res) => {
     try {
-      const data = await storage.getAllPriceData();
+      const data = await ensureStarterPriceData();
       res.json(data);
     } catch (error) {
       console.error("Error fetching price data:", error);
@@ -304,8 +409,60 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Missing required data" });
       }
 
-      // Use fast algorithmic predictions
-      const predictions = priceData.map((item: any) => {
+      const itemsForPrediction = Array.isArray(priceData) && priceData.length > 0 ? priceData : await ensureStarterPriceData();
+
+      const aiInputs: AIAnalysisInput[] = itemsForPrediction.map((item: any) => ({
+        itemName: item.itemName,
+        currentPrice: Number(item.currentPrice),
+        historicalPrices: [
+          Number(item.priceRange?.min ?? item.currentPrice),
+          Number(item.averagePrice30Day ?? item.currentPrice),
+          Number(item.priceRange?.max ?? item.currentPrice),
+          Number(item.currentPrice)
+        ],
+        economicIndicators: {
+          inflationRate: Number(economicData.inflationRate ?? 2.7),
+          gdpGrowth: Number(economicData.gdpGrowth ?? 2.8),
+          consumerPriceIndex: Number(economicData.consumerPriceIndex ?? 319.8)
+        },
+        seasonalData: {
+          month: new Date().getMonth(),
+          category: getCategoryFromItemName(item.itemName)
+        }
+      }));
+
+      const aiResults = await getBatchAIPredictions(aiInputs);
+      const predictions = aiResults.map((result, index) => {
+        const item = itemsForPrediction[index];
+        const priceDirection = result.priceDirection === "UP" || result.priceDirection === "DOWN" ? result.priceDirection : "STABLE";
+        return {
+          itemName: item.itemName,
+          currentPrice: Number(item.currentPrice),
+          predicted30DayPrice: result.predictedPrice30Day,
+          priceDirection,
+          confidence: result.confidence,
+          smartBuyScore: result.smartBuyScore,
+          predictionFactors: {
+            economicTrends: Math.min(1, Math.max(0.1, Number(economicData.inflationRate ?? 2.7) / 5)),
+            seasonality: Math.min(1, Math.max(0.1, getSeasonalFactor(item.itemName, new Date().getMonth()) + 0.5)),
+            historicalPatterns: Number(item.currentPrice) <= Number(item.averagePrice30Day) ? 0.75 : 0.45,
+            supplyDemand: item.itemName.includes("Oil") || item.itemName === "Gas" ? 0.8 : 0.62
+          },
+          recommendedAction: result.recommendedAction,
+          expectedSavings: result.expectedSavings,
+          reasoning: result.reasoning,
+          keyFactors: result.keyFactors,
+          riskLevel: result.riskLevel,
+          analysisSource: result.analysisSource
+        };
+      });
+
+      res.json(predictions);
+    } catch (error) {
+      console.error("Price predictions error:", error);
+      const itemsForPrediction = Array.isArray(req.body?.priceData) && req.body.priceData.length > 0 ? req.body.priceData : await ensureStarterPriceData();
+      const economicData = req.body?.economicData || {};
+      const predictions = itemsForPrediction.map((item: any) => {
         // Calculate price prediction based on economic indicators
         const inflationImpact = (economicData.inflationRate / 100) * 0.3;
         const gdpImpact = (economicData.gdpGrowth / 100) * 0.2;
@@ -336,7 +493,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           itemName: item.itemName,
           currentPrice: item.currentPrice,
           predicted30DayPrice: Math.round(predictedPrice * 100) / 100,
-          priceDirection: predictedPrice > item.currentPrice ? "up" : "down",
+          priceDirection: predictedPrice > item.currentPrice ? "UP" : "DOWN",
           confidence: Math.round(confidence * 100) / 100,
           smartBuyScore,
           predictionFactors: {
@@ -360,14 +517,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
               const scoreMultiplier = smartBuyScore >= 8 ? 1.5 : smartBuyScore <= 4 ? 0.8 : 1.0;
               return Math.round(baseSavings * scoreMultiplier * 100) / 100;
             }
-          })()
+          })(),
+          reasoning: "Fallback forecast based on inflation, GDP, seasonality, and current-vs-average price",
+          keyFactors: ["Inflation trend", "Seasonality", "Current price vs 30-day average", "Supply and demand"],
+          riskLevel: confidence > 0.82 ? "LOW" : "MEDIUM",
+          analysisSource: "Public-data algorithm"
         };
       });
-
       res.json(predictions);
-    } catch (error) {
-      console.error("Price predictions error:", error);
-      res.status(500).json({ message: "Price prediction service failed" });
     }
   });
 
@@ -379,6 +536,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       "Milk": [0, 0, 0, 0, 0, 0, 0.01, 0.01, 0, 0, 0, 0],
       "Bread": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       "Ground Beef": [0.01, 0.01, 0, -0.01, 0.02, 0.03, 0.04, 0.03, 0.01, 0, 0.02, 0.03],
+      "Chicken Breast": [0.01, 0, -0.01, -0.01, 0.01, 0.02, 0.03, 0.02, 0.01, 0, 0.01, 0.02],
+      "WTI Crude Oil": [-0.03, -0.02, 0, 0.02, 0.04, 0.05, 0.05, 0.03, 0.01, -0.02, -0.03, -0.03],
       "Rice": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     };
     
@@ -392,7 +551,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       "Milk": "Dairy & Eggs", 
       "Bread": "Bakery",
       "Gas": "Energy",
+      "WTI Crude Oil": "Energy",
       "Ground Beef": "Meat",
+      "Chicken Breast": "Meat",
       "Rice": "Grains"
     };
     return categories[itemName] || "General";
@@ -437,7 +598,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/tracked-items/:userId", async (req, res) => {
     try {
       const { userId } = req.params;
-      const trackedItems = await storage.getTrackedItems(userId);
+      let trackedItems = await storage.getTrackedItems(userId);
+      if (trackedItems.length === 0 && userId === "demo-natalia") {
+        const priceItems = await ensureStarterPriceData();
+        const coreItems = ["Gas", "Eggs", "Chicken Breast", "WTI Crude Oil"];
+        const seededItems = coreItems.map((name) => {
+          const item = priceItems.find((priceItem) => priceItem.itemName === name);
+          const scoreByItem: Record<string, number> = {
+            "Gas": 6.8,
+            "Eggs": 8.4,
+            "Chicken Breast": 5.9,
+            "WTI Crude Oil": 7.2
+          };
+          const actionByItem: Record<string, string> = {
+            "Gas": "MONITOR",
+            "Eggs": "BUY_NOW",
+            "Chicken Breast": "WAIT_1_WEEK",
+            "WTI Crude Oil": "MONITOR"
+          };
+          return {
+            userId,
+            itemName: name,
+            currentPrice: item?.currentPrice ?? 0,
+            targetPrice: item ? Math.round(item.currentPrice * 0.94 * 100) / 100 : undefined,
+            smartBuyScore: scoreByItem[name],
+            recommendedAction: actionByItem[name],
+            confidence: 0.82,
+            priceAlerts: 1
+          };
+        });
+        trackedItems = await Promise.all(seededItems.map((item) => storage.addTrackedItem(item)));
+      }
       res.json(trackedItems);
     } catch (error) {
       console.error("Error fetching tracked items:", error);

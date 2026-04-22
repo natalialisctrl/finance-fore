@@ -105,7 +105,7 @@ export function TrackedItemsList({ userId }: TrackedItemsListProps) {
       <CardHeader>
         <CardTitle className="flex items-center space-x-2">
           <AlertCircle className="w-5 h-5" />
-          <span>Tracked Items ({trackedItems.length})</span>
+            <span data-testid="text-tracked-items-count">Tracked Items ({trackedItems.length})</span>
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -121,7 +121,7 @@ export function TrackedItemsList({ userId }: TrackedItemsListProps) {
                       {item.itemName.charAt(0)}
                     </div>
                     <div>
-                      <h3 className="font-semibold text-slate-900 dark:text-white">
+                      <h3 className="font-semibold text-slate-900 dark:text-white" data-testid={`text-tracked-item-${item.itemName.replace(/\s+/g, "-").toLowerCase()}`}>
                         {item.itemName}
                       </h3>
                       <div className="flex items-center space-x-3 mt-1">
@@ -148,6 +148,7 @@ export function TrackedItemsList({ userId }: TrackedItemsListProps) {
                       onClick={() => deleteTrackedItem.mutate(item.id)}
                       disabled={deleteTrackedItem.isPending}
                       className="text-red-600 hover:text-red-700 border-red-200 hover:border-red-300"
+                      data-testid={`button-delete-tracked-item-${item.id}`}
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>

@@ -144,7 +144,7 @@ export function AIPredictionsDashboard() {
           if (response.ok) {
             const predictions = await response.json();
             setPredictions(predictions);
-            setIsAIActive(true);
+            setIsAIActive(predictions.some((prediction: any) => prediction.analysisSource === "OpenAI GPT-4o"));
             console.log("Predictions loaded:", predictions.length, "items");
           } else {
             throw new Error(`HTTP ${response.status}`);
@@ -274,8 +274,8 @@ export function AIPredictionsDashboard() {
             </div>
           </div>
           
-          <p className="text-base text-[#d4c4a0] max-w-2xl mx-auto mb-6 font-light leading-relaxed opacity-90">
-{isAIActive ? "AI systems processing 30-day forecasts via OpenAI GPT-4o architecture" : "Advanced algorithms analyzing economic data patterns and market trends"}
+          <p className="text-base text-[#d4c4a0] max-w-2xl mx-auto mb-6 font-light leading-relaxed opacity-90" data-testid="text-ai-processing-status">
+{isAIActive ? "AI systems processing 30-day forecasts via OpenAI GPT-4o with public economic context" : "Public-data forecast engine is active; OpenAI recommendations will be used automatically when available"}
           </p>
           
           {/* AI interface controls */}
@@ -312,7 +312,7 @@ AI Data Stream Sources
               {[
                 { label: "Economic Intelligence", value: "Federal Reserve (FRED) API", icon: "🏦" },
 { label: "AI Processing Core", value: isAIActive ? 'OpenAI GPT-4o AI System' : 'Advanced Economic Algorithm', icon: "🧠" },
-                { label: "Market Data Points", value: "Ground Beef • Eggs • Milk • Bread • Gas • Rice", icon: "📊" },
+                { label: "Market Data Points", value: "Gas • Eggs • Chicken • WTI Oil • Milk • Bread • Beef • Rice", icon: "📊" },
                 { label: "Prediction Accuracy", value: "Algorithmic estimates for strategic planning", icon: "⚡" }
               ].map((item, index) => (
                 <div key={index} className="group relative glass-morphism p-4 rounded-xl hover:neo-brutalism-card transition-all duration-300 animate-[fadeInUp_0.8s_ease-out]" style={{animationDelay: `${index * 100}ms`}}>
@@ -366,9 +366,12 @@ AI Data Stream Sources
                         {rec.smartBuyScore}
                       </div>
                       <div>
-                        <div className="font-semibold text-white text-sm">{rec.itemName}</div>
+                        <div className="font-semibold text-white text-sm" data-testid={`text-ai-recommendation-${rec.itemName.replace(/\s+/g, "-").toLowerCase()}`}>{rec.itemName}</div>
                         <div className="text-xs text-white/70">
                           {rec.confidence > 0.8 ? "High confidence" : "Moderate confidence"}
+                        </div>
+                        <div className="text-xs text-[#d4c4a0] mt-1 max-w-xs">
+                          {rec.reasoning || `${rec.itemName} ranked from Smart Buy score, forecast, and current economic inputs.`}
                         </div>
                       </div>
                     </div>
@@ -386,6 +389,7 @@ AI Data Stream Sources
                         }
                       }}
                       className="px-3 py-1 text-xs font-medium bg-accent-coral hover:bg-accent-coral/80 text-white border-accent-coral hover:border-accent-coral/80 transition-colors"
+                      data-testid={`button-ai-action-${rec.itemName.replace(/\s+/g, "-").toLowerCase()}`}
                     >
                       {rec.recommendedAction.replace("_", " ")}
                     </Button>
@@ -400,9 +404,12 @@ AI Data Stream Sources
                         {prediction.smartBuyScore}
                       </div>
                       <div>
-                        <div className="font-semibold text-white text-sm">{prediction.itemName}</div>
+                        <div className="font-semibold text-white text-sm" data-testid={`text-ai-recommendation-${prediction.itemName.replace(/\s+/g, "-").toLowerCase()}`}>{prediction.itemName}</div>
                         <div className="text-xs text-white/70">
                           {prediction.confidence > 0.8 ? "High confidence" : "Moderate confidence"}
+                        </div>
+                        <div className="text-xs text-[#d4c4a0] mt-1 max-w-xs">
+                          {prediction.reasoning || `${prediction.itemName} ranked from Smart Buy score, forecast, and current economic inputs.`}
                         </div>
                       </div>
                     </div>
@@ -420,6 +427,7 @@ AI Data Stream Sources
                         }
                       }}
                       className="px-3 py-1 text-xs font-medium bg-accent-coral hover:bg-accent-coral/80 text-white border-accent-coral hover:border-accent-coral/80 transition-colors"
+                      data-testid={`button-ai-action-${prediction.itemName.replace(/\s+/g, "-").toLowerCase()}`}
                     >
                       {prediction.recommendedAction.replace("_", " ")}
                     </Button>
@@ -461,7 +469,7 @@ AI Data Stream Sources
                 const tips = [];
                 const highScoreItems = predictions.filter(p => p.smartBuyScore >= 8);
                 const waitItems = predictions.filter(p => p.recommendedAction?.includes('WAIT'));
-                const risingPrices = predictions.filter(p => p.priceDirection === 'up');
+                const risingPrices = predictions.filter(p => p.priceDirection === 'UP');
                 
                 if (highScoreItems.length > 0) {
                   tips.push(`Strong buy signal on ${highScoreItems[0].itemName} - Smart Buy Score ${highScoreItems[0].smartBuyScore}/10`);

@@ -57,8 +57,8 @@ export function AIBudgetRedistribution({ scenario, onClose }: AIBudgetRedistribu
   // Sample current budget - in real app, this would come from user's actual budget
   const currentBudget = {
     "Housing": 1800,
-    "Food & Dining": 600,
-    "Transportation": 400,
+    "Groceries - Eggs, Chicken, Staples": 600,
+    "Transportation - Gas": 400,
     "Utilities": 250,
     "Insurance": 300,
     "Healthcare": 200,
@@ -66,6 +66,7 @@ export function AIBudgetRedistribution({ scenario, onClose }: AIBudgetRedistribu
     "Personal Care": 150,
     "Shopping": 300,
     "Savings": 500,
+    "Energy/Oil Buffer": 120,
     "Emergency Fund": 200
   };
 
