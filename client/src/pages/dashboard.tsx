@@ -458,8 +458,8 @@ export default function Dashboard() {
         {/* Quantum Hero Matrix - AI Core Tab */}
         {activeTab === 'dashboard' && (
           <div className="relative z-40 max-w-7xl mx-auto px-6 py-16 pl-[24px] pr-[24px] pt-[32px] pb-[32px] overflow-hidden min-h-[60vh]">
-            <div className="absolute inset-0 z-0">
-              {/* Background video */}
+            <div className="absolute inset-0 z-0 overflow-hidden">
+              {/* Background video — blended into dark background */}
               <video
                 autoPlay
                 loop
@@ -467,11 +467,13 @@ export default function Dashboard() {
                 playsInline
                 controls={false}
                 preload="metadata"
-                className="absolute inset-0 w-full h-full object-cover opacity-60"
+                className="absolute inset-0 w-full h-full object-cover"
                 style={{
-                  filter: 'brightness(0.8) contrast(1.1)',
+                  opacity: 0.28,
+                  filter: 'brightness(0.6) contrast(1.2) blur(1px)',
                   objectPosition: 'center',
-                  pointerEvents: 'none'
+                  pointerEvents: 'none',
+                  mixBlendMode: 'screen',
                 }}
                 src={foreseeVideo}
                 onLoadedData={(e) => {
@@ -481,8 +483,10 @@ export default function Dashboard() {
                   });
                 }}
               />
-              {/* Overlay gradient to keep text readable */}
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#051421]/10 to-[#051421]/40"></div>
+              {/* Edge fade — blends left/right into the dark surrounding */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 pointer-events-none" />
+              {/* Top/bottom fade */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/70 pointer-events-none" />
               <MinimalistFloatingDollars />
             </div>
 
