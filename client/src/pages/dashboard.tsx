@@ -163,6 +163,29 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-black overflow-x-hidden">
       {/* Advanced AI Network Background */}
       <div className="fixed inset-0 z-0">
+        {/* Foresee logo video — full-screen, only on Core tab */}
+        {activeTab === 'dashboard' && (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            controls={false}
+            preload="metadata"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{
+              opacity: 0.55,
+              filter: 'brightness(0.75) contrast(1.05)',
+              pointerEvents: 'none',
+            }}
+            src={foreseeVideo}
+            onLoadedData={(e) => {
+              const video = e.target as HTMLVideoElement;
+              video.play().catch(() => { video.controls = false; });
+            }}
+          />
+        )}
+
         {/* Primary quantum field */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#fc304ed6]/5 via-transparent to-[#d4c4a0]/5 animate-pulse"></div>
         
@@ -458,35 +481,7 @@ export default function Dashboard() {
         {/* Quantum Hero Matrix - AI Core Tab */}
         {activeTab === 'dashboard' && (
           <div className="relative z-40 max-w-7xl mx-auto px-6 py-16 pl-[24px] pr-[24px] pt-[32px] pb-[32px] overflow-hidden min-h-[60vh]">
-            <div className="absolute inset-0 z-0 overflow-hidden">
-              {/* Background video — blended into dark background */}
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                controls={false}
-                preload="metadata"
-                className="absolute inset-0 w-full h-full object-cover"
-                style={{
-                  opacity: 0.28,
-                  filter: 'brightness(0.6) contrast(1.2) blur(1px)',
-                  objectPosition: 'center',
-                  pointerEvents: 'none',
-                  mixBlendMode: 'screen',
-                }}
-                src={foreseeVideo}
-                onLoadedData={(e) => {
-                  const video = e.target as HTMLVideoElement;
-                  video.play().catch(() => {
-                    video.controls = false;
-                  });
-                }}
-              />
-              {/* Edge fade — blends left/right into the dark surrounding */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 pointer-events-none" />
-              {/* Top/bottom fade */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/70 pointer-events-none" />
+            <div className="absolute inset-0 z-0">
               <MinimalistFloatingDollars />
             </div>
 
