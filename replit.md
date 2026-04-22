@@ -185,6 +185,8 @@ The app prioritizes transparency about data sources:
 - Seeded core price-tracking data for gas, eggs, chicken breast, WTI crude oil, milk, bread, ground beef, and rice so the AI tab never starts blank.
 - Updated the prediction endpoint to use the OpenAI GPT-4o analysis service when available and clearly mark fallback recommendations as public-data algorithm forecasts.
 - Auto-seeded demo tracked items for gas, eggs, chicken breast, and WTI crude oil, and expanded budget-engine examples around groceries, gas, and oil-linked energy costs.
+- Reworked the Goals AI Scene Builder into a progressive generated scene film: demo video goals now auto-seed, the visible scene literally depicts the goal type, and unlocked runtime/chapters expand as savings progress grows.
+- Desktop and mobile Goals now use the same live video-goals data path, with a direct `?tab=budget-goals` view available for checking the Goals section.
 
 ### July 29, 2025 - Video Goal Creation Bug Fixes & Budget Redistribution Visibility Implementation
 - **Fixed Video Goal Creation Errors**: Resolved form validation and input parsing issues that were preventing video goal creation

@@ -16,7 +16,6 @@ import { LifeModeSettings } from "@/components/life-mode-settings";
 import { LocationAlerts } from "@/components/location-alerts";
 import { LocationSettings } from "@/components/location-settings";
 import { TrackedItemsList } from "@/components/tracked-items-list";
-import { SmartSceneBuilder } from "@/components/smart-scene-builder";
 import { MobileSafeWrapper } from "@/components/mobile-safe-wrapper";
 import { MobileGoalsDebt } from "@/components/mobile-goals-debt";
 import { MobileSceneBuilder } from "@/components/mobile-scene-builder";
@@ -53,7 +52,10 @@ export default function Dashboard() {
   const isAuthenticated = true;
   const isLoading = false;
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState(() => {
+    const tab = new URLSearchParams(window.location.search).get("tab");
+    return tab || "dashboard";
+  });
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [newItemName, setNewItemName] = useState("");
   const [newItemQuantity, setNewItemQuantity] = useState("");
@@ -541,8 +543,8 @@ export default function Dashboard() {
               {/* Desktop Components */}
               <div className="hidden sm:block">
                 <div className="fade-in">
-                  <MobileSafeWrapper fallbackTitle="Scene Builder Error" componentName="SmartSceneBuilder">
-                    <SmartSceneBuilder />
+                  <MobileSafeWrapper fallbackTitle="Scene Builder Error" componentName="MobileSceneBuilder">
+                    <MobileSceneBuilder />
                   </MobileSafeWrapper>
                 </div>
                 <div className="slide-up" style={{ animationDelay: '0.2s' }}>

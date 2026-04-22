@@ -248,6 +248,12 @@ body {
   50% { transform: translateX(15px); }
 }
 
+@keyframes sceneDrift {
+  0% { transform: translateX(-30%); opacity: 0.35; }
+  50% { opacity: 0.95; }
+  100% { transform: translateX(30%); opacity: 0.35; }
+}
+
 @keyframes fade {
   0%, 100% { opacity: 0.1; }
   50% { opacity: 0.3; }

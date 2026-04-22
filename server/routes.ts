@@ -11,6 +11,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
   await setupAuth(app);
 
+  const buildVideoSegments = (targetAmount: number, descriptions: string[]) => {
+    const segmentThreshold = targetAmount / 5;
+    return descriptions.map((description, index) => ({
+      segmentNumber: index + 1,
+      unlockThreshold: segmentThreshold * (index + 1),
+      description,
+      isUnlocked: false,
+    }));
+  };
+
+  const seedDemoVideoGoals = async (userId: string) => {
+    if (userId !== "demo-natalia") return;
+
+    const existing = await storage.getVideoGoals(userId);
+    if (existing.length > 0) return;
+
+    await storage.addVideoGoal({
+      userId,
+      goalTitle: "Tesla Model 3 Dream Car",
+      goalDescription: "A literal AI-style scene of the car being revealed, detailed, driven, and delivered as the goal gets funded.",
+      goalType: "car",
+      targetAmount: 35000,
+      currentAmount: 8750,
+      videoUrl: null,
+      videoSegments: buildVideoSegments(35000, [
+        "Garage lights reveal the car",
+        "Headlights and silhouette appear",
+        "Interior and wheels render in",
+        "Driving lifestyle shot unlocks",
+        "Keys and full delivery scene",
+      ]),
+      unlockedSegments: 1,
+    });
+
+    await storage.addVideoGoal({
+      userId,
+      goalTitle: "First Home Down Payment",
+      goalDescription: "A progressive home scene that unlocks the street view, front door, interior, lived-in moments, and final move-in.",
+      goalType: "house",
+      targetAmount: 60000,
+      currentAmount: 24000,
+      videoUrl: null,
+      videoSegments: buildVideoSegments(60000, [
+        "Street view opens",
+        "Front door and windows appear",
+        "Interior rooms light up",
+        "Life inside the home unlocks",
+        "Full move-in scene",
+      ]),
+      unlockedSegments: 2,
+    });
+  };
+
   // Demo login for testing
   app.post('/api/demo-login', async (req, res) => {
     const { username, password } = req.body;
@@ -662,6 +715,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/video-goals/:userId", async (req, res) => {
     try {
       const userId = req.params.userId;
+      await seedDemoVideoGoals(userId);
       const goals = await storage.getVideoGoals(userId);
       res.json(goals);
     } catch (error) {
