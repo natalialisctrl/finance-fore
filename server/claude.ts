@@ -1,16 +1,19 @@
 import Anthropic from "@anthropic-ai/sdk";
 
-// Replit AI Integration provides ANTHROPIC_API_KEY at runtime
-export const anthropic = process.env.ANTHROPIC_API_KEY
-  ? new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+// Replit AI Integration injects AI_INTEGRATIONS_ANTHROPIC_* vars automatically.
+// Personal ANTHROPIC_API_KEY is accepted as a fallback.
+const apiKey =
+  process.env.AI_INTEGRATIONS_ANTHROPIC_API_KEY ||
+  process.env.ANTHROPIC_API_KEY;
+const baseURL = process.env.AI_INTEGRATIONS_ANTHROPIC_BASE_URL;
+
+export const anthropic = apiKey
+  ? new Anthropic({ apiKey, ...(baseURL ? { baseURL } : {}) })
   : null;
 
-export const SONNET = "claude-sonnet-4-6";   // fast, balanced — for most tasks
-export const OPUS   = "claude-opus-4-7";     // most capable — for complex predictions
+export const SONNET = "claude-sonnet-4-6";
+export const OPUS   = "claude-opus-4-7";
 
-/**
- * Call Claude and get a text response. Falls back to null if no key.
- */
 export async function callClaude(
   prompt: string,
   model: string = SONNET,
@@ -26,10 +29,6 @@ export async function callClaude(
   return block.type === "text" ? block.text : null;
 }
 
-/**
- * Call Claude and parse the response as JSON.
- * Claude is instructed explicitly to return only valid JSON.
- */
 export async function callClaudeJSON<T = any>(
   prompt: string,
   model: string = SONNET,
@@ -42,7 +41,6 @@ export async function callClaudeJSON<T = any>(
   );
   if (!raw) return null;
   try {
-    // Strip any accidental markdown fences
     const clean = raw.replace(/^```(?:json)?\n?/m, "").replace(/\n?```$/m, "").trim();
     return JSON.parse(clean) as T;
   } catch {

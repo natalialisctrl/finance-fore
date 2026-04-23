@@ -358,3 +358,5 @@ export type InsertTransaction = z.infer<typeof insertTransactionSchema>;
 
 export type BankSyncLog = typeof bankSyncLogs.$inferSelect;
 export type InsertBankSyncLog = z.infer<typeof insertBankSyncLogSchema>;
+
+export * from "./models/chat";
