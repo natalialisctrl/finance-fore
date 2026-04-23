@@ -144,7 +144,7 @@ export function AIPredictionsDashboard() {
           if (response.ok) {
             const predictions = await response.json();
             setPredictions(predictions);
-            setIsAIActive(predictions.some((prediction: any) => prediction.analysisSource === "OpenAI GPT-4o"));
+            setIsAIActive(predictions.some((prediction: any) => prediction.analysisSource === "Claude claude-sonnet-4-6"));
             console.log("Predictions loaded:", predictions.length, "items");
           } else {
             throw new Error(`HTTP ${response.status}`);
@@ -275,7 +275,7 @@ export function AIPredictionsDashboard() {
           </div>
           
           <p className="text-base text-[#d4c4a0] max-w-2xl mx-auto mb-6 font-light leading-relaxed opacity-90" data-testid="text-ai-processing-status">
-{isAIActive ? "AI systems processing 30-day forecasts via OpenAI GPT-4o with public economic context" : "Public-data forecast engine is active; OpenAI recommendations will be used automatically when available"}
+{isAIActive ? "AI systems processing 30-day forecasts via Claude (Anthropic) with public economic context" : "Public-data forecast engine is active; Claude AI recommendations will be used automatically when available"}
           </p>
           
           {/* AI interface controls */}
@@ -311,7 +311,7 @@ AI Data Stream Sources
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
                 { label: "Economic Intelligence", value: "Federal Reserve (FRED) API", icon: "🏦" },
-{ label: "AI Processing Core", value: isAIActive ? 'OpenAI GPT-4o AI System' : 'Advanced Economic Algorithm', icon: "🧠" },
+{ label: "AI Processing Core", value: isAIActive ? 'Claude claude-sonnet-4-6 (Anthropic)' : 'Advanced Economic Algorithm', icon: "🧠" },
                 { label: "Market Data Points", value: "Gas • Eggs • Chicken • WTI Oil • Milk • Bread • Beef • Rice", icon: "📊" },
                 { label: "Prediction Accuracy", value: "Algorithmic estimates for strategic planning", icon: "⚡" }
               ].map((item, index) => (

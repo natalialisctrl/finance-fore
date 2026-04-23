@@ -947,10 +947,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const today = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
       const location = `${city}${state ? `, ${state}` : ""}`;
 
-      const OpenAI = (await import("openai")).default;
-      const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
+      const { anthropic: _ant, callClaudeJSON: callJSON } = await import("./claude");
 
-      if (!openai) {
+      if (!_ant) {
         return res.json(buildAlgorithmicHousingPrediction(city, state, eco));
       }
 
@@ -992,16 +991,8 @@ Return ONLY this exact JSON (no markdown):
   "marketTemp": "warm"
 }`;
 
-      const completion = await openai.chat.completions.create({
-        model: "gpt-4o",
-        messages: [{ role: "user", content: prompt }],
-        response_format: { type: "json_object" },
-        temperature: 0.2,
-      });
-
-      const raw = completion.choices[0].message.content ?? "{}";
-      const prediction = JSON.parse(raw);
-      res.json(prediction);
+      const prediction = await callJSON(prompt, "claude-opus-4-7", 800);
+      res.json(prediction ?? buildAlgorithmicHousingPrediction(city, state, eco));
     } catch (err: any) {
       console.error("Housing prediction error:", err.message);
       const eco = await storage.getEconomicData().catch(() => null);
@@ -1105,11 +1096,9 @@ Return ONLY this exact JSON (no markdown):
       const today = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
       const location = `${city}${state ? `, ${state}` : ""}${country && country !== "United States" ? `, ${country}` : ""}`;
 
-      const OpenAI = (await import("openai")).default;
-      const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
+      const { anthropic: _ant2, callClaudeJSON: callJSON2 } = await import("./claude");
 
-      if (!openai) {
-        // Fallback algorithmic alerts without AI
+      if (!_ant2) {
         return res.json(buildAlgorithmicAlerts(city, state, gasPrice, eco));
       }
 
@@ -1132,34 +1121,25 @@ REQUIREMENTS:
 - Confidence must be honest (not all 95%)
 - For gas: adjust for state taxes (CA +$0.68, TX +$0.20, NY +$0.49, FL +$0.28, etc.)
 
-Return ONLY a JSON array, no markdown. Schema:
-[{
+Return a JSON array of 4 alerts. Each alert object:
+{
   "id": "alert-1",
-  "type": "gas" | "grocery" | "housing" | "weather" | "economic",
-  "severity": "low" | "medium" | "high",
-  "title": "short title (6 words max)",
+  "type": "gas" or "grocery" or "housing" or "weather" or "economic",
+  "severity": "low" or "medium" or "high",
+  "title": "short title 6 words max",
   "message": "2-3 sentence specific factual explanation with dollar amounts",
-  "prediction": "concise prediction with specific $ or % number",
-  "confidence": 55-92,
-  "daysOut": 1-14,
+  "prediction": "concise prediction with specific dollar or percent number",
+  "confidence": number between 55 and 92,
+  "daysOut": number between 1 and 14,
   "actionSuggestion": "specific actionable step with dollar impact",
   "icon": "emoji"
-}]`;
+}`;
 
-      const completion = await openai.chat.completions.create({
-        model: "gpt-4o",
-        messages: [{ role: "user", content: prompt }],
-        response_format: { type: "json_object" },
-        temperature: 0.3,
-      });
-
-      const raw = completion.choices[0].message.content ?? "{}";
       let alerts: any[] = [];
-      try {
-        const parsed = JSON.parse(raw);
-        // Handle both {alerts:[]} and [] root shapes
+      const parsed = await callJSON2<any>(prompt, "claude-sonnet-4-6", 1200);
+      if (parsed) {
         alerts = Array.isArray(parsed) ? parsed : (parsed.alerts ?? parsed.data ?? Object.values(parsed)[0] ?? []);
-      } catch {
+      } else {
         alerts = buildAlgorithmicAlerts(city, state, gasPrice, eco);
       }
 

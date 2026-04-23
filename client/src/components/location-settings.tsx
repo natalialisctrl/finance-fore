@@ -417,7 +417,7 @@ export function LocationSettings() {
                       <div className="flex items-center gap-2">
                         <Home className="w-4 h-4 text-blue-400" />
                         <span className="text-sm font-semibold text-white">AI Housing Market Prediction</span>
-                        <Badge className="text-[10px] bg-blue-500/20 text-blue-300 border-blue-500/30">GPT-4o</Badge>
+                        <Badge className="text-[10px] bg-violet-500/20 text-violet-300 border-violet-500/30">Claude</Badge>
                       </div>
                       <Button
                         size="sm"

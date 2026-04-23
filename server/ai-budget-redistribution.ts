@@ -1,6 +1,4 @@
-import OpenAI from "openai";
-
-const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
+import { anthropic, callClaudeJSON, SONNET } from "./claude";
 
 export interface BudgetCategory {
   name: string;
@@ -44,11 +42,11 @@ export class AIBudgetRedistributor {
   }
 
   private async generateAIRedistribution(scenario: ScenarioInput): Promise<BudgetRedistributionResult> {
-    if (!openai) {
-      throw new Error("OpenAI API key is not configured");
+    if (!anthropic) {
+      throw new Error("Claude API key is not configured");
     }
 
-    const prompt = `You are a certified financial planner analyzing a budget redistribution scenario. 
+    const prompt = `You are a certified financial planner with 20+ years of experience in budget optimization. Analyze this budget redistribution scenario and provide practical, actionable advice.
 
 SCENARIO DETAILS:
 - Type: ${scenario.scenarioType}
@@ -63,22 +61,14 @@ ${Object.entries(scenario.currentBudget).map(([category, amount]) => `- ${catego
 ADDITIONAL EXPENSES:
 ${scenario.additionalExpenses ? Object.entries(scenario.additionalExpenses).map(([expense, amount]) => `- ${expense}: $${amount}`).join('\n') : 'None'}
 
-Please provide a comprehensive budget redistribution analysis that includes:
-
-1. REDISTRIBUTED BUDGET: For each category, suggest new amounts with priority levels (essential/important/optional) and detailed reasoning
-2. FINANCIAL STRATEGY: Emergency fund targets, debt payoff strategy, investment recommendations
-3. RISK ASSESSMENT: Potential challenges and mitigation strategies
-4. ACTION PLAN: Specific steps to implement this budget
-5. CONFIDENCE LEVEL: Rate your confidence in this plan (60-95%)
-
-Respond with JSON in this exact format:
+Return this JSON object:
 {
   "redistributedBudget": [
     {
       "name": "category_name",
       "currentAmount": current_amount,
       "suggestedAmount": new_amount,
-      "priority": "essential|important|optional",
+      "priority": "essential" or "important" or "optional",
       "reasoning": "detailed explanation for the change"
     }
   ],
@@ -88,28 +78,12 @@ Respond with JSON in this exact format:
   "investmentStrategy": ["investment1", "investment2"],
   "riskAssessment": "comprehensive risk analysis",
   "actionPlan": ["step1", "step2", "step3"],
-  "confidence": confidence_percentage
+  "confidence": confidence_percentage_between_60_and_95
 }`;
 
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
-      messages: [
-        {
-          role: "system",
-          content: "You are an expert financial planner with 20+ years of experience in budget optimization and scenario planning. Provide practical, actionable financial advice based on the scenario."
-        },
-        {
-          role: "user",
-          content: prompt
-        }
-      ],
-      response_format: { type: "json_object" },
-      temperature: 0.7,
-      max_tokens: 2000
-    });
-
-    const result = JSON.parse(response.choices[0].message.content || "{}");
-    return result as BudgetRedistributionResult;
+    const result = await callClaudeJSON<BudgetRedistributionResult>(prompt, SONNET, 2000);
+    if (!result) throw new Error("No response from Claude");
+    return result;
   }
 
   private algorithmicRedistribution(scenario: ScenarioInput): BudgetRedistributionResult {

@@ -16,7 +16,7 @@ export interface PricePrediction {
   reasoning?: string;
   keyFactors?: string[];
   riskLevel?: "LOW" | "MEDIUM" | "HIGH";
-  analysisSource?: "OpenAI GPT-4o" | "Public-data algorithm";
+  analysisSource?: "Claude claude-sonnet-4-6" | "Public-data algorithm";
 }
 
 export interface UserPreferences {
@@ -26,7 +26,7 @@ export interface UserPreferences {
   riskTolerance: "conservative" | "moderate" | "aggressive";
 }
 
-// Real AI-powered prediction engine using OpenAI GPT-4o
+// Real AI-powered prediction engine using Claude (Anthropic)
 export const generatePricePredictions = async (
   priceData: any[],
   economicData: any,
